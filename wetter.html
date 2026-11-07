@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b4fb3">
+<title>Wetter Live</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css">
+<style>
+:root{--bg:#eef3f9;--card:#fff;--text:#10213a;--muted:#5b6b82;--blue:#0b4fb3;--sun:#ffc933;--line:#dde6f2;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--bg:#0c1524;--card:#15233a;--text:#e8eef8;--muted:#92a3bb;--blue:#1c5fc9;--line:#243653;color-scheme:dark}}
+*{box-sizing:border-box;margin:0}
+body{font-family:"Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.45}
+header{background:linear-gradient(160deg,#0b4fb3,#2a86e8);color:#fff;padding:18px 16px 70px}
+.wrap{max-width:980px;margin:0 auto}
+.top{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.top h1{font-size:1.25rem;font-weight:700;margin-right:auto}
+.search{position:relative;flex:1 1 240px;max-width:420px}
+.search input{width:100%;padding:10px 14px;border-radius:999px;border:0;font:inherit;font-size:16px;color:#10213a;background:#fff}
+.search ul{position:absolute;left:0;right:0;top:44px;background:var(--card);color:var(--text);border-radius:12px;list-style:none;padding:4px;z-index:1000;box-shadow:0 8px 24px rgba(0,0,0,.25);display:none}
+.search li{padding:9px 12px;border-radius:8px;cursor:pointer}
+.search li:hover,.search li:focus{background:var(--line);outline:none}
+button{font:inherit;cursor:pointer}
+.btn{background:rgba(255,255,255,.18);color:#fff;border:1px solid rgba(255,255,255,.4);padding:9px 14px;border-radius:999px}
+.btn:hover{background:rgba(255,255,255,.3)}
+.now{display:flex;align-items:center;gap:18px;margin-top:22px;flex-wrap:wrap}
+.now .ico{font-size:4.5rem;line-height:1}
+.now .t{font-size:4rem;font-weight:700;line-height:1}
+.now .d{opacity:.92}
+main{margin-top:-52px;padding:0 12px 40px}
+.card{background:var(--card);border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:0 2px 10px rgba(16,33,58,.08)}
+.card h2{font-size:1.02rem;margin-bottom:10px}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+.fact{background:var(--bg);border-radius:12px;padding:10px 12px}
+.fact b{display:block;font-size:1.15rem}
+.fact span{color:var(--muted);font-size:.85rem}
+.hours{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px}
+.h{flex:0 0 66px;text-align:center;padding:8px 4px;border-radius:12px;background:var(--bg)}
+.h .e{font-size:1.6rem}.h small{color:var(--muted);display:block}
+.h .p{color:#2a86e8;font-size:.8rem;min-height:1.1em}
+.day{display:grid;grid-template-columns:70px 36px 1fr auto;gap:8px;align-items:center;padding:9px 0;border-top:1px solid var(--line)}
+.day:first-of-type{border-top:0}
+.day .e{font-size:1.5rem}.day .r{color:#2a86e8;font-size:.85rem}
+.day .m{color:var(--muted);font-size:.9rem}
+.mapbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+.seg button{border:1px solid var(--line);background:var(--bg);color:var(--text);padding:7px 12px}
+.seg button:first-child{border-radius:999px 0 0 999px}.seg button:last-child{border-radius:0 999px 999px 0}
+.seg button.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+#map{height:min(62vh,520px);border-radius:12px;z-index:0}
+.play{display:flex;gap:10px;align-items:center;margin-top:10px}
+.play button{background:var(--sun);color:#10213a;border:0;border-radius:50%;width:40px;height:40px;font-size:1rem;font-weight:700}
+.play input{flex:1;accent-color:var(--blue)}
+#ts{min-width:110px;text-align:right;font-variant-numeric:tabular-nums}
+a{color:var(--blue)}
+@media (prefers-color-scheme:dark){a{color:#7db4ff}}
+.note{color:var(--muted);font-size:.82rem;margin-top:8px}
+#err{display:none;background:#ffe9e6;color:#8a1f11;padding:10px 14px;border-radius:12px;margin-bottom:12px}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+.warn{border-left:6px solid var(--wc,#ffd33d);background:var(--bg);border-radius:10px;padding:10px 12px;margin-bottom:8px}
+.warn>b{display:block}
+.warn small{color:var(--muted)}
+.warn summary{cursor:pointer;color:var(--blue);margin-top:6px}
+.warn p{margin-top:6px;font-size:.92rem}
+.ok{color:var(--muted)}
+.lockb{display:none;border:1px solid var(--line);background:var(--bg);color:var(--text);padding:7px 12px;border-radius:999px}
+header{position:relative}
+main{position:relative;z-index:1}
+.herobg{position:absolute;inset:0;overflow:hidden;z-index:0;background:#0b4fb3}
+#hero{position:absolute;inset:0;z-index:0;pointer-events:none}
+.heroov{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(6,22,48,.78) 0%,rgba(6,22,48,.38) 55%,rgba(6,22,48,.62) 100%)}
+header .wrap{position:relative;z-index:2}
+header h1,.now{text-shadow:0 1px 8px rgba(0,0,0,.55)}
+.btn{backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.cred{position:absolute;right:10px;bottom:56px;z-index:2;font-size:10px;color:rgba(255,255,255,.78);text-shadow:0 1px 3px rgba(0,0,0,.6)}
+.pill{border:1px solid var(--line);background:var(--bg);color:var(--text);padding:7px 12px;border-radius:999px}
+.nc{display:flex;gap:4px;align-items:flex-end;height:56px;margin-top:10px}
+.nc div{flex:1;height:100%;display:flex;align-items:flex-end;background:var(--bg);border-radius:6px;overflow:hidden}
+.nc i{display:block;width:100%;background:#2a86e8;border-radius:6px 6px 0 0}
+@media (prefers-color-scheme:dark){.osm-base{filter:invert(1) hue-rotate(180deg) brightness(.9) contrast(.95) saturate(.7)}}
+.nc i.snow{background:#4fd1e5}
+.nc i.mix{background:linear-gradient(#2a86e8,#4fd1e5)}
+.pti{position:absolute;left:0;top:0;transform:translate(-50%,-50%);background:var(--card);color:var(--text);border:2px solid #fff;border-radius:999px;box-shadow:0 1px 5px rgba(0,0,0,.45);padding:1px 6px;font-size:14px;line-height:20px;white-space:nowrap}
+.ncl{display:flex;justify-content:space-between;color:var(--muted);font-size:.8rem;margin-top:4px}
+@media (max-width:560px){
+ header{padding:14px 14px 64px;padding-top:calc(14px + env(safe-area-inset-top,0px))}
+ .now .t{font-size:3.2rem}.now .ico{font-size:3.6rem}
+ .day{grid-template-columns:62px 30px 1fr auto;gap:6px}
+ .search{max-width:none;flex-basis:100%;order:3}
+ .lockb{display:inline-block}
+ #map{height:56vh}
+ #ts{min-width:0;font-size:.85rem}
+}
+</style>
+</head>
+<body>
+<header>
+ <div class="herobg"><div id="hero"></div><div class="heroov"></div></div>
+ <div class="cred" id="cred">Bild: Esri, Maxar, Earthstar Geographics</div>
+ <div class="wrap">
+  <div class="top">
+   <h1>Wetter Live</h1>
+   <div class="search">
+    <input id="q" type="search" placeholder="Ort suchen, z. B. Hamburg" autocomplete="off" aria-label="Ort suchen">
+    <ul id="res"></ul>
+   </div>
+   <button class="btn" id="geo">Mein Standort</button>
+  </div>
+  <div class="now">
+   <div class="ico" id="ico">⛅</div>
+   <div><div class="t" id="temp">–°</div><div class="d" id="place">Wird geladen …</div></div>
+   <div class="d" id="desc"></div>
+  </div>
+ </div>
+</header>
+<main class="wrap">
+ <div id="err"></div>
+ <section class="card"><h2>Wetterwarnungen</h2><div id="warns"><span class="ok">Wird geladen …</span></div>
+ <p class="note">Amtliche Warnungen: Deutscher Wetterdienst (Deutschland) und GeoSphere Austria (Österreich). Warnkarten: <a href="https://www.dwd.de/DE/wetter/warnungen_gemeinden/warnWetter_node.html" target="_blank" rel="noopener">DWD ↗</a> · <a href="https://warnungen.zamg.at/" target="_blank" rel="noopener">GeoSphere ↗</a></p></section>
+ <section class="card"><h2>Regen in den nächsten 2 Stunden</h2><div id="nc"><span class="ok">Wird geladen …</span></div></section>
+ <section class="card"><div class="facts" id="facts"></div></section>
+ <section class="card"><h2>Die nächsten 24 Stunden</h2><div class="hours" id="hours"></div></section>
+ <section class="card">
+  <h2>Regenradar</h2>
+  <div class="mapbar">
+   <div class="seg" id="mode">
+    <button data-m="rv" class="on">Weltweit live</button>
+    <button data-m="dwd">Deutschland (DWD)</button>
+   </div>
+   <div class="seg" id="basemode">
+    <button data-b="street" class="on">Karte</button>
+    <button data-b="sat">Satellit</button>
+   </div>
+   <button class="pill" id="ctr" type="button">◎ Standort</button>
+   <a href="https://kachelmannwetter.com/de/regenradar" target="_blank" rel="noopener">Kachelmannwetter-Radar öffnen ↗</a>
+   <button class="lockb" id="lock" type="button">Karte bewegen: aus</button>
+  </div>
+  <div id="map"></div>
+  <div class="play" id="play">
+   <button id="pp" aria-label="Abspielen oder anhalten">▶</button>
+   <input id="sl" type="range" min="0" max="0" value="0" aria-label="Radar-Zeitpunkt">
+   <span id="ts"></span>
+  </div>
+  <p class="note" id="mnote"></p>
+  <p class="note" id="fresh"></p>
+  <p class="note" id="plegend"></p>
+ </section>
+ <section class="card"><h2>7-Tage-Vorhersage</h2><div id="days"></div></section>
+ <p class="note">Daten: Open-Meteo (Vorhersage), RainViewer (Radar weltweit), Deutscher Wetterdienst (Radar, Warnungen über Bright Sky), GeoSphere Austria (Warnungen), BigDataCloud (Ortsname), Karten © OpenStreetMap-Mitwirkende, Satellitenbilder © Esri, Maxar, Earthstar Geographics bzw. Sentinel-2 cloudless von EOX.</p>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+<script>
+const WMO={0:["☀️","Klar"],1:["🌤️","Überwiegend klar"],2:["⛅","Wolkig"],3:["☁️","Bedeckt"],45:["🌫️","Nebel"],48:["🌫️","Reifnebel"],51:["🌦️","Leichter Nieselregen"],53:["🌦️","Nieselregen"],55:["🌧️","Starker Nieselregen"],56:["🌧️","Gefrierender Nieselregen"],57:["🌧️","Gefrierender Nieselregen"],61:["🌧️","Leichter Regen"],63:["🌧️","Regen"],65:["🌧️","Starker Regen"],66:["🌧️","Gefrierender Regen"],67:["🌧️","Gefrierender Regen"],71:["🌨️","Leichter Schneefall"],73:["🌨️","Schneefall"],75:["❄️","Starker Schneefall"],77:["🌨️","Schneegriesel"],80:["🌦️","Leichte Schauer"],81:["🌧️","Schauer"],82:["🌧️","Heftige Schauer"],85:["🌨️","Schneeschauer"],86:["🌨️","Starke Schneeschauer"],95:["⛈️","Gewitter"],96:["⛈️","Gewitter mit Hagel"],99:["⛈️","Schweres Gewitter"]};
+const $=id=>document.getElementById(id);
+const wmo=c=>WMO[c]||["❔","Unbekannt"];
+const compass=d=>["N","NO","O","SO","S","SW","W","NW"][Math.round(d/45)%8];
+let place={name:"Wien",lat:48.2082,lon:16.3738},follow=true;
+let map,marker,mode="rv",frames=[],layers=[],idx=0,timer=null,host="",pastCount=0,dwd;
+
+function showErr(m){const e=$("err");e.textContent=m;e.style.display=m?"block":"none"}
+
+async function loadWeather(){
+ showErr("");
+ $("place").textContent=(follow?"📍 ":"")+place.name;
+ try{
+  const u="https://api.open-meteo.com/v1/forecast?latitude="+place.lat+"&longitude="+place.lon+
+  "&current=temperature_2m,apparent_temperature,relative_humidity_2m,precipitation,weather_code,wind_speed_10m,wind_direction_10m,surface_pressure"+
+  "&hourly=temperature_2m,precipitation_probability,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max,sunrise,sunset&timezone=auto&forecast_days=7";
+  const j=await (await fetch(u)).json();
+  const c=j.current,[ico,desc]=wmo(c.weather_code);
+  $("ico").textContent=ico;$("desc").textContent=desc;
+  $("temp").textContent=Math.round(c.temperature_2m)+"°";
+  $("facts").innerHTML=[
+   ["Gefühlt",Math.round(c.apparent_temperature)+"°"],
+   ["Wind",Math.round(c.wind_speed_10m)+" km/h "+compass(c.wind_direction_10m)],
+   ["Luftfeuchte",c.relative_humidity_2m+" %"],
+   ["Niederschlag",c.precipitation+" mm"],
+   ["Luftdruck",Math.round(c.surface_pressure)+" hPa"],
+   ["Sonne",j.daily.sunrise[0].slice(11)+" – "+j.daily.sunset[0].slice(11)]
+  ].map(f=>'<div class="fact"><b>'+f[1]+'</b><span>'+f[0]+'</span></div>').join("");
+  const start=Math.max(0,j.hourly.time.findIndex(t=>t>=c.time.slice(0,13)+":00"));
+  let h="";
+  for(let i=start;i<start+24&&i<j.hourly.time.length;i++){
+   const p=j.hourly.precipitation_probability[i];
+   h+='<div class="h"><small>'+j.hourly.time[i].slice(11,13)+' Uhr</small><div class="e">'+wmo(j.hourly.weather_code[i])[0]+'</div><b>'+Math.round(j.hourly.temperature_2m[i])+'°</b><div class="p">'+(p>0?p+" %":"")+'</div></div>';
+  }
+  $("hours").innerHTML=h;
+  $("days").innerHTML=j.daily.time.map((d,i)=>{
+   const name=i===0?"Heute":new Date(d+"T12:00").toLocaleDateString("de-DE",{weekday:"short",day:"numeric",month:"numeric"});
+   const w=wmo(j.daily.weather_code[i]);
+   return '<div class="day"><b>'+name+'</b><span class="e">'+w[0]+'</span><span><span class="m">'+w[1]+'</span><br><span class="r">'+(j.daily.precipitation_probability_max[i]||0)+' % · '+j.daily.precipitation_sum[i]+' mm</span></span><b>'+Math.round(j.daily.temperature_2m_max[i])+'° <span class="m">'+Math.round(j.daily.temperature_2m_min[i])+'°</span></b></div>';
+  }).join("");
+ }catch(e){showErr("Wetterdaten konnten nicht geladen werden. Prüfe die Internetverbindung und öffne die Seite im Browser deines Handys (Chrome oder Safari), nicht in einer App-Vorschau.")}
+ moveMap();
+ loadWarnings();
+ loadNowcast();loadPtypes();
+ try{localStorage.setItem("wetter-ort",JSON.stringify(place))}catch(e){}
+}
+
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const SEV=[["#ffd33d","Gelb"],["#ff9500","Orange"],["#e8412c","Rot"],["#9b1c4b","Violett"]];
+const AT_TYPES={1:"Sturm",2:"Regen",3:"Schnee",4:"Glatteis",5:"Gewitter",6:"Hitze",7:"Kälte"};
+const DE_SEV={minor:1,moderate:2,severe:3,extreme:4};
+const inBox=b=>place.lat>=b[0]&&place.lat<=b[1]&&place.lon>=b[2]&&place.lon<=b[3];
+const fmtT=t=>{if(t==null||t==="")return"";const n=Number(t);const d=new Date(isNaN(n)?t:(n<1e12?n*1000:n));return isNaN(d.getTime())?"":d.toLocaleString("de-DE",{weekday:"short",hour:"2-digit",minute:"2-digit"})+" Uhr"};
+async function getJ(u){const r=await fetch(u);if(!r.ok)throw new Error(r.status);return r.json()}
+async function warnDE(){
+ const j=await getJ("https://api.brightsky.dev/alerts?lat="+place.lat+"&lon="+place.lon);
+ return (j.alerts||[]).map(w=>({lvl:DE_SEV[w.severity]||1,title:w.event_de||w.headline_de,sub:["DWD",fmtT(w.onset)&&fmtT(w.onset)+" bis "+fmtT(w.expires)].filter(Boolean).join(" · "),body:w.description_de||w.headline_de,instr:w.instruction_de}));
+}
+async function warnAT(){
+ const j=await getJ("https://warnungen.zamg.at/wsapp/api/getWarningsForCoords?lon="+place.lon+"&lat="+place.lat+"&lang=de");
+ const arr=(j.properties&&j.properties.warnings)||j.warnings||[];
+ return arr.map(w=>{const p=w.properties||w,r=p.rawinfo||{};
+  const t0=p.begin||r.start,t1=p.end||r.end;
+  return {lvl:Math.min(4,Number(p.warnstufeid||r.wlevel)||1),title:(AT_TYPES[p.warntypid||r.wtype]||"Wetter")+"warnung",sub:["GeoSphere Austria",fmtT(t0)&&fmtT(t0)+" bis "+fmtT(t1)].filter(Boolean).join(" · "),body:[p.text,p.meteotext,p.auswirkungen].filter(Boolean).join(" "),instr:p.empfehlungen};
+ });
+}
+async function loadWarnings(){
+ const box=$("warns"),jobs=[];
+ if(inBox([47.2,55.1,5.8,15.1]))jobs.push(warnDE);
+ if(inBox([46.3,49.1,9.5,17.2]))jobs.push(warnAT);
+ if(!jobs.length){box.innerHTML='<span class="ok">Für diesen Ort ist kein Warndienst angebunden. <a href="https://meteoalarm.org/de" target="_blank" rel="noopener">MeteoAlarm Europa ↗</a></span>';return}
+ const res=await Promise.allSettled(jobs.map(f=>f()));
+ const list=[];let failed=0;
+ res.forEach(r=>r.status==="fulfilled"?list.push(...r.value):failed++);
+ list.sort((x,y)=>y.lvl-x.lvl);
+ const fail=failed?'<p class="note">Ein Warndienst konnte nicht abgefragt werden. Bitte die Warnkarten unten prüfen.</p>':"";
+ if(!list.length){box.innerHTML=(failed&&failed===jobs.length?'<span class="ok">Warnungen konnten nicht geladen werden.</span>':'<span class="ok">✅ Aktuell keine Warnungen für diesen Ort.</span>')+fail;return}
+ box.innerHTML=list.map(w=>{
+  const s=SEV[w.lvl-1]||SEV[0];
+  return '<div class="warn" style="--wc:'+s[0]+'"><b>'+esc(w.title)+'</b><small>Stufe '+s[1]+' · '+esc(w.sub)+'</small>'+
+   '<details'+(w.lvl>=3?" open":"")+'><summary>Details</summary><p>'+esc(w.body)+'</p>'+(w.instr?'<p><b>Verhalten:</b> '+esc(w.instr)+'</p>':'')+'</details></div>';
+ }).join("")+fail;
+}
+const NAME={rain:"Regen",snow:"Schnee",mix:"Schneeregen"},NOW={rain:"Es regnet",snow:"Es schneit",mix:"Es fällt Schneeregen"},PTI={rain:"💧",snow:"❄️",mix:"💧❄️"};
+function ptype(p,rn,sn){
+ if(p==null||p<0.1)return null;
+ const snow=(sn||0)>=0.05,rain=(rn||0)>=0.1;
+ return snow&&rain?"mix":snow?"snow":"rain";
+}
+async function loadNowcast(){
+ const u="https://api.open-meteo.com/v1/forecast?latitude="+place.lat+"&longitude="+place.lon+"&current=temperature_2m&forecast_days=2&timezone=auto&minutely_15=";
+ try{
+  let j;
+  try{j=await getJ(u+"precipitation,rain,snowfall")}catch(e){j=await getJ(u+"precipitation")}
+  renderNowcast(j,j.current);
+ }catch(e){$("nc").innerHTML='<span class="ok">Regen-Vorschau konnte nicht geladen werden.</span>'}
+}
+function renderNowcast(j,c){
+ const box=$("nc"),m=j.minutely_15;
+ const none=()=>{box.innerHTML='<span class="ok">Für diesen Ort gibt es keine 15-Minuten-Vorhersage.</span>'};
+ if(!m||!m.precipitation||!m.time||!c)return none();
+ let i=m.time.findIndex(t=>t>=c.time);if(i<0)i=0;
+ const v=m.precipitation.slice(i,i+8);
+ if(v.length<4||v.every(x=>x==null))return none();
+ const wet=x=>x!=null&&x>=0.1,t=k=>m.time[i+k].slice(11,16);
+ const ty=k=>m.rain&&m.snowfall?ptype(v[k],m.rain[i+k],m.snowfall[i+k]):(wet(v[k])?"rain":null);
+ const first=v.findIndex(wet);
+ let msg;
+ if(wet(v[0])){const e=v.findIndex(x=>!wet(x)),n=NOW[ty(0)]||NOW.rain;msg=e<0?n+", voraussichtlich noch mindestens 2 Stunden.":n+", trocken ab ca. "+t(e)+" Uhr."}
+ else{msg=first<0?"In den nächsten 2 Stunden bleibt es trocken.":(NAME[ty(first)]||NAME.rain)+" ab ca. "+t(first)+" Uhr."}
+ const anySnow=v.some((x,k)=>ty(k)==="snow"||ty(k)==="mix");
+ box.innerHTML='<b>'+msg+'</b><div class="nc">'+v.map((x,k)=>'<div title="'+t(k)+' Uhr: '+(NAME[ty(k)]||"trocken")+' '+(x||0)+' mm"><i class="'+(ty(k)||"")+'" style="height:'+Math.max(wet(x)?12:3,Math.min(100,(x||0)/1.5*100))+'%"></i></div>').join("")+'</div><div class="ncl"><span>'+t(0)+'</span><span>'+t(Math.min(4,v.length-1))+'</span><span>'+t(v.length-1)+'</span></div>'+
+  (anySnow?'<p class="note"><span style="color:#2a86e8">■</span> Regen &nbsp; <span style="color:#4fd1e5">■</span> Schnee &nbsp; ■ Mischung = Schneeregen</p>':"");
+}
+let ptLayer;
+async function loadPtypes(){
+ if(!map)return;
+ const lats=[],lons=[];
+ for(let i=-2;i<=2;i++)for(let k=-2;k<=2;k++){lats.push((place.lat+i*0.45).toFixed(3));lons.push((place.lon+k*0.63).toFixed(3))}
+ try{
+  const r=await getJ("https://api.open-meteo.com/v1/forecast?latitude="+lats.join(",")+"&longitude="+lons.join(",")+"&current=precipitation,rain,showers,snowfall&timezone=auto");
+  const arr=Array.isArray(r)?r:[r];
+  if(ptLayer)map.removeLayer(ptLayer);
+  ptLayer=L.layerGroup().addTo(map);
+  let n=0;
+  arr.forEach(x=>{
+   const c=x.current;if(!c)return;
+   const k=ptype(c.precipitation,(c.rain||0)+(c.showers||0),c.snowfall);
+   if(!k)return;
+   n++;
+   L.marker([x.latitude,x.longitude],{icon:L.divIcon({className:"ptw",html:'<span class="pti">'+PTI[k]+'</span>',iconSize:[0,0]}),title:NAME[k],keyboard:false}).addTo(ptLayer);
+  });
+  $("plegend").textContent="Symbole: 💧 Regen · ❄️ Schnee · 💧❄️ Schneeregen. Sie zeigen die Niederschlagsart laut Wettermodell, nur wo es gerade niederschlägt"+(n?"":" (aktuell nirgends in der Umgebung)")+". Das Radar färbt Schnee zusätzlich anders als Regen.";
+ }catch(e){$("plegend").textContent=""}
+}
+
+let hero,base,baseKind="sat",autoDone=false;
+const reduced=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const ESRI="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}";
+const SAT=[
+ {url:ESRI,nat:18,att:"Bild: Esri, Maxar, Earthstar Geographics"},
+ {url:"https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2021_3857/default/g/{z}/{y}/{x}.jpg",nat:13,att:"Bild: Sentinel-2 cloudless von EOX (Copernicus Sentinel-Daten 2021)"}
+];
+let satIdx=0,heroLayer;
+function baseLayer(kind){
+ if(kind==="sat")return L.tileLayer(SAT[satIdx].url,{maxNativeZoom:Math.min(17,SAT[satIdx].nat),maxZoom:12,zIndex:1,attribution:SAT[satIdx].att});
+ return L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:12,zIndex:1,className:"osm-base",attribution:"© OpenStreetMap-Mitwirkende"});
+}
+function setBase(kind){
+ baseKind=kind;
+ document.querySelectorAll("#basemode button").forEach(b=>b.classList.toggle("on",b.dataset.b===kind));
+ if(!map)return;
+ if(base)map.removeLayer(base);
+ base=baseLayer(kind).addTo(map);
+ if(kind==="sat"){let ok=0,bad=0;const b=base;b.on("tileload",()=>{ok++});b.on("tileerror",()=>{bad++;if(!ok&&bad===3&&satIdx<SAT.length-1&&base===b){satIdx++;setBase("sat")}})}
+}
+function setHeroLayer(idx){
+ if(!hero)return;
+ satIdx=idx;
+ const S=SAT[idx];let ok=0,bad=0;
+ if(heroLayer)hero.removeLayer(heroLayer);
+ const lay=heroLayer=L.tileLayer(S.url,{maxNativeZoom:S.nat,maxZoom:18}).addTo(hero);
+ $("cred").textContent=S.att;
+ lay.on("tileload",()=>{ok++});
+ lay.on("tileerror",()=>{bad++;if(!ok&&bad===3&&heroLayer===lay){if(idx<SAT.length-1)setHeroLayer(idx+1);else $("cred").textContent="Satellitenbild nicht verfügbar"}});
+}
+function initHero(){
+ try{
+  hero=L.map("hero",{zoomControl:false,attributionControl:false,dragging:false,touchZoom:false,doubleClickZoom:false,scrollWheelZoom:false,boxZoom:false,keyboard:false,tap:false,zoomAnimation:false,fadeAnimation:false}).setView([place.lat,place.lon],14);
+  setHeroLayer(0);
+ }catch(e){hero=null;$("cred").textContent="Satellitenbild nicht verfügbar"}
+}
+function initMap(){
+ map=L.map("map",{dragging:!L.Browser.mobile,tap:false,minZoom:4,maxZoom:10}).setView([place.lat,place.lon],8);
+ setBase(baseKind);
+ marker=L.circleMarker([place.lat,place.lon],{radius:7,color:"#fff",weight:2,fillColor:"#e8412c",fillOpacity:1}).addTo(map);
+ dwd=L.tileLayer.wms("https://maps.dwd.de/geoserver/dwd/wms",{layers:"dwd:Niederschlagsradar",format:"image/png",transparent:true,opacity:.75,zIndex:5,attribution:"DWD"});
+ loadRadar();
+}
+let mmKey="";
+function moveMap(){
+ const key=place.lat.toFixed(3)+","+place.lon.toFixed(3),changed=key!==mmKey;
+ if(hero){hero.invalidateSize();if(changed)hero.setView([place.lat,place.lon],14,{animate:false})}
+ if(map&&changed){map.setView([place.lat,place.lon],8);marker.setLatLng([place.lat,place.lon])}
+ mmKey=key;
+}
+
+async function loadRadar(){
+ try{
+  const j=await (await fetch("https://api.rainviewer.com/public/weather-maps.json")).json();
+  host=j.host;
+  const past=(j.radar&&j.radar.past)||[];
+  const wasPlaying=!!timer;
+  if(timer)toggle();
+  frames=[...past,...((j.radar&&j.radar.nowcast)||[])];
+  pastCount=past.length;
+  layers.forEach(l=>map.removeLayer(l));
+  layers=frames.map(f=>L.tileLayer(host+f.path+"/256/{z}/{x}/{y}/2/1_1.png",{opacity:0,maxNativeZoom:7,maxZoom:10,zIndex:5}));
+  if(mode==="rv")layers.forEach(l=>l.addTo(map));
+  $("sl").max=Math.max(0,frames.length-1);
+  idx=0;
+  show(Math.max(0,pastCount-1));
+  const last=past[past.length-1];
+  if(last){
+   const min=Math.round((Date.now()/1000-last.time)/60);
+   $("fresh").textContent="Neuester Radarstand: "+new Date(last.time*1000).toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"})+" Uhr"+(min>=0?" (vor "+min+" Min.)":"");
+  }
+  if(mode==="rv"&&(wasPlaying||(!autoDone&&!reduced))){autoDone=true;toggle()}
+ }catch(e){$("mnote").textContent="Radardaten konnten nicht geladen werden."}
+}
+function show(i){
+ if(!layers.length)return;
+ if(layers[idx])layers[idx].setOpacity(0);
+ idx=i;layers[idx].setOpacity(.75);
+ $("sl").value=i;
+ const f=frames[i];
+ $("ts").textContent=new Date(f.time*1000).toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"})+" Uhr"+(i>=pastCount?" (Prognose)":"");
+}
+function step(){
+ const n=(idx+1)%frames.length;
+ show(n);
+ timer=setTimeout(step,n===frames.length-1?1800:550);
+}
+function toggle(){
+ if(timer){clearTimeout(timer);timer=null;$("pp").textContent="▶";return}
+ if(frames.length<2)return;
+ $("pp").textContent="❚❚";
+ timer=setTimeout(step,300);
+}
+function setMode(m){
+ mode=m;
+ document.querySelectorAll("#mode button").forEach(b=>b.classList.toggle("on",b.dataset.m===m));
+ if(timer)toggle();
+ $("fresh").style.display=m==="dwd"?"none":"";
+ if(m==="dwd"){layers.forEach(l=>map.removeLayer(l));dwd.addTo(map);$("play").style.display="none";
+  $("mnote").textContent="Aktuelles Niederschlagsradar des Deutschen Wetterdienstes, nur für Deutschland und Umgebung."}
+ else{map.removeLayer(dwd);layers.forEach(l=>l.addTo(map));$("play").style.display="flex";if(frames.length)show(idx);
+  $("mnote").textContent="Radar der letzten 2 Stunden von RainViewer in 10-Minuten-Schritten, Auflösung etwa 1 km. Schnee zeigt das Radar in anderen Farben als Regen. Wie es in den nächsten 2 Stunden weitergeht, steht oben unter „Regen in den nächsten 2 Stunden“."}
+}
+document.querySelectorAll("#basemode button").forEach(b=>b.onclick=()=>setBase(b.dataset.b));
+$("ctr").onclick=()=>{if(map)map.setView([place.lat,place.lon],8)};
+addEventListener("resize",()=>{if(hero)hero.invalidateSize()});
+
+let st;
+$("q").addEventListener("input",e=>{
+ clearTimeout(st);const v=e.target.value.trim();
+ if(v.length<2){$("res").style.display="none";return}
+ st=setTimeout(async()=>{
+  try{
+   const j=await (await fetch("https://geocoding-api.open-meteo.com/v1/search?count=5&language=de&name="+encodeURIComponent(v))).json();
+   const r=j.results||[];
+   $("res").innerHTML=r.length?r.map((x,i)=>'<li tabindex="0" data-i="'+i+'">'+x.name+(x.admin1?", "+x.admin1:"")+(x.country?" ("+x.country+")":"")+'</li>').join(""):'<li>Kein Ort gefunden</li>';
+   $("res").style.display="block";
+   $("res").onclick=ev=>{const li=ev.target.closest("li[data-i]");if(!li)return;const x=r[li.dataset.i];
+    place={name:x.name,lat:x.latitude,lon:x.longitude};$("res").style.display="none";$("q").value="";follow=false;saveState();loadWeather()};
+  }catch(e){}
+ },300);
+});
+document.addEventListener("click",e=>{if(!e.target.closest(".search"))$("res").style.display="none"});
+$("geo").onclick=()=>{follow=true;saveState();useGPS(true)};
+$("pp").onclick=toggle;
+$("sl").oninput=e=>{if(timer)toggle();show(+e.target.value)};
+document.querySelectorAll("#mode button").forEach(b=>b.onclick=()=>setMode(b.dataset.m));
+
+function saveState(){try{localStorage.setItem("wetter-ort",JSON.stringify(place));localStorage.setItem("wetter-follow",follow?"1":"0")}catch(e){}}
+const km=(a,b,c,d)=>Math.hypot((a-c)*111,(b-d)*111*Math.cos(a*Math.PI/180));
+function useGPS(manual){
+ if(!navigator.geolocation){if(manual)showErr("Standortabfrage wird von diesem Browser nicht unterstützt.");return}
+ navigator.geolocation.getCurrentPosition(async p=>{
+  const lat=p.coords.latitude,lon=p.coords.longitude;
+  if(!manual&&place.gps&&km(place.lat,place.lon,lat,lon)<1.5){loadWeather();return}
+  place={name:"Mein Standort",lat,lon,gps:true};
+  try{const r=await getJ("https://api.bigdatacloud.net/data/reverse-geocode-client?latitude="+lat+"&longitude="+lon+"&localityLanguage=de");place.name=r.locality||r.city||place.name}catch(e){}
+  saveState();loadWeather();
+ },()=>{if(manual)showErr("Standort nicht erlaubt. Erlaube den Zugriff in den Browser-Einstellungen oder suche einen Ort.")},{enableHighAccuracy:true,timeout:15000,maximumAge:120000});
+}
+try{const s=JSON.parse(localStorage.getItem("wetter-ort"));if(s&&s.lat)place=s;follow=localStorage.getItem("wetter-follow")!=="0"}catch(e){}
+initHero();
+loadWeather();
+try{initMap();setMode("rv")}catch(e){showErr("Die Karte konnte nicht geladen werden. Öffne die Seite im Browser deines Handys (Chrome oder Safari).")}
+$("lock").textContent="Karte bewegen: "+(map&&map.dragging.enabled()?"an":"aus");
+$("lock").onclick=()=>{if(!map)return;const on=map.dragging.enabled();on?map.dragging.disable():map.dragging.enable();$("lock").textContent="Karte bewegen: "+(on?"aus":"an")};
+if(follow)useGPS(false);
+document.addEventListener("visibilitychange",()=>{if(!document.hidden){follow?useGPS(false):loadWeather()}});
+setInterval(()=>{if(!document.hidden)loadWeather()},600000);
+setInterval(loadRadar,600000);
+</script>
+</body>
+</html>
