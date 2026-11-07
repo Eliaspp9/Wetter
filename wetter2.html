@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-oNo81EmOltkuExpmUD4ppRBFVhXCD5syvoc0Fl5Ph+I=' 'sha256-rtD+YnjjlK/qdTffRRM0+dg5HIzXWVMndWiYx7RbciI=' https://unpkg.com https://cdnjs.cloudflare.com; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com; connect-src 'self' https://api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-JRmzfxoFetszZU9GEXr+TDRUwLxcSXgC+/FsxC2FMQU=' 'sha256-rtD+YnjjlK/qdTffRRM0+dg5HIzXWVMndWiYx7RbciI=' https://unpkg.com https://cdnjs.cloudflare.com; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com; connect-src 'self' https://api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -14,8 +14,8 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/favicon-64.png">
-<meta name="app-build" content="18">
-<meta name="app-notes" content="Ortssuche findet jetzt auch Orte mit Tippfehlern, klarere Hilfe, wenn der Standort nicht erlaubt ist. Dazu das genauere DWD-Radar mit 1 km und 2 Stunden Radar-Vorhersage.">
+<meta name="app-build" content="19">
+<meta name="app-notes" content="Standort: zweiter Versuch ohne GPS, wenn es zu lange dauert, und eine genaue Fehlermeldung mit Fehlernummer. Dazu Ortssuche mit Tippfehler-Toleranz und das DWD-Radar mit 1 km.">
 <script>/* alte Adresse wetter2.html -> neue Startseite */
 try{if(top!==self)document.documentElement.style.display="none"}catch(e){document.documentElement.style.display="none"}
 window.__redir=/\/wetter2\.html$/i.test(location.pathname);
@@ -1329,13 +1329,25 @@ function saveState(){try{localStorage.setItem("wetter-ort",JSON.stringify(place)
 const km=(a,b,c,d)=>Math.hypot((a-c)*111,(b-d)*111*Math.cos(a*Math.PI/180));
 function useGPS(manual){
  if(!navigator.geolocation){if(manual)showErr("Standortabfrage wird von diesem Browser nicht unterstützt.");return}
- navigator.geolocation.getCurrentPosition(async p=>{
+ const ok=async p=>{
   const lat=p.coords.latitude,lon=p.coords.longitude;
+  if(manual)showErr("");
   if(!manual&&place.gps&&km(place.lat,place.lon,lat,lon)<1.5){loadWeather();return}
   place={name:"Mein Standort",lat,lon,gps:true};
   try{const r=await getJ("https://api.bigdatacloud.net/data/reverse-geocode-client?latitude="+lat+"&longitude="+lon+"&localityLanguage=de");place.name=r.locality||r.city||place.name}catch(e){}
   saveState();loadWeather();
- },()=>{if(manual)showErr(isIOS?"Standort nicht erlaubt. Am iPhone: Einstellungen, Datenschutz & Sicherheit, Ortungsdienste, Safari-Websites, dort „Beim Verwenden der App“ wählen. Danach hier noch einmal auf das Standort-Symbol tippen. Oder suche oben einen Ort.":"Standort nicht erlaubt. Erlaube den Zugriff in den Browser-Einstellungen oder suche oben einen Ort.")},{enableHighAccuracy:true,timeout:15000,maximumAge:120000});
+ };
+ const fail=(err,second)=>{
+  const c=err&&err.code;
+  /* Zeitüberschreitung oder kein Signal: noch einmal ohne GPS-Genauigkeit (WLAN/Mobilfunk) versuchen */
+  if(!second&&c!==1){navigator.geolocation.getCurrentPosition(ok,e=>fail(e,true),{enableHighAccuracy:false,timeout:20000,maximumAge:900000});return}
+  if(!manual)return;
+  const info=" (Fehler "+(c||"?")+(err&&err.message?": "+err.message:"")+")";
+  if(c===1)showErr((isIOS?"Der Standort wurde abgelehnt. Am iPhone gibt es zwei Schalter: 1. Einstellungen, Datenschutz & Sicherheit, Ortungsdienste, Safari-Websites: „Beim Verwenden der App“. 2. Einstellungen, Apps, Safari, Standort: „Fragen“ oder „Erlauben“. Danach die Wetter-App ganz schließen, neu öffnen und auf das Standort-Symbol tippen.":"Der Standort wurde abgelehnt. Erlaube ihn in den Browser-Einstellungen für diese Seite.")+info);
+  else if(c===3)showErr("Der Standort hat zu lange gedauert. Geh kurz ins Freie oder schalte WLAN ein und tippe noch einmal auf das Standort-Symbol."+info);
+  else showErr("Der Standort ist gerade nicht verfügbar. Prüfe, ob die Ortungsdienste eingeschaltet sind, oder suche oben einen Ort."+info);
+ };
+ navigator.geolocation.getCurrentPosition(ok,e=>fail(e,false),{enableHighAccuracy:true,timeout:12000,maximumAge:120000});
 }
 
 /* ============ Kachelmann-Prognose (über den eigenen Worker) ============ */
