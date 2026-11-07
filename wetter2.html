@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-B/X70VArWZItr/T/H6Z4EcQtPt89H7dLOnT0/uSRjw4=' 'sha256-rtD+YnjjlK/qdTffRRM0+dg5HIzXWVMndWiYx7RbciI=' https://unpkg.com https://cdnjs.cloudflare.com; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com; connect-src 'self' https://api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-blIa4IPBbxpcQ6ATzbxh+sETq7EKHkLsSE3ONFO01cA=' 'sha256-rtD+YnjjlK/qdTffRRM0+dg5HIzXWVMndWiYx7RbciI=' https://unpkg.com https://cdnjs.cloudflare.com; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com; connect-src 'self' https://api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -14,8 +14,8 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/favicon-64.png">
-<meta name="app-build" content="16">
-<meta name="app-notes" content="Großes Update: als App auf dem Home-Bildschirm, Benachrichtigungen bei Regen und Warnungen, Lieblingsorte, Messwerte der nächsten Station, Modellvergleich, 14-Tage-Trend, Rückblick, Luft und Pollen, Warnungen auf der Karte.">
+<meta name="app-build" content="17">
+<meta name="app-notes" content="Neues, genaueres Regenradar vom Deutschen Wetterdienst: 1 km Auflösung, alle 5 Minuten und eine echte Radar-Vorhersage für 2 Stunden (Deutschland und Grenzgebiete).">
 <script>/* alte Adresse wetter2.html -> neue Startseite */
 try{if(top!==self)document.documentElement.style.display="none"}catch(e){document.documentElement.style.display="none"}
 window.__redir=/\/wetter2\.html$/i.test(location.pathname);
@@ -407,7 +407,7 @@ html.locked body>*:not(#gate){display:none!important}
    <div class="mapwrap">
     <div id="map"></div>
     <div class="mctl">
-     <div class="seg" id="mode"><button type="button" data-m="rv" class="on">Weltweit</button><button type="button" data-m="dwd">Deutschland</button></div>
+     <div class="seg" id="mode"><button type="button" data-m="rv" class="on">Weltweit</button><button type="button" data-m="dwd">DWD 1 km</button></div>
      <div class="seg" id="basemode"><button type="button" data-b="street">Karte</button><button type="button" data-b="sat" class="on">Satellit</button></div>
      <div class="seg" id="lblseg"><button type="button" id="cld" aria-pressed="false">Wolken</button><button type="button" id="lbl" class="on" aria-pressed="true">Grenzen &amp; Orte</button><button type="button" id="wrn" aria-pressed="false">Warnungen</button></div>
     </div>
@@ -486,7 +486,7 @@ html.locked body>*:not(#gate){display:none!important}
 </main>
 
 <footer class="foot">
- <p>Daten: Open-Meteo (Vorhersage, Radar-Prognose und ICON-D2 des Deutschen Wetterdienstes), KachelmannWetter (stündliche Prognose für freigeschaltete Orte), RainViewer (Radar), Deutscher Wetterdienst (Radar und Warnungen über Bright Sky), GeoSphere Austria (Warnungen und Messwerte), Copernicus CAMS über Open-Meteo (Luft und Pollen), BigDataCloud (Ortsname).</p>
+ <p>Daten: Open-Meteo (Vorhersage, Radar-Prognose und ICON-D2 des Deutschen Wetterdienstes), KachelmannWetter (stündliche Prognose für freigeschaltete Orte), RainViewer (Radar), Deutscher Wetterdienst (RADOLAN-Radar mit Radar-Vorhersage, Messwerte und Warnungen über Bright Sky), GeoSphere Austria (Warnungen und Messwerte), Copernicus CAMS über Open-Meteo (Luft und Pollen), BigDataCloud (Ortsname).</p>
  <p>Karten und Bilder: © OpenStreetMap-Mitwirkende, Esri, Maxar, Earthstar Geographics, Sentinel-2 cloudless von EOX. Grenzen und Ortsnamen: Esri, Garmin, HERE. Wolken: Meteosat (EUMETSAT) über den Deutschen Wetterdienst.</p>
  <p>Version <span id="ver"></span></p>
  <p><a href="#" id="upd-chk">Nach Updates suchen</a> · <a href="#" id="logout">Abmelden</a></p>
@@ -973,16 +973,16 @@ function initMap(){
  setBase(baseKind);
  setClouds();setWarnLayer();
  marker=L.circleMarker([place.lat,place.lon],{radius:8,color:"#fff",weight:3,fillColor:"#E5484D",fillOpacity:1}).addTo(map);
- dwd=L.tileLayer.wms("https://maps.dwd.de/geoserver/dwd/wms",{layers:"dwd:Niederschlagsradar",format:"image/png",transparent:true,opacity:.75,zIndex:5,attribution:"DWD"});
- loadRadar();
+ try{map.on("moveend",()=>{if(mode==="dwd"&&dwBox){const c=map.getCenter();if(km(c.lat,c.lng,dwBox[0],dwBox[1])>110)loadDwd(c.lat,c.lng)}})}catch(e){}
 }
 function moveMap(){
  const key=place.lat.toFixed(3)+","+place.lon.toFixed(3),changed=key!==mmKey;
  if(hero){hero.invalidateSize();if(changed)hero.setView([place.lat,place.lon],14,{animate:false})}
- if(map&&changed){map.setView([place.lat,place.lon],8);marker.setLatLng([place.lat,place.lon])}
+ if(map&&changed){map.setView([place.lat,place.lon],8);marker.setLatLng([place.lat,place.lon]);if(mode==="dwd"){if(dwCovered(+place.lat,+place.lon))loadDwd();else{setMode("rv");$("fnote").textContent="Für diesen Ort gibt es kein DWD-Radar, deshalb das weltweite Radar."}}}
  mmKey=key;
 }
 async function loadRadar(){
+ if(mode==="dwd")return loadDwd();
  try{
   const j=await getJ("https://api.rainviewer.com/public/weather-maps.json");
   host=j.host;
@@ -1010,6 +1010,112 @@ async function loadRadar(){
   if(mode==="rv"&&wasPlaying)toggle();
  }catch(e){$("mnote").textContent="Radardaten konnten nicht geladen werden."}
 }
+/* ============ DWD-Radar (RADOLAN RV) über Bright Sky: 1 km, 5 Minuten, 2 Stunden Radar-Vorhersage ============ */
+const DWD_RADARS=[[53.56,6.75],[54.0,10.05],[51.13,13.77],[49.54,12.40],[53.34,7.02],[51.41,6.97],[47.87,8.0],[51.31,8.80],[52.46,9.69],[48.17,12.10],[48.04,10.22],[50.50,11.14],[50.11,6.55],[49.98,8.71],[52.65,13.86],[54.18,12.06],[48.59,9.78],[52.16,11.18]];
+const dwCovered=(la,lo)=>DWD_RADARS.some(r=>km(la,lo,r[0],r[1])<=150);
+function startMode(){
+ let m=null;try{m=localStorage.getItem("wetter-mode")}catch(e){}
+ if(m==="rv"||m==="dwd")return m;
+ return dwCovered(+place.lat,+place.lon)?"dwd":"rv";
+}
+const RS=6370.04,SP0=Math.PI/3,SL0=Math.PI/18;
+function stereo(la,lo){const f=la*Math.PI/180,l=lo*Math.PI/180,k=(1+Math.sin(SP0))/(1+Math.sin(f));return[RS*k*Math.cos(f)*Math.sin(l-SL0),-RS*k*Math.cos(f)*Math.cos(l-SL0)]}
+async function u16(b64,packed){
+ const bin=Uint8Array.from(atob(b64),c=>c.charCodeAt(0));
+ if(!packed)return new Uint16Array(bin.buffer,0,bin.length>>1);
+ const buf=await new Response(new Blob([bin]).stream().pipeThrough(new DecompressionStream("deflate"))).arrayBuffer();
+ return new Uint16Array(buf);
+}
+let dwOv=null,dwData=null,dwBox=null,dwSeq=0,dwKey="",dwT=0;
+function hideDw(){try{if(dwOv){map.removeLayer(dwOv);dwOv=null}}catch(e){}}
+function dwGeometry(g,n){
+ let pts=g&&(g.coordinates||g);
+ while(Array.isArray(pts)&&Array.isArray(pts[0])&&Array.isArray(pts[0][0]))pts=pts[0];
+ if(!Array.isArray(pts)||pts.length<4)throw new Error("geo");
+ const P=pts.slice(0,4).map(c=>({ll:[+c[1],+c[0]],xy:stereo(+c[1],+c[0])}));
+ const by=f=>P.slice().sort((a,b)=>f(a)-f(b));
+ const TL=by(p=>p.xy[0]-p.xy[1])[0],BR=by(p=>p.xy[0]-p.xy[1])[3],BL=by(p=>p.xy[0]+p.xy[1])[0],TR=by(p=>p.xy[0]+p.xy[1])[3];
+ const wkm=Math.hypot(TR.xy[0]-TL.xy[0],TR.xy[1]-TL.xy[1]),hkm=Math.hypot(BL.xy[0]-TL.xy[0],BL.xy[1]-TL.xy[1]);
+ let W=Math.round(Math.sqrt(n*wkm/(hkm||1))),H=Math.round(n/W);
+ for(let d=-3;d<=3&&W*H!==n;d++){const w=W+d;if(w>0&&n%w===0){W=w;H=n/w}}
+ if(W*H!==n)throw new Error("dims");
+ const lats=P.map(p=>p.ll[0]),lons=P.map(p=>p.ll[1]);
+ const la0=Math.min(...lats),la1=Math.max(...lats),lo0=Math.min(...lons),lo1=Math.max(...lons);
+ const my=la=>Math.log(Math.tan(Math.PI/4+la*Math.PI/360)),m0=my(la0),m1=my(la1);
+ const Wc=Math.min(640,Math.max(120,Math.round((lo1-lo0)*111.32*Math.cos((la0+la1)*Math.PI/360)))),Hc=Math.max(80,Math.round(Wc*(m1-m0)/((lo1-lo0)*Math.PI/180)));
+ const ax=TR.xy[0]-TL.xy[0],ay=TR.xy[1]-TL.xy[1],bx=BL.xy[0]-TL.xy[0],by2=BL.xy[1]-TL.xy[1],det=ax*by2-ay*bx;
+ const idxMap=new Int32Array(Wc*Hc),cov=new Uint8Array(Wc*Hc);
+ for(let py=0;py<Hc;py++){
+  const ym=m1-(py+.5)/Hc*(m1-m0),la=(2*Math.atan(Math.exp(ym))-Math.PI/2)*180/Math.PI;
+  for(let px=0;px<Wc;px++){
+   const lo=lo0+(px+.5)/Wc*(lo1-lo0),q=stereo(la,lo),vx=q[0]-TL.xy[0],vy=q[1]-TL.xy[1];
+   const u=(vx*by2-vy*bx)/det,w=(ax*vy-ay*vx)/det,o=py*Wc+px;
+   if(u<0||u>1||w<0||w>1){idxMap[o]=-1;continue}
+   idxMap[o]=Math.round(w*(H-1))*W+Math.round(u*(W-1));
+   cov[o]=dwCovered(la,lo)?1:0;
+  }
+ }
+ return{W,H,Wc,Hc,idxMap,cov,bounds:[[la0,lo0],[la1,lo1]]};
+}
+async function loadDwd(cla,clo){
+ if(!map)return;
+ const la=cla!=null?cla:+place.lat,lo=clo!=null?clo:+place.lon,key=la.toFixed(2)+","+lo.toFixed(2);
+ if(key===dwKey&&Date.now()-dwT<60000)return;
+ dwKey=key;dwT=Date.now();
+ const my=++dwSeq;
+ if(cla==null&&!dwCovered(la,lo)){$("fnote").textContent="Für diesen Ort gibt es kein DWD-Radar, deshalb das weltweite Radar.";setMode("rv");return}
+ const packed=typeof DecompressionStream!=="undefined";
+ const iso=t=>new Date(t).toISOString().slice(0,16)+"Z";
+ try{
+  const j=await getJ("https://api.brightsky.dev/radar?lat="+la.toFixed(3)+"&lon="+lo.toFixed(3)+"&distance=160000&format="+(packed?"compressed":"bytes")+"&date="+encodeURIComponent(iso(Date.now()-65*60000))+"&last_date="+encodeURIComponent(iso(Date.now()+125*60000)));
+  if(my!==dwSeq||mode!=="dwd")return;
+  const R=(j.radar||[]).filter(x=>x&&x.precipitation_5);
+  if(!R.length)throw new Error("leer");
+  const first=await u16(R[0].precipitation_5,packed);
+  const geo=dwGeometry(j.geometry,first.length);
+  dwData={geo,R,packed,vals:[first],img:[],snow:!!(lastJ&&lastJ.current&&lastJ.current.temperature_2m<=0.5)};
+  dwBox=[la,lo];
+  const now=Date.now();
+  frames=R.map((x,k)=>({time:Date.parse(x.timestamp)/1000,dw:k}));
+  pastCount=Math.max(1,frames.filter(f=>f.time*1000<=now+60000).length);
+  if(timer)toggle();
+  idx=0;$("sl").max=Math.max(0,frames.length-1);placeTick();
+  show(pastCount-1);
+  const lastPast=frames[pastCount-1];
+  if(lastPast){const min=Math.round((now/1000-lastPast.time)/60);$("fresh").textContent="Neuester Radarstand: "+new Date(lastPast.time*1000).toLocaleTimeString("de-AT",{hour:"2-digit",minute:"2-digit"})+" Uhr"+(min>=0?" (vor "+min+" Min.)":"")}
+  $("fnote").textContent=frames.length>pastCount?"Radar-Vorhersage des DWD bis "+new Date(frames[frames.length-1].time*1000).toLocaleTimeString("de-AT",{hour:"2-digit",minute:"2-digit"})+" Uhr.":"";
+  $("fresh").style.display="";
+ }catch(e){
+  if(my!==dwSeq)return;
+  $("fnote").textContent="Das DWD-Radar ist gerade nicht erreichbar, deshalb das weltweite Radar.";
+  setMode("rv");
+ }
+}
+async function showDw(k){
+ const d=dwData;if(!d||!d.R[k])return;
+ if(!d.img[k]){
+  const v=d.vals[k]||(d.vals[k]=await u16(d.R[k].precipitation_5,d.packed));
+  if(dwData!==d)return;
+  const g=d.geo,cv=document.createElement("canvas");cv.width=g.Wc;cv.height=g.Hc;
+  const ctx=cv.getContext("2d"),im=ctx.createImageData(g.Wc,g.Hc),px=im.data,pal=d.snow?SNOWC:RAINC;
+  for(let o=0;o<g.idxMap.length;o++){
+   const i=g.idxMap[o];if(i<0)continue;
+   const p=o*4;
+   if(!g.cov[o]){px[p]=110;px[p+1]=120;px[p+2]=135;px[p+3]=70;continue}
+   const raw=v[i];if(raw<1||raw>=60000)continue;
+   const r=raw*.12,c=ramp(pal,r);
+   px[p]=c[0];px[p+1]=c[1];px[p+2]=c[2];px[p+3]=Math.round(255*Math.min(1,.35+r*.6)*.92);
+  }
+  ctx.putImageData(im,0,0);
+  d.img[k]=cv.toDataURL("image/png");
+ }
+ if(frames[idx]&&frames[idx].dw!==k)return;
+ try{
+  if(!dwOv)dwOv=L.imageOverlay(d.img[k],d.geo.bounds,{pane:"fc",opacity:.9,interactive:false,attribution:"Radar: DWD über Bright Sky"}).addTo(map);
+  else{dwOv.setUrl(d.img[k]);if(dwOv.setBounds)dwOv.setBounds(L.latLngBounds(d.geo.bounds))}
+ }catch(e){}
+}
+
 /* ============ Radar-Prognose: das neueste Radarbild zieht mit dem Höhenwind weiter ============ */
 let ex=null,rvNow=0,exHook=false,exLayer=null;
 const exOn=()=>!!ex&&!rvNow;
@@ -1125,7 +1231,7 @@ function refreshFcFrames(){
 }
 function placeTick(){
  const t=$("nowtick"),l=$("nowline"),max=+$("sl").max;
- const on=mode==="rv"&&pastCount>=1&&max>=2&&pastCount-1<max;
+ const on=(mode==="rv"||mode==="dwd")&&pastCount>=1&&max>=2&&pastCount-1<max;
  t.style.display=l.style.display=on?"block":"none";
  if(!on)return;
  const x="calc(8px + (100% - 16px) * "+((pastCount-1)/max).toFixed(4)+")";
@@ -1149,7 +1255,8 @@ function show(i){
  exReset();
  idx=i;const f=frames[i];
  if(!f)return;
- if(f.ex!=null){hideFc();const L0=layers[pastCount-1];if(L0){L0.setOpacity(Math.max(.5,.78-f.ex*.03));exShift(f.ex)}}
+ if(f.dw!=null){hideFc();showDw(f.dw)}
+ else if(f.ex!=null){hideFc();const L0=layers[pastCount-1];if(L0){L0.setOpacity(Math.max(.5,.78-f.ex*.03));exShift(f.ex)}}
  else if(f.fc!=null)showFc(f);else{hideFc();if(layers[idx])layers[idx].setOpacity(.78)}
  $("sl").value=i;
  $("ts").textContent=new Date(f.time*1000).toLocaleTimeString("de-AT",{hour:"2-digit",minute:"2-digit"})+" Uhr"+(f.fc!=null||f.ex!=null||i>=pastCount?" (Prognose)":"");
@@ -1165,16 +1272,22 @@ function toggle(){
  $("pp").innerHTML=PAUSE;
  timer=setTimeout(step,300);
 }
-function setMode(m){
+function setMode(m,user){
  mode=m;
- refreshFcFrames();
+ if(user){try{localStorage.setItem("wetter-mode",m)}catch(e){}}
  document.querySelectorAll("#mode button").forEach(b=>b.classList.toggle("on",b.dataset.m===m));
  if(timer)toggle();
- $("fresh").style.display=m==="dwd"?"none":"";
- if(m==="dwd"){hideFc();exReset();layers.forEach(l=>map.removeLayer(l));dwd.addTo(map);$("play").style.display="none";
-  $("mnote").textContent="Aktuelles Niederschlagsradar des Deutschen Wetterdienstes, nur für Deutschland und Umgebung."}
- else{map.removeLayer(dwd);layers.forEach(l=>l.addTo(map));$("play").style.display="flex";loadFc();if(frames.length)show(Math.min(idx,Math.max(0,pastCount-1)));exNote();
-  $("mnote").textContent="Radar der letzten 2 Stunden von RainViewer, in 10-Minuten-Schritten. Schnee zeigt das Radar in anderen Farben als Regen. Danach folgt eine Prognose für etwa 90 Minuten."}
+ $("play").style.display="flex";
+ if(m==="dwd"){
+  hideFc();exReset();layers.forEach(l=>{try{map.removeLayer(l)}catch(e){}});
+  frames=[];pastCount=0;idx=0;$("sl").max=0;$("ts").textContent="";$("fresh").textContent="";$("fnote").textContent="";placeTick();
+  $("mnote").textContent="Radar des Deutschen Wetterdienstes (RADOLAN) mit 1 km Auflösung, alle 5 Minuten. Nach „Jetzt“ folgt die Radar-Vorhersage des DWD für 2 Stunden. Grau getönte Flächen liegen außerhalb der DWD-Radare.";
+  dwKey="";loadDwd();
+ }else{
+  hideDw();layers.forEach(l=>l.addTo(map));
+  $("mnote").textContent="Radar der letzten 2 Stunden von RainViewer, in 10-Minuten-Schritten. Schnee zeigt das Radar in anderen Farben als Regen. Danach folgt eine Prognose für etwa 90 Minuten.";
+  loadRadar();
+ }
 }
 
 /* ============ Ortssuche und Standort ============ */
@@ -1198,7 +1311,7 @@ $("geo").onclick=()=>{follow=true;saveState();useGPS(true)};
 $("pp").onclick=toggle;
 $("sl").oninput=e=>{if(timer)toggle();show(+e.target.value)};
 $("nowtick").onclick=()=>{if(timer)toggle();show(Math.max(0,pastCount-1))};
-document.querySelectorAll("#mode button").forEach(b=>b.onclick=()=>setMode(b.dataset.m));
+document.querySelectorAll("#mode button").forEach(b=>b.onclick=()=>setMode(b.dataset.m,true));
 document.querySelectorAll("#basemode button").forEach(b=>b.onclick=()=>setBase(b.dataset.b));
 $("cld").onclick=()=>{cldOn=!cldOn;try{localStorage.setItem("wetter-cld",cldOn?"1":"0")}catch(e){}setClouds()};
 $("lbl").onclick=()=>{labOn=!labOn;try{localStorage.setItem("wetter-lbl",labOn?"1":"0")}catch(e){}setLabels()};
@@ -1715,7 +1828,7 @@ try{const s=JSON.parse(localStorage.getItem("wetter-ort"));if(s&&s.lat)place=s;f
 $("pp").innerHTML=PLAY;
 try{if(L.Browser.mobile)root.classList.add("touch")}catch(e){}
 loadWeather();
-try{initMap();setMode("rv")}catch(e){showErr("Die Karte konnte nicht geladen werden. Öffne die Seite im Browser deines Handys (Safari oder Chrome).")}
+try{initMap();setMode(startMode())}catch(e){showErr("Die Karte konnte nicht geladen werden. Öffne die Seite im Browser deines Handys (Safari oder Chrome).")}
 $("lock").textContent="Karte bewegen: "+(map&&map.dragging.enabled()?"an":"aus");
 $("lock").onclick=()=>{if(!map)return;const on=map.dragging.enabled();on?map.dragging.disable():map.dragging.enable();$("lock").textContent="Karte bewegen: "+(on?"aus":"an")};
 if(follow)useGPS(false);
