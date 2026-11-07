@@ -105,6 +105,7 @@ async function rainSoon(lat, lon) {
 }
 async function warnings(lat, lon) {
   const out = [];
+  let ok = true;
   const inBox = (b) => lat >= b[0] && lat <= b[1] && lon >= b[2] && lon <= b[3];
   if (inBox([46.3, 49.1, 9.5, 17.2])) {
     try {
@@ -115,15 +116,15 @@ async function warnings(lat, lon) {
         const lvl = Number(p.warnstufeid || r.wlevel) || 1;
         out.push({ id: "at-" + (p.warnid || r.wid || (p.warntypid || r.wtype) + "-" + (p.begin || r.start)) + "-" + lvl, title: (AT_TYPES[p.warntypid || r.wtype] || "Wetter") + "warnung, Stufe " + ["Gelb", "Orange", "Rot", "Violett"][Math.min(4, lvl) - 1], body: String(p.text || p.meteotext || "").slice(0, 180) });
       }
-    } catch (e) {}
+    } catch (e) { ok = false; }
   }
   if (inBox([47.2, 55.1, 5.8, 15.1])) {
     try {
       const j = await getJ("https://api.brightsky.dev/alerts?lat=" + lat + "&lon=" + lon);
       for (const w of j.alerts || []) out.push({ id: "de-" + (w.alert_id || w.id), title: w.event_de || w.headline_de || "Wetterwarnung", body: String(w.headline_de || w.description_de || "").slice(0, 180) });
-    } catch (e) {}
+    } catch (e) { if (String(e.message) !== "404") ok = false; } // 404: Ort liegt nicht in Deutschland
   }
-  return out;
+  return { list: out, ok };
 }
 async function runAlerts(env) {
   if (!env.SUBS) return;
@@ -145,8 +146,10 @@ async function runAlerts(env) {
       } catch (e) {}
     }
     if (rec.warn) {
-      const ws = await warnings(rec.lat, rec.lon);
-      const seen = rec.st.w || [], ids = ws.map((w) => w.id);
+      const res = await warnings(rec.lat, rec.lon), ws = res.list;
+      const seen = rec.st.w || [];
+      // Ist ein Warndienst gerade nicht erreichbar, bekannte Warnungen behalten (sonst käme dieselbe Warnung später noch einmal)
+      const ids = res.ok ? ws.map((w) => w.id) : Array.from(new Set([...seen, ...ws.map((w) => w.id)]));
       for (const w of ws) if (!seen.includes(w.id)) msgs.push({ title: w.title, body: (rec.name ? rec.name + ": " : "") + w.body, tag: "warn-" + w.id, url: SITE + "#sec-warn" });
       if (ids.join() !== seen.join()) { rec.st.w = ids; changed = true; }
     }
