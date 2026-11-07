@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-Na8IwXvkCQqUNlBUehp/P1UnT1vXy4027/f7BYZK83E=' 'sha256-LJ33SJA5i4YqCXzGZIhxWGPPYs2ewGTelTCHFyvLwOQ=' https://unpkg.com https://cdnjs.cloudflare.com; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com; connect-src 'self' https://api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-AFgGTkHzKb7QAAQvhJu/yjUIIqqcyDaDYOdfWpWIhBg=' 'sha256-LJ33SJA5i4YqCXzGZIhxWGPPYs2ewGTelTCHFyvLwOQ=' https://unpkg.com https://cdnjs.cloudflare.com; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net; connect-src 'self' https://api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -14,8 +14,8 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/favicon-64.png">
-<meta name="app-build" content="20">
-<meta name="app-notes" content="Alles aktualisiert sich jetzt automatisch alle 5 Minuten, auch wenn die App dauernd offen ist (z. B. als Wandanzeige). Oben steht, wann zuletzt aktualisiert wurde. Neue Versionen installieren sich von selbst, wenn niemand das Gerät benutzt.">
+<meta name="app-build" content="21">
+<meta name="app-notes" content="Genaueres Radar bei „Weltweit“: in Europa das gemeinsame Radarbild der europäischen Wetterdienste (EUMETNET OPERA, 1 km) mit 60-Minuten-Vorhersage. Dazu aktualisiert sich alles automatisch alle 5 Minuten, auch wenn die App dauernd offen ist.">
 <script>/* alte Adresse wetter2.html -> neue Startseite */
 try{if(top!==self)document.documentElement.style.display="none"}catch(e){document.documentElement.style.display="none"}
 window.__redir=/\/wetter2\.html$/i.test(location.pathname);
@@ -486,7 +486,7 @@ html.locked body>*:not(#gate){display:none!important}
 </main>
 
 <footer class="foot">
- <p>Daten: Open-Meteo (Vorhersage, Radar-Prognose und ICON-D2 des Deutschen Wetterdienstes), KachelmannWetter (stündliche Prognose für freigeschaltete Orte), RainViewer (Radar), Deutscher Wetterdienst (RADOLAN-Radar mit Radar-Vorhersage, Messwerte und Warnungen über Bright Sky), GeoSphere Austria (Warnungen und Messwerte), Copernicus CAMS über Open-Meteo (Luft und Pollen), BigDataCloud (Ortsname).</p>
+ <p>Daten: Open-Meteo (Vorhersage, Radar-Prognose und ICON-D2 des Deutschen Wetterdienstes), KachelmannWetter (stündliche Prognose für freigeschaltete Orte), LibreWXR (Radar weltweit, in Europa mit EUMETNET OPERA, teils NOAA Enterprise Rain Rate), RainViewer (Ersatz-Radar), Deutscher Wetterdienst (RADOLAN-Radar mit Radar-Vorhersage, Messwerte und Warnungen über Bright Sky), GeoSphere Austria (Warnungen und Messwerte), Copernicus CAMS über Open-Meteo (Luft und Pollen), BigDataCloud (Ortsname).</p>
  <p>Karten und Bilder: © OpenStreetMap-Mitwirkende, Esri, Maxar, Earthstar Geographics, Sentinel-2 cloudless von EOX. Grenzen und Ortsnamen: Esri, Garmin, HERE. Wolken: Meteosat (EUMETSAT) über den Deutschen Wetterdienst.</p>
  <p>Version <span id="ver"></span></p>
  <p><a href="#" id="upd-chk">Nach Updates suchen</a> · <a href="#" id="logout">Abmelden</a></p>
@@ -993,12 +993,31 @@ function moveMap(){
  if(map&&changed){map.setView([place.lat,place.lon],8);marker.setLatLng([place.lat,place.lon]);if(mode==="dwd"){if(dwCovered(+place.lat,+place.lon))loadDwd();else{setMode("rv");$("fnote").textContent="Für diesen Ort gibt es kein DWD-Radar, deshalb das weltweite Radar."}}else{let um=null;try{um=localStorage.getItem("wetter-mode")}catch(e){}if(!um&&dwCovered(+place.lat,+place.lon))setMode("dwd")}}
  mmKey=key;
 }
-let rvLast=0;
+/* Radar „Weltweit“: zuerst LibreWXR (in Europa das OPERA-Radar von EUMETNET, 1 km, mit 60-Minuten-Vorhersage),
+   wenn das nicht klappt RainViewer. Beide liefern dasselbe Format. */
+const RVSRC=[
+ {id:"lx",url:"https://api.librewxr.net/public/weather-maps.json",att:"Radar: LibreWXR (librewxr.net), in Europa EUMETNET OPERA",
+  note:"Radar von LibreWXR: in Europa das gemeinsame Radarbild der europäischen Wetterdienste (EUMETNET OPERA, 184 Radare, 1 km), sonst nationale Radare oder Satellitenschätzung. Nach „Jetzt“ folgt eine Radar-Vorhersage für etwa 60 Minuten, danach das Wettermodell."},
+ {id:"rv",url:"https://api.rainviewer.com/public/weather-maps.json",att:"Radar: RainViewer",
+  note:"Radar der letzten 2 Stunden von RainViewer, in 10-Minuten-Schritten (LibreWXR ist gerade nicht erreichbar). Danach folgt eine Prognose für etwa 90 Minuten."}
+];
+let rvSrc=0,rvSrcT=0,lxNat=10,rvLast=0;
+function getJt(u,ms){return Promise.race([getJ(u),new Promise((_,no)=>setTimeout(()=>no(new Error("timeout")),ms))])}
+function rvFail(why){
+ if(rvSrc!==0)return;
+ if(why==="tiles"&&lxNat>7){lxNat=7}else{rvSrc=1;rvSrcT=Date.now()}
+ rvLast=0;loadRadar();
+}
 function freshNote(t){const min=Math.round((Date.now()/1000-t)/60);$("fresh").textContent="Neuester Radarstand: "+new Date(t*1000).toLocaleTimeString("de-AT",{hour:"2-digit",minute:"2-digit"})+" Uhr"+(min>=0?" (vor "+min+" Min.)":"")}
 async function loadRadar(){
  if(mode==="dwd")return loadDwd();
+ if(rvSrc===1&&Date.now()-rvSrcT>3600000){rvSrc=0;lxNat=10;rvLast=0}
+ const src=RVSRC[rvSrc];
  try{
-  const j=await getJ("https://api.rainviewer.com/public/weather-maps.json");
+  let j;
+  try{j=await getJt(src.url,9000);if(!(j&&j.host&&j.radar&&j.radar.past&&j.radar.past.length))throw new Error("leer")}
+  catch(e){if(rvSrc===0){rvSrc=1;rvSrcT=Date.now();rvLast=0;return loadRadar()}throw e}
+  if(mode!=="rv")return;
   const past=(j.radar&&j.radar.past)||[];
   const lastT=past.length?past[past.length-1].time:0;
   if(lastT&&lastT===rvLast&&layers.length&&mode==="rv"&&frames.length&&frames[0].path){freshNote(lastT);return}
@@ -1012,8 +1031,12 @@ async function loadRadar(){
   pastCount=past.length;
   exReset();
   layers.forEach(l=>map.removeLayer(l));
-  layers=frames.map(f=>L.tileLayer(host+f.path+"/256/{z}/{x}/{y}/2/1_1.png",{opacity:0,maxNativeZoom:7,maxZoom:19,zIndex:5}));
+  const nat=src.id==="lx"?lxNat:7;
+  layers=frames.map(f=>L.tileLayer(host+f.path+"/256/{z}/{x}/{y}/2/1_1.png",{opacity:0,maxNativeZoom:nat,maxZoom:19,zIndex:5,attribution:src.att}));
   if(mode==="rv")layers.forEach(l=>l.addTo(map));
+  $("mnote").textContent=src.note;
+  /* Lädt das aktuelle Bild von LibreWXR gar nicht, auf RainViewer wechseln */
+  if(src.id==="lx"){const lj=layers[pastCount-1];if(lj){let ok=0,bad=0;lj.on("tileload",()=>{ok++});lj.on("tileerror",()=>{bad++;if(!ok&&bad===6&&layers.indexOf(lj)>=0)rvFail("tiles")})}}
   idx=0;
   refreshFcFrames();
   show(Math.max(0,pastCount-1));
@@ -1239,7 +1262,7 @@ function refreshFcFrames(){
  frames=frames.filter(f=>f.fc==null&&f.ex==null);
  if(mode==="rv"&&frames.length){
   if(exOn()&&pastCount>0){const t0=frames[pastCount-1].time;for(let k=1;k<=9;k++)frames.push({time:t0+600*k,ex:k})}
-  else if(fcData)fcData.fr.forEach((f,k)=>{if(f.t*1000>Date.now()-10*60000)frames.push({time:f.t,fc:k})});
+  else if(fcData){const tl=frames[frames.length-1].time;fcData.fr.forEach((f,k)=>{if(f.t>tl+60&&f.t*1000>Date.now()-10*60000)frames.push({time:f.t,fc:k})})}
  }
  $("sl").max=Math.max(0,frames.length-1);
  if(idx>=frames.length)idx=Math.max(0,Math.min(pastCount-1,frames.length-1));
@@ -1302,7 +1325,7 @@ function setMode(m,user){
  }else{
   rvLast=0;
   hideDw();layers.forEach(l=>l.addTo(map));
-  $("mnote").textContent="Radar der letzten 2 Stunden von RainViewer, in 10-Minuten-Schritten. Schnee zeigt das Radar in anderen Farben als Regen. Danach folgt eine Prognose für etwa 90 Minuten.";
+  $("mnote").textContent=RVSRC[rvSrc].note;
   loadRadar();
  }
 }
