@@ -9,8 +9,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Wetter">
 <title>Wetter</title>
-<meta name="app-build" content="4">
-<meta name="app-notes" content="Neue, kürzere Adresse: eliaspp9.github.io/Wetter. Außerdem lässt sich die Seite am PC besser bedienen.">
+<meta name="app-build" content="5">
+<meta name="app-notes" content="Neu im Regenradar: Landesgrenzen und größere Ortsnamen im Satellitenbild. Mit dem Knopf Grenzen und Orte lassen sie sich ein- und ausblenden.">
 <script>/* alte Adresse wetter2.html -> neue Startseite */
 window.__redir=/\/wetter2\.html$/i.test(location.pathname);
 if(window.__redir)location.replace(location.pathname.replace(/wetter2\.html$/i,"")+location.search+location.hash);
@@ -242,6 +242,7 @@ main{position:relative;z-index:1}
     <div class="mctl">
      <div class="seg" id="mode"><button type="button" data-m="rv" class="on">Weltweit</button><button type="button" data-m="dwd">Deutschland</button></div>
      <div class="seg" id="basemode"><button type="button" data-b="street">Karte</button><button type="button" data-b="sat" class="on">Satellit</button></div>
+     <div class="seg" id="lblseg"><button type="button" id="lbl" class="on" aria-pressed="true">Grenzen &amp; Orte</button></div>
     </div>
     <button class="gbtn" id="ctr" type="button" aria-label="Auf meinen Ort zentrieren"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></button>
     <button class="gbtn lockb" id="lock" type="button">Karte bewegen: aus</button>
@@ -274,7 +275,7 @@ main{position:relative;z-index:1}
 
 <footer class="wrap foot">
  <p>Daten: Open-Meteo (Vorhersage), RainViewer (Radar), Deutscher Wetterdienst (Radar und Warnungen über Bright Sky), GeoSphere Austria (Warnungen), BigDataCloud (Ortsname).</p>
- <p>Karten und Bilder: © OpenStreetMap-Mitwirkende, Esri, Maxar, Earthstar Geographics, Sentinel-2 cloudless von EOX.</p>
+ <p>Karten und Bilder: © OpenStreetMap-Mitwirkende, Esri, Maxar, Earthstar Geographics, Sentinel-2 cloudless von EOX. Grenzen und Ortsnamen: Esri, Garmin, HERE.</p>
  <p>Version <span id="ver"></span></p>
  <p><a href="#" id="upd-chk">Nach Updates suchen</a></p>
 </footer>
@@ -544,13 +545,28 @@ async function loadPtypes(){
 }
 
 /* ============ Karten: Satellit, Radar ============ */
-let hero,base,baseKind="sat",autoDone=false,satIdx=0,heroLayer,mmKey="",ptDummy;
+let hero,base,baseKind="sat",autoDone=false,satIdx=0,heroLayer,mmKey="",ptDummy,lab=null,labOn=true;
+try{labOn=localStorage.getItem("wetter-lbl")!=="0"}catch(e){}
 const reduced=matchMedia("(prefers-reduced-motion: reduce)").matches;
 const ESRI="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}";
 const SAT=[
  {url:ESRI,nat:18,att:"Bild: Esri, Maxar, Earthstar Geographics"},
  {url:"https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2021_3857/default/g/{z}/{y}/{x}.jpg",nat:13,att:"Bild: Sentinel-2 cloudless von EOX (Copernicus Sentinel-Daten 2021)"}
 ];
+const REF="https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}";
+/* Grenzen + Ortsnamen: nur im Satellitenbild, über dem Radar; kleine Orte erscheinen erst beim Hineinzoomen */
+function setLabels(){
+ if(!map)return;
+ const sat=baseKind==="sat";
+ $("lblseg").style.display=sat?"":"none";
+ $("lbl").classList.toggle("on",labOn);$("lbl").setAttribute("aria-pressed",labOn?"true":"false");
+ try{
+  if(!(sat&&labOn)){if(lab){map.removeLayer(lab);lab=null}return}
+  if(lab)return;
+  if(!map.getPane("lab")){const p=map.createPane("lab");p.style.zIndex=350;p.style.pointerEvents="none"}
+  lab=L.tileLayer(REF,{pane:"lab",maxNativeZoom:9,maxZoom:12,attribution:"Grenzen und Orte: Esri, Garmin, HERE, OpenStreetMap-Mitwirkende"}).addTo(map);
+ }catch(e){lab=null}
+}
 const PLAY='<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5v11l9.5-5.5z" fill="currentColor"/></svg>';
 const PAUSE='<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 2h3.2v12H3.5zM9.3 2h3.2v12H9.3z" fill="currentColor"/></svg>';
 function baseLayer(kind){
@@ -563,6 +579,7 @@ function setBase(kind){
  if(!map)return;
  if(base)map.removeLayer(base);
  base=baseLayer(kind).addTo(map);
+ setLabels();
  if(kind==="sat"){let ok=0,bad=0;const b=base;b.on("tileload",()=>{ok++});b.on("tileerror",()=>{bad++;if(!ok&&bad===3&&satIdx<SAT.length-1&&base===b){satIdx++;setBase("sat")}})}
 }
 function setHeroLayer(i){
@@ -671,6 +688,7 @@ $("pp").onclick=toggle;
 $("sl").oninput=e=>{if(timer)toggle();show(+e.target.value)};
 document.querySelectorAll("#mode button").forEach(b=>b.onclick=()=>setMode(b.dataset.m));
 document.querySelectorAll("#basemode button").forEach(b=>b.onclick=()=>setBase(b.dataset.b));
+$("lbl").onclick=()=>{labOn=!labOn;try{localStorage.setItem("wetter-lbl",labOn?"1":"0")}catch(e){}setLabels()};
 $("ctr").onclick=()=>{if(map)map.setView([place.lat,place.lon],8)};
 addEventListener("resize",()=>{if(hero)hero.invalidateSize()});
 function saveState(){try{localStorage.setItem("wetter-ort",JSON.stringify(place));localStorage.setItem("wetter-follow",follow?"1":"0")}catch(e){}}
