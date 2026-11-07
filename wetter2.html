@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-CEbvOEnIxsfTv6gsi3wfF/cdfU8iKiUsOdMZ5ZjIJ38=' 'sha256-rtD+YnjjlK/qdTffRRM0+dg5HIzXWVMndWiYx7RbciI=' https://unpkg.com https://cdnjs.cloudflare.com; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com; connect-src 'self' https://api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'none'; manifest-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-ORGbgb45lLiahSFGi5wDc+OwadO7xt8HHNJk7UVCGqY=' 'sha256-rtD+YnjjlK/qdTffRRM0+dg5HIzXWVMndWiYx7RbciI=' https://unpkg.com https://cdnjs.cloudflare.com; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com; connect-src 'self' https://api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'none'; manifest-src 'none'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -11,8 +11,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Wetter">
 <title>Wetter</title>
-<meta name="app-build" content="7">
-<meta name="app-notes" content="Neu: Anmeldung über deinen eigenen Server (das Passwort steht nicht mehr in der Seite) und die Kachelmann-Prognose für deine Orte.">
+<meta name="app-build" content="8">
+<meta name="app-notes" content="Kachelmann-Karte zeigt jetzt den Modelllauf und eine übersichtliche Liste aller Felder.">
 <script>/* alte Adresse wetter2.html -> neue Startseite */
 try{if(top!==self)document.documentElement.style.display="none"}catch(e){document.documentElement.style.display="none"}
 window.__redir=/\/wetter2\.html$/i.test(location.pathname);
@@ -105,7 +105,7 @@ main{position:relative;z-index:1}
 .kc-btns button{font:inherit;font-size:14px;padding:8px 12px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
 #kc details{margin-top:12px;font-size:13px;color:var(--muted)}
 #kc summary{cursor:pointer}
-#kc pre{white-space:pre-wrap;word-break:break-all;font-size:11px;max-height:240px;overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px;color:var(--ink)}
+#kc pre{white-space:pre-wrap;word-break:break-all;font-size:12px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px;color:var(--ink)}
 
 /* Regen-Vorschau */
 .nc-msg{font-size:26px;line-height:1.15;font-weight:600;letter-spacing:-.015em;margin-bottom:16px}
@@ -937,8 +937,16 @@ function renderKc(t,res){
  const el=$("kc");
  let j=null;try{j=JSON.parse(res.b)}catch(e){}
  const raw=()=>{
-  let r;try{r=JSON.stringify(j,(k,v)=>Array.isArray(v)&&v.length>2?v.slice(0,2).concat(["… "+(v.length-2)+" weitere"]):v,1)}catch(e){}
-  return'<details><summary>Rohdaten von Kachelmann ansehen</summary><pre>'+esc((r||String(res.b)).slice(0,3000))+'</pre></details>';
+  let r="";
+  try{
+   if(j&&typeof j==="object"){
+    const f=o=>Object.keys(o).filter(k=>o[k]==null||typeof o[k]!=="object"||"value" in o[k]).map(k=>k+" = "+(o[k]&&typeof o[k]==="object"?JSON.stringify(o[k]):o[k])).join("\n");
+    const rr=kcRows(j);
+    r=f(j)+(rr.length?"\n\n— erste Stunde ("+rr.length+" Stunden insgesamt) —\n"+f(rr[0]):"");
+   }
+  }catch(e){}
+  if(!r)r=String(res.b);
+  return'<details><summary>Rohdaten von Kachelmann ansehen</summary><pre>'+esc(r.slice(0,4000))+'</pre></details>';
  };
  const head='<p class="kc-head">'+esc(t.o.name)+(t.d>2?" (nächster Kachelmann-Ort, "+Math.round(t.d)+" km entfernt)":"")+'</p>';
  if(res.s!==200){
@@ -952,9 +960,9 @@ function renderKc(t,res){
  const keys=Object.keys(rows[0]);
  const kt=kcKey(keys,["dateTime","time","datetime","date","timestamp"],/time|date/i);
  const kT=kcKey(keys,["temp","temperature","temp2m","tt"],/^temp/i);
- const kP=kcKey(keys,["prec","precip","precipitation","rain","precSum"],/^(prec|rain)/i,/prob|chance|type|form|snow/i);
+ const kP=kcKey(keys,["prec1h","prec","precCurrent","precip","precipitation","rain","precSum"],/^(prec|rain)/i,/prob|chance|type|form|snow/i);
  const kW=kcKey(keys,["windSpeed","wind","windspeed","ff"],/^wind/i,/dir|gust|angle|degree/i);
- const kG=kcKey(keys,["windGust","windGusts","gust"],/gust/i);
+ const kG=kcKey(keys,["windGust","windGust1h","windGusts","gust"],/gust/i);
  const U=j&&j.units&&typeof j.units==="object"?j.units:{};
  const un=(k,d)=>typeof U[k]==="string"?U[k]:d;
  const now=Date.now();
@@ -974,10 +982,11 @@ function renderKc(t,res){
   const day=x.d.getHours()===0?x.d.toLocaleDateString("de-AT",{weekday:"short"}).replace(".","")+" ":"";
   return"<tr><td>"+esc(day+lab)+"</td>"+(kT?"<td>"+(x.T==null?"–":deg(x.T))+"</td>":"")+(kP?"<td>"+(x.P==null?"–":fmt(x.P)+" "+esc(pu))+"</td>":"")+(kW?"<td>"+(x.W==null?"–":Math.round(x.W)+" "+esc(wu))+(x.G!=null&&x.G>(x.W||0)+8?" · Böen "+Math.round(x.G):"")+"</td>":"")+"</tr>";
  }).join("");
+ const runD=j&&typeof j.run==="string"?kcDate(j.run):null;
  const hhmm=new Date(res.t).toLocaleTimeString("de-AT",{hour:"2-digit",minute:"2-digit"});
  el.innerHTML=head+(sum?'<p class="kc-sum">'+sum+"</p>":"")+'<table class="kc-tab">'+th+tr+"</table>"
   +'<div class="kc-btns"><button type="button" id="kc-all">'+(kcAll?"Nur alle 3 Stunden":"Jede Stunde zeigen")+"</button></div>"
-  +'<p class="small">KachelmannWetter, stündliche Prognose. Stand '+hhmm+' Uhr. Die Werte werden 30 Minuten zwischengespeichert, um das Tageslimit deiner Abfragen zu schonen.</p>'+raw();
+  +'<p class="small">KachelmannWetter, stündliche Prognose'+(runD?' (Modelllauf '+runD.toLocaleTimeString("de-AT",{hour:"2-digit",minute:"2-digit"})+' Uhr'+(j&&j.resolution?', Auflösung '+esc(String(j.resolution).replace(/_/g," ").toLowerCase()):"")+')':"")+'. Stand '+hhmm+' Uhr. Die Werte werden 30 Minuten zwischengespeichert, um das Tageslimit deiner Abfragen zu schonen.</p>'+raw();
  kcLast=[t,res];
 }
 $("kc").addEventListener("click",e=>{
