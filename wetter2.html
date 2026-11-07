@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-KjlWtCuIY13+AM+HLZlkFXRgSfTLxQ/tgBtRoSfPtHU=' 'sha256-rtD+YnjjlK/qdTffRRM0+dg5HIzXWVMndWiYx7RbciI=' https://unpkg.com https://cdnjs.cloudflare.com; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com; connect-src 'self' https://api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'none'; manifest-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-B/X70VArWZItr/T/H6Z4EcQtPt89H7dLOnT0/uSRjw4=' 'sha256-rtD+YnjjlK/qdTffRRM0+dg5HIzXWVMndWiYx7RbciI=' https://unpkg.com https://cdnjs.cloudflare.com; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com; connect-src 'self' https://api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -11,8 +11,11 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Wetter">
 <title>Wetter</title>
-<meta name="app-build" content="15">
-<meta name="app-notes" content="Radar-Prognose: Der Regen zieht jetzt mit dem Höhenwind weiter, statt zu verschwinden. Wo Kachelmann Daten liefert, kommen Stunden, 7 Tage und Temperatur nur noch von Kachelmann.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icons/favicon-64.png">
+<meta name="app-build" content="16">
+<meta name="app-notes" content="Großes Update: als App auf dem Home-Bildschirm, Benachrichtigungen bei Regen und Warnungen, Lieblingsorte, Messwerte der nächsten Station, Modellvergleich, 14-Tage-Trend, Rückblick, Luft und Pollen, Warnungen auf der Karte.">
 <script>/* alte Adresse wetter2.html -> neue Startseite */
 try{if(top!==self)document.documentElement.style.display="none"}catch(e){document.documentElement.style.display="none"}
 window.__redir=/\/wetter2\.html$/i.test(location.pathname);
@@ -113,8 +116,8 @@ main{position:relative;z-index:1;max-width:1180px;margin:-30px auto 0;padding:0 
  .tabs,.mini{display:none}
  .hero{padding-bottom:66px}
  main{margin-top:-42px;padding:0 20px}
- .grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:16px;align-items:start;grid-template-areas:"radar warn" "radar now" "radar hours" "radar kc" "radar days" "radar facts"}
- .s-warn{grid-area:warn}.s-now{grid-area:now}.s-hours{grid-area:hours}.s-kc{grid-area:kc}.s-days{grid-area:days}.s-facts{grid-area:facts}
+ .grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:16px;align-items:start;grid-template-areas:"radar warn" "radar now" "radar obs" "radar hours" "radar kc" "radar models" "radar days" "radar trend" "radar past" "radar air" "radar facts" "radar push"}
+ .s-warn{grid-area:warn}.s-now{grid-area:now}.s-hours{grid-area:hours}.s-kc{grid-area:kc}.s-days{grid-area:days}.s-facts{grid-area:facts}.s-obs{grid-area:obs}.s-models{grid-area:models}.s-trend{grid-area:trend}.s-past{grid-area:past}.s-air{grid-area:air}.s-push{grid-area:push}
  .s-radar{grid-area:radar;position:sticky;top:16px}
  #map{height:min(72vh,700px)!important}
  .upd{bottom:calc(env(safe-area-inset-bottom,0px) + 12px)}
@@ -160,6 +163,55 @@ main{position:relative;z-index:1;max-width:1180px;margin:-30px auto 0;padding:0 
 .warn details p{margin-top:8px;font-size:15px}
 .ok{display:flex;align-items:center;gap:10px;color:var(--muted)}
 .ok svg{width:20px;height:20px;flex:none;color:#2FA66A}
+
+/* Lieblingsorte */
+.favbtn{width:34px;height:34px;border:0;background:transparent;color:#fff;display:inline-grid;place-items:center;border-radius:10px;margin-left:2px;vertical-align:middle}
+.favbtn svg{width:21px;height:21px}
+.favbtn[aria-pressed=true] svg{fill:#FFD54A;stroke:#FFD54A}
+.favs{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-top:14px}
+.favs:empty{display:none}
+.favs button{border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.15);color:#fff;border-radius:999px;padding:5px 12px;font-size:13px;font-weight:500;display:inline-flex;align-items:center;gap:5px;min-height:32px}
+.favs button svg{width:14px;height:14px}
+.favs button.on{background:#fff;color:rgb(var(--a));border-color:#fff}
+
+/* Messwerte, Luft, Rückblick, Trend, Modelle, Benachrichtigungen */
+.obs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.ob{background:var(--tile);border-radius:12px;padding:10px 12px}
+.ob span{display:block;font-size:12px;color:var(--muted)}
+.ob b{font-size:19px;font-weight:600}
+.ob small{font-size:12px;color:var(--muted);margin-left:2px}
+.aq{display:flex;gap:12px;align-items:center}
+.aqv{flex:none;width:96px;height:96px;padding:0 4px;border-radius:50%;display:grid;place-items:center;align-content:center;background:color-mix(in srgb,var(--aq) 18%,var(--card));border:4px solid var(--aq);text-align:center}
+.aqv b{font-size:24px;font-weight:600;line-height:1}
+.aqv span{font-size:10.5px;font-weight:600;color:var(--muted);margin-top:2px}
+.aqd{display:flex;flex-direction:column;gap:2px;font-size:13px;color:var(--muted)}
+.aqd b{color:var(--ink);font-weight:600}
+.pol{margin-top:14px;display:flex;flex-direction:column;gap:8px}
+.pl{display:grid;grid-template-columns:76px 1fr 64px;gap:10px;align-items:center;font-size:14px}
+.pl i{display:block;height:8px;border-radius:4px;background:var(--tile);position:relative;overflow:hidden}
+.pl i::after{content:"";position:absolute;left:0;top:0;bottom:0;width:var(--w);background:var(--c);border-radius:4px}
+.pl b{font-weight:600;font-size:13px;text-align:right}
+.psum{font-size:15px;margin-bottom:8px}
+.pr{display:grid;grid-template-columns:70px 30px minmax(0,1fr) 78px;gap:8px;align-items:center;padding:7px 0;border-top:1px solid var(--line);font-size:14px}
+.pr:first-of-type{border-top:0}
+.pr .dn b{font-size:14px}
+.pr i{display:block;height:8px;border-radius:4px;background:var(--rain);flex:none}
+.pr .pm span{white-space:nowrap}
+.pr .pm{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:12px;font-variant-numeric:tabular-nums}
+.pr .pt{text-align:right;font-variant-numeric:tabular-nums}
+.pr .pt span{color:var(--muted)}
+.mc svg{display:block;width:100%;height:auto}
+.mc .ax{fill:var(--muted);font-size:11px}
+.mc .gl{stroke:var(--line);stroke-width:1}
+.mlg{display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:10px;font-size:12.5px}
+.mlg span{display:inline-flex;align-items:center;gap:6px}
+.mlg i{width:14px;height:4px;border-radius:2px;background:var(--c)}
+.mlg b{font-weight:600}
+.pushbox{display:flex;flex-direction:column;gap:10px;font-size:14px}
+.pushbox label{display:flex;align-items:center;gap:8px}
+.pushbox .row{display:flex;flex-wrap:wrap;gap:8px}
+.pushbox .pri{background:var(--accent);border-color:transparent;color:#fff}
+@media (prefers-color-scheme:dark){.pushbox .pri{color:#0A101C}}
 
 /* Stunden */
 .hstrip{display:flex;gap:6px;overflow-x:auto;margin:0 -16px;padding:2px 16px 4px;scrollbar-width:none;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity}
@@ -323,11 +375,12 @@ html.locked body>*:not(#gate){display:none!important}
   </button>
  </div>
  <div class="hero-body">
-  <p class="place"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span id="pname">Wien</span></p>
+  <p class="place"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span id="pname">Wien</span><button class="favbtn" id="fav" type="button" aria-pressed="false" aria-label="Als Lieblingsort speichern"></button></p>
   <p class="when" id="when"></p>
   <div class="nowrow"><div class="hicon" id="hicon"></div><span class="temp" id="temp">–</span><span class="deg">°</span></div>
   <p class="cond" id="desc">Wird geladen …</p>
   <p class="range" id="range"></p>
+  <div class="favs" id="favs"></div>
  </div>
 </header>
 
@@ -356,7 +409,7 @@ html.locked body>*:not(#gate){display:none!important}
     <div class="mctl">
      <div class="seg" id="mode"><button type="button" data-m="rv" class="on">Weltweit</button><button type="button" data-m="dwd">Deutschland</button></div>
      <div class="seg" id="basemode"><button type="button" data-b="street">Karte</button><button type="button" data-b="sat" class="on">Satellit</button></div>
-     <div class="seg" id="lblseg"><button type="button" id="cld" aria-pressed="false">Wolken</button><button type="button" id="lbl" class="on" aria-pressed="true">Grenzen &amp; Orte</button></div>
+     <div class="seg" id="lblseg"><button type="button" id="cld" aria-pressed="false">Wolken</button><button type="button" id="lbl" class="on" aria-pressed="true">Grenzen &amp; Orte</button><button type="button" id="wrn" aria-pressed="false">Warnungen</button></div>
     </div>
     <button class="gbtn" id="ctr" type="button" aria-label="Auf meinen Ort zentrieren"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></button>
     <button class="gbtn lockb" id="lock" type="button">Karte bewegen: aus</button>
@@ -373,9 +426,15 @@ html.locked body>*:not(#gate){display:none!important}
     <p id="mnote"></p>
     <p id="plegend"></p>
     <p id="cnote"></p>
+    <p id="wnote"></p>
     <p id="fnote"></p>
     <p><a href="https://kachelmannwetter.com/de/regenradar" target="_blank" rel="noopener noreferrer">Kachelmannwetter-Radar öffnen</a></p>
    </div>
+  </section>
+
+  <section class="card s-obs" id="sec-obs" aria-labelledby="h-obs" hidden>
+   <div class="ch"><h2 id="h-obs">Gemessen</h2></div>
+   <div id="obs"></div>
   </section>
 
   <section class="card s-hours" id="sec-hours" aria-labelledby="h-hours">
@@ -388,9 +447,29 @@ html.locked body>*:not(#gate){display:none!important}
    <div id="kc"><p class="muted">Wird geladen …</p></div>
   </section>
 
+  <section class="card s-models" id="sec-models" aria-labelledby="h-models">
+   <div class="ch"><h2 id="h-models">Modellvergleich</h2></div>
+   <div class="mc" id="models"><p class="muted">Wird geladen …</p></div>
+  </section>
+
   <section class="card s-days" id="sec-days" aria-labelledby="h-days">
    <div class="ch"><h2 id="h-days">7 Tage</h2></div>
    <div id="days"></div>
+  </section>
+
+  <section class="card s-trend" id="sec-trend" aria-labelledby="h-trend">
+   <div class="ch"><h2 id="h-trend">Trend bis 14 Tage</h2></div>
+   <div id="trend"><p class="muted">Wird geladen …</p></div>
+  </section>
+
+  <section class="card s-past" id="sec-past" aria-labelledby="h-past">
+   <div class="ch"><h2 id="h-past">Rückblick: letzte 7 Tage</h2></div>
+   <div id="past"><p class="muted">Wird geladen …</p></div>
+  </section>
+
+  <section class="card s-air" id="sec-air" aria-labelledby="h-air">
+   <div class="ch"><h2 id="h-air">Luft und Pollen</h2></div>
+   <div id="air"><p class="muted">Wird geladen …</p></div>
   </section>
 
   <section class="card s-facts" aria-labelledby="h-facts">
@@ -398,11 +477,16 @@ html.locked body>*:not(#gate){display:none!important}
    <div class="facts" id="facts"></div>
   </section>
 
+  <section class="card s-push" id="sec-push" aria-labelledby="h-push">
+   <div class="ch"><h2 id="h-push">Benachrichtigungen</h2></div>
+   <div id="push"><p class="muted">Wird geladen …</p></div>
+  </section>
+
  </div>
 </main>
 
 <footer class="foot">
- <p>Daten: Open-Meteo (Vorhersage, Radar-Prognose und ICON-D2 des Deutschen Wetterdienstes), KachelmannWetter (stündliche Prognose für freigeschaltete Orte), RainViewer (Radar), Deutscher Wetterdienst (Radar und Warnungen über Bright Sky), GeoSphere Austria (Warnungen), BigDataCloud (Ortsname).</p>
+ <p>Daten: Open-Meteo (Vorhersage, Radar-Prognose und ICON-D2 des Deutschen Wetterdienstes), KachelmannWetter (stündliche Prognose für freigeschaltete Orte), RainViewer (Radar), Deutscher Wetterdienst (Radar und Warnungen über Bright Sky), GeoSphere Austria (Warnungen und Messwerte), Copernicus CAMS über Open-Meteo (Luft und Pollen), BigDataCloud (Ortsname).</p>
  <p>Karten und Bilder: © OpenStreetMap-Mitwirkende, Esri, Maxar, Earthstar Geographics, Sentinel-2 cloudless von EOX. Grenzen und Ortsnamen: Esri, Garmin, HERE. Wolken: Meteosat (EUMETSAT) über den Deutschen Wetterdienst.</p>
  <p>Version <span id="ver"></span></p>
  <p><a href="#" id="upd-chk">Nach Updates suchen</a> · <a href="#" id="logout">Abmelden</a></p>
@@ -502,12 +586,16 @@ async function loadWeather(){
   try{j=await getJ(base+"&current="+cur+",is_day,cloud_cover,wind_gusts_10m&hourly="+hr+",is_day&daily="+dl+",uv_index_max")}
   catch(e){j=await getJ(base+"&current="+cur+"&hourly="+hr+"&daily="+dl)}
   renderAll(j);
+  try{localStorage.setItem("wetter-last",JSON.stringify({k:(+place.lat).toFixed(2)+","+(+place.lon).toFixed(2),t:Date.now(),j}))}catch(x){}
  }catch(e){
   console.error(e);
-  showErr("Wetterdaten konnten nicht geladen werden. Prüfe die Internetverbindung und öffne die Seite im Browser deines Handys (Safari oder Chrome).");
+  let used=false;
+  try{const o=JSON.parse(localStorage.getItem("wetter-last"));if(o&&o.j&&o.k===(+place.lat).toFixed(2)+","+(+place.lon).toFixed(2)){renderAll(o.j);used=true;showErr("Keine Verbindung. Du siehst den Stand von "+new Date(o.t).toLocaleString("de-AT",{weekday:"short",hour:"2-digit",minute:"2-digit"})+" Uhr.")}}catch(x){}
+  if(!used)showErr("Wetterdaten konnten nicht geladen werden. Prüfe die Internetverbindung.");
  }
  moveMap();
  loadWarnings();loadNowcast();loadPtypes();loadKc();loadKcDaily();
+ loadObs();loadAir();loadPast();loadModels();loadTrend();renderFavs();renderPush();
  try{localStorage.setItem("wetter-ort",JSON.stringify(place))}catch(e){}
 }
 function dayPart(j,c){
@@ -883,7 +971,7 @@ function initMap(){
  try{const fp=map.createPane("fc");fp.style.zIndex=340;fp.style.pointerEvents="none"}catch(e){}
  try{map.on("zoomend",updLab);map.on("moveend",()=>{clearTimeout(fcTimer);fcTimer=setTimeout(()=>loadFc(),900)})}catch(e){}
  setBase(baseKind);
- setClouds();
+ setClouds();setWarnLayer();
  marker=L.circleMarker([place.lat,place.lon],{radius:8,color:"#fff",weight:3,fillColor:"#E5484D",fillOpacity:1}).addTo(map);
  dwd=L.tileLayer.wms("https://maps.dwd.de/geoserver/dwd/wms",{layers:"dwd:Niederschlagsradar",format:"image/png",transparent:true,opacity:.75,zIndex:5,attribution:"DWD"});
  loadRadar();
@@ -1253,6 +1341,7 @@ async function loadKcDaily(){
  if(my!==kcdSeq)return;
  kcDaily=out;
  if(lastJ){renderDays(lastJ);renderHours(lastJ,lastJ.current);kcApplyHeader();heroSay()}
+ if(mcData)renderModels();
 }
 let kcSeq=0,kcAll=false,kcLast=null,kcSrc="icon";
 try{if(localStorage.getItem("wetter-kcsrc")==="kach")kcSrc="kach"}catch(e){}
@@ -1342,6 +1431,236 @@ $("kc").addEventListener("click",e=>{
  if(b.id==="kc-all"){kcAll=!kcAll;if(kcLast)kcLast();return}
  if(b.dataset.k!=null){const o=KC_ORTE[+b.dataset.k];if(!o)return;place={name:o.name,lat:o.lat,lon:o.lon};follow=false;saveState();loadWeather();window.scrollTo({top:0,behavior:"smooth"})}
 });
+
+/* ============ Lieblingsorte ============ */
+const STAR='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2l2.6 5.5 6 .8-4.4 4.1 1.1 5.9L12 16.6l-5.3 2.9 1.1-5.9-4.4-4.1 6-.8z"/></svg>';
+const LOC_S='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>';
+let favs=[];try{favs=JSON.parse(localStorage.getItem("wetter-favs"))||[]}catch(e){}
+const saveFavs=()=>{try{localStorage.setItem("wetter-favs",JSON.stringify(favs))}catch(e){}};
+const favIdx=()=>favs.findIndex(f=>km(f.lat,f.lon,+place.lat,+place.lon)<1);
+function renderFavs(){
+ const i=favIdx();
+ $("fav").setAttribute("aria-pressed",i>=0?"true":"false");
+ $("fav").setAttribute("aria-label",i>=0?"Aus den Lieblingsorten entfernen":"Als Lieblingsort speichern");
+ $("favs").innerHTML=favs.length?'<button type="button" data-g="1" class="'+(follow?"on":"")+'">'+LOC_S+"Standort</button>"+favs.map((f,k)=>'<button type="button" data-f="'+k+'" class="'+(!follow&&k===i?"on":"")+'">'+esc(f.name)+"</button>").join(""):"";
+}
+$("fav").innerHTML=STAR;
+$("fav").onclick=()=>{const i=favIdx();if(i>=0)favs.splice(i,1);else{favs.push({name:place.name,lat:+(+place.lat).toFixed(4),lon:+(+place.lon).toFixed(4)});if(favs.length>8)favs.shift()}saveFavs();renderFavs()};
+$("favs").addEventListener("click",e=>{
+ const b=e.target.closest("button");if(!b)return;
+ if(b.dataset.g){follow=true;saveState();useGPS(true);return}
+ const f=favs[+b.dataset.f];if(!f)return;
+ place={name:f.name,lat:f.lat,lon:f.lon};follow=false;saveState();loadWeather();
+});
+
+/* ============ Messwerte der nächsten Station ============ */
+const inBox2=b=>+place.lat>=b[0]&&+place.lat<=b[1]&&+place.lon>=b[2]&&+place.lon<=b[3];
+async function gsStations(){
+ try{const o=JSON.parse(localStorage.getItem("wetter-gsst"));if(o&&Date.now()-o.t<7*86400000)return o.s}catch(e){}
+ const m=await getJ("https://dataset.api.hub.geosphere.at/v1/station/current/tawes-v1-10min/metadata");
+ const s=(m.stations||[]).filter(x=>x.is_active!==false&&x.lat!=null&&x.lon!=null).map(x=>[String(x.id),x.name,+x.lat,+x.lon]);
+ if(!s.length)throw new Error("stations");
+ try{localStorage.setItem("wetter-gsst",JSON.stringify({t:Date.now(),s}))}catch(e){}
+ return s;
+}
+async function obsAT(){
+ const st=await gsStations();
+ let best=null,bd=1e9;st.forEach(x=>{const d=km(+place.lat,+place.lon,x[2],x[3]);if(d<bd){bd=d;best=x}});
+ if(!best||bd>40)return null;
+ const base="https://dataset.api.hub.geosphere.at/v1/station/current/tawes-v1-10min?station_ids="+best[0]+"&parameters=";
+ let j;try{j=await getJ(base+"TL,RF,FF,FFX,RR,P")}catch(e){j=await getJ(base+"TL")}
+ const f=(j.features||[])[0],P=(f&&f.properties&&f.properties.parameters)||{};
+ const v=k=>{const x=P[k];return x&&x.data&&x.data.length?x.data[x.data.length-1]:null};
+ const ms=k=>{const x=v(k);if(x==null)return null;return P[k].unit&&/m\/s/.test(P[k].unit)?x*3.6:x};
+ const ts=(j.timestamps||[]).slice(-1)[0];
+ return{name:best[1],dist:bd,src:"GeoSphere Austria",t:ts?new Date(ts):null,T:v("TL"),H:v("RF"),W:ms("FF"),G:ms("FFX"),R:v("RR"),Rl:"letzte 10 Min.",Pa:v("P")};
+}
+async function obsDE(){
+ const j=await getJ("https://api.brightsky.dev/current_weather?lat="+place.lat+"&lon="+place.lon);
+ const w=j.weather;if(!w)return null;
+ const so=(j.sources||[])[0]||{};
+ return{name:so.station_name||"DWD-Station",dist:so.distance!=null?so.distance/1000:null,src:"Deutscher Wetterdienst",t:w.timestamp?new Date(w.timestamp):null,T:w.temperature,H:w.relative_humidity,W:w.wind_speed_10,G:w.wind_gust_speed_10,R:w.precipitation_10,Rl:"letzte 10 Min.",Pa:w.pressure_msl};
+}
+async function loadObs(){
+ const sec=$("sec-obs"),el=$("obs");
+ let o=null;
+ try{if(inBox2([46.3,49.1,9.5,17.2]))o=await obsAT()}catch(e){o=null}
+ try{if(!o&&inBox2([47.2,55.1,5.8,15.1]))o=await obsDE()}catch(e){o=null}
+ if(!o||o.T==null){sec.hidden=true;return}
+ const nm=x=>x!=null&&isFinite(x);
+ const cell=(l,v,u)=>'<div class="ob"><span>'+l+"</span><b>"+v+"</b>"+(u?"<small>"+u+"</small>":"")+"</div>";
+ let h='<div class="obs">'+cell("Temperatur",deg(o.T),"")+(nm(o.H)?cell("Luftfeuchte",Math.round(o.H),"%"):"")+(nm(o.W)?cell("Wind",Math.round(o.W),"km/h"):"")+(nm(o.G)?cell("Böen",Math.round(o.G),"km/h"):"")+(nm(o.R)?cell("Niederschlag",fmt(o.R),"mm"):"")+(nm(o.Pa)?cell("Luftdruck",Math.round(o.Pa),"hPa"):"")+"</div>";
+ const age=o.t?Math.round((Date.now()-o.t.getTime())/60000):null;
+ h+='<p class="small">Station '+esc(o.name)+(o.dist!=null?" ("+Math.round(o.dist)+" km entfernt)":"")+", "+esc(o.src)+(o.t?", Stand "+o.t.toLocaleTimeString("de-AT",{hour:"2-digit",minute:"2-digit"})+" Uhr"+(age!=null&&age>=0?" (vor "+age+" Min.)":""):"")+". Niederschlag der letzten 10 Minuten.</p>";
+ el.innerHTML=h;sec.hidden=false;
+}
+
+/* ============ Luft und Pollen ============ */
+const AQ=[[20,"Gut","#2FA66A"],[40,"Ausreichend","#7BC043"],[60,"Mäßig","#E8B923"],[80,"Schlecht","#F08A24"],[100,"Sehr schlecht","#E5484D"],[1e9,"Extrem schlecht","#9B1C4B"]];
+const POL={birch_pollen:"Birke",alder_pollen:"Erle",grass_pollen:"Gräser",mugwort_pollen:"Beifuß",ragweed_pollen:"Ambrosia",olive_pollen:"Olive"};
+async function loadAir(){
+ const el=$("air");
+ try{
+  const j=await getJ("https://air-quality-api.open-meteo.com/v1/air-quality?latitude="+(+place.lat).toFixed(3)+"&longitude="+(+place.lon).toFixed(3)+"&current=european_aqi,pm2_5,pm10,ozone,nitrogen_dioxide&hourly="+Object.keys(POL).join(",")+"&forecast_days=2&timezone=auto");
+  const c=j.current||{},a=c.european_aqi;
+  let h="";
+  if(a!=null){
+   const q=AQ.find(x=>a<=x[0]);
+   const u=(l,x)=>x!=null?"<span>"+l+" <b>"+Math.round(x)+"</b> µg/m³</span>":"";
+   h+='<div class="aq"><div class="aqv" style="--aq:'+q[2]+'"><b>'+Math.round(a)+"</b><span>"+q[1]+'</span></div><div class="aqd"><span>Europäischer Luftqualitätsindex</span>'+u("Feinstaub PM2,5",c.pm2_5)+u("Feinstaub PM10",c.pm10)+u("Ozon",c.ozone)+u("Stickstoffdioxid",c.nitrogen_dioxide)+"</div></div>";
+  }
+  const H=j.hourly||{},T=H.time||[],now=c.time||"",s0=Math.max(0,T.findIndex(t=>t>=now.slice(0,13)+":00"));
+  const any=Object.keys(POL).some(k=>(H[k]||[]).some(x=>x!=null));
+  const rows=Object.keys(POL).map(k=>{const v=(H[k]||[]).slice(s0,s0+24).filter(x=>x!=null);return[k,v.length?Math.max(...v):null]}).filter(r=>r[1]!=null&&r[1]>=1);
+  if(!any)h+='<p class="small">Pollendaten gibt es nur für Europa.</p>';
+  else if(!rows.length)h+='<p class="small" style="margin-top:12px">Pollen: In den nächsten 24 Stunden ist kein nennenswerter Pollenflug zu erwarten.</p>';
+  else h+='<div class="pol">'+rows.map(([k,v])=>{const l=v<10?["gering","#7BC043"]:v<50?["mittel","#E8B923"]:v<200?["hoch","#F08A24"]:["sehr hoch","#E5484D"];return'<div class="pl"><span>'+POL[k]+'</span><i style="--w:'+Math.min(100,Math.max(6,v/200*100)).toFixed(0)+"%;--c:"+l[1]+'"></i><b>'+l[0]+"</b></div>"}).join("")+"</div>";
+  h+='<p class="small">Modelldaten des europäischen Copernicus-Dienstes (CAMS) über Open-Meteo. Pollen: höchster Wert der nächsten 24 Stunden.</p>';
+  el.innerHTML=h;
+ }catch(e){el.innerHTML='<p class="muted">Luft- und Pollendaten konnten nicht geladen werden.</p>'}
+}
+
+/* ============ Rückblick ============ */
+async function loadPast(){
+ const el=$("past");
+ try{
+  const j=await getJ("https://api.open-meteo.com/v1/forecast?latitude="+(+place.lat).toFixed(3)+"&longitude="+(+place.lon).toFixed(3)+"&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum&past_days=7&forecast_days=1&timezone=auto");
+  const D=j.daily,n=D.time.length-1,ix=[];for(let i=Math.max(0,n-7);i<n;i++)ix.push(i);
+  const pr=i=>+D.precipitation_sum[i]||0,mx=Math.max(1,...ix.map(pr)),sum=ix.reduce((a,i)=>a+pr(i),0);
+  el.innerHTML='<p class="psum">'+(sum<0.1?"In den letzten 7 Tagen ist kein Niederschlag gefallen.":"In den letzten 7 Tagen fielen etwa <b>"+fmt(sum)+" mm</b> Niederschlag.")+"</p>"+
+   ix.reverse().map((i,k)=>{const dt=new Date(D.time[i]+"T12:00"),nm=k===0?"Gestern":dt.toLocaleDateString("de-AT",{weekday:"short"}).replace(".","");
+    return'<div class="pr"><div class="dn"><b>'+nm+"</b><span>"+dt.getDate()+"."+(dt.getMonth()+1)+".</span></div><div>"+ic(kind(D.weather_code[i],true),26)+'</div><div class="pm">'+(pr(i)>=0.1?'<i style="width:'+Math.max(4,pr(i)/mx*70).toFixed(0)+'%"></i>':"")+"<span>"+(pr(i)>=0.1?fmt(pr(i))+" mm":"trocken")+"</span>"+'</div><div class="pt">'+deg(D.temperature_2m_max[i])+" <span>/ "+deg(D.temperature_2m_min[i])+"</span></div></div>"}).join("")+
+   '<p class="small">Werte aus Wettermodellen über Open-Meteo, keine Messungen.</p>';
+ }catch(e){el.innerHTML='<p class="muted">Der Rückblick konnte nicht geladen werden.</p>'}
+}
+
+/* ============ Modellvergleich ============ */
+const MODELS=[["icon_d2","ICON-D2","#1F6FEB"],["icon_eu","ICON-EU","#12A4A0"],["ecmwf_ifs025","ECMWF","#F08A24"],["gfs_seamless","GFS","#8E5BEA"]];
+let mcData=null;
+async function loadModels(){
+ const el=$("models");
+ try{
+  const j=await getJ("https://api.open-meteo.com/v1/forecast?latitude="+(+place.lat).toFixed(3)+"&longitude="+(+place.lon).toFixed(3)+"&hourly=temperature_2m,precipitation&models="+MODELS.map(m=>m[0]).join(",")+"&forecast_hours=48&timezone=auto");
+  mcData=j;renderModels();
+ }catch(e){mcData=null;el.innerHTML='<p class="muted">Der Modellvergleich konnte nicht geladen werden.</p>'}
+}
+function renderModels(){
+ const j=mcData,el=$("models");if(!j||!j.hourly)return;
+ const H=j.hourly,T=H.time||[],n=T.length;if(n<2)return;
+ const off=(+j.utc_offset_seconds||0)*1000;
+ const ser=MODELS.map(m=>({nm:m[1],c:m[2],t:(H["temperature_2m_"+m[0]]||[]).map(x=>x==null?null:+x),p:(H["precipitation_"+m[0]]||[]).map(x=>x==null?null:+x)})).filter(x=>x.t.some(v=>v!=null));
+ if(kcActive()){const kt=[],kp=[];T.forEach(t=>{const x=kcAt(Date.parse(t+"Z")-off);kt.push(x&&x.T!=null?x.T:null);kp.push(x&&x.P!=null?x.P:null)});if(kt.some(v=>v!=null))ser.push({nm:"Kachelmann",c:"#E5484D",t:kt,p:kp,k:1})}
+ if(!ser.length){el.innerHTML='<p class="muted">Für diesen Ort gibt es keine Modelldaten.</p>';return}
+ const all=ser.flatMap(x=>x.t).filter(v=>v!=null),lo=Math.floor(Math.min(...all)-1),hi=Math.ceil(Math.max(...all)+1);
+ const W=Math.max(300,Math.min(720,Math.round(el.clientWidth||360))),Hh=200,L=34,R=8,Tp=10,B=26,x=i=>L+i*(W-L-R)/(n-1),y=v=>Tp+(hi-v)/((hi-lo)||1)*(Hh-Tp-B);
+ let g="";
+ const step=Math.max(1,Math.round((hi-lo)/4));
+ for(let v=Math.ceil(lo/step)*step;v<=hi;v+=step)g+='<line class="gl" x1="'+L+'" x2="'+(W-R)+'" y1="'+y(v).toFixed(1)+'" y2="'+y(v).toFixed(1)+'"/><text class="ax" x="'+(L-6)+'" y="'+(y(v)+4).toFixed(1)+'" text-anchor="end">'+deg(v)+"</text>";
+ T.forEach((t,i)=>{const hh=t.slice(11,13);if(hh==="00"||hh==="12"||i===0){const lab=i===0?"Jetzt":hh==="00"?new Date(t.slice(0,10)+"T12:00").toLocaleDateString("de-AT",{weekday:"short"}).replace(".",""):"12 Uhr";g+='<text class="ax" x="'+x(i).toFixed(1)+'" y="'+(Hh-8)+'" text-anchor="'+(i===0?"start":"middle")+'">'+lab+"</text>"+(i?'<line class="gl" x1="'+x(i).toFixed(1)+'" x2="'+x(i).toFixed(1)+'" y1="'+Tp+'" y2="'+(Hh-B)+'"/>':"")}});
+ ser.forEach(sr=>{let d="",pen=false;sr.t.forEach((v,i)=>{if(v==null){pen=false;return}d+=(pen?"L":"M")+x(i).toFixed(1)+" "+y(v).toFixed(1);pen=true});g+='<path d="'+d+'" fill="none" stroke="'+sr.c+'" stroke-width="'+(sr.k?3:2)+'" stroke-linejoin="round" stroke-linecap="round"/>'});
+ const p24=sr=>{const v=sr.p.slice(0,24).filter(x=>x!=null);return v.length?v.reduce((a,b)=>a+b,0):null};
+ const t24=ser.map(sr=>sr.t[Math.min(24,n-1)]).filter(v=>v!=null),spread=t24.length>1?Math.max(...t24)-Math.min(...t24):0;
+ el.innerHTML='<svg viewBox="0 0 '+W+" "+Hh+'" role="img" aria-label="Temperaturverlauf der nächsten 48 Stunden je Wettermodell">'+g+'</svg><div class="mlg">'+ser.map(sr=>{const p=p24(sr);return'<span style="--c:'+sr.c+'"><i></i>'+sr.nm+(p!=null?" <b>"+fmt(p)+" mm</b>":"")+"</span>"}).join("")+"</div>"+
+  '<p class="small">Linien: Temperatur der nächsten 48 Stunden. Zahl: Niederschlag der nächsten 24 Stunden. In 24 Stunden liegen die Modelle bei der Temperatur '+(spread<1?"fast gleichauf":"bis zu "+fmt(spread)+"° auseinander")+". ICON-D2 deckt nur Mitteleuropa ab.</p>";
+}
+
+/* ============ Trend bis 14 Tage ============ */
+async function loadTrend(){
+ const el=$("trend");
+ let rows=null,src="";
+ try{
+  const t=window.__worker&&window.__worker.token()?kcTarget():null;
+  if(t){
+   const res=await kcFetch("forecast/"+t.o.lat+"/"+t.o.lon+"/trend14days");
+   if(res.s===200){
+    const j=JSON.parse(res.b),R=kcRows(j);
+    if(R.length){
+     const ks=Object.keys(R[0]);
+     const kd=kcKey(ks,["dateTime","date","day","time"],/date|time|day/i);
+     const kx=kcKey(ks,["tempMax","temperatureMax","maxTemp","tmax","tempMax2m"],/max/i,/wind|gust|prec|prob/i);
+     const kn=kcKey(ks,["tempMin","temperatureMin","minTemp","tmin","tempMin2m"],/min/i,/wind|gust|prec|prob/i);
+     const kp=kcKey(ks,["prec","precSum","precipitation","prec24h","precTotal"],/^prec/i,/prob|chance/i);
+     const kr=kcKey(ks,["precProb","precipitationProbability"],/prob|chance/i);
+     const r=R.map(x=>({d:kcDate(x[kd]),hi:kcNum(x[kx]),lo:kcNum(x[kn]),p:kp?kcNum(x[kp]):null,pr:kr?kcNum(x[kr]):null})).filter(x=>x.d&&x.hi!=null&&x.lo!=null);
+     if(r.length>=8){rows=r.map(x=>({date:new Date(x.d.getTime()+((lastJ&&+lastJ.utc_offset_seconds)||0)*1000).toISOString().slice(0,10),hi:x.hi,lo:x.lo,p:x.p,pr:x.pr,code:null}));src="KachelmannWetter, 14-Tage-Trend"}
+    }
+   }
+  }
+ }catch(e){rows=null}
+ if(!rows){
+  try{
+   const j=await getJ("https://api.open-meteo.com/v1/forecast?latitude="+(+place.lat).toFixed(3)+"&longitude="+(+place.lon).toFixed(3)+"&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max&forecast_days=14&timezone=auto");
+   const D=j.daily;rows=D.time.map((d,i)=>({date:d,hi:D.temperature_2m_max[i],lo:D.temperature_2m_min[i],p:D.precipitation_sum[i],pr:D.precipitation_probability_max?D.precipitation_probability_max[i]:null,code:D.weather_code[i]}));src="Open-Meteo (Wettermodelle)";
+  }catch(e){el.innerHTML='<p class="muted">Der 14-Tage-Trend konnte nicht geladen werden.</p>';return}
+ }
+ const first=lastJ&&lastJ.daily?lastJ.daily.time[lastJ.daily.time.length-1]:null;
+ const R=rows.filter(r=>!first||r.date>first).slice(0,7);
+ if(!R.length){el.innerHTML='<p class="muted">Keine Trenddaten verfügbar.</p>';return}
+ const mn=Math.min(...R.map(r=>r.lo)),mx=Math.max(...R.map(r=>r.hi)),span=(mx-mn)||1;
+ el.innerHTML=R.map(r=>{const dt=new Date(r.date+"T12:00"),l=(r.lo-mn)/span*100,wd=Math.max(8,(r.hi-r.lo)/span*100);
+  const k=r.code!=null?kind(r.code,true):r.p!=null&&r.p>=1?(r.hi<=1?"snow":"rain"):null;
+  return'<div class="dw"><div class="day" style="cursor:default"><div class="dn"><b>'+dt.toLocaleDateString("de-AT",{weekday:"short"}).replace(".","")+"</b><span>"+dt.getDate()+"."+(dt.getMonth()+1)+".</span></div><div>"+(k?ic(k,30):"")+'</div><div class="dp">'+(r.pr!=null&&r.pr>=10?"<span>"+Math.round(r.pr)+" %</span>":"")+(r.p!=null&&r.p>=0.1?"<small>"+fmt(r.p)+" mm</small>":"")+'</div><div class="dlo">'+deg(r.lo)+'</div><div class="dbar"><i style="left:'+l.toFixed(1)+"%;width:"+Math.min(wd,100-l).toFixed(1)+"%;background:linear-gradient(90deg,"+tcol(r.lo)+","+tcol(r.hi)+')"></i></div><div class="dhi">'+deg(r.hi)+"</div><div></div></div></div>"}).join("")+
+  '<p class="small">Tag 8 bis 14. Quelle: '+esc(src)+". Je weiter weg, desto unsicherer.</p>";
+}
+
+/* ============ Warnungen auf der Karte (Deutschland, DWD) ============ */
+let wrnLayer=null,wrnOn=false;
+try{wrnOn=localStorage.getItem("wetter-wrn")==="1"}catch(e){}
+function setWarnLayer(){
+ if(!map)return;
+ $("wrn").classList.toggle("on",wrnOn);$("wrn").setAttribute("aria-pressed",wrnOn?"true":"false");
+ try{
+  if(!wrnOn){if(wrnLayer){map.removeLayer(wrnLayer);wrnLayer=null}$("wnote").textContent="";return}
+  if(!wrnLayer)wrnLayer=L.tileLayer.wms("https://maps.dwd.de/geoserver/dwd/wms",{layers:"dwd:Warnungen_Gemeinden",format:"image/png",transparent:true,opacity:.55,zIndex:4,attribution:"Warnungen: DWD"}).addTo(map);
+  $("wnote").textContent="Warnungen auf der Karte: amtliche Warnungen des Deutschen Wetterdienstes, nur für Deutschland. Für Österreich stehen die Warnungen oben in der Kachel „Warnungen“.";
+ }catch(e){wrnLayer=null}
+}
+$("wrn").onclick=()=>{wrnOn=!wrnOn;try{localStorage.setItem("wetter-wrn",wrnOn?"1":"0")}catch(e){}setWarnLayer()};
+
+/* ============ Benachrichtigungen ============ */
+const isIOS=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
+const standalone=()=>matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
+let pushKey=null,pushSub=null;
+function pushPrefs(){try{return JSON.parse(localStorage.getItem("wetter-push"))||{}}catch(e){return{}}}
+function b64uToU8(s){s=s.replace(/-/g,"+").replace(/_/g,"/");s+="===".slice((s.length+3)%4);return Uint8Array.from(atob(s),c=>c.charCodeAt(0))}
+async function wapi(path,body){
+ const W=window.__worker,tok=W&&W.token();if(!tok)throw new Error("login");
+ const r=await fetch(W.base+path,{method:body?"POST":"GET",headers:{Authorization:"Bearer "+tok,"Content-Type":"application/json"},body:body?JSON.stringify(body):undefined});
+ let j={};try{j=await r.json()}catch(e){}
+ if(!r.ok){const e=new Error(j.error||String(r.status));e.status=r.status;throw e}
+ return j;
+}
+async function renderPush(){
+ const el=$("push");
+ if(!("serviceWorker" in navigator)||!("PushManager" in window)||!("Notification" in window)){
+  el.innerHTML='<p class="muted">'+(isIOS&&!standalone()?"Auf dem iPhone gibt es Benachrichtigungen nur, wenn die Seite als App auf dem Home-Bildschirm liegt: Tippe in Safari auf das Teilen-Symbol, dann auf „Zum Home-Bildschirm“, und öffne die Wetter-App von dort.":"Dieser Browser unterstützt keine Benachrichtigungen.")+"</p>";return}
+ let reg=null;try{reg=await Promise.race([navigator.serviceWorker.ready,new Promise(r=>setTimeout(()=>r(null),4000))])}catch(e){}
+ if(!reg){el.innerHTML='<p class="muted">Benachrichtigungen sind gerade nicht verfügbar.</p>';return}
+ try{pushSub=await reg.pushManager.getSubscription()}catch(e){pushSub=null}
+ if(!pushKey){try{pushKey=(await wapi("/push/key")).key}catch(e){if(e.status===503){el.innerHTML='<p class="muted">Im Cloudflare-Worker fehlt noch die Einrichtung für Benachrichtigungen (Speicher und Zeitplan). Die Anleitung dazu bekommst du im Chat.</p>';return}}}
+ const pr=pushPrefs(),rain=pr.rain!==false,warn=pr.warn!==false;
+ const on=!!pushSub&&!!pr.name;
+ el.innerHTML='<div class="pushbox">'+(on?"<p>Aktiv für <b>"+esc(pr.name)+"</b>.</p>":"<p>Lass dich benachrichtigen, kurz bevor es regnet oder wenn eine amtliche Wetterwarnung kommt.</p>")+
+  '<label><input type="checkbox" id="pu-rain"'+(rain?" checked":"")+'> Regen oder Schnee in den nächsten 45 Minuten</label>'+
+  '<label><input type="checkbox" id="pu-warn"'+(warn?" checked":"")+'> Neue amtliche Wetterwarnungen</label>'+
+  '<div class="row">'+(on?'<button type="button" class="cbtn pri" id="pu-save">Für '+esc(place.name)+' verwenden</button><button type="button" class="cbtn" id="pu-test">Test senden</button><button type="button" class="cbtn" id="pu-off">Ausschalten</button>':'<button type="button" class="cbtn pri" id="pu-on">Für '+esc(place.name)+" einschalten</button>")+'</div><p class="small" id="pu-msg">Geprüft wird alle 10 Minuten. Grundlage für Regen ist die 15-Minuten-Vorhersage, nicht das Radar.</p></div>';
+ const msg=t=>{$("pu-msg").textContent=t};
+ const save=async sub=>{const r=$("pu-rain").checked,w=$("pu-warn").checked;await wapi("/push/sub",{sub:sub.toJSON(),lat:+place.lat,lon:+place.lon,name:place.name,rain:r,warn:w});try{localStorage.setItem("wetter-push",JSON.stringify({name:place.name,rain:r,warn:w}))}catch(e){}};
+ if($("pu-on"))$("pu-on").onclick=async()=>{
+  try{
+   const perm=await Notification.requestPermission();
+   if(perm!=="granted"){msg("Benachrichtigungen sind nicht erlaubt. Du kannst das in den Einstellungen deines Handys ändern.");return}
+   if(!pushKey)pushKey=(await wapi("/push/key")).key;
+   const sub=pushSub||await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:b64uToU8(pushKey)});
+   await save(sub);pushSub=sub;renderPush();
+  }catch(e){msg("Das Einschalten hat nicht geklappt"+(e.status===503?": Im Worker fehlt noch die Einrichtung.":". Versuche es noch einmal."))}
+ };
+ if($("pu-save"))$("pu-save").onclick=async()=>{try{await save(pushSub);renderPush()}catch(e){msg("Speichern hat nicht geklappt.")}};
+ if($("pu-test"))$("pu-test").onclick=async()=>{try{await wapi("/push/test",{endpoint:pushSub.endpoint});msg("Test-Nachricht ist unterwegs.")}catch(e){msg("Die Test-Nachricht konnte nicht gesendet werden.")}};
+ if($("pu-off"))$("pu-off").onclick=async()=>{try{await wapi("/push/unsub",{endpoint:pushSub.endpoint})}catch(e){}try{await pushSub.unsubscribe()}catch(e){}try{localStorage.removeItem("wetter-push")}catch(e){}pushSub=null;renderPush()};
+}
+let mcT=0;addEventListener("resize",()=>{clearTimeout(mcT);mcT=setTimeout(()=>{if(mcData)renderModels()},250)});
+try{if("serviceWorker" in navigator&&location.protocol==="https:")navigator.serviceWorker.register("sw.js").catch(()=>{})}catch(e){}
 
 /* ============ Stundenleiste am PC: Pfeile, Mausrad, Ziehen ============ */
 (function(){
