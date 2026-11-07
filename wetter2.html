@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-0Rz5cZOVXy+N0CyPYp/+s9VoLd9IW4CzkUIr/Xbr87g=' 'sha256-rtD+YnjjlK/qdTffRRM0+dg5HIzXWVMndWiYx7RbciI=' https://unpkg.com https://cdnjs.cloudflare.com; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com; connect-src 'self' https://api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'none'; manifest-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-KjlWtCuIY13+AM+HLZlkFXRgSfTLxQ/tgBtRoSfPtHU=' 'sha256-rtD+YnjjlK/qdTffRRM0+dg5HIzXWVMndWiYx7RbciI=' https://unpkg.com https://cdnjs.cloudflare.com; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com; connect-src 'self' https://api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'none'; manifest-src 'none'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -11,8 +11,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Wetter">
 <title>Wetter</title>
-<meta name="app-build" content="14">
-<meta name="app-notes" content="Am PC lässt sich die Stundenleiste jetzt mit den Pfeilen, dem Mausrad oder durch Ziehen mit der Maus verschieben.">
+<meta name="app-build" content="15">
+<meta name="app-notes" content="Radar-Prognose: Der Regen zieht jetzt mit dem Höhenwind weiter, statt zu verschwinden. Wo Kachelmann Daten liefert, kommen Stunden, 7 Tage und Temperatur nur noch von Kachelmann.">
 <script>/* alte Adresse wetter2.html -> neue Startseite */
 try{if(top!==self)document.documentElement.style.display="none"}catch(e){document.documentElement.style.display="none"}
 window.__redir=/\/wetter2\.html$/i.test(location.pathname);
@@ -129,6 +129,7 @@ main{position:relative;z-index:1;max-width:1180px;margin:-30px auto 0;padding:0 
 .kc-tab th:first-child,.kc-tab td:first-child{text-align:left}
 .kc-tab td:first-child{color:var(--muted)}
 .kc-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+#kcsrc{display:none!important}
 .kc-src{display:inline-flex;flex-wrap:nowrap;margin:0;padding:3px;gap:0;border-radius:11px;background:var(--tile)}
 .kc-src button{border:0!important;background:transparent!important;padding:5px 11px!important;font-size:12.5px!important;font-weight:600;min-height:30px;color:var(--muted)!important;border-radius:8px!important}
 .kc-src button.on{background:var(--card)!important;color:var(--ink)!important;box-shadow:0 1px 3px rgba(0,0,0,.14)}
@@ -529,6 +530,7 @@ function renderAll(j){
  $("desc").textContent=(DESC[c.weather_code]||"Unbekannt")+", gefühlt "+deg(c.apparent_temperature);
  $("range").innerHTML="<span>Höchstens "+deg(j.daily.temperature_2m_max[0])+",</span> <span>Tiefstwert "+deg(j.daily.temperature_2m_min[0])+"</span>";
  renderHours(j,c);renderDays(j);renderFacts(j,c);
+ kcApplyHeader();
  heroSay();
 }
 /* Der Satz oben: zuerst die 15-Minuten-Vorschau, danach die Stundenprognose */
@@ -545,6 +547,14 @@ function heroSay(){
  else if(n&&n.wet0){a={rain:"Es regnet.",snow:"Es schneit.",mix:"Es fällt Schneeregen."}[n.ty0]||"Es regnet.";b=n.end<0?"Das hält noch mindestens 2 Stunden an.":"Ab etwa "+n.tEnd+" Uhr wird es trocken."}
  else if(n&&n.first>=0){a="Ab "+n.tFirst+" "+({rain:"regnet es.",snow:"schneit es.",mix:"kommt Schneeregen."}[n.tyF]||"regnet es.");b=SUB[n.tyF]||SUB.rain}
  else if(storm>=0&&H.time[s+storm]){a="Ab etwa "+(+H.time[s+storm].slice(11,13))+" Uhr sind Gewitter möglich.";b="Behalte das Radar im Blick."}
+ else if(kcActive()){
+  const t0=Date.now()+(n?2*3600000:0),rows=kcDaily.h1.filter(x=>x.d.getTime()>=t0-1800000&&x.d.getTime()<=Date.now()+12*3600000);
+  const r=rows.find(x=>x.P!=null&&x.P>=0.3);
+  const cx=kcAt(Date.now())||{},day=cx.D!=null?cx.D:!!(c.is_day==null?1:c.is_day);
+  if(r&&r.d.getTime()-Date.now()<3600000){a="Es kann jederzeit regnen.";b=SUB.rain}
+  else if(r){const sn=r.T!=null&&r.T<=0.5;a="Bis "+r.d.getHours()+" Uhr bleibt es trocken.";b=sn?"Danach kann es schneien.":"Danach wird Regen wahrscheinlich."}
+  else{a=day?"Es bleibt trocken.":"Die Nacht bleibt trocken.";b=cx.C!=null?(cx.C>=75?"Bewölkt, aber ohne Regen.":cx.C>=30?(day?"Mal Sonne, mal Wolken.":"Ein paar Wolken."):(day?"Viel Sonne.":"Der Himmel ist klar.")):"Kein Regen in Sicht."}
+ }
  else{
   let w=-1;
   for(let k=n?2:0;k<12&&s+k<H.time.length;k++){
@@ -575,37 +585,55 @@ function renderHours(j,c){
  const H=j.hourly,t0=H.time.findIndex(t=>t>=c.time.slice(0,13)+":00"),s=t0<0?0:t0,n=Math.min(25,H.time.length-s);
  if(n<2){$("hours").innerHTML="";return}
  let h="";
+ const off=(+j.utc_offset_seconds||0)*1000,ka=kcActive();
  for(let k=0;k<n;k++){
   const i=s+k,hh=H.time[i].slice(11,13),day=H.is_day?H.is_day[i]:(+hh>=7&&+hh<=18?1:0);
+  const kx=ka?kcAt(Date.parse(H.time[i]+"Z")-off):null;
   const lab=k===0?"Jetzt":hh==="00"?new Date(H.time[i].slice(0,10)+"T12:00").toLocaleDateString("de-AT",{weekday:"short"}).replace(".","")+" 0 Uhr":(+hh)+" Uhr";
-  const p=H.precipitation_probability?Math.round(+H.precipitation_probability[i]||0):null;
-  const mm=H.precipitation?+H.precipitation[i]||0:0,sn=H.snowfall?+H.snowfall[i]||0:0;
-  const ty=mm>=0.1?(sn>0&&sn*0.7>=mm*0.5?"snow":"rain"):"";
-  h+='<div class="hc'+(k===0?" now":"")+'"><span class="hc-t">'+lab+"</span>"+ic(kind(H.weather_code[i],!!day))+"<b>"+deg(H.temperature_2m[i])+"</b>"+
+  let p=H.precipitation_probability?Math.round(+H.precipitation_probability[i]||0):null;
+  let mm=H.precipitation?+H.precipitation[i]||0:0,tt=H.temperature_2m[i],kk=kind(H.weather_code[i],!!day);
+  const sn=H.snowfall?+H.snowfall[i]||0:0;
+  let ty=mm>=0.1?(sn>0&&sn*0.7>=mm*0.5?"snow":"rain"):"";
+  if(kx){if(kx.T!=null)tt=kx.T;mm=kx.P!=null?kx.P:0;p=kx.Pr!=null?Math.round(kx.Pr):null;kk=kcKind(kx,H.weather_code[i],kx.D!=null?kx.D:!!day);ty=mm>=0.1?(kx.T!=null&&kx.T<=0.5?"snow":"rain"):""}
+  h+='<div class="hc'+(k===0?" now":"")+'"><span class="hc-t">'+lab+"</span>"+ic(kk)+"<b>"+deg(tt)+"</b>"+
    (p!=null?'<span class="hc-p'+(p>=30?" wet":"")+'">'+DROP_S+p+" %</span>":"")+'<span class="hc-m '+ty+'">'+(ty?fmt(mm)+" mm":"")+"</span></div>";
  }
- $("hours").innerHTML='<div class="hstrip">'+h+"</div>";
+ $("hours").innerHTML='<div class="hstrip">'+h+"</div>"+(ka?'<p class="small">Werte von KachelmannWetter.</p>':"");
 }
 const CHEV='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
-function isSnowDay(i){const D=lastJ&&lastJ.daily;return!!(D&&[71,73,75,77,85,86].includes(D.weather_code[i]))}
+function isSnowDay(i){const v=dayVals(i);return!!(v&&v.snow)}
 function dayMm(i){
+ const v=dayVals(i);return v?v.mm:null;
+}
+/* Tageswerte: Kachelmann, wenn der Tag abgedeckt ist, sonst Open-Meteo */
+function dayVals(i){
  const j=lastJ;if(!j)return null;
- const k=kcDayStat(j.daily.time[i]);
- if(k&&k.P!=null)return k.P;
- const v=j.daily.precipitation_sum?j.daily.precipitation_sum[i]:null;
- return v==null?null:+v;
+ const D=j.daily,date=D.time[i];
+ const om={lo:D.temperature_2m_min[i],hi:D.temperature_2m_max[i],mm:D.precipitation_sum&&D.precipitation_sum[i]!=null?+D.precipitation_sum[i]:null,p:D.precipitation_probability_max?D.precipitation_probability_max[i]:null,k:kind(D.weather_code[i],true),src:"om",snow:[71,73,75,77,85,86].includes(D.weather_code[i])};
+ const off=(+j.utc_offset_seconds||0)*1000,f=a=>(a||[]).filter(x=>x.d&&new Date(x.d.getTime()+off).toISOString().slice(0,10)===date);
+ let R=f(kcDaily.h1),kk="1h";
+ if(R.length<20){R=f(kcDaily.h6);kk="6h";if(R.length<4)return om}
+ const kd={kind:kk};
+ const Tn=R.map(r=>r.Tn!=null?r.Tn:r.T).filter(x=>x!=null),Tx=R.map(r=>r.Tx!=null?r.Tx:r.T).filter(x=>x!=null);
+ if(!Tn.length||!Tx.length)return om;
+ const Ps=R.map(r=>r.P).filter(x=>x!=null),mm=Ps.length?Ps.reduce((a,x)=>a+x,0):null;
+ const Pr=R.map(r=>r.Pr).filter(x=>x!=null);
+ const lo=Math.min(...Tn),hi=Math.max(...Tx),snow=mm!=null&&mm>=0.5&&hi<=1;
+ const Cs=R.map(r=>r.C).filter(x=>x!=null),cav=Cs.length?Cs.reduce((a,x)=>a+x,0)/Cs.length:null;
+ const k=mm!=null&&mm>=0.5?(snow?"snow":"rain"):cav!=null?(cav>=75?"cloud":cav>=30?"pcd":"sun"):(om.k==="rain"||om.k==="snow"||om.k==="storm"?"cloud":om.k);
+ return{lo,hi,mm,p:Pr.length?Math.max(...Pr):null,k,src:kd.kind==="1h"?"k1":"k6",snow};
 }
 function renderDays(j){
  lastJ=j;
- const D=j.daily,mn=Math.min(...D.temperature_2m_min),mx=Math.max(...D.temperature_2m_max),span=(mx-mn)||1;
+ const D=j.daily,V=D.time.map((d,i)=>dayVals(i)),mn=Math.min(...V.map(v=>v.lo)),mx=Math.max(...V.map(v=>v.hi)),span=(mx-mn)||1;
  $("days").innerHTML=D.time.map((d,i)=>{
   const dt=new Date(d+"T12:00");
   const name=i===0?"Heute":i===1?"Morgen":dt.toLocaleDateString("de-AT",{weekday:"short"}).replace(".","");
-  const lo=D.temperature_2m_min[i],hi=D.temperature_2m_max[i];
+  const v=V[i],lo=v.lo,hi=v.hi;
   const l=(lo-mn)/span*100,wd=Math.max(8,(hi-lo)/span*100);
-  const p=D.precipitation_probability_max?D.precipitation_probability_max[i]:0;
-  const mm=dayMm(i);
-  return'<div class="dw" data-i="'+i+'"><div class="day" role="button" tabindex="0" aria-expanded="false" aria-label="Details für '+esc(name)+' ein- oder ausklappen"><div class="dn"><b>'+name+'</b><span>'+dt.getDate()+"."+(dt.getMonth()+1)+".</span></div><div>"+ic(kind(D.weather_code[i],true),30)+'</div><div class="dp">'+(p>=10?"<span>"+Math.round(+p)+" %</span>":"")+(mm!=null&&mm>=0.1?"<small"+(isSnowDay(i)?' class="snow"':"")+">"+fmt(mm)+" mm</small>":"")+'</div><div class="dlo">'+deg(lo)+'</div><div class="dbar"><i style="left:'+l.toFixed(1)+"%;width:"+Math.min(wd,100-l).toFixed(1)+"%;background:linear-gradient(90deg,"+tcol(lo)+","+tcol(hi)+')"></i></div><div class="dhi">'+deg(hi)+'</div><div class="dch">'+CHEV+'</div></div><div class="dd" hidden></div></div>';
+  const p=v.p==null?0:v.p;
+  const mm=v.mm;
+  return'<div class="dw" data-i="'+i+'"><div class="day" role="button" tabindex="0" aria-expanded="false" aria-label="Details für '+esc(name)+' ein- oder ausklappen"><div class="dn"><b>'+name+'</b><span>'+dt.getDate()+"."+(dt.getMonth()+1)+".</span></div><div>"+ic(v.k,30)+'</div><div class="dp">'+(p>=10?"<span>"+Math.round(+p)+" %</span>":"")+(mm!=null&&mm>=0.1?"<small"+(isSnowDay(i)?' class="snow"':"")+">"+fmt(mm)+" mm</small>":"")+'</div><div class="dlo">'+deg(lo)+'</div><div class="dbar"><i style="left:'+l.toFixed(1)+"%;width:"+Math.min(wd,100-l).toFixed(1)+"%;background:linear-gradient(90deg,"+tcol(lo)+","+tcol(hi)+')"></i></div><div class="dhi">'+deg(hi)+'</div><div class="dch">'+CHEV+'</div></div><div class="dd" hidden></div></div>';
  }).join("");
  openDays.forEach(i=>setDay(i,true));
 }
@@ -651,22 +679,23 @@ function dayDetail(i){
  const body=slots.map(s=>{
   const o=omAt(s.h)||{},K=s.k||{};
   const T=K.T!=null?K.T:o.T,P=K.P!=null?K.P:o.P,W=K.W!=null?K.W:o.W,G=K.G!=null?K.G:o.G;
-  const icn=o.code!=null?ic(kind(o.code,!!o.day),24):"";
+  const kk=s.k?kcKind(K,o.code!=null?o.code:3,K.D!=null?K.D:!!o.day):(o.code!=null?kind(o.code,!!o.day):null);
+  const icn=kk?ic(kk,24):"";
   return"<tr><td>"+String(s.h).padStart(2,"0")+":00</td><td>"+icn+"</td><td>"+(T==null?"–":deg(T))+"</td><td>"+(P==null?"–":fmt(P)+" "+esc(pu))+"</td><td>"+(W==null?"–":Math.round(W)+" "+esc(wu))+(G!=null&&W!=null&&G>W+8?" · Böen "+Math.round(G):"")+"</td></tr>";
  }).join("");
- const st=kcDayStat(date);
- const om=D.precipitation_sum?D.precipitation_sum[i]:null;
- const pmm=st&&st.P!=null?st.P:om;
- const pp=D.precipitation_probability_max?D.precipitation_probability_max[i]:null;
+ const dv=dayVals(i)||{};
+ const pmm=dv.mm,st=dv.src&&dv.src!=="om";
+ const pp=dv.p;
  const dayW=[];for(let h=0;h<24;h++){const o=omAt(h);if(o&&o.W!=null)dayW.push(o.W)}
  const gu=[];for(let h=0;h<24;h++){const o=omAt(h);if(o&&o.G!=null)gu.push(o.G)}
  const parts=[];
- parts.push("<span>Niederschlag <b>"+(pmm==null?"–":(pmm<0.1?"keiner":fmt(pmm)+" mm"))+"</b>"+(pmm!=null?" ("+(st?"Kachelmann":"Open-Meteo")+")":"")+"</span>");
+ parts.push("<span>"+(st?"Tiefst- und Höchstwert <b>"+deg(dv.lo)+" / "+deg(dv.hi)+"</b></span><span>":"")+"Niederschlag <b>"+(pmm==null?"–":(pmm<0.1?"keiner":fmt(pmm)+" mm"))+"</b>"+(pmm!=null?" ("+(st?"Kachelmann":"Open-Meteo")+")":"")+"</span>");
  if(pp!=null)parts.push("<span>Regenwahrscheinlichkeit <b>"+Math.round(+pp)+" %</b></span>");
+ if(st){const Ws=(kd&&kd.rows||[]).map(r=>r.W).filter(x=>x!=null),Gs=(kd&&kd.rows||[]).map(r=>r.G).filter(x=>x!=null);dayW.length=0;gu.length=0;dayW.push(...Ws);gu.push(...Gs)}
  if(dayW.length)parts.push("<span>Wind bis <b>"+Math.round(Math.max(...dayW))+" km/h</b>"+(gu.length?", Böen "+Math.round(Math.max(...gu)):"")+"</span>");
  if(D.sunrise&&D.sunset)parts.push("<span>Sonne <b>"+D.sunrise[i].slice(11,16)+"–"+D.sunset[i].slice(11,16)+"</b></span>");
  if(D.uv_index_max&&D.uv_index_max[i]!=null)parts.push("<span>UV <b>"+fmt(D.uv_index_max[i])+"</b></span>");
- const note=src==="k1"?"Kachelmann, stündliche Werte, ergänzt mit Open-Meteo (Symbole und fehlende Werte).":src==="k6"?"Kachelmann, 6-Stunden-Werte, ergänzt mit Open-Meteo (Symbole und fehlende Werte).":"Open-Meteo. Kachelmann-Werte gibt es nur für die ersten Tage und für angemeldete Nutzer.";
+ const note=src==="k1"?"Kachelmann, stündliche Werte. Nur wo Kachelmann keinen Wert hat, ergänzt Open-Meteo.":src==="k6"?"Kachelmann, 6-Stunden-Werte. Nur wo Kachelmann keinen Wert hat, ergänzt Open-Meteo.":"Open-Meteo. Kachelmann-Werte gibt es nur für die ersten Tage und für angemeldete Nutzer.";
  return'<div class="dd-sum">'+parts.join("")+"</div>"+(body?'<table class="kc-tab"><tr><th>Uhrzeit</th><th></th><th>Temp.</th><th>Regen</th><th>Wind</th></tr>'+body+"</table>":'<p class="muted">Für diesen Tag liegen keine Details vor.</p>')+'<p class="dd-src">Quelle: '+note+"</p>";
 }
 function renderFacts(j,c){
@@ -872,15 +901,19 @@ async function loadRadar(){
   const past=(j.radar&&j.radar.past)||[];
   const wasPlaying=!!timer;
   if(timer)toggle();
-  frames=[...past,...((j.radar&&j.radar.nowcast)||[])];
+  const rvn=(j.radar&&j.radar.nowcast)||[];
+  rvNow=rvn.length;
+  frames=[...past,...rvn];
   pastCount=past.length;
+  exReset();
   layers.forEach(l=>map.removeLayer(l));
   layers=frames.map(f=>L.tileLayer(host+f.path+"/256/{z}/{x}/{y}/2/1_1.png",{opacity:0,maxNativeZoom:7,maxZoom:19,zIndex:5}));
   if(mode==="rv")layers.forEach(l=>l.addTo(map));
   idx=0;
   refreshFcFrames();
   show(Math.max(0,pastCount-1));
-  loadFc();
+  if(!rvNow)loadSteer().then(()=>{refreshFcFrames();const f=frames[idx];if(f&&f.ex!=null)show(idx);exNote();if(!exOn())loadFc()});
+  else loadFc();
   const last=past[past.length-1];
   if(last){
    const min=Math.round((Date.now()/1000-last.time)/60);
@@ -889,7 +922,39 @@ async function loadRadar(){
   if(mode==="rv"&&wasPlaying)toggle();
  }catch(e){$("mnote").textContent="Radardaten konnten nicht geladen werden."}
 }
-/* ============ Prognose aus dem Wettermodell (ca. 2 Stunden) ============ */
+/* ============ Radar-Prognose: das neueste Radarbild zieht mit dem Höhenwind weiter ============ */
+let ex=null,rvNow=0,exHook=false,exLayer=null;
+const exOn=()=>!!ex&&!rvNow;
+const WDIR={N:"Norden",NO:"Nordosten",O:"Osten",SO:"Südosten",S:"Süden",SW:"Südwesten",W:"Westen",NW:"Nordwesten"};
+async function loadSteer(){
+ try{
+  const c=map.getCenter();
+  const j=await getJ("https://api.open-meteo.com/v1/forecast?latitude="+c.lat.toFixed(2)+"&longitude="+c.lng.toFixed(2)+"&hourly=wind_speed_700hPa,wind_direction_700hPa&past_hours=1&forecast_hours=3&timezone=GMT");
+  const H=j.hourly,now=Date.now();
+  let k=0,best=1e15;H.time.forEach((t,i)=>{const d=Math.abs(Date.parse(t+":00Z")-now);if(d<best){best=d;k=i}});
+  const sp=+H.wind_speed_700hPa[k],dr=+H.wind_direction_700hPa[k];
+  if(!isFinite(sp)||!isFinite(dr)||H.wind_speed_700hPa[k]==null)throw new Error("wind");
+  const to=(dr+180)*Math.PI/180;
+  ex={e:sp*Math.sin(to)/60,n:sp*Math.cos(to)/60,spd:sp,to:(dr+180)%360};
+  if(!exHook&&map){exHook=true;map.on("zoomend",()=>{const f=frames[idx];if(f&&f.ex!=null)exShift(f.ex)})}
+ }catch(e){ex=null}
+}
+function exShift(k){
+ const L0=layers[pastCount-1],c=L0&&L0.getContainer&&L0.getContainer();
+ if(!c||!ex||!map)return;
+ const mpp=156543.03392*Math.cos(map.getCenter().lat*Math.PI/180)/Math.pow(2,map.getZoom());
+ const min=k*10,dx=ex.e*min*1000/mpp,dy=-ex.n*min*1000/mpp;
+ c.style.transform="translate("+dx.toFixed(1)+"px,"+dy.toFixed(1)+"px)";exLayer=L0;
+}
+function exReset(){
+ if(exLayer){try{const c=exLayer.getContainer();if(c)c.style.transform=""}catch(e){}exLayer=null}
+}
+function exNote(){
+ if(!exOn()){return}
+ $("fnote").textContent="Prognose für etwa 90 Minuten: Das neueste Radarbild wird mit dem Höhenwind weitergeschoben. Der Niederschlag zieht nach "+(WDIR[compass(ex.to)]||"")+", etwa "+Math.round(ex.spd)+" km/h. Schauer, die erst neu entstehen oder sich auflösen, sind darin nicht enthalten.";
+}
+
+/* ============ Prognose aus dem Wettermodell (Ausweichlösung, ca. 2 Stunden) ============ */
 let fcData=null,fcOv=null,fcMk=null,fcTimer=0,fcLast=0,fcBusy=false;
 const STORM_ICO='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 4 14h6l-1 8 9-12h-6z" fill="#1B1B1B"/></svg>';
 const RAINC=[[.1,[178,214,255]],[.5,[110,170,255]],[1.5,[50,120,240]],[3,[25,85,210]],[6,[15,55,170]],[12,[10,30,120]]];
@@ -925,7 +990,7 @@ function fcCovers(){
  return Math.abs(z-fcData.z)<1&&Date.now()-fcData.ts<20*60000&&a.lat<=bx[0]&&b.lat>=bx[2]&&a.lng>=bx[1]&&b.lng<=bx[3];
 }
 async function loadFc(){
- if(!map||mode!=="rv"||fcBusy||document.hidden)return;
+ if(!map||mode!=="rv"||fcBusy||document.hidden||exOn())return;
  if(fcCovers())return;
  if(Date.now()<fcLast)return;
  fcBusy=true;fcLast=Date.now()+25000;
@@ -961,8 +1026,11 @@ async function loadFc(){
  fcBusy=false;
 }
 function refreshFcFrames(){
- frames=frames.filter(f=>f.fc==null);
- if(mode==="rv"&&fcData&&frames.length)fcData.fr.forEach((f,k)=>{if(f.t*1000>Date.now()-10*60000)frames.push({time:f.t,fc:k})});
+ frames=frames.filter(f=>f.fc==null&&f.ex==null);
+ if(mode==="rv"&&frames.length){
+  if(exOn()&&pastCount>0){const t0=frames[pastCount-1].time;for(let k=1;k<=9;k++)frames.push({time:t0+600*k,ex:k})}
+  else if(fcData)fcData.fr.forEach((f,k)=>{if(f.t*1000>Date.now()-10*60000)frames.push({time:f.t,fc:k})});
+ }
  $("sl").max=Math.max(0,frames.length-1);
  if(idx>=frames.length)idx=Math.max(0,Math.min(pastCount-1,frames.length-1));
  placeTick();
@@ -987,11 +1055,16 @@ function showFc(f){
 }
 function show(i){
  if(!frames.length)return;
+ const old=frames[idx];
+ if(old&&old.ex!=null){const L0=layers[pastCount-1];if(L0)L0.setOpacity(0)}
  if(layers[idx])layers[idx].setOpacity(0);
+ exReset();
  idx=i;const f=frames[i];
- if(f.fc!=null)showFc(f);else{hideFc();if(layers[idx])layers[idx].setOpacity(.78)}
+ if(!f)return;
+ if(f.ex!=null){hideFc();const L0=layers[pastCount-1];if(L0){L0.setOpacity(Math.max(.5,.78-f.ex*.03));exShift(f.ex)}}
+ else if(f.fc!=null)showFc(f);else{hideFc();if(layers[idx])layers[idx].setOpacity(.78)}
  $("sl").value=i;
- $("ts").textContent=new Date(f.time*1000).toLocaleTimeString("de-AT",{hour:"2-digit",minute:"2-digit"})+" Uhr"+(f.fc!=null||i>=pastCount?" (Prognose)":"");
+ $("ts").textContent=new Date(f.time*1000).toLocaleTimeString("de-AT",{hour:"2-digit",minute:"2-digit"})+" Uhr"+(f.fc!=null||f.ex!=null||i>=pastCount?" (Prognose)":"");
 }
 function step(){
  const n=(idx+1)%frames.length;
@@ -1010,10 +1083,10 @@ function setMode(m){
  document.querySelectorAll("#mode button").forEach(b=>b.classList.toggle("on",b.dataset.m===m));
  if(timer)toggle();
  $("fresh").style.display=m==="dwd"?"none":"";
- if(m==="dwd"){hideFc();layers.forEach(l=>map.removeLayer(l));dwd.addTo(map);$("play").style.display="none";
+ if(m==="dwd"){hideFc();exReset();layers.forEach(l=>map.removeLayer(l));dwd.addTo(map);$("play").style.display="none";
   $("mnote").textContent="Aktuelles Niederschlagsradar des Deutschen Wetterdienstes, nur für Deutschland und Umgebung."}
- else{map.removeLayer(dwd);layers.forEach(l=>l.addTo(map));$("play").style.display="flex";loadFc();if(frames.length)show(Math.min(idx,Math.max(0,pastCount-1)));
-  $("mnote").textContent="Radar der letzten 2 Stunden von RainViewer, in 10-Minuten-Schritten und mit etwa 1 km Auflösung. Schnee zeigt das Radar in anderen Farben als Regen. Danach folgen etwa 2 Stunden Prognose aus dem Wettermodell. Sie ist gröber als das Radar, und ein Blitz-Symbol markiert Gewitter laut Modell."}
+ else{map.removeLayer(dwd);layers.forEach(l=>l.addTo(map));$("play").style.display="flex";loadFc();if(frames.length)show(Math.min(idx,Math.max(0,pastCount-1)));exNote();
+  $("mnote").textContent="Radar der letzten 2 Stunden von RainViewer, in 10-Minuten-Schritten. Schnee zeigt das Radar in anderen Farben als Regen. Danach folgt eine Prognose für etwa 90 Minuten."}
 }
 
 /* ============ Ortssuche und Standort ============ */
@@ -1123,9 +1196,42 @@ function kcParse(j,iv){
  const kP=kcKey(keys,iv==="6h"?["prec6h","prec","precCurrent"]:["prec1h","prec","precCurrent","precip","precipitation","rain"],/^(prec|rain)/i,/prob|chance|type|form|snow|sum|total|cum|max|min|\d+h$|\d+d$/i);
  const kW=kcKey(keys,["windSpeed","wind","windspeed","ff"],/^wind/i,/dir|gust|angle|degree/i);
  const kG=kcKey(keys,["windGust","windGust1h","windGusts","gust"],/gust/i);
+ const kPr=kcKey(keys,["precProb","precProb1h","precipitationProbability"],/prob|chance/i,/snow|thunder|storm/i);
+ const kTn=kcKey(keys,iv==="6h"?["tempMin6h","tempMin"]:["tempMin1h","tempMin"],/^tempMin/i);
+ const kTx=kcKey(keys,iv==="6h"?["tempMax6h","tempMax"]:["tempMax1h","tempMax"],/^tempMax/i);
+ const kD=kcKey(keys,["isDay"],/^isDay$/i);
+ const kC=kcKey(keys,["cloudCoverage","cloudCoverTotal","cloudCover","clouds"],/^cloud/i,/low|mid|high|base/i);
  const U=j&&j.units&&typeof j.units==="object"?j.units:{};
  const un=(k,d)=>typeof U[k]==="string"?U[k]:d;
- return{kT,kP,kW,kG,pu:un(kP,"mm"),wu:un(kW,"km/h"),all:rows.map(r=>({d:kcDate(r[kt]),T:kT?kcNum(r[kT]):null,P:kP?kcNum(r[kP]):null,W:kW?kcNum(r[kW]):null,G:kG?kcNum(r[kG]):null}))};
+ return{kT,kP,kW,kG,kPr,pu:un(kP,"mm"),wu:un(kW,"km/h"),all:rows.map(r=>({d:kcDate(r[kt]),T:kT?kcNum(r[kT]):null,P:kP?kcNum(r[kP]):null,W:kW?kcNum(r[kW]):null,G:kG?kcNum(r[kG]):null,Pr:kPr?kcNum(r[kPr]):null,Tn:kTn?kcNum(r[kTn]):null,Tx:kTx?kcNum(r[kTx]):null,D:kD&&r[kD]!=null?!!r[kD]:null,C:kC?kcNum(r[kC]):null}))};
+}
+const kcActive=()=>!!(kcDaily.h1&&kcDaily.h1.length);
+function kcAt(ms){
+ const a=kcDaily.h1;if(!a)return null;
+ let b=null,bd=40*60000;for(const x of a){const d=Math.abs(x.d.getTime()-ms);if(d<bd){bd=d;b=x}}
+ return b;
+}
+function kcKind(x,code,day){
+ if(x.P!=null&&x.P>=0.1)return x.T!=null&&x.T<=0.5?"snow":"rain";
+ if(x.C!=null)return x.C>=75?"cloud":x.C>=30?(day?"pcd":"pcn"):(day?"sun":"moon");
+ const k=kind(code,day);return k==="rain"||k==="snow"||k==="storm"?"cloud":k;
+}
+function kcDescOf(x,code,day){
+ if(x.P!=null&&x.P>=0.1)return x.T!=null&&x.T<=0.5?"Schneefall":x.P>=2?"Regen":"Leichter Regen";
+ if(x.C!=null)return x.C>=75?"Bedeckt":x.C>=30?"Wolkig":day?"Sonnig":"Klar";
+ return code>=51?"Bewölkt":(DESC[code]||"");
+}
+function kcApplyHeader(){
+ const j=lastJ;if(!j||!kcActive())return;
+ const c=j.current,x=kcAt(Date.now());if(!x||x.T==null)return;
+ const day=x.D!=null?x.D:!!(c.is_day==null?1:c.is_day),k=kcKind(x,c.weather_code,day);
+ $("temp").textContent=String(Math.round(x.T)).replace("-","−");
+ $("hicon").innerHTML=ic(k);$("micon").innerHTML=ic(k);$("mtemp").textContent=deg(x.T);
+ $("desc").textContent=kcDescOf(x,c.weather_code,day);
+ setSky(skyKey(k,day));$("top").dataset.fx=k==="rain"?"rain":k==="snow"?"snow":"";
+ const off=(+j.utc_offset_seconds||0)*1000,today=j.daily.time[0],now=Date.now();
+ const rest=kcDaily.h1.filter(r=>r.T!=null&&r.d.getTime()>=now-30*60000&&new Date(r.d.getTime()+off).toISOString().slice(0,10)===today).map(r=>r.T);
+ if(rest.length>=2)$("range").innerHTML="<span>Heute noch bis "+deg(Math.max(...rest))+",</span> <span>tiefstens "+deg(Math.min(...rest))+"</span>";
 }
 let kcdSeq=0;
 async function loadKcDaily(){
@@ -1146,27 +1252,24 @@ async function loadKcDaily(){
  }catch(e){out={}}
  if(my!==kcdSeq)return;
  kcDaily=out;
- if(lastJ)renderDays(lastJ);
+ if(lastJ){renderDays(lastJ);renderHours(lastJ,lastJ.current);kcApplyHeader();heroSay()}
 }
 let kcSeq=0,kcAll=false,kcLast=null,kcSrc="icon";
 try{if(localStorage.getItem("wetter-kcsrc")==="kach")kcSrc="kach"}catch(e){}
 async function loadKc(){
  const my=++kcSeq,el=$("kc");
- document.querySelectorAll("#kcsrc button").forEach(b=>b.classList.toggle("on",b.dataset.s===kcSrc));
- if(kcSrc==="icon")return loadIcon(my);
- if(!(window.__worker&&window.__worker.token())){el.innerHTML='<p class="muted">Bitte melde dich an.</p>';return}
- const t=kcTarget();
- if(!t){
-  el.innerHTML='<p class="muted">Für diesen Ort gibt es keine Kachelmann-Prognose. Sie ist für diese Orte freigeschaltet:</p><div class="kc-btns">'+KC_ORTE.map((o,i)=>'<button type="button" data-k="'+i+'">'+esc(o.name)+'</button>').join("")+'</div>';
-  return;
- }
- const path="forecast/"+t.o.lat+"/"+t.o.lon+"/advanced/1h";
- if(!kcCache.get(path))el.innerHTML='<p class="muted">Wird geladen …</p>';
- let res;
- try{res=await kcFetch(path)}
- catch(e){if(my===kcSeq)el.innerHTML='<p class="muted">'+(e.message==="login"?"Bitte melde dich an.":"Die Kachelmann-Prognose konnte nicht geladen werden (keine Verbindung zum Server).")+'</p>';return}
- if(my!==kcSeq)return;
- renderKc(t,res);
+ const tok=window.__worker&&window.__worker.token(),t=tok?kcTarget():null;
+ let why="";
+ if(t){
+  const path="forecast/"+t.o.lat+"/"+t.o.lon+"/advanced/1h";
+  if(!kcCache.get(path))el.innerHTML='<p class="muted">Wird geladen …</p>';
+  let res=null;
+  try{res=await kcFetch(path)}catch(e){if(e.message==="login")return}
+  if(my!==kcSeq)return;
+  if(res&&res.s===200){let j=null;try{j=JSON.parse(res.b)}catch(e){}const P=j&&kcParse(j,"1h");if(P&&(P.kT||P.kP)){renderKc(t,res);return}}
+  why=res?"Kachelmann hat für diesen Ort keine Daten geliefert (Status "+res.s+"), deshalb ICON-D2.":"Kachelmann ist gerade nicht erreichbar, deshalb ICON-D2.";
+ }else if(tok&&KC_ORTE.length)why="Für diesen Ort gibt es keine Kachelmann-Daten, deshalb ICON-D2.";
+ return loadIcon(my,why);
 }
 function renderKc(t,res){
  const el=$("kc");
@@ -1217,7 +1320,7 @@ function kcTable(head,L,o){
   +'<div class="kc-btns"><button type="button" id="kc-all">'+(kcAll?"Nur alle 3 Stunden":"Jede Stunde zeigen")+"</button></div>"
   +'<p class="small">'+o.note+"</p>"+(o.extra||"");
 }
-async function loadIcon(my){
+async function loadIcon(my,why){
  const el=$("kc");
  let j;
  try{j=await getJ("https://api.open-meteo.com/v1/forecast?latitude="+(+place.lat).toFixed(3)+"&longitude="+(+place.lon).toFixed(3)+"&hourly=temperature_2m,precipitation,wind_speed_10m,wind_gusts_10m&models=icon_d2&forecast_hours=48&timezone=auto")}
@@ -1230,7 +1333,7 @@ async function loadIcon(my){
  const L=tm.map((t,i)=>({d:new Date(Date.parse(t+"Z")-off),lab:(t.slice(11,13)==="00"?new Date(t.slice(0,10)+"T12:00").toLocaleDateString("de-AT",{weekday:"short"}).replace(".","")+" ":"")+t.slice(11,16),T:kcNum(T[i]),P:kcNum(P[i]),W:kcNum(W[i]),G:kcNum(G[i])}))
   .filter(x=>x.d.getTime()>=now-45*60000).slice(0,24);
  if(!L.length||L.every(x=>x.T==null)){el.innerHTML=head+'<p class="muted">ICON-D2 deckt diesen Ort nicht ab, es gilt für Mitteleuropa. Wähle oben „Kachelmann“.</p>';return}
- const o={hasT:true,hasP:true,hasW:true,pu:"mm",wu:"km/h",note:"ICON-D2 des Deutschen Wetterdienstes (Auflösung etwa 2 km, stündlich, bis zu 48 Stunden) über Open-Meteo."};
+ const o={hasT:true,hasP:true,hasW:true,pu:"mm",wu:"km/h",note:(why?esc(why)+" ":"")+"ICON-D2 des Deutschen Wetterdienstes (Auflösung etwa 2 km, stündlich, bis zu 48 Stunden) über Open-Meteo."};
  kcLast=()=>kcTable(head,L,o);kcLast();
 }
 $("kcsrc").addEventListener("click",e=>{const b=e.target.closest("button[data-s]");if(!b)return;kcSrc=b.dataset.s;try{localStorage.setItem("wetter-kcsrc",kcSrc)}catch(x){}loadKc()});
