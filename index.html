@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-LJ3GpAqJnmPyFV+uRwc0/lV5YIOFy3UnrFQLrR0+LEE=' 'sha256-F1lreOLy84+sYAZwCiC5OGOTDcovKCCQAYSwbz7Ocq8=' https://unpkg.com https://cdnjs.cloudflare.com; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-JgHjwsSshcmslm+g1BlxGpmz6yTMXFOlM7UcPwgIQ+4=' 'sha256-F1lreOLy84+sYAZwCiC5OGOTDcovKCCQAYSwbz7Ocq8=' https://unpkg.com https://cdnjs.cloudflare.com; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -14,9 +14,9 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/favicon-64.png">
-<meta name="app-build" content="26">
-<meta name="app-version" content="1.1">
-<meta name="app-notes" content="Neuer Kopfbereich: bewegte Wettersymbole, Sternenhimmel in der Nacht, Sonnenglanz, ziehende Wolken, fallender Regen und Schnee, dazu Gefühlt, Wind und Regen auf einen Blick. Flüssiger: Radarbilder blenden weich über, alle Bewegungen laufen über die Grafikkarte und pausieren, wenn man sie nicht sieht.">
+<meta name="app-build" content="27">
+<meta name="app-version" content="1.1.1">
+<meta name="app-notes" content="Verständlicher: Unter der Temperatur steht jetzt in Klartext, woher die Werte kommen.">
 <script>/* alte Adresse wetter2.html -> neue Startseite */
 try{if(top!==self)document.documentElement.style.display="none"}catch(e){document.documentElement.style.display="none"}
 window.__redir=/\/wetter2\.html$/i.test(location.pathname);
@@ -816,7 +816,7 @@ function renderAll(j,at){
  $("micon").innerHTML=ic(k);$("mname").textContent=place.name;$("mtemp").textContent=deg(c.temperature_2m);
  $("desc").textContent=DESC[c.weather_code]||"Unbekannt";
  $("range").innerHTML=rangeHtml(j.daily.temperature_2m_max[0],j.daily.temperature_2m_min[0],"Höchstens","Tiefstens");
- $("hsrc").textContent="Werte: Open-Meteo (vor allem ICON des DWD)";
+ $("hsrc").textContent=+place.lat>43&&+place.lat<58&&+place.lon>-4&&+place.lon<20?"Werte: Wettermodell des Deutschen Wetterdienstes (über Open-Meteo)":"Werte: Wettermodelle über Open-Meteo";
  [()=>renderHours(j,c),()=>renderDays(j),()=>renderFacts(j,c),kcApplyHeader,heroStats,heroSay].forEach(f=>{try{f()}catch(e){console.error(e)}});
 }
 /* Höchst- und Tiefstwert mit Pfeilen; Gefühlt, Wind und Regen als kleine Werte-Leiste */
