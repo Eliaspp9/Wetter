@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-IH+FosACgtMkhLJ+wp4Jdy33sOL2r4C4h7EPC4Hm9AQ=' 'sha256-LJ33SJA5i4YqCXzGZIhxWGPPYs2ewGTelTCHFyvLwOQ=' https://unpkg.com https://cdnjs.cloudflare.com; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-bXX7/FJ39faHJtNV00GqUVVtxwrJy3U5Acf0u9vP6d8=' 'sha256-F1lreOLy84+sYAZwCiC5OGOTDcovKCCQAYSwbz7Ocq8=' https://unpkg.com https://cdnjs.cloudflare.com; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -14,9 +14,9 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/favicon-64.png">
-<meta name="app-build" content="23">
-<meta name="app-version" content="1.0">
-<meta name="app-notes" content="Version 1.0, die erste finale Version: alles noch einmal geprüft und verbessert. Die Seite läuft jetzt auch bei kurzen Verbindungsproblemen stabil weiter, das Radar rechnet sparsamer (wichtig fürs Tablet), der Rückblick zeigt echte Messwerte der nächsten Station, und viele kleine Fehler sind behoben.">
+<meta name="app-build" content="24">
+<meta name="app-version" content="1.0.1">
+<meta name="app-notes" content="Unten auf der Seite steht jetzt, bis wann deine Anmeldung gilt und ob sie sich von selbst verlängert. Alte Seiten wurden entfernt, alte Links führen jetzt direkt zur App.">
 <script>/* alte Adresse wetter2.html -> neue Startseite */
 try{if(top!==self)document.documentElement.style.display="none"}catch(e){document.documentElement.style.display="none"}
 window.__redir=/\/wetter2\.html$/i.test(location.pathname);
@@ -593,6 +593,7 @@ html.locked body>*:not(#gate){display:none!important}
  <p>Daten: Open-Meteo (Vorhersage, Radar-Prognose und ICON-D2 des Deutschen Wetterdienstes), KachelmannWetter (stündliche Prognose für freigeschaltete Orte), LibreWXR (Radar weltweit, in Europa mit EUMETNET OPERA, teils NOAA Enterprise Rain Rate), RainViewer (Ersatz-Radar), Deutscher Wetterdienst (RADOLAN-Radar mit Radar-Vorhersage, Messwerte und Warnungen über Bright Sky), GeoSphere Austria (Warnungen und Messwerte), Copernicus CAMS über Open-Meteo (Luft und Pollen), BigDataCloud (Ortsname), EUMETSAT (Blitze vom Wettersatelliten MTG), Europäisches Wetterzentrum EZMW (KI-Modell AIFS über Open-Meteo), Messwerte für die Treffer-Statistik von GeoSphere Austria und vom DWD.</p>
  <p>Karten und Bilder: © OpenStreetMap-Mitwirkende, Esri, Maxar, Earthstar Geographics, Sentinel-2 cloudless von EOX. Grenzen und Ortsnamen: Esri, Garmin, HERE. Wolken: Meteosat (EUMETSAT) über den Deutschen Wetterdienst.</p>
  <p>Version <span id="ver"></span></p>
+ <p id="login-info"></p>
  <p><a href="#" id="wall-link">Wandanzeige</a> · <a href="#" id="upd-chk">Nach Updates suchen</a> · <a href="#" id="logout">Abmelden</a></p>
 </footer>
 <div class="wdim" id="wdim" aria-hidden="true"></div>
@@ -2366,6 +2367,15 @@ const meta=n=>{const m=document.querySelector('meta[name="'+n+'"]');return m?m.c
 const BUILD=+meta("app-build")||0;
 let remote=null,lastChk=0;
 $("ver").textContent=meta("app-version")?meta("app-version")+" (Build "+BUILD+")":BUILD;
+/* Anmeldung: bis wann sie gilt und ob sie sich von selbst verlängert */
+function loginInfo(){
+ const el=$("login-info"),W=window.__worker,ex=W&&W.exp?W.exp():0;
+ if(!el)return;if(!ex){el.textContent="";return}
+ let ok=null;try{ok=localStorage.getItem("wetter-renew-ok")}catch(e){}
+ const d=new Date(ex).toLocaleDateString("de-AT",{day:"numeric",month:"long",year:"numeric"});
+ el.textContent="Anmeldung gültig bis "+d+(ok==="1"?". Sie verlängert sich von selbst, solange du die App mindestens einmal im Monat öffnest.":ok==="0"?". Damit sie sich von selbst verlängert, muss der Worker-Code bei Cloudflare noch aktualisiert werden.":".");
+}
+loginInfo();setInterval(loginInfo,60000);addEventListener("wetter-login",loginInfo);
 function showUpd(mode,notes){
  $("upd-t").textContent=mode==="new"?"Neues Update verfügbar":mode==="done"?"Update installiert":"Alles aktuell";
  $("upd-n").textContent=notes||"";
@@ -2509,15 +2519,24 @@ document.addEventListener("visibilitychange",()=>{
  }
  function clear(){["localStorage","sessionStorage"].forEach(function(s){try{window[s].removeItem("wetter-token");window[s].removeItem("wetter-auth")}catch(e){}})}
  /* Anmeldung von selbst verlängern, solange die Seite benutzt wird (der Worker braucht dafür /renew) */
+ var rchk=false;
+ function tell(){try{window.dispatchEvent(new Event("wetter-login"))}catch(e){}}
  function renew(){
+  /* nachsehen, ob der Worker das Verlängern kann (neuer Worker-Code): beim Start und dann alle 12 Stunden */
+  var lc=0;try{lc=+localStorage.getItem("wetter-renew-chk")||0}catch(e){}
+  if(!rchk||Date.now()-lc>12*3600000){
+   rchk=true;try{localStorage.setItem("wetter-renew-chk",String(Date.now()))}catch(e){}
+   fetch(API+"/",{cache:"no-store"}).then(function(r){return r.json()}).then(function(j){try{localStorage.setItem("wetter-renew-ok",j&&j.renew?"1":"0")}catch(e){}tell()}).catch(function(){});
+  }
   var t=token(),p=t&&payload(t);if(!p||p.exp-Date.now()>25*86400000)return;
   var last=0;try{last=+localStorage.getItem("wetter-renew")||0}catch(e){}
   if(Date.now()-last<6*3600000)return;
   try{localStorage.setItem("wetter-renew",String(Date.now()))}catch(e){}
-  fetch(API+"/renew",{method:"POST",headers:{Authorization:"Bearer "+t},cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(function(j){
+  fetch(API+"/renew",{method:"POST",headers:{Authorization:"Bearer "+t},cache:"no-store"}).then(function(r){if(r.status===404){try{localStorage.setItem("wetter-renew-ok","0")}catch(e){}}return r.ok?r.json():null}).then(function(j){
    var q=j&&j.token&&payload(j.token);if(!q||!(q.exp>p.exp))return;
    var loc=false;try{loc=localStorage.getItem("wetter-token")===t}catch(e){}
    try{(loc?localStorage:sessionStorage).setItem("wetter-token",j.token)}catch(e){}
+   tell();
   }).catch(function(){});
  }
  window.__worker={base:API,token:token,exp:function(){var t=token(),p=t&&payload(t);return p?p.exp:0},renew:renew,logout:function(){clear();location.reload()}};
@@ -2544,7 +2563,7 @@ document.addEventListener("visibilitychange",()=>{
   html.classList.remove("locked");gate.hidden=true;
   addCss(0);addJs(0,function(){__startApp()});
  }
- if(token()){start();setTimeout(renew,8000);return}
+ if(token()){start();setTimeout(renew,5000);return}
  clear();
  gate.hidden=false;
  form.addEventListener("submit",async function(e){
@@ -2559,7 +2578,7 @@ document.addEventListener("visibilitychange",()=>{
   }catch(x){msg="Keine Verbindung zum Anmeldeserver. Prüfe die Internetverbindung."}
   if(tok){
    try{(form.elements.keep.checked?localStorage:sessionStorage).setItem("wetter-token",tok)}catch(x){}
-   form.elements.pass.value="";start();return;
+   form.elements.pass.value="";start();setTimeout(renew,5000);return;
   }
   fails++;err.textContent=msg;
   await new Promise(function(r){setTimeout(r,Math.min(6000,500*fails))});

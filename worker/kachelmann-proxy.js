@@ -180,7 +180,7 @@ export default {
       return json({ error: "Der Worker ist noch nicht fertig eingerichtet (Variablen fehlen)." }, 500);
     const url = new URL(req.url);
 
-    if (url.pathname === "/") return json({ ok: true, name: "wetter-proxy", push: !!env.SUBS });
+    if (url.pathname === "/") return json({ ok: true, name: "wetter-proxy", version: "1.0", renew: true, push: !!env.SUBS });
 
     if (url.pathname === "/login" && req.method === "POST") {
       let b = {};
