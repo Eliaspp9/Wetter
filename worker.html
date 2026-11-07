@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Worker-Code</title>
+<style>
+:root{color-scheme:light dark}
+body{margin:0;padding:20px 16px 40px;font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;background:#E7ECF2;color:#13202E}
+main{max-width:760px;margin:0 auto}
+h1{font-size:21px;margin:0 0 8px}
+ol{margin:0 0 14px;padding-left:22px;color:#3d4b5c}
+li{margin:3px 0}
+button{width:100%;min-height:54px;border:0;border-radius:14px;background:#1769E0;color:#fff;font:600 17px system-ui,-apple-system,sans-serif;margin:6px 0 10px;cursor:pointer}
+button:disabled{opacity:.6}
+#ok{font-weight:600;min-height:1.5em;margin:0 0 10px}
+#ok.good{color:#1a7f37}#ok.bad{color:#c92a2a}
+textarea{width:100%;height:50vh;box-sizing:border-box;border-radius:12px;border:1px solid #cfd8e3;padding:10px;font:12px/1.45 ui-monospace,Menlo,Consolas,monospace;background:#fff;color:#13202E}
+small{display:block;margin-top:10px;color:#5F6D7D}
+@media (prefers-color-scheme:dark){body{background:#09111C;color:#E8EEF6}ol{color:#b6c2d1}textarea{background:#111C2B;color:#E8EEF6;border-color:#1F2D41}small{color:#95A4B7}#ok.good{color:#5dd27a}#ok.bad{color:#ff8a8f}}
+</style>
+</head>
+<body>
+<main>
+<h1>Neuer Code für den Cloudflare-Worker</h1>
+<ol>
+<li>Tippe auf „Code kopieren“.</li>
+<li>Bei Cloudflare: Workers &amp; Pages, dann „wetter-proxy“, dann „Edit code“ (Code bearbeiten).</li>
+<li>Den alten Code ganz löschen und den neuen einfügen.</li>
+<li>Oben rechts auf „Deploy“ (Bereitstellen) tippen.</li>
+</ol>
+<button id="b" type="button" disabled>Code wird geladen …</button>
+<p id="ok" role="status"></p>
+<textarea id="t" readonly spellcheck="false" aria-label="Worker-Code"></textarea>
+<small>Danach muss auf wetter-proxy.elias-ziegler.workers.dev „"renew":true“ stehen. Deine Variablen (Passwort, Kachelmann-Schlüssel) bleiben erhalten, sie gehören nicht zum Code.</small>
+</main>
+<script>
+(function(){
+ var b=document.getElementById("b"),t=document.getElementById("t"),ok=document.getElementById("ok");
+ function say(m,good){ok.textContent=m;ok.className=good?"good":"bad"}
+ fetch("worker/kachelmann-proxy.js?c="+Date.now(),{cache:"no-store"}).then(function(r){if(!r.ok)throw new Error(r.status);return r.text()}).then(function(x){
+  t.value=x;b.disabled=false;b.textContent="Code kopieren";
+ }).catch(function(){b.textContent="Laden hat nicht geklappt";say("Der Code konnte nicht geladen werden. Lade die Seite neu.",false)});
+ function fallback(){
+  try{t.removeAttribute("readonly");t.focus();t.select();t.setSelectionRange(0,t.value.length);var r=document.execCommand("copy");t.setAttribute("readonly","");t.blur();return r}catch(e){return false}
+ }
+ b.addEventListener("click",function(){
+  if(!t.value)return;
+  var done=function(){say("Kopiert! Jetzt bei Cloudflare einfügen.",true);b.textContent="Nochmal kopieren"};
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+   navigator.clipboard.writeText(t.value).then(done,function(){fallback()?done():say("Kopieren ging nicht automatisch. Halte den Finger auf den Text unten, wähle „Alles auswählen“ und dann „Kopieren“.",false)});
+  }else if(fallback())done();
+  else say("Kopieren ging nicht automatisch. Halte den Finger auf den Text unten, wähle „Alles auswählen“ und dann „Kopieren“.",false);
+ });
+})();
+</script>
+</body>
+</html>
