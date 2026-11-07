@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-B4hbYBMBRvqzezyCfh6hYMGohgdKd1bUe6DKYPqvTac=' 'sha256-rtD+YnjjlK/qdTffRRM0+dg5HIzXWVMndWiYx7RbciI=' https://unpkg.com https://cdnjs.cloudflare.com; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com; connect-src 'self' https://api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'none'; manifest-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-3bT0z/R1WwiMZjuGe9e+Zhy9fOySfF1yQqELw4GrM5w=' 'sha256-rtD+YnjjlK/qdTffRRM0+dg5HIzXWVMndWiYx7RbciI=' https://unpkg.com https://cdnjs.cloudflare.com; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com; connect-src 'self' https://api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'none'; manifest-src 'none'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -11,8 +11,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Wetter">
 <title>Wetter</title>
-<meta name="app-build" content="11">
-<meta name="app-notes" content="Neues Design: Der Himmel oben zeigt das Wetter in einem Satz, gleich darunter das große Regenradar. Die Radarfarben gelten jetzt überall auf der Seite.">
+<meta name="app-build" content="12">
+<meta name="app-notes" content="Neues Design mit Himmel und großem Regenradar. Das Radar startet jetzt nicht mehr von selbst, sondern bleibt bei Jetzt stehen, bis du auf Abspielen tippst oder den Regler verschiebst.">
 <script>/* alte Adresse wetter2.html -> neue Startseite */
 try{if(top!==self)document.documentElement.style.display="none"}catch(e){document.documentElement.style.display="none"}
 window.__redir=/\/wetter2\.html$/i.test(location.pathname);
@@ -843,7 +843,7 @@ async function loadRadar(){
    const min=Math.round((Date.now()/1000-last.time)/60);
    $("fresh").textContent="Neuester Radarstand: "+new Date(last.time*1000).toLocaleTimeString("de-AT",{hour:"2-digit",minute:"2-digit"})+" Uhr"+(min>=0?" (vor "+min+" Min.)":"");
   }
-  if(mode==="rv"&&(wasPlaying||(!autoDone&&!reduced))){autoDone=true;toggle()}
+  if(mode==="rv"&&wasPlaying)toggle();
  }catch(e){$("mnote").textContent="Radardaten konnten nicht geladen werden."}
 }
 /* ============ Prognose aus dem Wettermodell (ca. 2 Stunden) ============ */
