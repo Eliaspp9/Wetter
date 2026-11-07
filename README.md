@@ -3,7 +3,7 @@
 Persönliche Wetter-App im Stil von WetterOnline, als Webseite auf GitHub Pages:
 https://eliaspp9.github.io/Wetter/
 
-**Version 1.0**: die erste finale Version.
+**Version 2.0**: die zweite finale Version, mit Temperatur- und Windkarte, Bergwetter und Schneefallgrenze.
 
 ## Was die App kann
 
@@ -12,6 +12,11 @@ https://eliaspp9.github.io/Wetter/
   - DWD 1 km mit 2 Stunden Radar-Vorhersage.
   - „Weltweit“: in Europa das OPERA-Radar über LibreWXR, Ersatz RainViewer.
   - Dazu Blitze (EUMETSAT MTG), Wolken, Warnungen und Niederschlagsart.
+- **Temperatur- und Windkarte:**
+  - Umschalten über der Karte: Regen, Temperatur, Wind.
+  - Temperatur als Farbfläche mit Zahlen, Wind mit animierten Strömungslinien und Pfeilen.
+  - Jetzt und Stunde für Stunde 2 Tage voraus, mit Abspielen.
+  - Tippen auf die Karte zeigt Temperatur, Wind und Böen an der Stelle.
 - **Vorhersage:**
   - Regen in den nächsten 2 Stunden.
   - Nächste 24 Stunden.
@@ -26,7 +31,11 @@ https://eliaspp9.github.io/Wetter/
   - Amtliche Warnungen (DWD, GeoSphere Austria).
   - Glätte-, Frost- und Schnee-Hinweise.
   - Alarm-Banner bei Regen in Kürze, Gewitter oder Unwetter.
-- **Luft und Pollen**, Details mit Wind, UV und Sonne.
+- **Berge und Schneefallgrenze:**
+  - Nullgradgrenze und Schneefallgrenze für den Ort, mit Verlauf über 3 Tage und der Höhe des Ortes.
+  - Wetter auf Gipfeln in der Nähe, auf Gipfelhöhe umgerechnet.
+  - Hinweis bei Inversion (oben wärmer als im Tal, oft Nebel unten und Sonne oben).
+- **Luft und Pollen**, Details mit Wind, UV, Sonne und Nullgradgrenze.
 - **Wandanzeige fürs Tablet:**
   - Uhr, Wetter, großes Radar, Stunden und 7 Tage ohne Scrollen.
   - Nachts gedimmt, Bildschirm bleibt an.
@@ -35,6 +44,7 @@ https://eliaspp9.github.io/Wetter/
   - Aktualisiert sich alle 5 Minuten.
   - Bleibt bei kurzen Verbindungsproblemen auf dem letzten Stand.
   - Installiert neue Versionen selbst, wenn niemand das Gerät benutzt.
+  - In der App auf dem Home-Bildschirm: zum Aktualisieren nach unten ziehen.
 - **App und Offline:** als App auf dem Home-Bildschirm installierbar, offline mit dem letzten Stand.
 
 ## Cloudflare-Worker (`worker/kachelmann-proxy.js`)
