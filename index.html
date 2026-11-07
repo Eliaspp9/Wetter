@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-ORGbgb45lLiahSFGi5wDc+OwadO7xt8HHNJk7UVCGqY=' 'sha256-rtD+YnjjlK/qdTffRRM0+dg5HIzXWVMndWiYx7RbciI=' https://unpkg.com https://cdnjs.cloudflare.com; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com; connect-src 'self' https://api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'none'; manifest-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-ralE6dhG2jvwOYutMw8kh8d09HbwX8s1cl9lFGYDq74=' 'sha256-rtD+YnjjlK/qdTffRRM0+dg5HIzXWVMndWiYx7RbciI=' https://unpkg.com https://cdnjs.cloudflare.com; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com; connect-src 'self' https://api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'none'; manifest-src 'none'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -11,8 +11,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Wetter">
 <title>Wetter</title>
-<meta name="app-build" content="8">
-<meta name="app-notes" content="Kachelmann-Karte zeigt jetzt den Modelllauf und eine übersichtliche Liste aller Felder.">
+<meta name="app-build" content="10">
+<meta name="app-notes" content="Neu: 7 Tage zum Aufklappen mit Niederschlagsmenge und Kachelmann-Daten, Stunden-Prognose mit ICON-D2 und eine Jetzt-Marke am Radar-Regler.">
 <script>/* alte Adresse wetter2.html -> neue Startseite */
 try{if(top!==self)document.documentElement.style.display="none"}catch(e){document.documentElement.style.display="none"}
 window.__redir=/\/wetter2\.html$/i.test(location.pathname);
@@ -102,6 +102,8 @@ main{position:relative;z-index:1}
 .kc-tab th:first-child,.kc-tab td:first-child{text-align:left}
 .kc-tab td:first-child{color:var(--muted)}
 .kc-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.kc-src{margin:-4px 0 14px}
+.kc-btns button.on{background:var(--accent);color:var(--paper);border-color:transparent}
 .kc-btns button{font:inherit;font-size:14px;padding:8px 12px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
 #kc details{margin-top:12px;font-size:13px;color:var(--muted)}
 #kc summary{cursor:pointer}
@@ -139,11 +141,24 @@ main{position:relative;z-index:1}
 .hs-dot{fill:var(--paper);stroke:var(--accent);stroke-width:2.5}
 
 /* Tage */
-.day{display:grid;grid-template-columns:62px 34px 40px 38px minmax(40px,1fr) 38px;align-items:center;gap:0 8px;padding:9px 0;border-top:1px solid var(--line)}
-.day:first-child{border-top:0}
+.dw+.dw{border-top:1px solid var(--line)}
+.day{display:grid;grid-template-columns:62px 34px 52px 38px minmax(40px,1fr) 38px 16px;align-items:center;gap:0 8px;padding:9px 0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.day:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:8px}
+.dch{display:grid;place-items:center;color:var(--muted)}
+.dch svg{width:14px;height:14px;transition:transform .2s}
+.dw.open .dch svg{transform:rotate(180deg)}
+.dd{padding:2px 0 16px}
+.dd[hidden]{display:none}
+.dd-sum{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:14px;color:var(--muted);margin:0 0 10px}
+.dd-sum b{color:var(--ink);font-weight:600}
+.dd .kc-tab{font-size:14px}
+.dd .kc-tab td svg{display:block;width:24px;height:24px;margin:0 auto}
+.dd .kc-tab th:nth-child(2),.dd .kc-tab td:nth-child(2){text-align:center;width:34px}
+.dd-src{font-size:12px;color:var(--muted);margin-top:8px}
 .dn b{display:block;font-weight:650;line-height:1.15}
 .dn span{font-size:12px;color:var(--muted)}
-.dp{font-size:13px;color:var(--rain);font-weight:600;text-align:right}
+.dp{font-size:13px;color:var(--rain);font-weight:600;text-align:right;line-height:1.2}
+.dp small{display:block;font-size:11px;font-weight:500;color:var(--muted);font-variant-numeric:tabular-nums}
 .dlo{text-align:right;color:var(--muted);font-variant-numeric:tabular-nums}
 .dhi{font-weight:650;font-variant-numeric:tabular-nums}
 .dbar{position:relative;height:6px;border-radius:3px;background:var(--line)}
@@ -170,14 +185,17 @@ main{position:relative;z-index:1}
 .seg button{border:0;background:transparent;color:#fff;padding:7px 12px;border-radius:9px;font-size:13px;font-weight:600;min-height:32px}
 .seg button.on{background:#fff;color:#0E1726}
 .gbtn{position:absolute;z-index:5;border:0;color:#fff;background:rgba(10,16,28,.62);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-radius:12px}
-#ctr{right:10px;bottom:74px;width:40px;height:40px;display:grid;place-items:center}
+#ctr{right:10px;bottom:116px;width:40px;height:40px;display:grid;place-items:center}
 #ctr svg{width:20px;height:20px}
-.lockb{display:none;left:10px;bottom:74px;padding:8px 12px;font-size:13px;font-weight:600}
+.lockb{display:none;left:10px;bottom:116px;padding:8px 12px;font-size:13px;font-weight:600}
 .touch .lockb{display:block}
 .scrub{position:absolute;left:10px;right:10px;bottom:10px;z-index:5;display:flex;align-items:center;gap:12px;padding:8px 14px 8px 8px;border-radius:16px;background:rgba(10,16,28,.66);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);color:#fff}
 #pp{width:38px;height:38px;flex:none;border:0;border-radius:50%;background:#fff;color:#0E1726;display:grid;place-items:center}
 #pp svg{width:16px;height:16px}
-#sl{flex:1;min-width:0;accent-color:#fff;height:28px}
+.slw{position:relative;flex:1;min-width:0;height:28px}
+#sl{display:block;width:100%;margin:0;accent-color:#fff;height:28px}
+#nowline{position:absolute;top:50%;height:20px;margin-top:-10px;width:2px;margin-left:-1px;border-radius:1px;background:rgba(255,255,255,.95);pointer-events:none;display:none}
+#nowtick{position:absolute;bottom:calc(100% + 16px);transform:translateX(-50%);display:none;padding:6px 12px;border:0;border-radius:12px;background:rgba(10,16,28,.72);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);color:#fff;font:inherit;font-size:13px;font-weight:650;line-height:1;white-space:nowrap;cursor:pointer}
 #ts{font-size:14px;font-variant-numeric:tabular-nums;min-width:74px;text-align:right}
 .leaflet-top.leaflet-right .leaflet-control-zoom{margin:10px;border:0;border-radius:12px;overflow:hidden;box-shadow:none;background:rgba(10,16,28,.62)}
 .leaflet-control-zoom a{background:transparent!important;color:#fff!important;border:0!important;width:40px!important;height:38px!important;line-height:38px!important}
@@ -203,7 +221,7 @@ main{position:relative;z-index:1}
 .upd .row{display:flex;gap:10px;margin-top:14px}
 .upd button{flex:1;min-height:46px;border-radius:12px;border:1px solid var(--line);background:transparent;font-weight:600}
 .upd button.pri{background:var(--accent);border-color:var(--accent);color:var(--paper)}
-@media (max-width:380px){.day{grid-template-columns:54px 30px 36px 34px minmax(30px,1fr) 34px;gap:0 6px}}
+@media (max-width:380px){.day{grid-template-columns:54px 30px 46px 34px minmax(30px,1fr) 34px 14px;gap:0 6px}}
 html.locked body>*:not(#gate){display:none!important}
 #gate{position:fixed;inset:0;z-index:100000;display:flex;align-items:center;justify-content:center;padding:20px;background:linear-gradient(160deg,rgb(var(--a)),rgb(var(--b)))}
 #gate[hidden]{display:none}
@@ -279,7 +297,8 @@ html.locked body>*:not(#gate){display:none!important}
   </section>
 
   <section class="sec s-kc" aria-labelledby="h-kc">
-   <h2 id="h-kc">Kachelmann-Prognose</h2>
+   <h2 id="h-kc">Stündliche Prognose</h2>
+   <div class="kc-btns kc-src" id="kcsrc"><button type="button" data-s="icon">ICON-D2</button><button type="button" data-s="kach">Kachelmann</button></div>
    <div id="kc"><p class="muted">Wird geladen …</p></div>
   </section>
 
@@ -296,7 +315,7 @@ html.locked body>*:not(#gate){display:none!important}
     <button class="gbtn lockb" id="lock" type="button">Karte bewegen: aus</button>
     <div class="scrub" id="play">
      <button id="pp" type="button" aria-label="Abspielen oder anhalten"></button>
-     <input id="sl" type="range" min="0" max="0" value="0" aria-label="Zeitpunkt des Radars">
+     <div class="slw"><input id="sl" type="range" min="0" max="0" value="0" aria-label="Zeitpunkt des Radars"><i id="nowline" aria-hidden="true"></i><button type="button" id="nowtick" aria-label="Zum aktuellen Radarbild springen">Jetzt</button></div>
      <span id="ts"></span>
     </div>
    </div>
@@ -324,7 +343,7 @@ html.locked body>*:not(#gate){display:none!important}
 </main>
 
 <footer class="wrap foot">
- <p>Daten: Open-Meteo (Vorhersage und Radar-Prognose), KachelmannWetter (stündliche Prognose für freigeschaltete Orte), RainViewer (Radar), Deutscher Wetterdienst (Radar und Warnungen über Bright Sky), GeoSphere Austria (Warnungen), BigDataCloud (Ortsname).</p>
+ <p>Daten: Open-Meteo (Vorhersage, Radar-Prognose und ICON-D2 des Deutschen Wetterdienstes), KachelmannWetter (stündliche Prognose für freigeschaltete Orte), RainViewer (Radar), Deutscher Wetterdienst (Radar und Warnungen über Bright Sky), GeoSphere Austria (Warnungen), BigDataCloud (Ortsname).</p>
  <p>Karten und Bilder: © OpenStreetMap-Mitwirkende, Esri, Maxar, Earthstar Geographics, Sentinel-2 cloudless von EOX. Grenzen und Ortsnamen: Esri, Garmin, HERE. Wolken: Meteosat (EUMETSAT) über den Deutschen Wetterdienst.</p>
  <p>Version <span id="ver"></span></p>
  <p><a href="#" id="upd-chk">Nach Updates suchen</a> · <a href="#" id="logout">Abmelden</a></p>
@@ -400,6 +419,7 @@ function tcol(t){
 
 /* ============ Zustand ============ */
 let place={name:"Wien",lat:48.2082,lon:16.3738},follow=true;
+let lastJ=null,kcDaily={},openDays=new Set();
 let map,marker,mode="rv",frames=[],layers=[],idx=0,timer=null,host="",pastCount=0,dwd;
 
 /* ============ Wetter laden und anzeigen ============ */
@@ -410,7 +430,7 @@ async function loadWeather(){
  try{
   const base="https://api.open-meteo.com/v1/forecast?latitude="+place.lat+"&longitude="+place.lon+"&timezone=auto&forecast_days=7";
   const cur="temperature_2m,apparent_temperature,relative_humidity_2m,precipitation,weather_code,wind_speed_10m,wind_direction_10m,surface_pressure";
-  const hr="temperature_2m,precipitation_probability,weather_code";
+  const hr="temperature_2m,precipitation_probability,weather_code,precipitation,wind_speed_10m,wind_gusts_10m";
   const dl="weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max,sunrise,sunset";
   let j;
   try{j=await getJ(base+"&current="+cur+",is_day,cloud_cover,wind_gusts_10m&hourly="+hr+",is_day&daily="+dl+",uv_index_max")}
@@ -421,7 +441,7 @@ async function loadWeather(){
   showErr("Wetterdaten konnten nicht geladen werden. Prüfe die Internetverbindung und öffne die Seite im Browser deines Handys (Safari oder Chrome).");
  }
  moveMap();
- loadWarnings();loadNowcast();loadPtypes();loadKc();
+ loadWarnings();loadNowcast();loadPtypes();loadKc();loadKcDaily();
  try{localStorage.setItem("wetter-ort",JSON.stringify(place))}catch(e){}
 }
 function renderAll(j){
@@ -467,7 +487,16 @@ function renderHours(j,c){
  }
  $("hours").innerHTML='<svg role="img" aria-label="Temperaturverlauf der nächsten 24 Stunden" width="'+w+'" height="'+hgt+'" viewBox="0 0 '+w+' '+hgt+'">'+g+'</svg>';
 }
+const CHEV='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
+function dayMm(i){
+ const j=lastJ;if(!j)return null;
+ const k=kcDayStat(j.daily.time[i]);
+ if(k&&k.P!=null)return k.P;
+ const v=j.daily.precipitation_sum?j.daily.precipitation_sum[i]:null;
+ return v==null?null:+v;
+}
 function renderDays(j){
+ lastJ=j;
  const D=j.daily,mn=Math.min(...D.temperature_2m_min),mx=Math.max(...D.temperature_2m_max),span=(mx-mn)||1;
  $("days").innerHTML=D.time.map((d,i)=>{
   const dt=new Date(d+"T12:00");
@@ -475,8 +504,70 @@ function renderDays(j){
   const lo=D.temperature_2m_min[i],hi=D.temperature_2m_max[i];
   const l=(lo-mn)/span*100,wd=Math.max(8,(hi-lo)/span*100);
   const p=D.precipitation_probability_max?D.precipitation_probability_max[i]:0;
-  return'<div class="day"><div class="dn"><b>'+name+'</b><span>'+dt.getDate()+"."+(dt.getMonth()+1)+".</span></div><div>"+ic(kind(D.weather_code[i],true),30)+'</div><div class="dp">'+(p>=10?Math.round(+p)+" %":"")+'</div><div class="dlo">'+deg(lo)+'</div><div class="dbar"><i style="left:'+l.toFixed(1)+"%;width:"+Math.min(wd,100-l).toFixed(1)+"%;background:linear-gradient(90deg,"+tcol(lo)+","+tcol(hi)+')"></i></div><div class="dhi">'+deg(hi)+"</div></div>";
+  const mm=dayMm(i);
+  return'<div class="dw" data-i="'+i+'"><div class="day" role="button" tabindex="0" aria-expanded="false" aria-label="Details für '+esc(name)+' ein- oder ausklappen"><div class="dn"><b>'+name+'</b><span>'+dt.getDate()+"."+(dt.getMonth()+1)+".</span></div><div>"+ic(kind(D.weather_code[i],true),30)+'</div><div class="dp">'+(p>=10?"<span>"+Math.round(+p)+" %</span>":"")+(mm!=null&&mm>=0.1?"<small>"+fmt(mm)+" mm</small>":"")+'</div><div class="dlo">'+deg(lo)+'</div><div class="dbar"><i style="left:'+l.toFixed(1)+"%;width:"+Math.min(wd,100-l).toFixed(1)+"%;background:linear-gradient(90deg,"+tcol(lo)+","+tcol(hi)+')"></i></div><div class="dhi">'+deg(hi)+'</div><div class="dch">'+CHEV+'</div></div><div class="dd" hidden></div></div>';
  }).join("");
+ openDays.forEach(i=>setDay(i,true));
+}
+function setDay(i,open){
+ const w=$("days").querySelector('.dw[data-i="'+i+'"]');if(!w)return;
+ w.classList.toggle("open",open);
+ w.querySelector(".day").setAttribute("aria-expanded",open?"true":"false");
+ const dd=w.querySelector(".dd");dd.hidden=!open;
+ if(open){openDays.add(i);dd.innerHTML=dayDetail(i)}else openDays.delete(i);
+}
+$("days").addEventListener("click",e=>{const r=e.target.closest(".day");if(r)setDay(+r.parentNode.dataset.i,!r.parentNode.classList.contains("open"))});
+$("days").addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&e.target.classList&&e.target.classList.contains("day")){e.preventDefault();setDay(+e.target.parentNode.dataset.i,!e.target.parentNode.classList.contains("open"))}});
+/* Kachelmann-Werte eines Tages: stündlich, sonst in 6-Stunden-Schritten */
+function kcDayRows(date){
+ const off=(+(lastJ&&lastJ.utc_offset_seconds)||0)*1000;
+ const f=a=>(a||[]).filter(x=>x.d&&new Date(x.d.getTime()+off).toISOString().slice(0,10)===date);
+ const a=f(kcDaily.h1);if(a.length>=12)return{rows:a,kind:"1h",m:kcDaily.mh1};
+ const b=f(kcDaily.h6);if(b.length>=3)return{rows:b,kind:"6h",m:kcDaily.mh6};
+ return null;
+}
+function kcDayStat(date){
+ const r=kcDayRows(date);
+ if(!r||r.kind!=="1h"||r.rows.length<22||!r.m||!r.m.kP)return null;
+ const v=r.rows.map(x=>x.P).filter(x=>x!=null);
+ return v.length>=22?{P:v.reduce((a,x)=>a+x,0)}:null;
+}
+function dayDetail(i){
+ const j=lastJ;if(!j)return"";
+ const H=j.hourly||{time:[]},D=j.daily,date=D.time[i];
+ const off=(+j.utc_offset_seconds||0)*1000;
+ const hr=d=>new Date(d.getTime()+off).getUTCHours();
+ const kd=kcDayRows(date);
+ const omAt=h=>{
+  const k=H.time.indexOf(date+"T"+String(h).padStart(2,"0")+":00");if(k<0)return null;
+  const g=a=>a&&a[k]!=null?+a[k]:null;
+  return{T:g(H.temperature_2m),P:g(H.precipitation),W:g(H.wind_speed_10m),G:g(H.wind_gusts_10m),code:H.weather_code?H.weather_code[k]:null,day:H.is_day?H.is_day[k]:(h>=7&&h<=18?1:0)};
+ };
+ let slots=[0,3,6,9,12,15,18,21].map(h=>({h,k:null})),src="om";
+ if(kd&&kd.kind==="1h"){src="k1";slots=slots.map(s=>({h:s.h,k:kd.rows.find(x=>hr(x.d)===s.h)||null}))}
+ else if(kd&&kd.kind==="6h"){src="k6";slots=kd.rows.map(x=>({h:hr(x.d),k:x}))}
+ if(i===0){const ch=hr(new Date());slots=slots.filter(s=>s.h>=ch-2)}
+ const wu=kd&&kd.m&&kd.m.wu||"km/h",pu=kd&&kd.m&&kd.m.pu||"mm";
+ const body=slots.map(s=>{
+  const o=omAt(s.h)||{},K=s.k||{};
+  const T=K.T!=null?K.T:o.T,P=K.P!=null?K.P:o.P,W=K.W!=null?K.W:o.W,G=K.G!=null?K.G:o.G;
+  const icn=o.code!=null?ic(kind(o.code,!!o.day),24):"";
+  return"<tr><td>"+String(s.h).padStart(2,"0")+":00</td><td>"+icn+"</td><td>"+(T==null?"–":deg(T))+"</td><td>"+(P==null?"–":fmt(P)+" "+esc(pu))+"</td><td>"+(W==null?"–":Math.round(W)+" "+esc(wu))+(G!=null&&W!=null&&G>W+8?" · Böen "+Math.round(G):"")+"</td></tr>";
+ }).join("");
+ const st=kcDayStat(date);
+ const om=D.precipitation_sum?D.precipitation_sum[i]:null;
+ const pmm=st&&st.P!=null?st.P:om;
+ const pp=D.precipitation_probability_max?D.precipitation_probability_max[i]:null;
+ const dayW=[];for(let h=0;h<24;h++){const o=omAt(h);if(o&&o.W!=null)dayW.push(o.W)}
+ const gu=[];for(let h=0;h<24;h++){const o=omAt(h);if(o&&o.G!=null)gu.push(o.G)}
+ const parts=[];
+ parts.push("<span>Niederschlag <b>"+(pmm==null?"–":(pmm<0.1?"keiner":fmt(pmm)+" mm"))+"</b>"+(pmm!=null?" ("+(st?"Kachelmann":"Open-Meteo")+")":"")+"</span>");
+ if(pp!=null)parts.push("<span>Regenwahrscheinlichkeit <b>"+Math.round(+pp)+" %</b></span>");
+ if(dayW.length)parts.push("<span>Wind bis <b>"+Math.round(Math.max(...dayW))+" km/h</b>"+(gu.length?", Böen "+Math.round(Math.max(...gu)):"")+"</span>");
+ if(D.sunrise&&D.sunset)parts.push("<span>Sonne <b>"+D.sunrise[i].slice(11,16)+"–"+D.sunset[i].slice(11,16)+"</b></span>");
+ if(D.uv_index_max&&D.uv_index_max[i]!=null)parts.push("<span>UV <b>"+fmt(D.uv_index_max[i])+"</b></span>");
+ const note=src==="k1"?"Kachelmann, stündliche Werte, ergänzt mit Open-Meteo (Symbole und fehlende Werte).":src==="k6"?"Kachelmann, 6-Stunden-Werte, ergänzt mit Open-Meteo (Symbole und fehlende Werte).":"Open-Meteo. Kachelmann-Werte gibt es nur für die ersten Tage und für angemeldete Nutzer.";
+ return'<div class="dd-sum">'+parts.join("")+"</div>"+(body?'<table class="kc-tab"><tr><th>Uhrzeit</th><th></th><th>Temp.</th><th>Regen</th><th>Wind</th></tr>'+body+"</table>":'<p class="muted">Für diesen Tag liegen keine Details vor.</p>')+'<p class="dd-src">Quelle: '+note+"</p>";
 }
 function renderFacts(j,c){
  const mm=s=>(+s.slice(11,13))*60+(+s.slice(14,16));
@@ -784,6 +875,15 @@ function refreshFcFrames(){
  if(mode==="rv"&&fcData&&frames.length)fcData.fr.forEach((f,k)=>{if(f.t*1000>Date.now()-10*60000)frames.push({time:f.t,fc:k})});
  $("sl").max=Math.max(0,frames.length-1);
  if(idx>=frames.length)idx=Math.max(0,Math.min(pastCount-1,frames.length-1));
+ placeTick();
+}
+function placeTick(){
+ const t=$("nowtick"),l=$("nowline"),max=+$("sl").max;
+ const on=mode==="rv"&&pastCount>=1&&max>=2&&pastCount-1<max;
+ t.style.display=l.style.display=on?"block":"none";
+ if(!on)return;
+ const x="calc(8px + (100% - 16px) * "+((pastCount-1)/max).toFixed(4)+")";
+ t.style.left=l.style.left=x;
 }
 function hideFc(){try{if(fcOv){map.removeLayer(fcOv);fcOv=null}if(fcMk)fcMk.clearLayers()}catch(e){}}
 function showFc(f){
@@ -846,6 +946,7 @@ document.addEventListener("click",e=>{if(!e.target.closest(".search"))$("res").s
 $("geo").onclick=()=>{follow=true;saveState();useGPS(true)};
 $("pp").onclick=toggle;
 $("sl").oninput=e=>{if(timer)toggle();show(+e.target.value)};
+$("nowtick").onclick=()=>{if(timer)toggle();show(Math.max(0,pastCount-1))};
 document.querySelectorAll("#mode button").forEach(b=>b.onclick=()=>setMode(b.dataset.m));
 document.querySelectorAll("#basemode button").forEach(b=>b.onclick=()=>setBase(b.dataset.b));
 $("cld").onclick=()=>{cldOn=!cldOn;try{localStorage.setItem("wetter-cld",cldOn?"1":"0")}catch(e){}setClouds()};
@@ -897,16 +998,24 @@ const kcCache={
  get(k){try{const o=JSON.parse(localStorage.getItem("wetter-kc|"+k));if(o&&Date.now()-o.t<(o.s===200?KC_TTL:KC_ERR_TTL))return o}catch(e){}return null},
  set(k,o){try{localStorage.setItem("wetter-kc|"+k,JSON.stringify(o))}catch(e){}}
 };
-async function kcFetch(path){
- const c=kcCache.get(path);if(c)return c;
+const kcInflight={};
+function kcFetch(path){
+ const c=kcCache.get(path);if(c)return Promise.resolve(c);
+ if(kcInflight[path])return kcInflight[path];
  const W=window.__worker,tok=W&&W.token();
- if(!tok)throw new Error("login");
- const r=await fetch(W.base+"/k/"+path,{headers:{Authorization:"Bearer "+tok}});
- const txt=await r.text();
- if(r.status===401&&/Nicht angemeldet/.test(txt)){W.logout();throw new Error("login")}
- const o={t:Date.now(),s:r.status,b:txt.slice(0,200000)};
- kcCache.set(path,o);
- return o;
+ if(!tok)return Promise.reject(new Error("login"));
+ const pr=(async()=>{
+  try{
+   const r=await fetch(W.base+"/k/"+path,{headers:{Authorization:"Bearer "+tok}});
+   const txt=await r.text();
+   if(r.status===401&&/Nicht angemeldet/.test(txt)){W.logout();throw new Error("login")}
+   const o={t:Date.now(),s:r.status,b:txt.slice(0,200000)};
+   kcCache.set(path,o);
+   return o;
+  }finally{delete kcInflight[path]}
+ })();
+ kcInflight[path]=pr;
+ return pr;
 }
 function kcTarget(){
  if(KC_ORTE.length){
@@ -916,9 +1025,45 @@ function kcTarget(){
  }
  return{o:{name:place.name,lat:+(+place.lat).toFixed(4),lon:+(+place.lon).toFixed(4)},d:0,free:true};
 }
-let kcSeq=0,kcAll=false,kcLast=null;
+function kcParse(j,iv){
+ const rows=kcRows(j);if(!rows.length)return null;
+ const keys=Object.keys(rows[0]);
+ const kt=kcKey(keys,["dateTime","time","datetime","date","timestamp"],/time|date/i);
+ const kT=kcKey(keys,["temp","temperature","temp2m","tt"],/^temp/i,/min|max|dew|feel/i);
+ const kP=kcKey(keys,iv==="6h"?["prec6h","prec","precCurrent"]:["prec1h","prec","precCurrent","precip","precipitation","rain"],/^(prec|rain)/i,/prob|chance|type|form|snow|sum|total|cum|max|min|\d+h$|\d+d$/i);
+ const kW=kcKey(keys,["windSpeed","wind","windspeed","ff"],/^wind/i,/dir|gust|angle|degree/i);
+ const kG=kcKey(keys,["windGust","windGust1h","windGusts","gust"],/gust/i);
+ const U=j&&j.units&&typeof j.units==="object"?j.units:{};
+ const un=(k,d)=>typeof U[k]==="string"?U[k]:d;
+ return{kT,kP,kW,kG,pu:un(kP,"mm"),wu:un(kW,"km/h"),all:rows.map(r=>({d:kcDate(r[kt]),T:kT?kcNum(r[kT]):null,P:kP?kcNum(r[kP]):null,W:kW?kcNum(r[kW]):null,G:kG?kcNum(r[kG]):null}))};
+}
+let kcdSeq=0;
+async function loadKcDaily(){
+ const my=++kcdSeq;
+ let out={};
+ try{
+  const t=window.__worker&&window.__worker.token()?kcTarget():null;
+  if(t){
+   const base="forecast/"+t.o.lat+"/"+t.o.lon+"/advanced/";
+   const [a,b]=await Promise.all([kcFetch(base+"1h"),kcFetch(base+"6h")]);
+   for(const [k,res,iv] of [["h1",a,"1h"],["h6",b,"6h"]]){
+    if(res.s!==200)continue;
+    let jj=null;try{jj=JSON.parse(res.b)}catch(e){}
+    const P=jj&&kcParse(jj,iv);
+    if(P&&(P.kT||P.kP)){out[k]=P.all.filter(x=>x.d);out["m"+k]=P}
+   }
+  }
+ }catch(e){out={}}
+ if(my!==kcdSeq)return;
+ kcDaily=out;
+ if(lastJ)renderDays(lastJ);
+}
+let kcSeq=0,kcAll=false,kcLast=null,kcSrc="icon";
+try{if(localStorage.getItem("wetter-kcsrc")==="kach")kcSrc="kach"}catch(e){}
 async function loadKc(){
  const my=++kcSeq,el=$("kc");
+ document.querySelectorAll("#kcsrc button").forEach(b=>b.classList.toggle("on",b.dataset.s===kcSrc));
+ if(kcSrc==="icon")return loadIcon(my);
  if(!(window.__worker&&window.__worker.token())){el.innerHTML='<p class="muted">Bitte melde dich an.</p>';return}
  const t=kcTarget();
  if(!t){
@@ -957,41 +1102,51 @@ function renderKc(t,res){
  }
  const rows=kcRows(j);
  if(!rows.length){el.innerHTML=head+'<p class="muted">Die Antwort von Kachelmann enthält keine Stundenwerte.</p>'+raw();return}
- const keys=Object.keys(rows[0]);
- const kt=kcKey(keys,["dateTime","time","datetime","date","timestamp"],/time|date/i);
- const kT=kcKey(keys,["temp","temperature","temp2m","tt"],/^temp/i);
- const kP=kcKey(keys,["prec1h","prec","precCurrent","precip","precipitation","rain","precSum"],/^(prec|rain)/i,/prob|chance|type|form|snow/i);
- const kW=kcKey(keys,["windSpeed","wind","windspeed","ff"],/^wind/i,/dir|gust|angle|degree/i);
- const kG=kcKey(keys,["windGust","windGust1h","windGusts","gust"],/gust/i);
- const U=j&&j.units&&typeof j.units==="object"?j.units:{};
- const un=(k,d)=>typeof U[k]==="string"?U[k]:d;
+ const PR=kcParse(j,"1h"),kT=PR.kT,kP=PR.kP,kW=PR.kW;
  const now=Date.now();
- const L=rows.map(r=>({d:kcDate(r[kt]),T:kT?kcNum(r[kT]):null,P:kP?kcNum(r[kP]):null,W:kW?kcNum(r[kW]):null,G:kG?kcNum(r[kG]):null}))
+ const lab=d=>d?(d.getHours()===0?d.toLocaleDateString("de-AT",{weekday:"short"}).replace(".","")+" ":"")+d.toLocaleTimeString("de-AT",{hour:"2-digit",minute:"2-digit"}):"";
+ const L=PR.all.map(x=>Object.assign({lab:lab(x.d)},x))
   .filter(x=>x.d&&x.d.getTime()>=now-45*60000).slice(0,24);
  if(!L.length||(kT==null&&kP==null)){el.innerHTML=head+'<p class="muted">Die Antwort von Kachelmann konnte nicht gelesen werden.</p>'+raw();return}
- const pu=un(kP,"mm"),wu=un(kW,"km/h"),tu=un(kT,"°C");
- let sum="";
- if(kP){
-  const s6=L.slice(0,6).reduce((a,x)=>a+(x.P||0),0);
-  sum=s6<0.1?"In den nächsten 6 Stunden bleibt es trocken.":"In den nächsten 6 Stunden kommen etwa "+fmt(s6)+" "+esc(pu)+" Niederschlag.";
- }
- const list=kcAll?L:L.filter((x,i)=>i%3===0);
- const th='<tr><th>Uhrzeit</th>'+(kT?"<th>Temp.</th>":"")+(kP?"<th>Regen</th>":"")+(kW?"<th>Wind</th>":"")+"</tr>";
- const tr=list.map(x=>{
-  const lab=x.d.toLocaleTimeString("de-AT",{hour:"2-digit",minute:"2-digit"});
-  const day=x.d.getHours()===0?x.d.toLocaleDateString("de-AT",{weekday:"short"}).replace(".","")+" ":"";
-  return"<tr><td>"+esc(day+lab)+"</td>"+(kT?"<td>"+(x.T==null?"–":deg(x.T))+"</td>":"")+(kP?"<td>"+(x.P==null?"–":fmt(x.P)+" "+esc(pu))+"</td>":"")+(kW?"<td>"+(x.W==null?"–":Math.round(x.W)+" "+esc(wu))+(x.G!=null&&x.G>(x.W||0)+8?" · Böen "+Math.round(x.G):"")+"</td>":"")+"</tr>";
- }).join("");
  const runD=j&&typeof j.run==="string"?kcDate(j.run):null;
  const hhmm=new Date(res.t).toLocaleTimeString("de-AT",{hour:"2-digit",minute:"2-digit"});
- el.innerHTML=head+(sum?'<p class="kc-sum">'+sum+"</p>":"")+'<table class="kc-tab">'+th+tr+"</table>"
-  +'<div class="kc-btns"><button type="button" id="kc-all">'+(kcAll?"Nur alle 3 Stunden":"Jede Stunde zeigen")+"</button></div>"
-  +'<p class="small">KachelmannWetter, stündliche Prognose'+(runD?' (Modelllauf '+runD.toLocaleTimeString("de-AT",{hour:"2-digit",minute:"2-digit"})+' Uhr'+(j&&j.resolution?', Auflösung '+esc(String(j.resolution).replace(/_/g," ").toLowerCase()):"")+')':"")+'. Stand '+hhmm+' Uhr. Die Werte werden 30 Minuten zwischengespeichert, um das Tageslimit deiner Abfragen zu schonen.</p>'+raw();
- kcLast=[t,res];
+ const o={hasT:!!kT,hasP:!!kP,hasW:!!kW,pu:PR.pu,wu:PR.wu,
+  note:'KachelmannWetter, stündliche Prognose'+(runD?' (Modelllauf '+runD.toLocaleTimeString("de-AT",{hour:"2-digit",minute:"2-digit"})+' Uhr'+(j&&j.resolution?', Auflösung '+esc(String(j.resolution).replace(/_/g," ").toLowerCase()):"")+')':"")+'. Stand '+hhmm+' Uhr. Die Werte werden 30 Minuten zwischengespeichert, um das Tageslimit deiner Abfragen zu schonen.',extra:raw()};
+ kcLast=()=>kcTable(head,L,o);kcLast();
 }
+function kcTable(head,L,o){
+ let sum="";
+ if(o.hasP){
+  const s6=L.slice(0,6).reduce((a,x)=>a+(x.P||0),0);
+  sum=s6<0.1?"In den nächsten 6 Stunden bleibt es trocken.":"In den nächsten 6 Stunden kommen etwa "+fmt(s6)+" "+esc(o.pu)+" Niederschlag.";
+ }
+ const list=kcAll?L:L.filter((x,i)=>i%3===0);
+ const th='<tr><th>Uhrzeit</th>'+(o.hasT?"<th>Temp.</th>":"")+(o.hasP?"<th>Regen</th>":"")+(o.hasW?"<th>Wind</th>":"")+"</tr>";
+ const tr=list.map(x=>"<tr><td>"+esc(x.lab)+"</td>"+(o.hasT?"<td>"+(x.T==null?"–":deg(x.T))+"</td>":"")+(o.hasP?"<td>"+(x.P==null?"–":fmt(x.P)+" "+esc(o.pu))+"</td>":"")+(o.hasW?"<td>"+(x.W==null?"–":Math.round(x.W)+" "+esc(o.wu))+(x.G!=null&&x.G>(x.W||0)+8?" · Böen "+Math.round(x.G):"")+"</td>":"")+"</tr>").join("");
+ $("kc").innerHTML=head+(sum?'<p class="kc-sum">'+sum+"</p>":"")+'<table class="kc-tab">'+th+tr+"</table>"
+  +'<div class="kc-btns"><button type="button" id="kc-all">'+(kcAll?"Nur alle 3 Stunden":"Jede Stunde zeigen")+"</button></div>"
+  +'<p class="small">'+o.note+"</p>"+(o.extra||"");
+}
+async function loadIcon(my){
+ const el=$("kc");
+ let j;
+ try{j=await getJ("https://api.open-meteo.com/v1/forecast?latitude="+(+place.lat).toFixed(3)+"&longitude="+(+place.lon).toFixed(3)+"&hourly=temperature_2m,precipitation,wind_speed_10m,wind_gusts_10m&models=icon_d2&forecast_hours=48&timezone=auto")}
+ catch(e){if(my===kcSeq)el.innerHTML='<p class="muted">Die ICON-D2-Prognose konnte nicht geladen werden.</p>';return}
+ if(my!==kcSeq)return;
+ const H=(j&&j.hourly)||{},pick=k=>H[k]||H[k+"_icon_d2"]||[],tm=H.time||[];
+ const T=pick("temperature_2m"),P=pick("precipitation"),W=pick("wind_speed_10m"),G=pick("wind_gusts_10m");
+ const off=(+(j&&j.utc_offset_seconds)||0)*1000,now=Date.now();
+ const head='<p class="kc-head">'+esc(place.name)+"</p>";
+ const L=tm.map((t,i)=>({d:new Date(Date.parse(t+"Z")-off),lab:(t.slice(11,13)==="00"?new Date(t.slice(0,10)+"T12:00").toLocaleDateString("de-AT",{weekday:"short"}).replace(".","")+" ":"")+t.slice(11,16),T:kcNum(T[i]),P:kcNum(P[i]),W:kcNum(W[i]),G:kcNum(G[i])}))
+  .filter(x=>x.d.getTime()>=now-45*60000).slice(0,24);
+ if(!L.length||L.every(x=>x.T==null)){el.innerHTML=head+'<p class="muted">ICON-D2 deckt diesen Ort nicht ab, es gilt für Mitteleuropa. Wähle oben „Kachelmann“.</p>';return}
+ const o={hasT:true,hasP:true,hasW:true,pu:"mm",wu:"km/h",note:"ICON-D2 des Deutschen Wetterdienstes (Auflösung etwa 2 km, stündlich, bis zu 48 Stunden) über Open-Meteo."};
+ kcLast=()=>kcTable(head,L,o);kcLast();
+}
+$("kcsrc").addEventListener("click",e=>{const b=e.target.closest("button[data-s]");if(!b)return;kcSrc=b.dataset.s;try{localStorage.setItem("wetter-kcsrc",kcSrc)}catch(x){}loadKc()});
 $("kc").addEventListener("click",e=>{
  const b=e.target.closest("button");if(!b)return;
- if(b.id==="kc-all"){kcAll=!kcAll;if(kcLast)renderKc(kcLast[0],kcLast[1]);return}
+ if(b.id==="kc-all"){kcAll=!kcAll;if(kcLast)kcLast();return}
  if(b.dataset.k!=null){const o=KC_ORTE[+b.dataset.k];if(!o)return;place={name:o.name,lat:o.lat,lon:o.lon};follow=false;saveState();loadWeather();window.scrollTo({top:0,behavior:"smooth"})}
 });
 
