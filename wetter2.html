@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-blIa4IPBbxpcQ6ATzbxh+sETq7EKHkLsSE3ONFO01cA=' 'sha256-rtD+YnjjlK/qdTffRRM0+dg5HIzXWVMndWiYx7RbciI=' https://unpkg.com https://cdnjs.cloudflare.com; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com; connect-src 'self' https://api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-oNo81EmOltkuExpmUD4ppRBFVhXCD5syvoc0Fl5Ph+I=' 'sha256-rtD+YnjjlK/qdTffRRM0+dg5HIzXWVMndWiYx7RbciI=' https://unpkg.com https://cdnjs.cloudflare.com; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com; connect-src 'self' https://api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -14,8 +14,8 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/favicon-64.png">
-<meta name="app-build" content="17">
-<meta name="app-notes" content="Neues, genaueres Regenradar vom Deutschen Wetterdienst: 1 km Auflösung, alle 5 Minuten und eine echte Radar-Vorhersage für 2 Stunden (Deutschland und Grenzgebiete).">
+<meta name="app-build" content="18">
+<meta name="app-notes" content="Ortssuche findet jetzt auch Orte mit Tippfehlern, klarere Hilfe, wenn der Standort nicht erlaubt ist. Dazu das genauere DWD-Radar mit 1 km und 2 Stunden Radar-Vorhersage.">
 <script>/* alte Adresse wetter2.html -> neue Startseite */
 try{if(top!==self)document.documentElement.style.display="none"}catch(e){document.documentElement.style.display="none"}
 window.__redir=/\/wetter2\.html$/i.test(location.pathname);
@@ -978,7 +978,7 @@ function initMap(){
 function moveMap(){
  const key=place.lat.toFixed(3)+","+place.lon.toFixed(3),changed=key!==mmKey;
  if(hero){hero.invalidateSize();if(changed)hero.setView([place.lat,place.lon],14,{animate:false})}
- if(map&&changed){map.setView([place.lat,place.lon],8);marker.setLatLng([place.lat,place.lon]);if(mode==="dwd"){if(dwCovered(+place.lat,+place.lon))loadDwd();else{setMode("rv");$("fnote").textContent="Für diesen Ort gibt es kein DWD-Radar, deshalb das weltweite Radar."}}}
+ if(map&&changed){map.setView([place.lat,place.lon],8);marker.setLatLng([place.lat,place.lon]);if(mode==="dwd"){if(dwCovered(+place.lat,+place.lon))loadDwd();else{setMode("rv");$("fnote").textContent="Für diesen Ort gibt es kein DWD-Radar, deshalb das weltweite Radar."}}else{let um=null;try{um=localStorage.getItem("wetter-mode")}catch(e){}if(!um&&dwCovered(+place.lat,+place.lon))setMode("dwd")}}
  mmKey=key;
 }
 async function loadRadar(){
@@ -1298,7 +1298,15 @@ $("q").addEventListener("input",e=>{
  st=setTimeout(async()=>{
   try{
    const j=await getJ("https://geocoding-api.open-meteo.com/v1/search?count=5&language=de&name="+encodeURIComponent(v));
-   const r=j.results||[];
+   let r=j.results||[];
+   if(!r.length){
+    /* Ausweichsuche mit Tippfehler-Toleranz (Photon, OpenStreetMap-Daten) */
+    try{
+     const k=await getJ("https://photon.komoot.io/api/?limit=6&lang=de&q="+encodeURIComponent(v));
+     r=(k.features||[]).filter(f=>f.geometry&&f.properties&&(f.properties.osm_key==="place"||f.properties.type==="city"||f.properties.type==="district"||f.properties.osm_value==="administrative")).slice(0,5)
+      .map(f=>({name:f.properties.name,admin1:f.properties.state||f.properties.county||"",country:f.properties.country||"",latitude:f.geometry.coordinates[1],longitude:f.geometry.coordinates[0]}));
+    }catch(x){}
+   }
    $("res").innerHTML=r.length?r.map((x,i)=>'<li tabindex="0" data-i="'+i+'">'+esc(x.name)+(x.admin1?", "+esc(x.admin1):"")+(x.country?" ("+esc(x.country)+")":"")+"</li>").join(""):"<li>Kein Ort gefunden</li>";
    $("res").style.display="block";
    $("res").onclick=ev=>{const li=ev.target.closest("li[data-i]");if(!li)return;const x=r[li.dataset.i];
@@ -1327,7 +1335,7 @@ function useGPS(manual){
   place={name:"Mein Standort",lat,lon,gps:true};
   try{const r=await getJ("https://api.bigdatacloud.net/data/reverse-geocode-client?latitude="+lat+"&longitude="+lon+"&localityLanguage=de");place.name=r.locality||r.city||place.name}catch(e){}
   saveState();loadWeather();
- },()=>{if(manual)showErr("Standort nicht erlaubt. Erlaube den Zugriff in den Browser-Einstellungen oder suche einen Ort.")},{enableHighAccuracy:true,timeout:15000,maximumAge:120000});
+ },()=>{if(manual)showErr(isIOS?"Standort nicht erlaubt. Am iPhone: Einstellungen, Datenschutz & Sicherheit, Ortungsdienste, Safari-Websites, dort „Beim Verwenden der App“ wählen. Danach hier noch einmal auf das Standort-Symbol tippen. Oder suche oben einen Ort.":"Standort nicht erlaubt. Erlaube den Zugriff in den Browser-Einstellungen oder suche oben einen Ort.")},{enableHighAccuracy:true,timeout:15000,maximumAge:120000});
 }
 
 /* ============ Kachelmann-Prognose (über den eigenen Worker) ============ */
