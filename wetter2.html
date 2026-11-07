@@ -9,6 +9,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Wetter">
 <title>Wetter</title>
+<meta name="app-build" content="3">
+<meta name="app-notes" content="Die Seite meldet dir jetzt selbst, wenn es ein neues Update gibt.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap">
@@ -172,6 +174,13 @@ main{position:relative;z-index:1}
 .foot{padding:24px 18px calc(env(safe-area-inset-bottom,0px) + 40px);border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
 .foot p+p{margin-top:8px}
 
+.upd{position:fixed;left:12px;right:12px;bottom:calc(env(safe-area-inset-bottom,0px) + 12px);z-index:3000;max-width:520px;margin:0 auto;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 18px 50px rgba(0,0,0,.34);display:none}
+.upd.show{display:block}
+.upd b{display:block;font-size:17px;font-weight:650}
+.upd p{margin-top:4px;font-size:14px;color:var(--muted)}
+.upd .row{display:flex;gap:10px;margin-top:14px}
+.upd button{flex:1;min-height:46px;border-radius:12px;border:1px solid var(--line);background:transparent;font-weight:600}
+.upd button.pri{background:var(--accent);border-color:var(--accent);color:var(--paper)}
 @media (max-width:380px){.day{grid-template-columns:54px 30px 36px 34px minmax(30px,1fr) 34px;gap:0 6px}}
 </style>
 </head>
@@ -262,7 +271,15 @@ main{position:relative;z-index:1}
 <footer class="wrap foot">
  <p>Daten: Open-Meteo (Vorhersage), RainViewer (Radar), Deutscher Wetterdienst (Radar und Warnungen über Bright Sky), GeoSphere Austria (Warnungen), BigDataCloud (Ortsname).</p>
  <p>Karten und Bilder: © OpenStreetMap-Mitwirkende, Esri, Maxar, Earthstar Geographics, Sentinel-2 cloudless von EOX.</p>
+ <p>Version <span id="ver"></span></p>
+ <p><a href="#" id="upd-chk">Nach Updates suchen</a></p>
 </footer>
+
+<div class="upd" id="upd" role="alertdialog" aria-labelledby="upd-t">
+ <b id="upd-t">Neues Update verfügbar</b>
+ <p id="upd-n"></p>
+ <div class="row"><button type="button" id="upd-later">Später</button><button type="button" class="pri" id="upd-now">Jetzt testen</button></div>
+</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
 <script>
@@ -677,6 +694,48 @@ if(follow)useGPS(false);
 document.addEventListener("visibilitychange",()=>{if(!document.hidden){follow?useGPS(false):loadWeather()}});
 setInterval(()=>{if(!document.hidden)loadWeather()},600000);
 setInterval(loadRadar,600000);
+
+/* ============ Updates ============ */
+const meta=n=>{const m=document.querySelector('meta[name="'+n+'"]');return m?m.content:""};
+const BUILD=+meta("app-build")||0;
+let remote=null,lastChk=0;
+$("ver").textContent=BUILD;
+function showUpd(mode,notes){
+ $("upd-t").textContent=mode==="new"?"Neues Update verfügbar":mode==="done"?"Update installiert":"Alles aktuell";
+ $("upd-n").textContent=notes||"";
+ $("upd-now").style.display=mode==="new"?"":"none";
+ $("upd-later").textContent=mode==="new"?"Später":"OK";
+ $("upd").classList.add("show");
+}
+async function checkUpdate(manual){
+ lastChk=Date.now();
+ try{
+  const r=await fetch(location.pathname+"?c="+Date.now(),{cache:"no-store"});
+  if(!r.ok)throw new Error(r.status);
+  const t=await r.text();
+  const b=+((/name="app-build" content="(\d+)"/.exec(t)||[])[1])||0;
+  const n=((/name="app-notes" content="([^"]*)"/.exec(t)||[])[1])||"";
+  if(b>BUILD){
+   remote={b,n};
+   let later=null;try{later=sessionStorage.getItem("wetter-later")}catch(e){}
+   if(manual||later!==String(b))showUpd("new",n);
+  }else if(manual)showUpd("ok","Du hast die neueste Version (Version "+BUILD+").");
+ }catch(e){if(manual)showUpd("ok","Die Update-Suche hat gerade nicht geklappt. Versuche es später noch einmal.")}
+}
+$("upd-now").onclick=()=>{if(remote)location.replace(location.pathname+"?u="+remote.b)};
+$("upd-later").onclick=()=>{
+ if(remote){try{sessionStorage.setItem("wetter-later",String(remote.b))}catch(e){}}
+ $("upd").classList.remove("show");
+};
+$("upd-chk").onclick=e=>{e.preventDefault();checkUpdate(true)};
+try{
+ const seen=+localStorage.getItem("wetter-build");
+ if(seen&&seen<BUILD)showUpd("done",meta("app-notes"));
+ localStorage.setItem("wetter-build",String(BUILD));
+}catch(e){}
+setTimeout(()=>checkUpdate(false),4000);
+document.addEventListener("visibilitychange",()=>{if(!document.hidden&&Date.now()-lastChk>300000)checkUpdate(false)});
+setInterval(()=>checkUpdate(false),1800000);
 </script>
 </body>
 </html>
