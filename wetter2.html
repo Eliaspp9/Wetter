@@ -9,8 +9,12 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Wetter">
 <title>Wetter</title>
-<meta name="app-build" content="3">
-<meta name="app-notes" content="Die Seite meldet dir jetzt selbst, wenn es ein neues Update gibt.">
+<meta name="app-build" content="4">
+<meta name="app-notes" content="Neue, kürzere Adresse: eliaspp9.github.io/Wetter. Außerdem lässt sich die Seite am PC besser bedienen.">
+<script>/* alte Adresse wetter2.html -> neue Startseite */
+window.__redir=/\/wetter2\.html$/i.test(location.pathname);
+if(window.__redir)location.replace(location.pathname.replace(/wetter2\.html$/i,"")+location.search+location.hash);
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap">
@@ -578,7 +582,8 @@ function initHero(){
  }catch(e){hero=null;$("cred").textContent="Satellitenbild nicht verfügbar"}
 }
 function initMap(){
- map=L.map("map",{zoomControl:false,dragging:!L.Browser.mobile,tap:false,minZoom:4,maxZoom:10}).setView([place.lat,place.lon],8);
+ map=L.map("map",{zoomControl:false,dragging:!L.Browser.mobile,scrollWheelZoom:false,tap:false,minZoom:4,maxZoom:10}).setView([place.lat,place.lon],8);
+ try{map.on("click",()=>{if(map.scrollWheelZoom)map.scrollWheelZoom.enable()});map.on("mouseout",()=>{if(map.scrollWheelZoom)map.scrollWheelZoom.disable()})}catch(e){}
  L.control.zoom({position:"topright"}).addTo(map);
  setBase(baseKind);
  marker=L.circleMarker([place.lat,place.lon],{radius:8,color:"#fff",weight:3,fillColor:"#E5484D",fillOpacity:1}).addTo(map);
@@ -728,7 +733,7 @@ $("upd-later").onclick=()=>{
  $("upd").classList.remove("show");
 };
 $("upd-chk").onclick=e=>{e.preventDefault();checkUpdate(true)};
-try{
+if(!window.__redir)try{
  const seen=+localStorage.getItem("wetter-build");
  if(seen&&seen<BUILD)showUpd("done",meta("app-notes"));
  localStorage.setItem("wetter-build",String(BUILD));
