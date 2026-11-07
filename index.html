@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-C54XcrnzOtx/R3uA3g3HwKFqHbT0gkr0PdsbDfTymvk=' 'sha256-VnCBayzMhNefwqxgjRPGcTKVFm7RT78V4iL88LGdb5o=' https://unpkg.com https://cdnjs.cloudflare.com; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com; connect-src 'self' https://api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'none'; manifest-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-CEbvOEnIxsfTv6gsi3wfF/cdfU8iKiUsOdMZ5ZjIJ38=' 'sha256-rtD+YnjjlK/qdTffRRM0+dg5HIzXWVMndWiYx7RbciI=' https://unpkg.com https://cdnjs.cloudflare.com; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com; connect-src 'self' https://api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'none'; manifest-src 'none'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -11,8 +11,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Wetter">
 <title>Wetter</title>
-<meta name="app-build" content="6">
-<meta name="app-notes" content="Neu: Zoom bis aufs Haus, Wolkenbild und 2 Stunden Prognose mit Gewitter-Symbolen im Regenradar. Dazu mehr Sicherheit und Passwortschutz.">
+<meta name="app-build" content="7">
+<meta name="app-notes" content="Neu: Anmeldung über deinen eigenen Server (das Passwort steht nicht mehr in der Seite) und die Kachelmann-Prognose für deine Orte.">
 <script>/* alte Adresse wetter2.html -> neue Startseite */
 try{if(top!==self)document.documentElement.style.display="none"}catch(e){document.documentElement.style.display="none"}
 window.__redir=/\/wetter2\.html$/i.test(location.pathname);
@@ -87,11 +87,25 @@ main{position:relative;z-index:1}
 .small{font-size:13px;color:var(--muted);margin-top:10px}
 #err{display:none;margin:0 0 8px;padding:12px 14px;border-left:4px solid #E5484D;background:var(--surface);border-radius:10px;font-size:15px}
 @media (min-width:1000px){
- .grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.12fr);column-gap:56px;align-items:start;grid-template-areas:"now radar" "warn radar" "hours radar" "days radar" "facts radar"}
- .s-now{grid-area:now}.s-warn{grid-area:warn}.s-hours{grid-area:hours}.s-days{grid-area:days}.s-facts{grid-area:facts}
+ .grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.12fr);column-gap:56px;align-items:start;grid-template-areas:"now radar" "warn radar" "hours radar" "kc radar" "days radar" "facts radar"}
+ .s-now{grid-area:now}.s-warn{grid-area:warn}.s-hours{grid-area:hours}.s-kc{grid-area:kc}.s-days{grid-area:days}.s-facts{grid-area:facts}
  .s-radar{grid-area:radar;position:sticky;top:12px;border-top:0;padding-top:8px}
  #map{height:min(76vh,740px)!important}
 }
+
+/* Kachelmann-Prognose */
+.kc-head{font-size:15px;color:var(--muted);margin:-6px 0 12px}
+.kc-sum{font-size:22px;line-height:1.2;font-weight:600;letter-spacing:-.01em;margin-bottom:12px}
+.kc-tab{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:15px}
+.kc-tab th{font-weight:450;color:var(--muted);font-size:13px;text-align:right;padding:0 0 6px}
+.kc-tab td{padding:8px 0;border-top:1px solid var(--line);text-align:right}
+.kc-tab th:first-child,.kc-tab td:first-child{text-align:left}
+.kc-tab td:first-child{color:var(--muted)}
+.kc-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.kc-btns button{font:inherit;font-size:14px;padding:8px 12px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+#kc details{margin-top:12px;font-size:13px;color:var(--muted)}
+#kc summary{cursor:pointer}
+#kc pre{white-space:pre-wrap;word-break:break-all;font-size:11px;max-height:240px;overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px;color:var(--ink)}
 
 /* Regen-Vorschau */
 .nc-msg{font-size:26px;line-height:1.15;font-weight:600;letter-spacing:-.015em;margin-bottom:16px}
@@ -264,6 +278,11 @@ html.locked body>*:not(#gate){display:none!important}
    <p class="small">Die Prozentwerte unter der Kurve zeigen die Regenwahrscheinlichkeit.</p>
   </section>
 
+  <section class="sec s-kc" aria-labelledby="h-kc">
+   <h2 id="h-kc">Kachelmann-Prognose</h2>
+   <div id="kc"><p class="muted">Wird geladen …</p></div>
+  </section>
+
   <section class="sec s-radar" aria-labelledby="h-radar">
    <h2 id="h-radar">Regenradar</h2>
    <div class="mapwrap">
@@ -305,7 +324,7 @@ html.locked body>*:not(#gate){display:none!important}
 </main>
 
 <footer class="wrap foot">
- <p>Daten: Open-Meteo (Vorhersage und Radar-Prognose), RainViewer (Radar), Deutscher Wetterdienst (Radar und Warnungen über Bright Sky), GeoSphere Austria (Warnungen), BigDataCloud (Ortsname).</p>
+ <p>Daten: Open-Meteo (Vorhersage und Radar-Prognose), KachelmannWetter (stündliche Prognose für freigeschaltete Orte), RainViewer (Radar), Deutscher Wetterdienst (Radar und Warnungen über Bright Sky), GeoSphere Austria (Warnungen), BigDataCloud (Ortsname).</p>
  <p>Karten und Bilder: © OpenStreetMap-Mitwirkende, Esri, Maxar, Earthstar Geographics, Sentinel-2 cloudless von EOX. Grenzen und Ortsnamen: Esri, Garmin, HERE. Wolken: Meteosat (EUMETSAT) über den Deutschen Wetterdienst.</p>
  <p>Version <span id="ver"></span></p>
  <p><a href="#" id="upd-chk">Nach Updates suchen</a> · <a href="#" id="logout">Abmelden</a></p>
@@ -402,7 +421,7 @@ async function loadWeather(){
   showErr("Wetterdaten konnten nicht geladen werden. Prüfe die Internetverbindung und öffne die Seite im Browser deines Handys (Safari oder Chrome).");
  }
  moveMap();
- loadWarnings();loadNowcast();loadPtypes();
+ loadWarnings();loadNowcast();loadPtypes();loadKc();
  try{localStorage.setItem("wetter-ort",JSON.stringify(place))}catch(e){}
 }
 function renderAll(j){
@@ -846,6 +865,127 @@ function useGPS(manual){
  },()=>{if(manual)showErr("Standort nicht erlaubt. Erlaube den Zugriff in den Browser-Einstellungen oder suche einen Ort.")},{enableHighAccuracy:true,timeout:15000,maximumAge:120000});
 }
 
+/* ============ Kachelmann-Prognose (über den eigenen Worker) ============ */
+/* Orte, die bei Kachelmann als API-Standorte hinterlegt sind: {name:"Wien",lat:48.2085,lon:16.3721}. Solange die Liste leer ist, wird der gewählte Ort direkt angefragt. */
+const KC_ORTE=[];
+const KC_TTL=1800000,KC_ERR_TTL=180000,KC_MAXKM=30;
+const kcNum=x=>{if(x&&typeof x==="object"&&"value" in x)x=x.value;if(typeof x==="string")x=parseFloat(x);return typeof x==="number"&&isFinite(x)?x:null};
+function kcRows(j){
+ let a=null;
+ if(Array.isArray(j))a=j;
+ else if(j&&typeof j==="object"){
+  for(const v of [j.data,j.forecast,j.hours,j.hourly,j.items]){if(Array.isArray(v)){a=v;break}}
+  if(!a){for(const k in j){const v=j[k];if(Array.isArray(v)&&v.length&&v[0]&&typeof v[0]==="object"){a=v;break}}}
+  if(!a){
+   const o=j.data&&typeof j.data==="object"&&!Array.isArray(j.data)?j.data:j;
+   const ks=Object.keys(o).filter(k=>Array.isArray(o[k]));
+   if(ks.length){const n=Math.max(...ks.map(k=>o[k].length));a=[];for(let i=0;i<n;i++){const r={};ks.forEach(k=>r[k]=o[k][i]);a.push(r)}}
+  }
+ }
+ return(a||[]).filter(r=>r&&typeof r==="object");
+}
+function kcKey(keys,names,re,not){
+ for(const n of names)if(keys.includes(n))return n;
+ return keys.find(k=>re.test(k)&&!(not&&not.test(k)))||null;
+}
+function kcDate(v){
+ if(typeof v==="number")return new Date(v<1e12?v*1000:v);
+ if(typeof v==="string"&&v){const d=new Date(v);return isNaN(d)?null:d}
+ return null;
+}
+const kcCache={
+ get(k){try{const o=JSON.parse(localStorage.getItem("wetter-kc|"+k));if(o&&Date.now()-o.t<(o.s===200?KC_TTL:KC_ERR_TTL))return o}catch(e){}return null},
+ set(k,o){try{localStorage.setItem("wetter-kc|"+k,JSON.stringify(o))}catch(e){}}
+};
+async function kcFetch(path){
+ const c=kcCache.get(path);if(c)return c;
+ const W=window.__worker,tok=W&&W.token();
+ if(!tok)throw new Error("login");
+ const r=await fetch(W.base+"/k/"+path,{headers:{Authorization:"Bearer "+tok}});
+ const txt=await r.text();
+ if(r.status===401&&/Nicht angemeldet/.test(txt)){W.logout();throw new Error("login")}
+ const o={t:Date.now(),s:r.status,b:txt.slice(0,200000)};
+ kcCache.set(path,o);
+ return o;
+}
+function kcTarget(){
+ if(KC_ORTE.length){
+  let best=null,bd=1e9;
+  KC_ORTE.forEach(o=>{const d=km(place.lat,place.lon,o.lat,o.lon);if(d<bd){bd=d;best=o}});
+  return bd<=KC_MAXKM?{o:best,d:bd}:null;
+ }
+ return{o:{name:place.name,lat:+(+place.lat).toFixed(4),lon:+(+place.lon).toFixed(4)},d:0,free:true};
+}
+let kcSeq=0,kcAll=false,kcLast=null;
+async function loadKc(){
+ const my=++kcSeq,el=$("kc");
+ if(!(window.__worker&&window.__worker.token())){el.innerHTML='<p class="muted">Bitte melde dich an.</p>';return}
+ const t=kcTarget();
+ if(!t){
+  el.innerHTML='<p class="muted">Für diesen Ort gibt es keine Kachelmann-Prognose. Sie ist für diese Orte freigeschaltet:</p><div class="kc-btns">'+KC_ORTE.map((o,i)=>'<button type="button" data-k="'+i+'">'+esc(o.name)+'</button>').join("")+'</div>';
+  return;
+ }
+ const path="forecast/"+t.o.lat+"/"+t.o.lon+"/advanced/1h";
+ if(!kcCache.get(path))el.innerHTML='<p class="muted">Wird geladen …</p>';
+ let res;
+ try{res=await kcFetch(path)}
+ catch(e){if(my===kcSeq)el.innerHTML='<p class="muted">'+(e.message==="login"?"Bitte melde dich an.":"Die Kachelmann-Prognose konnte nicht geladen werden (keine Verbindung zum Server).")+'</p>';return}
+ if(my!==kcSeq)return;
+ renderKc(t,res);
+}
+function renderKc(t,res){
+ const el=$("kc");
+ let j=null;try{j=JSON.parse(res.b)}catch(e){}
+ const raw=()=>{
+  let r;try{r=JSON.stringify(j,(k,v)=>Array.isArray(v)&&v.length>2?v.slice(0,2).concat(["… "+(v.length-2)+" weitere"]):v,1)}catch(e){}
+  return'<details><summary>Rohdaten von Kachelmann ansehen</summary><pre>'+esc((r||String(res.b)).slice(0,3000))+'</pre></details>';
+ };
+ const head='<p class="kc-head">'+esc(t.o.name)+(t.d>2?" (nächster Kachelmann-Ort, "+Math.round(t.d)+" km entfernt)":"")+'</p>';
+ if(res.s!==200){
+  let m="";try{m=(j&&(j.error||j.message||j.detail))||""}catch(e){}
+  if(typeof m!=="string")m=JSON.stringify(m);
+  el.innerHTML=head+'<p class="muted">Kachelmann hat die Anfrage nicht angenommen (Status '+res.s+').'+(m?" Antwort: "+esc(m.slice(0,300)):"")+(t.free?" Vermutlich ist dieser Ort nicht als API-Standort bei Kachelmann hinterlegt.":"")+'</p>'+raw();
+  return;
+ }
+ const rows=kcRows(j);
+ if(!rows.length){el.innerHTML=head+'<p class="muted">Die Antwort von Kachelmann enthält keine Stundenwerte.</p>'+raw();return}
+ const keys=Object.keys(rows[0]);
+ const kt=kcKey(keys,["dateTime","time","datetime","date","timestamp"],/time|date/i);
+ const kT=kcKey(keys,["temp","temperature","temp2m","tt"],/^temp/i);
+ const kP=kcKey(keys,["prec","precip","precipitation","rain","precSum"],/^(prec|rain)/i,/prob|chance|type|form|snow/i);
+ const kW=kcKey(keys,["windSpeed","wind","windspeed","ff"],/^wind/i,/dir|gust|angle|degree/i);
+ const kG=kcKey(keys,["windGust","windGusts","gust"],/gust/i);
+ const U=j&&j.units&&typeof j.units==="object"?j.units:{};
+ const un=(k,d)=>typeof U[k]==="string"?U[k]:d;
+ const now=Date.now();
+ const L=rows.map(r=>({d:kcDate(r[kt]),T:kT?kcNum(r[kT]):null,P:kP?kcNum(r[kP]):null,W:kW?kcNum(r[kW]):null,G:kG?kcNum(r[kG]):null}))
+  .filter(x=>x.d&&x.d.getTime()>=now-45*60000).slice(0,24);
+ if(!L.length||(kT==null&&kP==null)){el.innerHTML=head+'<p class="muted">Die Antwort von Kachelmann konnte nicht gelesen werden.</p>'+raw();return}
+ const pu=un(kP,"mm"),wu=un(kW,"km/h"),tu=un(kT,"°C");
+ let sum="";
+ if(kP){
+  const s6=L.slice(0,6).reduce((a,x)=>a+(x.P||0),0);
+  sum=s6<0.1?"In den nächsten 6 Stunden bleibt es trocken.":"In den nächsten 6 Stunden kommen etwa "+fmt(s6)+" "+esc(pu)+" Niederschlag.";
+ }
+ const list=kcAll?L:L.filter((x,i)=>i%3===0);
+ const th='<tr><th>Uhrzeit</th>'+(kT?"<th>Temp.</th>":"")+(kP?"<th>Regen</th>":"")+(kW?"<th>Wind</th>":"")+"</tr>";
+ const tr=list.map(x=>{
+  const lab=x.d.toLocaleTimeString("de-AT",{hour:"2-digit",minute:"2-digit"});
+  const day=x.d.getHours()===0?x.d.toLocaleDateString("de-AT",{weekday:"short"}).replace(".","")+" ":"";
+  return"<tr><td>"+esc(day+lab)+"</td>"+(kT?"<td>"+(x.T==null?"–":deg(x.T))+"</td>":"")+(kP?"<td>"+(x.P==null?"–":fmt(x.P)+" "+esc(pu))+"</td>":"")+(kW?"<td>"+(x.W==null?"–":Math.round(x.W)+" "+esc(wu))+(x.G!=null&&x.G>(x.W||0)+8?" · Böen "+Math.round(x.G):"")+"</td>":"")+"</tr>";
+ }).join("");
+ const hhmm=new Date(res.t).toLocaleTimeString("de-AT",{hour:"2-digit",minute:"2-digit"});
+ el.innerHTML=head+(sum?'<p class="kc-sum">'+sum+"</p>":"")+'<table class="kc-tab">'+th+tr+"</table>"
+  +'<div class="kc-btns"><button type="button" id="kc-all">'+(kcAll?"Nur alle 3 Stunden":"Jede Stunde zeigen")+"</button></div>"
+  +'<p class="small">KachelmannWetter, stündliche Prognose. Stand '+hhmm+' Uhr. Die Werte werden 30 Minuten zwischengespeichert, um das Tageslimit deiner Abfragen zu schonen.</p>'+raw();
+ kcLast=[t,res];
+}
+$("kc").addEventListener("click",e=>{
+ const b=e.target.closest("button");if(!b)return;
+ if(b.id==="kc-all"){kcAll=!kcAll;if(kcLast)renderKc(kcLast[0],kcLast[1]);return}
+ if(b.dataset.k!=null){const o=KC_ORTE[+b.dataset.k];if(!o)return;place={name:o.name,lat:o.lat,lon:o.lon};follow=false;saveState();loadWeather();window.scrollTo({top:0,behavior:"smooth"})}
+});
+
 /* ============ Start ============ */
 try{const s=JSON.parse(localStorage.getItem("wetter-ort"));if(s&&s.lat)place=s;follow=localStorage.getItem("wetter-follow")!=="0"}catch(e){}
 $("pp").innerHTML=PLAY;
@@ -893,7 +1033,7 @@ $("upd-later").onclick=()=>{
  $("upd").classList.remove("show");
 };
 $("upd-chk").onclick=e=>{e.preventDefault();checkUpdate(true)};
-$("logout").onclick=e=>{e.preventDefault();try{localStorage.removeItem("wetter-auth");sessionStorage.removeItem("wetter-auth")}catch(x){}location.reload()};
+$("logout").onclick=e=>{e.preventDefault();if(window.__worker)window.__worker.logout();else location.reload()};
 if(!window.__redir)try{
  const seen=+localStorage.getItem("wetter-build");
  if(seen&&seen<BUILD)showUpd("done",meta("app-notes"));
@@ -906,15 +1046,17 @@ setInterval(()=>checkUpdate(false),1800000);
 </script>
 <script>
 (function(){
- var USER="eliaspp9",SALT="6cb5b0514f3763541a6cf7aa55583c44",ITER=250000,HASH="105563fb9cc819d542fd235f5e741f3f0148a004a6fc30ac4873eed2cf5001fe";
+ var API="https://wetter-proxy.elias-ziegler.workers.dev";
  var html=document.documentElement,gate=document.getElementById("gate"),form=document.getElementById("gate-form"),err=document.getElementById("gate-err"),btn=document.getElementById("gate-btn");
  var started=false,fails=0;
- function hex2buf(h){var a=new Uint8Array(h.length/2);for(var i=0;i<a.length;i++)a[i]=parseInt(h.substr(i*2,2),16);return a}
- function buf2hex(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return("0"+x.toString(16)).slice(-2)}).join("")}
- async function derive(u,p){
-  var k=await crypto.subtle.importKey("raw",new TextEncoder().encode(u.toLowerCase()+":"+p),"PBKDF2",false,["deriveBits"]);
-  return buf2hex(await crypto.subtle.deriveBits({name:"PBKDF2",hash:"SHA-256",salt:hex2buf(SALT),iterations:ITER},k,256));
+ function payload(t){try{return JSON.parse(atob(String(t).split(".")[0].replace(/-/g,"+").replace(/_/g,"/")))}catch(e){return null}}
+ function token(){
+  var t=null;try{t=localStorage.getItem("wetter-token")||sessionStorage.getItem("wetter-token")}catch(e){}
+  var p=t&&payload(t);
+  return p&&p.exp>Date.now()?t:null;
  }
+ function clear(){["localStorage","sessionStorage"].forEach(function(s){try{window[s].removeItem("wetter-token");window[s].removeItem("wetter-auth")}catch(e){}})}
+ window.__worker={base:API,token:token,logout:function(){clear();location.reload()}};
  /* Kartenbibliothek: erst mit Prüfsumme (SRI) von unpkg, bei Fehler Ersatzquelle */
  var LIB=[
   {js:"https://unpkg.com/leaflet@1.9.4/dist/leaflet.js",jsi:"sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=",css:"https://unpkg.com/leaflet@1.9.4/dist/leaflet.css",cssi:"sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="},
@@ -938,18 +1080,25 @@ setInterval(()=>checkUpdate(false),1800000);
   html.classList.remove("locked");gate.hidden=true;
   addCss(0);addJs(0,function(){__startApp()});
  }
- var saved=null;try{saved=localStorage.getItem("wetter-auth")||sessionStorage.getItem("wetter-auth")}catch(e){}
- if(saved&&saved===HASH){start();return}
+ if(token()){start();return}
+ clear();
  gate.hidden=false;
  form.addEventListener("submit",async function(e){
-  e.preventDefault();err.textContent="";
-  if(!(window.crypto&&crypto.subtle)){err.textContent="Die Anmeldung braucht eine sichere Verbindung (https).";return}
-  btn.disabled=true;
-  var u=form.elements.user.value.trim(),p=form.elements.pass.value,ok=false;
-  try{ok=u.toLowerCase()===USER&&(await derive(u,p))===HASH}catch(x){}
-  if(ok){try{(form.elements.keep.checked?localStorage:sessionStorage).setItem("wetter-auth",HASH)}catch(x){}start();return}
-  fails++;err.textContent="Benutzername oder Passwort stimmt nicht.";
-  await new Promise(function(r){setTimeout(r,Math.min(8000,1000*fails))});
+  e.preventDefault();err.textContent="";btn.disabled=true;
+  var u=form.elements.user.value.trim(),p=form.elements.pass.value,tok=null,msg="";
+  try{
+   var r=await fetch(API+"/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({user:u,pass:p}),cache:"no-store"});
+   var j={};try{j=await r.json()}catch(x){}
+   if(r.ok&&j.token&&payload(j.token))tok=j.token;
+   else if(r.status===401)msg="Benutzername oder Passwort stimmt nicht.";
+   else msg="Der Anmeldeserver antwortet gerade nicht richtig. Versuche es später noch einmal.";
+  }catch(x){msg="Keine Verbindung zum Anmeldeserver. Prüfe die Internetverbindung."}
+  if(tok){
+   try{(form.elements.keep.checked?localStorage:sessionStorage).setItem("wetter-token",tok)}catch(x){}
+   form.elements.pass.value="";start();return;
+  }
+  fails++;err.textContent=msg;
+  await new Promise(function(r){setTimeout(r,Math.min(6000,500*fails))});
   btn.disabled=false;form.elements.pass.value="";form.elements.pass.focus();
  });
 })();
