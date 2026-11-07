@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-IwjVx/oo7cZeJnebOmiN+6M6HkGl1YBGTqPkQ2tXL5A=' 'sha256-rtD+YnjjlK/qdTffRRM0+dg5HIzXWVMndWiYx7RbciI=' https://unpkg.com https://cdnjs.cloudflare.com; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com; connect-src 'self' https://api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'none'; manifest-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-0Rz5cZOVXy+N0CyPYp/+s9VoLd9IW4CzkUIr/Xbr87g=' 'sha256-rtD+YnjjlK/qdTffRRM0+dg5HIzXWVMndWiYx7RbciI=' https://unpkg.com https://cdnjs.cloudflare.com; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com; connect-src 'self' https://api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'none'; manifest-src 'none'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -11,8 +11,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Wetter">
 <title>Wetter</title>
-<meta name="app-build" content="13">
-<meta name="app-notes" content="Neues Design im Stil einer Wetter-App: Kacheln, Stundenleiste zum Wischen, Leiste unten, Radar im Vollbild. Regen ist jetzt blau, Schnee violett.">
+<meta name="app-build" content="14">
+<meta name="app-notes" content="Am PC lässt sich die Stundenleiste jetzt mit den Pfeilen, dem Mausrad oder durch Ziehen mit der Maus verschieben.">
 <script>/* alte Adresse wetter2.html -> neue Startseite */
 try{if(top!==self)document.documentElement.style.display="none"}catch(e){document.documentElement.style.display="none"}
 window.__redir=/\/wetter2\.html$/i.test(location.pathname);
@@ -163,6 +163,14 @@ main{position:relative;z-index:1;max-width:1180px;margin:-30px auto 0;padding:0 
 /* Stunden */
 .hstrip{display:flex;gap:6px;overflow-x:auto;margin:0 -16px;padding:2px 16px 4px;scrollbar-width:none;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity}
 .hstrip::-webkit-scrollbar{display:none}
+.harr{display:none;gap:6px}
+.harr .cbtn{padding:0;width:34px;justify-content:center}
+.harr .cbtn:disabled{opacity:.4;cursor:default}
+@media (hover:hover) and (pointer:fine){
+ .harr{display:flex}
+ .hstrip{cursor:grab;scroll-snap-type:none}
+ .hstrip.drag{cursor:grabbing;user-select:none}
+}
 .hc{flex:none;width:66px;padding:10px 4px 9px;border-radius:14px;background:var(--tile);text-align:center;scroll-snap-align:start;display:flex;flex-direction:column;align-items:center;gap:1px}
 .hc.now{background:#1769E0;color:#fff;--cloud:#fff;--cloud2:#DCE6F2;--moon:#EEF2FF}
 .hc-t{font-size:12.5px;font-weight:500;color:var(--muted);white-space:nowrap}
@@ -370,7 +378,7 @@ html.locked body>*:not(#gate){display:none!important}
   </section>
 
   <section class="card s-hours" id="sec-hours" aria-labelledby="h-hours">
-   <div class="ch"><h2 id="h-hours">Nächste 24 Stunden</h2></div>
+   <div class="ch"><h2 id="h-hours">Nächste 24 Stunden</h2><div class="harr"><button class="cbtn" id="hprev" type="button" aria-label="Frühere Stunden"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><button class="cbtn" id="hnext" type="button" aria-label="Spätere Stunden"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button></div></div>
    <div id="hours"></div>
   </section>
 
@@ -1231,6 +1239,27 @@ $("kc").addEventListener("click",e=>{
  if(b.id==="kc-all"){kcAll=!kcAll;if(kcLast)kcLast();return}
  if(b.dataset.k!=null){const o=KC_ORTE[+b.dataset.k];if(!o)return;place={name:o.name,lat:o.lat,lon:o.lon};follow=false;saveState();loadWeather();window.scrollTo({top:0,behavior:"smooth"})}
 });
+
+/* ============ Stundenleiste am PC: Pfeile, Mausrad, Ziehen ============ */
+(function(){
+ const box=$("hours"),strip=()=>box.querySelector(".hstrip");
+ function upd(){const s=strip();if(!s)return;const max=s.scrollWidth-s.clientWidth-2;$("hprev").disabled=s.scrollLeft<=2;$("hnext").disabled=s.scrollLeft>=max}
+ function go(dir){const s=strip();if(!s)return;s.scrollBy({left:dir*Math.max(140,s.clientWidth*.8),behavior:reduced?"auto":"smooth"})}
+ $("hprev").onclick=()=>go(-1);$("hnext").onclick=()=>go(1);
+ box.addEventListener("scroll",upd,true);
+ new MutationObserver(()=>setTimeout(upd,0)).observe(box,{childList:true});
+ addEventListener("resize",upd);
+ box.addEventListener("wheel",e=>{
+  const s=strip();if(!s||Math.abs(e.deltaX)>Math.abs(e.deltaY))return;
+  const max=s.scrollWidth-s.clientWidth;
+  if((e.deltaY>0&&s.scrollLeft<max-1)||(e.deltaY<0&&s.scrollLeft>1)){e.preventDefault();s.scrollLeft+=e.deltaY}
+ },{passive:false});
+ let dx=null,sl=0,moved=false;
+ box.addEventListener("pointerdown",e=>{const s=strip();if(!s||e.pointerType!=="mouse"||e.button!==0)return;dx=e.clientX;sl=s.scrollLeft;moved=false});
+ addEventListener("pointermove",e=>{if(dx==null)return;const s=strip();if(!s)return;const d=e.clientX-dx;if(Math.abs(d)>3){moved=true;s.classList.add("drag")}s.scrollLeft=sl-d});
+ addEventListener("pointerup",()=>{if(dx==null)return;dx=null;const s=strip();if(s)s.classList.remove("drag")});
+ box.addEventListener("click",e=>{if(moved){e.preventDefault();e.stopPropagation();moved=false}},true);
+})();
 
 /* ============ Radar im Vollbild ============ */
 let fsOn=false,fsDrag=null;
