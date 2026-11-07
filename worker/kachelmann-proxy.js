@@ -189,6 +189,12 @@ export default {
       return json({ error: "Anmeldung fehlgeschlagen" }, 401);
     }
 
+    // Anmeldung verlängern: ein noch gültiges Token bekommt wieder 30 Tage (z. B. für ein Tablet, das dauernd offen ist)
+    if (url.pathname === "/renew" && req.method === "POST") {
+      if (!(await checkToken(env, req))) return json({ error: "Nicht angemeldet" }, 401);
+      return json({ token: await makeToken(env, env.LOGIN_USER), days: 30 });
+    }
+
     if (url.pathname.startsWith("/k/") && req.method === "GET") {
       if (!(await checkToken(env, req))) return json({ error: "Nicht angemeldet" }, 401);
       const path = url.pathname.slice(3);

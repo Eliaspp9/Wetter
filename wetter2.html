@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-JRmzfxoFetszZU9GEXr+TDRUwLxcSXgC+/FsxC2FMQU=' 'sha256-rtD+YnjjlK/qdTffRRM0+dg5HIzXWVMndWiYx7RbciI=' https://unpkg.com https://cdnjs.cloudflare.com; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com; connect-src 'self' https://api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-Na8IwXvkCQqUNlBUehp/P1UnT1vXy4027/f7BYZK83E=' 'sha256-LJ33SJA5i4YqCXzGZIhxWGPPYs2ewGTelTCHFyvLwOQ=' https://unpkg.com https://cdnjs.cloudflare.com; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com; connect-src 'self' https://api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -14,8 +14,8 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/favicon-64.png">
-<meta name="app-build" content="19">
-<meta name="app-notes" content="Standort: zweiter Versuch ohne GPS, wenn es zu lange dauert, und eine genaue Fehlermeldung mit Fehlernummer. Dazu Ortssuche mit Tippfehler-Toleranz und das DWD-Radar mit 1 km.">
+<meta name="app-build" content="20">
+<meta name="app-notes" content="Alles aktualisiert sich jetzt automatisch alle 5 Minuten, auch wenn die App dauernd offen ist (z. B. als Wandanzeige). Oben steht, wann zuletzt aktualisiert wurde. Neue Versionen installieren sich von selbst, wenn niemand das Gerät benutzt.">
 <script>/* alte Adresse wetter2.html -> neue Startseite */
 try{if(top!==self)document.documentElement.style.display="none"}catch(e){document.documentElement.style.display="none"}
 window.__redir=/\/wetter2\.html$/i.test(location.pathname);
@@ -573,8 +573,12 @@ let lastJ=null,kcDaily={},openDays=new Set();
 let map,marker,mode="rv",frames=[],layers=[],idx=0,timer=null,host="",pastCount=0,dwd;
 
 /* ============ Wetter laden und anzeigen ============ */
-async function loadWeather(){
- showErr("");ncState=null;
+/* auto=true: automatische Aktualisierung am selben Ort. Schnelle Daten alle 5 Minuten, aufwendige (Modelle, Trend, Rückblick, Luft, Niederschlagsart) alle 30 Minuten. */
+let wSeq=0,lastSlow=0;
+const SLOW_MS=1800000;
+async function loadWeather(auto){
+ const my=++wSeq;
+ if(!auto){showErr("");ncState=null}
  $("pname").textContent=place.name;
  document.body.classList.toggle("follow",follow);
  try{
@@ -585,17 +589,20 @@ async function loadWeather(){
   let j;
   try{j=await getJ(base+"&current="+cur+",is_day,cloud_cover,wind_gusts_10m&hourly="+hr+",is_day&daily="+dl+",uv_index_max")}
   catch(e){j=await getJ(base+"&current="+cur+"&hourly="+hr+"&daily="+dl)}
-  renderAll(j);
+  if(my!==wSeq)return;
+  if(auto)showErr("");
+  renderAll(j,Date.now());
   try{localStorage.setItem("wetter-last",JSON.stringify({k:(+place.lat).toFixed(2)+","+(+place.lon).toFixed(2),t:Date.now(),j}))}catch(x){}
  }catch(e){
   console.error(e);
+  if(my!==wSeq)return;
   let used=false;
-  try{const o=JSON.parse(localStorage.getItem("wetter-last"));if(o&&o.j&&o.k===(+place.lat).toFixed(2)+","+(+place.lon).toFixed(2)){renderAll(o.j);used=true;showErr("Keine Verbindung. Du siehst den Stand von "+new Date(o.t).toLocaleString("de-AT",{weekday:"short",hour:"2-digit",minute:"2-digit"})+" Uhr.")}}catch(x){}
+  try{const o=JSON.parse(localStorage.getItem("wetter-last"));if(o&&o.j&&o.k===(+place.lat).toFixed(2)+","+(+place.lon).toFixed(2)){renderAll(o.j,o.t);used=true;showErr("Keine Verbindung. Du siehst den Stand von "+new Date(o.t).toLocaleString("de-AT",{weekday:"short",hour:"2-digit",minute:"2-digit"})+" Uhr.")}}catch(x){}
   if(!used)showErr("Wetterdaten konnten nicht geladen werden. Prüfe die Internetverbindung.");
  }
  moveMap();
- loadWarnings();loadNowcast();loadPtypes();loadKc();loadKcDaily();
- loadObs();loadAir();loadPast();loadModels();loadTrend();renderFavs();renderPush();
+ loadWarnings();loadNowcast();loadKc();loadKcDaily();loadObs();renderFavs();
+ if(!auto||Date.now()-lastSlow>=SLOW_MS){lastSlow=Date.now();loadPtypes();loadAir();loadPast();loadModels();loadTrend();renderPush()}
  try{localStorage.setItem("wetter-ort",JSON.stringify(place))}catch(e){}
 }
 function dayPart(j,c){
@@ -603,7 +610,7 @@ function dayPart(j,c){
   if(Math.abs(t-sr)<=50)return"dawn";if(Math.abs(t-ss)<=50)return"dusk"}catch(e){}
  return null;
 }
-function renderAll(j){
+function renderAll(j,at){
  lastJ=j;
  const c=j.current,day=c.is_day==null?1:c.is_day,k=kind(c.weather_code,!!day);
  let sk=skyKey(k,!!day);
@@ -611,7 +618,8 @@ function renderAll(j){
  setSky(sk);
  $("top").dataset.fx=k==="rain"||k==="storm"?"rain":k==="snow"?"snow":"";
  const d=new Date(c.time);
- $("when").textContent=d.toLocaleDateString("de-AT",{weekday:"long",day:"numeric",month:"long"})+", "+c.time.slice(11,16)+" Uhr";
+ const lt=new Date((at||Date.now())+(+j.utc_offset_seconds||0)*1000),p2=x=>(x<10?"0":"")+x;
+ $("when").textContent=d.toLocaleDateString("de-AT",{weekday:"long",day:"numeric",month:"long"})+" · Stand "+p2(lt.getUTCHours())+":"+p2(lt.getUTCMinutes())+" Uhr";
  $("temp").textContent=String(Math.round(c.temperature_2m)).replace("-","−");
  $("hicon").innerHTML=ic(k);
  $("micon").innerHTML=ic(k);$("mname").textContent=place.name;$("mtemp").textContent=deg(c.temperature_2m);
@@ -686,7 +694,11 @@ function renderHours(j,c){
   h+='<div class="hc'+(k===0?" now":"")+'"><span class="hc-t">'+lab+"</span>"+ic(kk)+"<b>"+deg(tt)+"</b>"+
    (p!=null?'<span class="hc-p'+(p>=30?" wet":"")+'">'+DROP_S+p+" %</span>":"")+'<span class="hc-m '+ty+'">'+(ty?fmt(mm)+" mm":"")+"</span></div>";
  }
- $("hours").innerHTML='<div class="hstrip">'+h+"</div>"+(ka?'<p class="small">Werte von KachelmannWetter.</p>':"");
+ /* gleicher Ort: Scrollposition der Stundenleiste beim Aktualisieren behalten */
+ const hb=$("hours"),hk=place.lat+","+place.lon,old=hb.querySelector(".hstrip"),keep=old&&hb.dataset.k===hk?old.scrollLeft:0;
+ hb.innerHTML='<div class="hstrip">'+h+"</div>"+(ka?'<p class="small">Werte von KachelmannWetter.</p>':"");
+ hb.dataset.k=hk;
+ if(keep){const s2=hb.querySelector(".hstrip");if(s2)s2.scrollLeft=keep}
 }
 const CHEV='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
 function isSnowDay(i){const v=dayVals(i);return!!(v&&v.snow)}
@@ -981,12 +993,17 @@ function moveMap(){
  if(map&&changed){map.setView([place.lat,place.lon],8);marker.setLatLng([place.lat,place.lon]);if(mode==="dwd"){if(dwCovered(+place.lat,+place.lon))loadDwd();else{setMode("rv");$("fnote").textContent="Für diesen Ort gibt es kein DWD-Radar, deshalb das weltweite Radar."}}else{let um=null;try{um=localStorage.getItem("wetter-mode")}catch(e){}if(!um&&dwCovered(+place.lat,+place.lon))setMode("dwd")}}
  mmKey=key;
 }
+let rvLast=0;
+function freshNote(t){const min=Math.round((Date.now()/1000-t)/60);$("fresh").textContent="Neuester Radarstand: "+new Date(t*1000).toLocaleTimeString("de-AT",{hour:"2-digit",minute:"2-digit"})+" Uhr"+(min>=0?" (vor "+min+" Min.)":"")}
 async function loadRadar(){
  if(mode==="dwd")return loadDwd();
  try{
   const j=await getJ("https://api.rainviewer.com/public/weather-maps.json");
-  host=j.host;
   const past=(j.radar&&j.radar.past)||[];
+  const lastT=past.length?past[past.length-1].time:0;
+  if(lastT&&lastT===rvLast&&layers.length&&mode==="rv"&&frames.length&&frames[0].path){freshNote(lastT);return}
+  rvLast=lastT;
+  host=j.host;
   const wasPlaying=!!timer;
   if(timer)toggle();
   const rvn=(j.radar&&j.radar.nowcast)||[];
@@ -1003,10 +1020,7 @@ async function loadRadar(){
   if(!rvNow)loadSteer().then(()=>{refreshFcFrames();const f=frames[idx];if(f&&f.ex!=null)show(idx);exNote();if(!exOn())loadFc()});
   else loadFc();
   const last=past[past.length-1];
-  if(last){
-   const min=Math.round((Date.now()/1000-last.time)/60);
-   $("fresh").textContent="Neuester Radarstand: "+new Date(last.time*1000).toLocaleTimeString("de-AT",{hour:"2-digit",minute:"2-digit"})+" Uhr"+(min>=0?" (vor "+min+" Min.)":"");
-  }
+  if(last)freshNote(last.time);
   if(mode==="rv"&&wasPlaying)toggle();
  }catch(e){$("mnote").textContent="Radardaten konnten nicht geladen werden."}
 }
@@ -1078,9 +1092,11 @@ async function loadDwd(cla,clo){
   const now=Date.now();
   frames=R.map((x,k)=>({time:Date.parse(x.timestamp)/1000,dw:k}));
   pastCount=Math.max(1,frames.filter(f=>f.time*1000<=now+60000).length);
+  const wasPlaying=!!timer;
   if(timer)toggle();
   idx=0;$("sl").max=Math.max(0,frames.length-1);placeTick();
   show(pastCount-1);
+  if(wasPlaying)toggle();
   const lastPast=frames[pastCount-1];
   if(lastPast){const min=Math.round((now/1000-lastPast.time)/60);$("fresh").textContent="Neuester Radarstand: "+new Date(lastPast.time*1000).toLocaleTimeString("de-AT",{hour:"2-digit",minute:"2-digit"})+" Uhr"+(min>=0?" (vor "+min+" Min.)":"")}
   $("fnote").textContent=frames.length>pastCount?"Radar-Vorhersage des DWD bis "+new Date(frames[frames.length-1].time*1000).toLocaleTimeString("de-AT",{hour:"2-digit",minute:"2-digit"})+" Uhr.":"";
@@ -1284,6 +1300,7 @@ function setMode(m,user){
   $("mnote").textContent="Radar des Deutschen Wetterdienstes (RADOLAN) mit 1 km Auflösung, alle 5 Minuten. Nach „Jetzt“ folgt die Radar-Vorhersage des DWD für 2 Stunden. Grau getönte Flächen liegen außerhalb der DWD-Radare.";
   dwKey="";loadDwd();
  }else{
+  rvLast=0;
   hideDw();layers.forEach(l=>l.addTo(map));
   $("mnote").textContent="Radar der letzten 2 Stunden von RainViewer, in 10-Minuten-Schritten. Schnee zeigt das Radar in anderen Farben als Regen. Danach folgt eine Prognose für etwa 90 Minuten.";
   loadRadar();
@@ -1327,12 +1344,14 @@ $("ctr").onclick=()=>{if(map)map.setView([place.lat,place.lon],8)};
 addEventListener("resize",()=>{if(hero)hero.invalidateSize()});
 function saveState(){try{localStorage.setItem("wetter-ort",JSON.stringify(place));localStorage.setItem("wetter-follow",follow?"1":"0")}catch(e){}}
 const km=(a,b,c,d)=>Math.hypot((a-c)*111,(b-d)*111*Math.cos(a*Math.PI/180));
-function useGPS(manual){
+let gpsOk=false;
+function useGPS(manual,quiet){
  if(!navigator.geolocation){if(manual)showErr("Standortabfrage wird von diesem Browser nicht unterstützt.");return}
  const ok=async p=>{
   const lat=p.coords.latitude,lon=p.coords.longitude;
+  gpsOk=true;
   if(manual)showErr("");
-  if(!manual&&place.gps&&km(place.lat,place.lon,lat,lon)<1.5){loadWeather();return}
+  if(!manual&&place.gps&&km(place.lat,place.lon,lat,lon)<1.5){if(!quiet)loadWeather();return}
   place={name:"Mein Standort",lat,lon,gps:true};
   try{const r=await getJ("https://api.bigdatacloud.net/data/reverse-geocode-client?latitude="+lat+"&longitude="+lon+"&localityLanguage=de");place.name=r.locality||r.city||place.name}catch(e){}
   saveState();loadWeather();
@@ -1852,9 +1871,6 @@ try{initMap();setMode(startMode())}catch(e){showErr("Die Karte konnte nicht gela
 $("lock").textContent="Karte bewegen: "+(map&&map.dragging.enabled()?"an":"aus");
 $("lock").onclick=()=>{if(!map)return;const on=map.dragging.enabled();on?map.dragging.disable():map.dragging.enable();$("lock").textContent="Karte bewegen: "+(on?"aus":"an")};
 if(follow)useGPS(false);
-document.addEventListener("visibilitychange",()=>{if(!document.hidden){follow?useGPS(false):loadWeather()}});
-setInterval(()=>{if(!document.hidden)loadWeather()},600000);
-setInterval(loadRadar,600000);
 
 /* ============ Updates ============ */
 const meta=n=>{const m=document.querySelector('meta[name="'+n+'"]');return m?m.content:""};
@@ -1892,12 +1908,53 @@ $("upd-chk").onclick=e=>{e.preventDefault();checkUpdate(true)};
 $("logout").onclick=e=>{e.preventDefault();if(window.__worker)window.__worker.logout();else location.reload()};
 if(!window.__redir)try{
  const seen=+localStorage.getItem("wetter-build");
- if(seen&&seen<BUILD)showUpd("done",meta("app-notes"));
+ if(seen&&seen<BUILD){showUpd("done",meta("app-notes"));if(sessionStorage.getItem("wetter-autoupd")){sessionStorage.removeItem("wetter-autoupd");setTimeout(()=>$("upd").classList.remove("show"),20000)}}
  localStorage.setItem("wetter-build",String(BUILD));
 }catch(e){}
 setTimeout(()=>checkUpdate(false),4000);
 document.addEventListener("visibilitychange",()=>{if(!document.hidden&&Date.now()-lastChk>300000)checkUpdate(false)});
 setInterval(()=>checkUpdate(false),1800000);
+
+/* ============ Automatisch aktualisieren ============
+   Alle 5 Minuten, solange die Seite sichtbar ist (z. B. Tablet an der Wand).
+   Wer gerade tippt oder scrollt, wird nicht gestört: dann wartet die Aktualisierung, bis 45 Sekunden Ruhe ist. */
+const AUTO_MS=300000,openedAt=Date.now();
+let lastAuto=Date.now(),lastAct=Date.now();
+["pointerdown","keydown","wheel","touchstart"].forEach(n=>addEventListener(n,()=>{lastAct=Date.now()},{passive:true,capture:true}));
+function refreshRadar(){
+ if(!map)return;
+ if(mode==="dwd"){dwKey="";if(dwBox)loadDwd(dwBox[0],dwBox[1]);else loadDwd()}else loadRadar();
+}
+function tokenLeft(){try{const W=window.__worker;return W&&W.exp?W.exp()-Date.now():0}catch(e){return 0}}
+function autoRefresh(force){
+ if(document.hidden)return;
+ const now=Date.now();
+ if(!force&&(now-lastAuto<AUTO_MS||now-lastAct<45000))return;
+ lastAuto=now;
+ loadWeather(true);refreshRadar();
+ if(follow&&gpsOk)useGPS(false,true);
+ try{if(window.__worker&&window.__worker.renew)window.__worker.renew()}catch(e){}
+}
+/* Neue Version: von selbst installieren, wenn 5 Minuten niemand das Gerät benutzt hat */
+function autoApply(){
+ if(!remote||document.hidden||Date.now()-lastAct<300000)return;
+ let later=null;try{later=sessionStorage.getItem("wetter-later")}catch(e){}
+ let tried=null;try{tried=sessionStorage.getItem("wetter-autotry")}catch(e){}
+ if(later===String(remote.b)||tried===String(remote.b)||tokenLeft()<86400000)return;
+ try{sessionStorage.setItem("wetter-autoupd","1");sessionStorage.setItem("wetter-autotry",String(remote.b))}catch(e){}
+ location.replace(location.pathname+"?u="+remote.b);
+}
+/* Einmal pro Nacht (3 Uhr) neu laden, damit ein dauernd offenes Gerät frisch bleibt */
+async function nightly(){
+ if(document.hidden||new Date().getHours()!==3||Date.now()-openedAt<6*3600000||Date.now()-lastAct<600000||tokenLeft()<2*86400000)return;
+ try{const r=await fetch(location.pathname+"?c="+Date.now(),{cache:"no-store"});if(r.ok)location.reload()}catch(e){}
+}
+setInterval(()=>{autoRefresh(false);autoApply();nightly()},15000);
+document.addEventListener("visibilitychange",()=>{
+ if(document.hidden)return;
+ if(follow)useGPS(false,true);
+ if(Date.now()-lastAuto>60000)autoRefresh(true);
+});
 }
 </script>
 <script>
@@ -1912,7 +1969,19 @@ setInterval(()=>checkUpdate(false),1800000);
   return p&&p.exp>Date.now()?t:null;
  }
  function clear(){["localStorage","sessionStorage"].forEach(function(s){try{window[s].removeItem("wetter-token");window[s].removeItem("wetter-auth")}catch(e){}})}
- window.__worker={base:API,token:token,logout:function(){clear();location.reload()}};
+ /* Anmeldung von selbst verlängern, solange die Seite benutzt wird (der Worker braucht dafür /renew) */
+ function renew(){
+  var t=token(),p=t&&payload(t);if(!p||p.exp-Date.now()>25*86400000)return;
+  var last=0;try{last=+localStorage.getItem("wetter-renew")||0}catch(e){}
+  if(Date.now()-last<6*3600000)return;
+  try{localStorage.setItem("wetter-renew",String(Date.now()))}catch(e){}
+  fetch(API+"/renew",{method:"POST",headers:{Authorization:"Bearer "+t},cache:"no-store"}).then(function(r){return r.ok?r.json():null}).then(function(j){
+   var q=j&&j.token&&payload(j.token);if(!q||!(q.exp>p.exp))return;
+   var loc=false;try{loc=localStorage.getItem("wetter-token")===t}catch(e){}
+   try{(loc?localStorage:sessionStorage).setItem("wetter-token",j.token)}catch(e){}
+  }).catch(function(){});
+ }
+ window.__worker={base:API,token:token,exp:function(){var t=token(),p=t&&payload(t);return p?p.exp:0},renew:renew,logout:function(){clear();location.reload()}};
  /* Kartenbibliothek: erst mit Prüfsumme (SRI) von unpkg, bei Fehler Ersatzquelle */
  var LIB=[
   {js:"https://unpkg.com/leaflet@1.9.4/dist/leaflet.js",jsi:"sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=",css:"https://unpkg.com/leaflet@1.9.4/dist/leaflet.css",cssi:"sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="},
@@ -1936,7 +2005,7 @@ setInterval(()=>checkUpdate(false),1800000);
   html.classList.remove("locked");gate.hidden=true;
   addCss(0);addJs(0,function(){__startApp()});
  }
- if(token()){start();return}
+ if(token()){start();setTimeout(renew,8000);return}
  clear();
  gate.hidden=false;
  form.addEventListener("submit",async function(e){
