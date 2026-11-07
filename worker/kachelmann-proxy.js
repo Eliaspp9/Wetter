@@ -46,7 +46,7 @@ async function hmac(key, data) {
   const k = await crypto.subtle.importKey("raw", key, { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
   return new Uint8Array(await crypto.subtle.sign("HMAC", k, data));
 }
-export async function encryptPush(payload, p256dh, authSecret, opt = {}) {
+async function encryptPush(payload, p256dh, authSecret, opt = {}) {
   const ua = unb64u(p256dh), auth = unb64u(authSecret);
   const as = opt.keyPair || await crypto.subtle.generateKey({ name: "ECDH", namedCurve: "P-256" }, true, ["deriveBits"]);
   const asPub = new Uint8Array(await crypto.subtle.exportKey("raw", as.publicKey));
