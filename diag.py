@@ -1,121 +1,87 @@
-import json, time, gzip, urllib.request, urllib.parse, urllib.error
+import json, time, gzip, urllib.request, urllib.parse, urllib.error, datetime, http.client, ssl
 
 UA = {"User-Agent": "Mozilla/5.0 wetter-diag", "Origin": "https://eliaspp9.github.io", "Accept-Encoding": "gzip"}
-KEEP = ("access-control-allow-origin", "content-encoding", "content-type", "datapoint-count", "x-ratelimit-remaining-hour", "content-length", "cache-control", "vary")
 
 
-def get(url):
+def get(url, show=True):
     t = time.time()
     req = urllib.request.Request(url, headers=UA)
     try:
         r = urllib.request.urlopen(req, timeout=150)
+        ttfb = time.time() - t
         b = r.read(); h = dict(r.headers); code = r.status
     except urllib.error.HTTPError as e:
-        b = e.read(); h = dict(e.headers); code = e.code
+        b = e.read(); h = dict(e.headers); code = e.code; ttfb = time.time() - t
     except Exception as e:
-        print("ERR", url[:220], repr(e)); return None, None, None
+        print("ERR %.1fs" % (time.time() - t), url[:200], repr(e)); return None, None, None
     raw = len(b)
-    if (h.get("Content-Encoding") or h.get("content-encoding") or "").lower() == "gzip":
+    if (h.get("Content-Encoding") or "").lower() == "gzip":
         b = gzip.decompress(b)
-    print("%s raw=%d json=%d %.1fs %s" % (code, raw, len(b), time.time() - t, url[:230]))
-    print("   hdr", {k: v for k, v in h.items() if k.lower() in KEEP})
+    print("%s raw=%d json=%d ttfb=%.1fs total=%.1fs %s" % (code, raw, len(b), ttfb, time.time() - t, url[:200]))
     if code != 200:
         print("   body", b[:400])
     return code, h, b
 
 
 G = "https://dataset.api.hub.geosphere.at/v1/grid/forecast/nowcast-v1-15min-1km"
-
-print("== nowcast metadata")
-c, h, b = get(G + "/metadata")
-if b:
-    m = json.loads(b)
-    print("   ", {k: m.get(k) for k in ("last_forecast_reftime", "forecast_length", "response_formats", "bbox", "bbox_outer", "available_forecast_reftimes", "max_forecast_offset")})
-    print("   params", [(p.get("name"), p.get("unit")) for p in m.get("parameters", [])])
-
-
-def summarize(b, label):
-    j = json.loads(b)
-    T = j.get("timestamps") or []
-    F = j.get("features") or []
-    print("  ", label, "keys", list(j.keys()), "reference_time", j.get("reference_time"), "n_feat", len(F), "n_T", len(T))
-    print("   T", T)
-    if F:
-        print("   feat0", json.dumps(F[0])[:400])
-    for k in range(len(T)):
-        nn = 0; wet = 0; mx = -1; at = None
-        for f in F:
-            d = f["properties"]["parameters"]["rr"]["data"]
-            v = d[k] if k < len(d) else None
-            if v is None:
-                continue
-            nn += 1
-            if v >= 0.025:
-                wet += 1
-            if v > mx:
-                mx = v; at = f["geometry"]["coordinates"]
-        print("   %s nonnull=%d wet>=0.025=%d max=%.3f at=%s" % (T[k], nn, wet, mx, at))
-    return j
-
-
-print("== app-like nowcast, Innviertel, ~35000 km2")
-c, h, b = get(G + "?parameters=rr&output_format=geojson&bbox=47.55,11.90,48.90,14.90")
-j1 = summarize(b, "innviertel") if c == 200 else None
-
-print("== app default bbox at zoom 8 smaller (~15000 km2)")
-c, h, b = get(G + "?parameters=rr&output_format=geojson&bbox=47.80,12.70,48.65,14.15")
-
-if j1 and j1.get("timestamps"):
-    t0 = j1["timestamps"][0][:16]
-    print("== whole Austria, one timestep", t0)
-    c, h, b = get(G + "?parameters=rr&output_format=geojson&bbox=45.50,8.10,49.48,17.74&start=" + urllib.parse.quote(t0) + "&end=" + urllib.parse.quote(t0))
-    if c == 200:
-        summarize(b, "austria")
-
-print("== nowcast with start 30 min back (Innviertel small)")
-import datetime
 now = datetime.datetime.now(datetime.timezone.utc).replace(second=0, microsecond=0)
 st = (now - datetime.timedelta(minutes=now.minute % 15 + 45)).strftime("%Y-%m-%dT%H:%M")
-c, h, b = get(G + "?parameters=rr&output_format=geojson&bbox=48.10,13.30,48.35,13.55&start=" + st)
-if c == 200:
-    summarize(b, "start-45")
+print("== GeoSphere timing, repeated")
+for bb in ("48.10,13.30,48.35,13.55", "47.80,12.70,48.65,14.15", "47.55,11.90,48.90,14.90"):
+    for extra in ("", "&start=" + st):
+        get(G + "?parameters=rr&output_format=geojson&bbox=" + bb + extra)
+print("== GeoSphere timeseries one point (fast path?)")
+get("https://dataset.api.hub.geosphere.at/v1/timeseries/forecast/nowcast-v1-15min-1km?parameters=rr&lat_lon=48.2333,13.4167")
+print("== netcdf size for comparison")
+get(G + "?parameters=rr&output_format=netcdf&bbox=47.55,11.90,48.90,14.90")
 
-print("== Open-Meteo main forecast as the app requests it, different models")
-base = "https://api.open-meteo.com/v1/forecast?latitude=48.2333&longitude=13.4167&timezone=auto&forecast_days=7"
-cur = "temperature_2m,apparent_temperature,relative_humidity_2m,precipitation,weather_code,wind_speed_10m,wind_direction_10m,surface_pressure,is_day,cloud_cover,wind_gusts_10m"
-hr = "temperature_2m,precipitation_probability,weather_code,precipitation,wind_speed_10m,wind_gusts_10m,snowfall,is_day"
-dl = "weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max,sunrise,sunset,uv_index_max"
-for mdl in ("ecmwf_ifs", "ecmwf_ifs025", "ecmwf_ifs,best_match", "best_match"):
-    print("-- models=" + mdl)
-    c, h, b = get(base + "&current=" + cur + "&hourly=" + hr + "&daily=" + dl + "&models=" + mdl)
-    if c != 200:
-        continue
-    j = json.loads(b)
-    print("   current", json.dumps(j.get("current"))[:900])
-    H = j.get("hourly", {})
-    for k, v in H.items():
-        if k == "time":
-            continue
-        nul = [i for i, x in enumerate(v) if x is None]
-        print("   hourly %-40s n=%d nulls=%d first_null=%s sample=%s" % (k, len(v), len(nul), nul[:1], v[:4]))
-    D = j.get("daily", {})
+print("== previous-runs with ECMWF")
+base = "https://previous-runs-api.open-meteo.com/v1/forecast?latitude=48.233&longitude=13.417&past_days=30&forecast_days=3&timezone=GMT&hourly="
+V1 = "temperature_2m,cloud_cover,cloud_cover_low,wind_speed_10m,temperature_2m_previous_day1,cloud_cover_previous_day1,cloud_cover_low_previous_day1,wind_speed_10m_previous_day1"
+for m in ("ecmwf_ifs", "ecmwf_ifs025"):
+    c, h, b = get(base + V1 + "&models=" + m)
+    if c == 200:
+        H = json.loads(b)["hourly"]
+        for k, v in H.items():
+            if k == "time":
+                print("   time", v[0], v[-1], len(v)); continue
+            nul = sum(1 for x in v if x is None)
+            print("   %-36s n=%d nulls=%d first_nonnull=%s last=%s" % (k, len(v), nul, next((i for i, x in enumerate(v) if x is not None), None), v[-30:-26]))
+
+print("== field layers with ECMWF (multi location, unixtime)")
+la = "47.8,48.0,48.2,48.4"; lo = "13.0,13.4,13.8,14.2"
+for v, cur in (("temperature_2m", True), ("wind_speed_10m,wind_direction_10m,wind_gusts_10m", True), ("cloud_cover,cloud_cover_low", True), ("precipitation,snowfall", False), ("pressure_msl", True)):
+    u = "https://api.open-meteo.com/v1/forecast?latitude=" + la + "&longitude=" + lo + ("&current=" + v if cur else "") + "&hourly=" + v + "&forecast_hours=49&timeformat=unixtime&timezone=GMT&models=ecmwf_ifs"
+    c, h, b = get(u)
+    if c == 200:
+        j = json.loads(b); a = j[0]
+        print("   cur", a.get("current"))
+        for k, x in a["hourly"].items():
+            if k != "time":
+                print("   %-22s nulls=%d %s" % (k, sum(1 for y in x if y is None), x[:5]))
+
+print("== peaks with ECMWF (elevation, snow_depth)")
+pv = "temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,wind_direction_10m,wind_gusts_10m,is_day,cloud_cover,snow_depth"
+u = "https://api.open-meteo.com/v1/forecast?latitude=47.475,47.818&longitude=13.606,13.719&elevation=2995,1592&current=" + pv + "&daily=weather_code,temperature_2m_max,temperature_2m_min&forecast_days=2&timezone=auto&models=ecmwf_ifs"
+c, h, b = get(u)
+if c == 200:
+    for a in json.loads(b):
+        print("   ", a.get("elevation"), a.get("current"), a.get("daily", {}).get("temperature_2m_max"))
+u2 = u.replace("models=ecmwf_ifs", "models=best_match")
+c, h, b = get(u2)
+if c == 200:
+    for a in json.loads(b):
+        print("   bm", a.get("elevation"), a.get("current"))
+
+print("== trend 14 days ECMWF")
+c, h, b = get("https://api.open-meteo.com/v1/forecast?latitude=48.233&longitude=13.417&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max&forecast_days=14&timezone=auto&models=ecmwf_ifs")
+if c == 200:
+    D = json.loads(b)["daily"]
     for k, v in D.items():
-        print("   daily %-40s %s" % (k, v[:7]))
-    print("   time0", H.get("time", [None])[:3], "elev", j.get("elevation"))
+        print("   %-32s %s" % (k, v))
 
-print("== minutely_15 with ecmwf_ifs")
-c, h, b = get("https://api.open-meteo.com/v1/forecast?latitude=48.2333&longitude=13.4167&current=temperature_2m&forecast_days=2&timezone=auto&minutely_15=precipitation,rain,snowfall&models=ecmwf_ifs")
+print("== hours 48 ecmwf_ifs hourly time step check (3h after 90h?)")
+c, h, b = get("https://api.open-meteo.com/v1/forecast?latitude=48.233&longitude=13.417&hourly=temperature_2m,precipitation,weather_code&forecast_days=7&timezone=auto&models=ecmwf_ifs")
 if c == 200:
-    j = json.loads(b); m = j.get("minutely_15", {})
-    print("   ", {k: (v[:8] if isinstance(v, list) else v) for k, v in m.items()})
-
-print("== SNOWGRID timeseries like the app")
-d1 = (now - datetime.timedelta(days=1)).strftime("%Y-%m-%d"); d7 = (now - datetime.timedelta(days=7)).strftime("%Y-%m-%d")
-c, h, b = get("https://dataset.api.hub.geosphere.at/v1/timeseries/historical/snowgrid_cl-v2-1d-1km?parameters=snow_depth&start=" + d7 + "&end=" + d1 + "&output_format=geojson&lat_lon=47.475,13.606&lat_lon=47.329,12.737")
-if c == 200:
-    print("   ", b[:900])
-
-print("== dwd-icon snowfall height")
-c, h, b = get("https://api.open-meteo.com/v1/dwd-icon?latitude=48.2333&longitude=13.4167&timezone=auto&forecast_days=2&hourly=freezing_level_height,snowfall_height,precipitation")
-if c == 200:
-    j = json.loads(b); print("   ", {k: v[:6] for k, v in j["hourly"].items()})
+    H = json.loads(b)["hourly"]
+    print("   T 90-110", H["temperature_2m"][90:110]); print("   P 90-110", H["precipitation"][90:110]); print("   W 90-110", H["weather_code"][90:110])
