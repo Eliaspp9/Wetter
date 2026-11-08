@@ -43,11 +43,12 @@ https://eliaspp9.github.io/Wetter/
 - **Luft und Pollen**, Details mit Wind, UV, Sonne und Nullgradgrenze.
 - **Wandanzeige fürs Tablet:**
   - Uhr, Wetter, großes Radar, Stunden und 7 Tage ohne Scrollen.
+  - Die Knöpfe über der Karte blenden nach 4 Sekunden aus (auch am Handy), Antippen holt sie zurück.
   - Nachtanzeige von 22 bis 6 Uhr: große, gedämpfte Uhr, Temperatur und Hinweise; Antippen zeigt alles. Abschaltbar.
   - Bildschirm bleibt an.
   - Direkt aufrufen mit `?wand=1`.
 - **Automatik:**
-  - Aktualisiert sich alle 5 Minuten.
+  - Aktualisiert sich jede Minute. Jede Quelle wird nur neu geladen, wenn sie Neues haben kann (Radar alle 5 Minuten, Wettermodell alle 15 Minuten, Warnungen jede Minute).
   - Bleibt bei kurzen Verbindungsproblemen auf dem letzten Stand.
   - Installiert neue Versionen selbst, wenn niemand das Gerät benutzt.
   - In der App auf dem Home-Bildschirm: zum Aktualisieren nach unten ziehen.
