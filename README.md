@@ -3,10 +3,11 @@
 Persönliche Wetter-App im Stil von WetterOnline, als Webseite auf GitHub Pages:
 https://eliaspp9.github.io/Wetter/
 
-**Version 2.4**: Vorhersage mit dem ECMWF-Modell IFS (9 km), zuverlässiges Radar „Österreich“ und ein Ortspunkt, der immer obenauf liegt.
+**Version 2.5**: Der Himmel oben bewegt sich mit dem Wetter. Dazu Vorhersage mit dem ECMWF-Modell IFS (9 km), zuverlässiges Radar „Österreich“ und ein Ortspunkt, der immer obenauf liegt.
 
 ## Was die App kann
 
+- **Bewegter Himmel oben:** Wolken ziehen in Windrichtung (bei mehr Wind schneller), dazu je nach Wetter Sonnenstrahlen, Mondlicht mit Sternen und Sternschnuppe, Nebelschwaden, Regen schräg im Wind (bei Starkregen dichter), Schnee in drei Ebenen und Blitze bei Gewitter. Alles läuft auf der Grafikeinheit, steht still, wenn der Kopf nicht sichtbar ist oder ruhige Bewegung eingestellt ist.
 - **Wetter jetzt:** aktuelle Werte von KachelmannWetter (Super HD) oder vom ECMWF-Modell IFS (9 km, über Open-Meteo). Oben steht, woher die Werte kommen.
 - **Wettermodell ECMWF:** Vorhersage, 7 Tage, 14-Tage-Trend, Temperatur- und Windkarte, Bergwetter und die KI-Korrektur rechnen mit ECMWF IFS. Was ECMWF nicht liefert, kommt vom Standardmodell von Open-Meteo: UV-Index, Regen in den nächsten 2 Stunden (15-Minuten-Werte), Niederschlagsart sowie Nullgrad- und Schneefallgrenze (ICON des DWD).
 - **Regenradar:**
@@ -22,7 +23,7 @@ https://eliaspp9.github.io/Wetter/
 - **Vorhersage:**
   - Regen in den nächsten 2 Stunden.
   - Nächste 24 Stunden.
-  - 7 Tage zum Aufklappen.
+  - 7 Tage zum Aufklappen. An deinen Kachelmann-Standorten von Kachelmann, sonst ECMWF; darunter steht, woher die Werte kommen.
   - Trend bis 14 Tage, mit dem KI-Modell AIFS zum Vergleich.
 - **Modellvergleich:**
   - Eine gemeinsame Linie aus ICON-D2, ICON-EU, ECMWF, GFS, KI-Modell und Kachelmann.
