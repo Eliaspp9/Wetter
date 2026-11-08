@@ -3,7 +3,7 @@
 Persönliche Wetter-App im Stil von WetterOnline, als Webseite auf GitHub Pages:
 https://eliaspp9.github.io/Wetter/
 
-**Version 2.1**: mit Wetter teilen, vielen Kartenansichten, Zugbahnen von Gewittern und Nachtanzeige an der Wand.
+**Version 2.2**: mit Radar „Österreich“ (GeoSphere), Gewitter-Zugbahnen für ganz Österreich, allen Bergen Österreichs mit Schneehöhe und einer KI-Korrektur für den Ort.
 
 ## Was die App kann
 
@@ -11,8 +11,9 @@ https://eliaspp9.github.io/Wetter/
 - **Regenradar:**
   - DWD 1 km mit 2 Stunden Radar-Vorhersage.
   - „Weltweit“: in Europa das OPERA-Radar über LibreWXR, Ersatz RainViewer.
+  - „Österreich“: INCA-Nowcast von GeoSphere Austria, 1 km, alle 15 Minuten, 3 Stunden voraus.
   - Dazu Blitze (EUMETSAT MTG), Wolken, Warnungen und Niederschlagsart.
-  - **Zugbahnen von Gewittern und Starkregen:** starke Zellen werden in den DWD-Radarbildern der letzten 30 Minuten verfolgt. Linie mit Punkten alle 15 Minuten, Ankunftszeit beim Ort und Alarm.
+  - **Zugbahnen von Gewittern und Starkregen:** starke Zellen werden in den DWD-Radarbildern der letzten 30 Minuten verfolgt, in Österreich zusätzlich mit dem Nowcast von GeoSphere. Linie mit Punkten alle 15 Minuten, Ankunftszeit beim Ort und Alarm.
 - **Kartenansichten aus dem Wettermodell:**
   - Temperatur, Wind (animierte Strömungslinien), Böen, Wolken, Niederschlag, Neuschnee (zusammengezählt) und Luftdruck mit Isobaren.
   - Jetzt und Stunde für Stunde 2 Tage voraus, mit Abspielen.
@@ -26,6 +27,7 @@ https://eliaspp9.github.io/Wetter/
   - Eine gemeinsame Linie aus ICON-D2, ICON-EU, ECMWF, GFS, KI-Modell und Kachelmann.
   - Die Modelle werden nach ihren Treffern der letzten 14 Tage gewichtet (Vergleich mit der nächsten Messstation).
   - Die Linie ist an den Ort angepasst.
+- **KI-Korrektur für den Ort:** lernt aus 30 Tagen Vorhersage und Messung (Ridge-Regression nach Tageszeit, klarer Nacht, Sonne, Nebel, Wind), prüft sich an zurückgehaltenen Tagen und zeigt eine korrigierte 48-Stunden-Prognose, wenn sie besser ist.
 - **Messwerte und Rückblick:** Messwerte der nächsten Station. Der Rückblick zeigt echte Messwerte, wenn eine Station in der Nähe ist.
 - **Warnungen und Hinweise:**
   - Amtliche Warnungen (DWD, GeoSphere Austria).
@@ -34,6 +36,9 @@ https://eliaspp9.github.io/Wetter/
 - **Berge und Schneefallgrenze:**
   - Nullgradgrenze und Schneefallgrenze für den Ort, mit Verlauf über 3 Tage und der Höhe des Ortes.
   - Wetter auf Gipfeln in der Nähe, auf Gipfelhöhe umgerechnet.
+  - Alle bekannten Berge und Skigebiete Österreichs zum Suchen und Merken (Stern).
+  - Schneehöhe am Berg: Schneemodell SNOWGRID von GeoSphere Austria (1 km, täglich), sonst Wettermodell.
+  - Kachel mit einem Knopf ein- und ausblendbar.
   - Hinweis bei Inversion (oben wärmer als im Tal, oft Nebel unten und Sonne oben).
 - **Luft und Pollen**, Details mit Wind, UV, Sonne und Nullgradgrenze.
 - **Wandanzeige fürs Tablet:**

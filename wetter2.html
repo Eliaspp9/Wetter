@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-8wXEqZ1O9525ejeTz0+dOALkodfw4Adl5OReKLQhlg4=' 'sha256-F1lreOLy84+sYAZwCiC5OGOTDcovKCCQAYSwbz7Ocq8=' https://unpkg.com https://cdnjs.cloudflare.com; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-jhjvvYYJ9duTNhNFiuicQ/UoTaBmgmSDCA6Sh5xullA=' 'sha256-F1lreOLy84+sYAZwCiC5OGOTDcovKCCQAYSwbz7Ocq8=' https://unpkg.com https://cdnjs.cloudflare.com; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -14,9 +14,9 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/favicon-64.png">
-<meta name="app-build" content="29">
-<meta name="app-version" content="2.1">
-<meta name="app-notes" content="Version 2.1: Wetter als Bild teilen, neue Kartenansichten (Böen, Wolken, Niederschlag, Neuschnee, Luftdruck), Zugbahnen von Gewittern mit Ankunftszeit, Nachtanzeige an der Wand und eine schönere Oberfläche.">
+<meta name="app-build" content="30">
+<meta name="app-version" content="2.2">
+<meta name="app-notes" content="Version 2.2: Radar „Österreich“ von GeoSphere Austria mit Gewitter-Zugbahnen für ganz Österreich, alle Berge und Skigebiete Österreichs mit Schneehöhe zum Merken, Berge ein- und ausblendbar und eine KI-Korrektur für deinen Ort.">
 <script>/* alte Adresse wetter2.html -> neue Startseite */
 try{if(top!==self)document.documentElement.style.display="none"}catch(e){document.documentElement.style.display="none"}
 window.__redir=/\/wetter2\.html$/i.test(location.pathname);
@@ -183,8 +183,8 @@ main{position:relative;z-index:1;max-width:1180px;margin:-30px auto 0;padding:0 
  .tabs,.mini{display:none}
  .hero{padding-bottom:66px}
  main{margin-top:-42px;padding:0 20px}
- .grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:16px;align-items:start;grid-template-areas:"radar warn" "radar now" "radar ice" "radar obs" "radar hours" "radar kc" "radar models" "radar days" "radar mtn" "radar trend" "radar past" "radar air" "radar facts" "radar push"}
- .s-warn{grid-area:warn}.s-now{grid-area:now}.s-ice{grid-area:ice}.s-hours{grid-area:hours}.s-kc{grid-area:kc}.s-days{grid-area:days}.s-facts{grid-area:facts}.s-obs{grid-area:obs}.s-models{grid-area:models}.s-trend{grid-area:trend}.s-past{grid-area:past}.s-air{grid-area:air}.s-push{grid-area:push}.s-mtn{grid-area:mtn}
+ .grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:16px;align-items:start;grid-template-areas:"radar warn" "radar now" "radar ice" "radar obs" "radar hours" "radar kc" "radar models" "radar ki" "radar days" "radar mtn" "radar trend" "radar past" "radar air" "radar facts" "radar push"}
+ .s-warn{grid-area:warn}.s-now{grid-area:now}.s-ice{grid-area:ice}.s-hours{grid-area:hours}.s-kc{grid-area:kc}.s-days{grid-area:days}.s-facts{grid-area:facts}.s-obs{grid-area:obs}.s-models{grid-area:models}.s-trend{grid-area:trend}.s-past{grid-area:past}.s-air{grid-area:air}.s-push{grid-area:push}.s-mtn{grid-area:mtn}.s-ki{grid-area:ki}
  .s-radar{grid-area:radar;position:sticky;top:16px}
  #map{height:min(72vh,700px)!important}
  .upd{bottom:calc(env(safe-area-inset-bottom,0px) + 12px)}
@@ -227,7 +227,7 @@ main{position:relative;z-index:1;max-width:1180px;margin:-30px auto 0;padding:0 
 .wdim,.wbar{display:none}
 .leaflet-tile-pane>.leaflet-layer{transition:opacity .22s linear}
 .leaflet-image-layer.dwov{transition:opacity .2s linear}
-@supports (content-visibility:auto){.s-mtn,.s-kc,.s-models,.s-trend,.s-past,.s-air,.s-facts,.s-push{content-visibility:auto;contain-intrinsic-size:auto 560px}}
+@supports (content-visibility:auto){.s-ki,.s-mtn,.s-kc,.s-models,.s-trend,.s-past,.s-air,.s-facts,.s-push{content-visibility:auto;contain-intrinsic-size:auto 560px}}
 
 /* ---------- Wandanzeige (Tablet an der Wand) ---------- */
 html.wall,html.wall body{height:100%;overflow:hidden}
@@ -515,7 +515,7 @@ html.noscroll .mini,html.noscroll .tabs{display:none}
 #fplay,#fldnote{display:none}
 #sec-radar.fld #fplay{display:flex}
 #sec-radar.fld #fldnote{display:block}
-#sec-radar.fld #play,#sec-radar.fld #mode,#sec-radar.fld #cld,#sec-radar.fld #wrn,#sec-radar.fld .rdr,#sec-radar.fld .leaflet-fc-pane,#sec-radar.fld .ptw,#sec-radar.fld .leaflet-trk-pane,#sec-radar.fld #tnote,#sec-radar.fld .cldl,#sec-radar.fld #rnr{display:none!important}
+#sec-radar.fld #play,#sec-radar.fld #mode,#sec-radar.fld #cld,#sec-radar.fld #wrn,#sec-radar.fld .rdr,#sec-radar.fld .leaflet-fc-pane,#sec-radar.fld .ptw,#sec-radar.fld .leaflet-trk-pane,#sec-radar.fld .leaflet-atp-pane,#sec-radar.fld #tnote,#sec-radar.fld .cldl,#sec-radar.fld #rnr{display:none!important}
 #sec-radar:not(.fld) .leaflet-fld-pane,#sec-radar:not(.fld) .leaflet-fldl-pane{display:none}
 .lgf{flex:1;min-width:0;padding:0 14px}
 .legend .lgf i{display:block;flex:none;height:9px;border-radius:5px}
@@ -543,6 +543,33 @@ html.noscroll .mini,html.noscroll .tabs{display:none}
 #h-air{--hc:#2FA66A;--hi:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222.1%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M5 19c0-9 6-14 15-14 0 9-5 15-14 15%22/%3E%3Cpath d=%22M5 19l7-7%22/%3E%3C/svg%3E")}
 #h-facts{--hc:var(--accent);--hi:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222.1%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M4 7h10M18 7h2M4 17h4M12 17h8%22/%3E%3Ccircle cx=%2216%22 cy=%227%22 r=%222%22/%3E%3Ccircle cx=%2210%22 cy=%2217%22 r=%222%22/%3E%3C/svg%3E")}
 #h-push{--hc:#E64980;--hi:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222.1%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M6 16v-5a6 6 0 0 1 12 0v5l1.5 2h-15z%22/%3E%3Cpath d=%22M10 20.5a2.2 2.2 0 0 0 4 0%22/%3E%3C/svg%3E")}
+#h-ki{--hc:#8E5BEA;--hi:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222.1%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M11 3.5l1.9 5.3 5.3 1.9-5.3 1.9L11 18l-1.9-5.4L3.8 10.7l5.3-1.9z%22/%3E%3Cpath d=%22M18.5 14.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z%22/%3E%3C/svg%3E")}
+.s-mtn.col .ch{margin-bottom:0}
+.pkf{display:inline-grid;place-items:center;border:0;background:transparent;color:var(--muted);width:32px;height:32px;padding:0;margin:-6px 0 -6px 2px;vertical-align:middle;cursor:pointer;border-radius:8px}
+.pkf svg{width:19px;height:19px}
+.pkf.on{color:#F2B200}.pkf.on svg{fill:currentColor}
+.pkn .pksn{color:var(--ink)}
+.pksn b{font-weight:600}
+.pks{position:relative;margin-top:14px}
+.pks[hidden]{display:none}
+.pks input{width:100%;box-sizing:border-box;font:inherit;font-size:16px;padding:10px 14px;border-radius:12px;border:1px solid var(--line);background:var(--tile);color:var(--ink)}
+.pksr{list-style:none;margin:6px 0 0;padding:0;border-radius:12px;overflow:hidden;border:1px solid var(--line);display:none;background:var(--card)}
+.pksr li{padding:10px 14px;border-top:1px solid var(--line);cursor:pointer}
+.pksr li:first-child{border-top:0}
+.pksr li small{color:var(--muted)}
+.pksr li:hover,.pksr li:focus{background:var(--tile);outline:none}
+.pksr li.no{cursor:default;color:var(--muted)}
+/* KI-Korrektur */
+.kis{font-size:15px;line-height:1.45}
+.kil{margin-top:14px;border-top:1px solid var(--line);padding-top:12px}
+.kil h3{font-size:15px;font-weight:600;margin-bottom:6px}
+.kil ul{margin:0;padding-left:20px;font-size:14.5px;line-height:1.6}
+.kin{font-size:14.5px;line-height:1.45}
+.kic{display:block;width:100%;height:auto;margin-top:10px;overflow:visible}
+.kic text{font-size:10px;fill:var(--muted)}
+.kic .gr{stroke:var(--line);stroke-width:1}
+.kic .km{fill:none;stroke:#8FA2BA;stroke-width:2;stroke-dasharray:5 4}
+.kic .kk{fill:none;stroke:#8E5BEA;stroke-width:2.8;stroke-linejoin:round}
 /* Zugbahnen von Gewittern */
 .trkc span{position:absolute;left:0;top:0;transform:translate(-50%,-170%);white-space:nowrap;padding:3px 9px;border-radius:999px;background:rgba(10,16,28,.8);color:#fff;font:600 12px/1.3 var(--font);box-shadow:0 2px 8px rgba(0,0,0,.35)}
 .trkc span.st{background:#FFB300;color:#1B1B1B}
@@ -701,7 +728,7 @@ html.locked body>*:not(#gate){display:none!important}
    <div class="mapwrap">
     <div id="map"></div>
     <div class="mctl">
-     <div class="seg" id="mode"><button type="button" data-m="rv" class="on">Weltweit</button><button type="button" data-m="dwd">DWD 1 km</button></div>
+     <div class="seg" id="mode"><button type="button" data-m="rv" class="on">Weltweit</button><button type="button" data-m="dwd">DWD 1 km</button><button type="button" data-m="at">Österreich</button></div>
      <div class="seg" id="basemode"><button type="button" data-b="street">Karte</button><button type="button" data-b="sat" class="on">Satellit</button></div>
      <div class="seg" id="lblseg"><button type="button" id="cld" aria-pressed="false">Wolken</button><button type="button" id="lbl" class="on" aria-pressed="true">Grenzen &amp; Orte</button><button type="button" id="wrn" aria-pressed="false">Warnungen</button><button type="button" id="blz" class="on" aria-pressed="true">Blitze</button></div>
     </div>
@@ -756,14 +783,20 @@ html.locked body>*:not(#gate){display:none!important}
    <div class="mc" id="models"><p class="muted">Wird geladen …</p></div>
   </section>
 
+  <section class="card s-ki" id="sec-ki" aria-labelledby="h-ki" hidden>
+   <div class="ch"><h2 id="h-ki">KI-Korrektur für deinen Ort</h2></div>
+   <div id="ki"></div>
+  </section>
+
   <section class="card s-days" id="sec-days" aria-labelledby="h-days">
    <div class="ch"><h2 id="h-days">7 Tage</h2></div>
    <div id="days"></div>
   </section>
 
   <section class="card s-mtn" id="sec-mtn" aria-labelledby="h-mtn" hidden>
-   <div class="ch"><h2 id="h-mtn">Berge und Schneefallgrenze</h2></div>
+   <div class="ch"><h2 id="h-mtn">Berge und Schneefallgrenze</h2><button class="cbtn" id="mtn-t" type="button" aria-expanded="true" aria-controls="mtn">Ausblenden</button></div>
    <div id="mtn"></div>
+   <div class="pks" id="mtn-s" hidden><input id="mtn-q" type="search" placeholder="Berg oder Skigebiet hinzufügen" autocomplete="off" aria-label="Berg oder Skigebiet suchen"><ul class="pksr" id="mtn-r"></ul></div>
   </section>
 
   <section class="card s-trend" id="sec-trend" aria-labelledby="h-trend">
@@ -795,7 +828,7 @@ html.locked body>*:not(#gate){display:none!important}
 </main>
 
 <footer class="foot">
- <p>Daten: Open-Meteo (Vorhersage, Radar-Prognose und ICON-D2 des Deutschen Wetterdienstes), KachelmannWetter (stündliche Prognose für freigeschaltete Orte), LibreWXR (Radar weltweit, in Europa mit EUMETNET OPERA, teils NOAA Enterprise Rain Rate), RainViewer (Ersatz-Radar), Deutscher Wetterdienst (RADOLAN-Radar mit Radar-Vorhersage, Messwerte und Warnungen über Bright Sky), GeoSphere Austria (Warnungen und Messwerte), Copernicus CAMS über Open-Meteo (Luft und Pollen), BigDataCloud (Ortsname), EUMETSAT (Blitze vom Wettersatelliten MTG), Europäisches Wetterzentrum EZMW (KI-Modell AIFS über Open-Meteo), Messwerte für die Treffer-Statistik von GeoSphere Austria und vom DWD. Temperatur- und Windkarte, Bergwetter sowie Nullgrad- und Schneefallgrenze: Wettermodelle über Open-Meteo (in Mitteleuropa vom Deutschen Wetterdienst). Zugbahnen von Gewittern: aus den Bildern des DWD-Radars berechnet.</p>
+ <p>Daten: Open-Meteo (Vorhersage, Radar-Prognose und ICON-D2 des Deutschen Wetterdienstes), KachelmannWetter (stündliche Prognose für freigeschaltete Orte), LibreWXR (Radar weltweit, in Europa mit EUMETNET OPERA, teils NOAA Enterprise Rain Rate), RainViewer (Ersatz-Radar), Deutscher Wetterdienst (RADOLAN-Radar mit Radar-Vorhersage, Messwerte und Warnungen über Bright Sky), GeoSphere Austria (Warnungen und Messwerte), Copernicus CAMS über Open-Meteo (Luft und Pollen), BigDataCloud (Ortsname), EUMETSAT (Blitze vom Wettersatelliten MTG), Europäisches Wetterzentrum EZMW (KI-Modell AIFS über Open-Meteo), Messwerte für die Treffer-Statistik von GeoSphere Austria und vom DWD. Temperatur- und Windkarte, Bergwetter sowie Nullgrad- und Schneefallgrenze: Wettermodelle über Open-Meteo (in Mitteleuropa vom Deutschen Wetterdienst). Zugbahnen von Gewittern: aus den Bildern des DWD-Radars und dem Nowcast von GeoSphere Austria berechnet. Radar „Österreich“: GeoSphere Austria (INCA-Nowcast, CC BY 4.0). Schneehöhe am Berg: GeoSphere Austria (SNOWGRID, CC BY 4.0).</p>
  <p>Karten und Bilder: © OpenStreetMap-Mitwirkende, Esri, Maxar, Earthstar Geographics, Sentinel-2 cloudless von EOX. Grenzen und Ortsnamen: Esri, Garmin, HERE. Wolken: Meteosat (EUMETSAT) über den Deutschen Wetterdienst.</p>
  <p>Version <span id="ver"></span></p>
  <p id="login-info"></p>
@@ -926,7 +959,7 @@ async function loadWeather(auto){
  }
  moveMap();
  loadWarnings();loadNowcast();loadKc();loadKcDaily();loadObs();loadIce();renderFavs();
- if(!auto||Date.now()-lastSlow>=SLOW_MS){lastSlow=Date.now();loadPtypes();loadAir();loadPast();loadModels();loadTrend();loadAlpine()}
+ if(!auto||Date.now()-lastSlow>=SLOW_MS){lastSlow=Date.now();loadPtypes();loadAir();loadPast();loadModels();loadTrend();loadAlpine();loadKi()}
  if(!auto)renderPush();
  try{localStorage.setItem("wetter-ort",JSON.stringify(place))}catch(e){}
 }
@@ -1346,7 +1379,10 @@ function initMap(){
 function moveMap(){
  const key=PK(),changed=key!==mmKey;
  if(hero){hero.invalidateSize();if(changed)hero.setView([place.lat,place.lon],14,{animate:false})}
- if(map&&changed){map.setView([place.lat,place.lon],8);marker.setLatLng([place.lat,place.lon]);if(mode==="dwd"){if(dwCovered(+place.lat,+place.lon))loadDwd();else{setMode("rv");$("fnote").textContent="Für diesen Ort gibt es kein DWD-Radar, deshalb das weltweite Radar."}}else{let um=null;try{um=localStorage.getItem("wetter-mode")}catch(e){}if(!um&&dwCovered(+place.lat,+place.lon))setMode("dwd")}}
+ if(map&&changed){map.setView([place.lat,place.lon],8);marker.setLatLng([place.lat,place.lon]);const pla=+place.lat,plo=+place.lon;
+  if(mode==="dwd"){if(dwCovered(pla,plo))loadDwd();else if(atCovered(pla,plo)){setMode("at");$("fnote").textContent="Für diesen Ort gibt es kein DWD-Radar, deshalb das Radar von GeoSphere Austria."}else{setMode("rv");$("fnote").textContent="Für diesen Ort gibt es kein DWD-Radar, deshalb das weltweite Radar."}}
+  else if(mode==="at"){if(atCovered(pla,plo)){atNext=0;loadAt(true)}else{setMode(dwCovered(pla,plo)?"dwd":"rv");$("fnote").textContent="Dieser Ort liegt außerhalb von Österreich, deshalb ein anderes Radar."}}
+  else{let um=null;try{um=localStorage.getItem("wetter-mode")}catch(e){}if(!um&&dwCovered(pla,plo))setMode("dwd");else if(!um&&atCovered(pla,plo))setMode("at");else{atTkNext=0;atTrackOnly()}}}
  mmKey=key;
 }
 /* Radar „Weltweit“: zuerst LibreWXR (in Europa das OPERA-Radar von EUMETNET, 1 km, mit 60-Minuten-Vorhersage),
@@ -1367,6 +1403,7 @@ function rvFail(why){
 function freshNote(t){const min=Math.round((Date.now()/1000-t)/60);$("fresh").textContent="Neuester Radarstand: "+new Date(t*1000).toLocaleTimeString("de-AT",{hour:"2-digit",minute:"2-digit"})+" Uhr"+(min>=0?" (vor "+min+" Min.)":"")}
 async function loadRadar(){
  if(mode==="dwd")return loadDwd();
+ if(mode==="at")return loadAt();
  if(rvSrc===1&&Date.now()-rvSrcT>3600000){rvSrc=0;lxNat=10;rvLast=0}
  const src=RVSRC[rvSrc];
  try{
@@ -1409,7 +1446,8 @@ const dwCovered=(la,lo)=>DWD_RADARS.some(r=>km(la,lo,r[0],r[1])<=150);
 function startMode(){
  let m=null;try{m=localStorage.getItem("wetter-mode")}catch(e){}
  if(m==="rv"||m==="dwd")return m;
- return dwCovered(+place.lat,+place.lon)?"dwd":"rv";
+ if(m==="at"&&atCovered(+place.lat,+place.lon))return m;
+ return dwCovered(+place.lat,+place.lon)?"dwd":atCovered(+place.lat,+place.lon)?"at":"rv";
 }
 const RS=6370.04,SP0=Math.PI/3,SL0=Math.PI/18;
 function stereo(la,lo){const f=la*Math.PI/180,l=lo*Math.PI/180,k=(1+Math.sin(SP0))/(1+Math.sin(f));return[RS*k*Math.cos(f)*Math.sin(l-SL0),-RS*k*Math.cos(f)*Math.cos(l-SL0)]}
@@ -1493,7 +1531,7 @@ async function loadDwd(cla,clo){
    return;
   }
   $("fnote").textContent="Das DWD-Radar ist gerade nicht erreichbar, deshalb das weltweite Radar.";
-  dwFell=Date.now();setMode("rv");
+  dwFell=Date.now();setMode(atCovered(+place.lat,+place.lon)?"at":"rv");
  }
 }
 async function showDw(k){
@@ -1531,7 +1569,7 @@ async function showDw(k){
    Starke Zellen (Kern ab 20 mm/h, mindestens 5 km² über 8 mm/h) werden im neuesten Radarbild gesucht und in den
    Bildern der letzten 30 Minuten (alle 5 Minuten) wiedererkannt. Aus ihrem Weg ergibt eine Ausgleichsgerade Richtung
    und Tempo, daraus die Zugbahn für die nächste Stunde. Reicht der Verlauf nicht, wird der Höhenwind genommen. */
-let trkL=null,trkHit=null,trkSeq=0,trkList=[];
+let trkL=null,trkHit=null,trkSeq=0,trkList=[],trkSrc="";
 function istereo(x,y){const t=Math.hypot(x,y)/(RS*(1+Math.sin(SP0)));return[(Math.PI/2-2*Math.atan(t))*180/Math.PI,(SL0+Math.atan2(x,-y))*180/Math.PI]}
 function trkFind(v,W,H){
  const TH=67,CORE=167,seen=new Uint8Array(W*H),out=[],stack=new Int32Array(W*H);
@@ -1550,7 +1588,7 @@ function trkFind(v,W,H){
  }
  return out.sort((a,b)=>b.max-a.max).slice(0,25);
 }
-function clearTrk(){trkList=[];if(trkL)trkL.clearLayers();if(trkHit){trkHit=null;try{checkAlarm()}catch(e){}}if(mode!=="dwd")$("tnote").textContent=""}
+function clearTrk(){trkSeq++;trkList=[];trkSrc="";if(trkL)trkL.clearLayers();if(trkHit){trkHit=null;try{checkAlarm()}catch(e){}}$("tnote").textContent=""}
 async function trackCells(){
  const d=dwData,my=++trkSeq,k0=pastCount-1;
  if(!d||!map||mode!=="dwd"||k0<0||!frames[k0]||frames[k0].dw==null){clearTrk();return}
@@ -1564,20 +1602,27 @@ async function trackCells(){
   if(my!==trkSeq||dwData!==d)return;
   F.push({t:fr.time,c:trkFind(v,g.W,g.H)});
  }
+ await trkBuild(F,toLL,pk,pr,my,"dwd");
+}
+/* Gemeinsamer Teil: Zellen über die Bilder hinweg wiedererkennen, Richtung und Tempo per Ausgleichsgerade.
+   F[0] ist das Bild „jetzt“, die weiteren sind älter (DWD-Radar) oder Vorhersage (GeoSphere). */
+async function trkBuild(F,toLL,pk,pr,my,src){
  const now=F.length?F[0]:null;
- if(!now||!now.c.length){trkList=[];if(trkL)trkL.clearLayers();trkHit=null;checkAlarm();$("tnote").textContent="Keine Gewitter oder starken Schauer im Umkreis des Radars.";return}
- if(!ex){try{await loadSteer()}catch(e){}if(my!==trkSeq)return}
+ trkSrc=src;
+ if(!now||!now.c.length){trkList=[];if(trkL)trkL.clearLayers();trkHit=null;checkAlarm();$("tnote").textContent=src==="atk"?"":"Keine Gewitter oder starken Schauer im Umkreis des Radars.";return}
+ if(!ex&&src==="dwd"){try{await loadSteer()}catch(e){}if(my!==trkSeq)return}
  const list=[];
  now.c.forEach(cell=>{
   const tr=[{t:now.t,r:cell.r,c:cell.c}];let cur=cell;
   for(let j=1;j<F.length;j++){
-   const lim=7*(F[j-1].t-F[j].t)/300+2;let best=null,bd=1e9;
+   const lim=7*Math.abs(F[j-1].t-F[j].t)/300+2;let best=null,bd=1e9;
    F[j].c.forEach(o=>{const dd=Math.hypot((o.c-cur.c)*pk,(o.r-cur.r)*pr);if(dd<lim&&dd<bd&&o.area>=cur.area*.2&&o.area<=cur.area*5){bd=dd;best=o}});
    if(!best)break;tr.push({t:F[j].t,r:best.r,c:best.c});cur=best;
   }
   const ll=toLL(cell.r,cell.c),R=Math.max(2,Math.sqrt(cell.area*pk*pr/Math.PI));
   let ve=null,vn=null,est=false;
-  if(tr.length>=3&&tr[0].t-tr[tr.length-1].t>=600){
+  const span=Math.abs(tr[0].t-tr[tr.length-1].t);
+  if(tr.length>=3&&span>=600||tr.length>=2&&span>=1500){
    const P=tr.map(p=>{const q=toLL(p.r,p.c);return{t:(p.t-now.t)/3600,la:q[0],lo:q[1]}});
    const n=P.length,mt=P.reduce((a,p)=>a+p.t,0)/n,ma=P.reduce((a,p)=>a+p.la,0)/n,mo=P.reduce((a,p)=>a+p.lo,0)/n;
    let st=0,sa=0,so=0;P.forEach(p=>{st+=(p.t-mt)**2;sa+=(p.t-mt)*(p.la-ma);so+=(p.t-mt)*(p.lo-mo)});
@@ -1586,7 +1631,7 @@ async function trackCells(){
   if(ve==null&&ex){ve=ex.e*60;vn=ex.n*60;est=true}
   const spd=ve!=null?Math.hypot(ve,vn):null;
   if(spd!=null&&spd>110){ve=vn=null}
-  list.push({la:ll[0],lo:ll[1],R,max:cell.max,area:cell.area*pk*pr,storm:cell.max>=30,ve,vn,spd:ve!=null?Math.hypot(ve,vn):null,est,n:tr.length});
+  list.push({la:ll[0],lo:ll[1],R,max:cell.max,area:cell.area*pk*pr,storm:cell.max>=30,ve,vn,spd:ve!=null?Math.hypot(ve,vn):null,est,n:tr.length,t0:now.t});
  });
  trkList=list;
  trkDraw();
@@ -1621,7 +1666,8 @@ function trkDraw(){
 /* Zugbahnen nur beim aktuellen Radarbild und der Vorhersage zeigen, nicht beim Zurückspulen */
 function trkVis(){
  const p=map&&map.getPane&&map.getPane("trk");if(!p)return;
- const f=frames[idx];p.style.display=mode==="dwd"&&f&&f.dw!=null&&idx>=pastCount-1?"":"none";
+ const f=frames[idx],ok=trkSrc==="atk"?mode==="rv":mode===(trkSrc==="at"?"at":"dwd")&&f&&(f.dw!=null||f.at!=null);
+ p.style.display=ok&&idx>=pastCount-1?"":"none";
 }
 /* Kommt eine Zelle auf den Ort zu? Engster Abstand ihrer Bahn und Zeitpunkt, an dem ihr Rand ankommt */
 function trkAlarm(){
@@ -1629,11 +1675,11 @@ function trkAlarm(){
  let hit=null;
  trkList.forEach(c=>{
   const px=(lo-c.lo)*kx,py=(la-c.la)*110.57,d0=Math.hypot(px,py),R=c.R+3;
-  let min=null;
+  let min=null;const age=Math.max(0,(Date.now()/1000-(c.t0||Date.now()/1000))/3600);
   if(d0<=R)min=0;
   else if(c.spd!=null&&c.spd>=3){
    const v2=c.ve*c.ve+c.vn*c.vn,t=(px*c.ve+py*c.vn)/v2;
-   if(t>0&&t<=1.5){const dx=px-c.ve*t,dy=py-c.vn*t,dm=Math.hypot(dx,dy);if(dm<=R){const back=Math.sqrt(Math.max(0,R*R-dm*dm))/Math.sqrt(v2);min=Math.max(0,Math.round((t-back)*60/5)*5)}}
+   if(t>0&&t<=1.5+age){const dx=px-c.ve*t,dy=py-c.vn*t,dm=Math.hypot(dx,dy);if(dm<=R){const back=Math.sqrt(Math.max(0,R*R-dm*dm))/Math.sqrt(v2);min=Math.max(0,Math.round((t-back-age)*60/5)*5)}}
   }
   if(min!=null&&min<=75&&(!hit||min<hit.min||(min===hit.min&&c.storm&&!hit.storm)))hit={min,storm:c.storm,spd:c.spd,dir:c.spd?(Math.atan2(c.ve,c.vn)*180/Math.PI+360)%360:null,est:c.est,max:c.max};
  });
@@ -1642,8 +1688,136 @@ function trkAlarm(){
  let t=n?(ns?ns+(ns===1?" Gewitterzelle":" Gewitterzellen"):"")+(ns&&n>ns?" und ":"")+(n>ns?(n-ns)+(n-ns===1?" Starkregenzelle":" Starkregenzellen"):"")+" im Radar. Die Linie zeigt den Weg in der nächsten Stunde, die Punkte alle 15 Minuten.":"";
  if(hit)t+=hit.min===0?" Eine Zelle ist gerade bei dir.":" Eine Zelle kommt in etwa "+hit.min+" Minuten zu dir"+(hit.dir!=null?", sie zieht nach "+(WDIR[compass(hit.dir)]||"")+".":".");
  if(trkList.some(c=>c.est))t+=" Gestrichelt: Richtung nur aus dem Höhenwind geschätzt.";
+ if(n&&trkSrc!=="dwd")t+=" Richtung und Tempo laut Nowcast von GeoSphere Austria.";
  $("tnote").textContent=t;
  try{checkAlarm()}catch(e){}
+}
+
+/* ============ Radar „Österreich“: GeoSphere Austria (INCA-Nowcast) ============
+   Niederschlag aus den österreichischen Radaren und Messstationen, 1 km, alle 15 Minuten neu, 3 Stunden voraus.
+   Geladen wird der Kartenausschnitt (höchstens etwa 35.000 km²). GeoSphere liefert die Werte als Punkte; sie werden hier
+   zu einem Bild gemalt. Aus denselben Daten kommen die Zugbahnen von Gewittern für ganz Österreich. */
+const AT_BOX=[45.5,8.1,49.48,17.74],GS_NOW="https://dataset.api.hub.geosphere.at/v1/grid/forecast/nowcast-v1-15min-1km?parameters=rr&output_format=geojson";
+const atCovered=(la,lo)=>la>=45.6&&la<=49.4&&lo>=8.2&&lo<=17.6;
+let atData=null,atCv=null,atBusy=false,atNext=0,atSeq=0,atProj=null,atMoveT=0,atTk=null,atTkNext=0;
+/* Ausschnitt für die Abfrage: Karte plus etwas Rand, bei großem Ausschnitt nur die Mitte */
+function atBbox(pad,maxKm2){
+ const sz=map.getSize(),c=map.getCenter(),a=map.containerPointToLatLng([-sz.x*pad,-sz.y*pad]),b=map.containerPointToLatLng([sz.x*(1+pad),sz.y*(1+pad)]);
+ let S=b.lat,N=a.lat,W=a.lng,E=b.lng;
+ const kx=111.32*Math.cos(c.lat*Math.PI/180),area=(N-S)*110.57*(E-W)*kx;
+ if(area>maxKm2){const f=Math.sqrt(maxKm2/area),hh=(N-S)*f/2,hw=(E-W)*f/2;S=c.lat-hh;N=c.lat+hh;W=c.lng-hw;E=c.lng+hw}
+ S=Math.max(AT_BOX[0],S);W=Math.max(AT_BOX[1],W);N=Math.min(AT_BOX[2],N);E=Math.min(AT_BOX[3],E);
+ return N-S>.05&&E-W>.05?[S,W,N,E]:null;
+}
+/* GeoJSON von GeoSphere in kompakte Felder umwandeln */
+function atParse(j){
+ const fs=(j&&j.features)||[],T=(j&&j.timestamps)||[],n=fs.length;
+ if(!n||!T.length)throw new Error("leer");
+ const la=new Float32Array(n),lo=new Float32Array(n),V=T.map(()=>new Float32Array(n));
+ for(let i=0;i<n;i++){
+  const f=fs[i],c=f.geometry&&f.geometry.coordinates,p=f.properties&&f.properties.parameters&&f.properties.parameters.rr,d=p&&p.data;
+  la[i]=c?+c[1]:NaN;lo[i]=c?+c[0]:NaN;
+  for(let k=0;k<T.length;k++){const v=d?d[k]:null;V[k][i]=v==null||!(v>=0)?-1:+v}
+ }
+ return{t:T.map(x=>Date.parse(x)/1000),la,lo,V,n};
+}
+async function loadAt(force){
+ if(!map||mode!=="at")return;
+ if(lay!=="rain"){rdrSkip=true;return}
+ const bb=atBbox(.08,35000);
+ if(!bb){$("fnote").textContent="Dieser Kartenausschnitt liegt außerhalb von Österreich. Das Radar „Österreich“ gibt es nur dort.";return}
+ const cov=atData&&atData.bb[0]<=bb[0]+.02&&atData.bb[1]<=bb[1]+.02&&atData.bb[2]>=bb[2]-.02&&atData.bb[3]>=bb[3]-.02;
+ if(!force&&cov&&Date.now()<atNext)return;
+ if(atBusy)return;
+ atBusy=true;const my=++atSeq;
+ try{
+  const j=await getJ(GS_NOW+"&bbox="+bb.map(x=>x.toFixed(3)).join(","));
+  if(my!==atSeq||mode!=="at")return;
+  const d=atParse(j);d.bb=bb;d.snow=!!(lastJ&&lastJ.current&&lastJ.current.temperature_2m<=0.5);
+  atData=d;atProj=null;
+  /* neuer Lauf kommt etwa 15 Minuten nach dem letzten, plus etwas Puffer */
+  atNext=Math.max(Date.now()+5*60000,(d.t[0]+33*60)*1000);
+  const now=Date.now()/1000,wasPlaying=!!timer;
+  if(timer)toggle();
+  frames=d.t.map((t,k)=>({time:t,at:k}));
+  pastCount=Math.max(1,frames.filter(f=>f.time<=now+60).length);
+  idx=0;$("sl").max=Math.max(0,frames.length-1);placeTick();
+  atPanes();show(pastCount-1);
+  if(wasPlaying||(wallOn&&wallPlay()))toggle();
+  freshNote(d.t[0]);
+  $("fnote").textContent="Vorhersage von GeoSphere Austria bis "+new Date(d.t[d.t.length-1]*1000).toLocaleTimeString("de-AT",{hour:"2-digit",minute:"2-digit"})+" Uhr.";
+  atTrack(d,"at");
+ }catch(e){
+  console.error(e);
+  if(my===atSeq)$("fnote").textContent=atData?"GeoSphere antwortet gerade nicht. Du siehst den letzten Stand, es wird gleich wieder versucht.":"Das Radar von GeoSphere Austria ist gerade nicht erreichbar. Versuche es gleich noch einmal oder wähle „DWD 1 km“ oder „Weltweit“.";
+  atNext=Date.now()+90000;
+ }finally{if(my===atSeq)atBusy=false}
+}
+function atPanes(){
+ if(atCv||!map)return;
+ const p=map.getPane("atp")||map.createPane("atp");p.style.zIndex=341;p.style.pointerEvents="none";
+ atCv=document.createElement("canvas");atCv.className="fcv";p.appendChild(atCv);
+ map.on("zoomstart",()=>{if(atCv)atCv.style.visibility="hidden"});
+ map.on("moveend resize",()=>{
+  if(mode!=="at")return;atProj=null;const f=frames[idx];if(f&&f.at!=null)atShow(f.at);
+  clearTimeout(atMoveT);atMoveT=setTimeout(()=>loadAt(false),800);
+ });
+}
+function atHide(){if(atCv){const c=atCv.getContext("2d");c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,atCv.width,atCv.height)}}
+/* Bild für einen Zeitpunkt: jeder 1-km-Punkt wird als kleines Quadrat in seiner Farbe gemalt */
+function atShow(k){
+ const d=atData;if(!d||!atCv||!map)return;
+ const sz=map.getSize(),dp=Math.min(2,window.devicePixelRatio||1),W=Math.round(sz.x*dp),H=Math.round(sz.y*dp);
+ if(!atProj||atProj.W!==W||atProj.H!==H){
+  L.DomUtil.setPosition(atCv,map.containerPointToLayerPoint([0,0]));
+  atCv.width=W;atCv.height=H;atCv.style.width=sz.x+"px";atCv.style.height=sz.y+"px";
+  const x=new Float32Array(d.n),y=new Float32Array(d.n);
+  for(let i=0;i<d.n;i++){if(d.la[i]!==d.la[i]){x[i]=-1e4;continue}const p=map.latLngToContainerPoint([d.la[i],d.lo[i]]);x[i]=p.x*dp;y[i]=p.y*dp}
+  const mpp=156543.03392*Math.cos(map.getCenter().lat*Math.PI/180)/Math.pow(2,map.getZoom());
+  atProj={W,H,x,y,s:Math.max(1,1000/mpp*dp*1.12)};
+ }
+ atCv.style.visibility="";
+ const c=atCv.getContext("2d"),im=c.createImageData(W,H),px=im.data,P=atProj,V=d.V[k]||d.V[0],pal=d.snow?SNOWC:RAINC,h=P.s/2;
+ for(let i=0;i<d.n;i++){
+  const v=V[i];if(v<.025)continue;
+  const X=P.x[i],Y=P.y[i];if(X<-h||Y<-h||X>W+h||Y>H+h)continue;
+  const r=v*4,col=ramp(pal,r),a=Math.round(255*Math.min(1,.35+r*.6)*.92);
+  const x0=Math.max(0,Math.round(X-h)),x1=Math.min(W,Math.round(X+h)),y0=Math.max(0,Math.round(Y-h)),y1=Math.min(H,Math.round(Y+h));
+  for(let yy=y0;yy<y1;yy++){let o=(yy*W+x0)*4;for(let xx=x0;xx<x1;xx++,o+=4){px[o]=col[0];px[o+1]=col[1];px[o+2]=col[2];px[o+3]=a}}
+ }
+ c.putImageData(im,0,0);
+}
+/* Zugbahnen aus GeoSphere-Daten: Punkte in ein 1-km-Raster einsortieren, Zellen jetzt, in 15 und in 30 Minuten suchen.
+   Die Bewegung dazwischen ist die Zugbahn, die GeoSphere selbst aus den Radarbildern berechnet hat. */
+function atTrack(d,src){
+ const S=d.bb[0],W=d.bb[1],N=d.bb[2],E=d.bb[3],mid=(S+N)/2,dy=.009,dx=.009/Math.cos(mid*Math.PI/180);
+ const GW=Math.max(2,Math.ceil((E-W)/dx)+1),GH=Math.max(2,Math.ceil((N-S)/dy)+1),F=[];
+ for(let k=0;k<Math.min(3,d.V.length);k++){
+  const g=new Uint16Array(GW*GH),V=d.V[k];
+  for(let i=0;i<d.n;i++){
+   const v=V[i];if(v<.5)continue;
+   const r=Math.round((N-d.la[i])/dy),c=Math.round((d.lo[i]-W)/dx);if(r<0||c<0||r>=GH||c>=GW)continue;
+   const raw=Math.min(59999,Math.round(v*4/.12));const o=r*GW+c;if(raw>g[o])g[o]=raw;
+  }
+  F.push({t:d.t[k],c:trkFind(g,GW,GH)});
+ }
+ const toLL=(r,c)=>[N-r*dy,W+c*dx];
+ trkBuild(F,toLL,dx*111.32*Math.cos(mid*Math.PI/180),dy*110.57,++trkSeq,src);
+}
+/* Für Orte in Österreich, wenn „Weltweit“ gewählt ist: nur für die Zugbahnen den Umkreis um den Ort laden */
+async function atTrackOnly(){
+ if(!map||mode!=="rv"||!atCovered(+place.lat,+place.lon)||Date.now()<atTkNext)return;
+ atTkNext=Date.now()+5*60000;
+ const la=+place.lat,lo=+place.lon,bb=[Math.max(AT_BOX[0],la-.65),Math.max(AT_BOX[1],lo-.9),Math.min(AT_BOX[2],la+.65),Math.min(AT_BOX[3],lo+.9)];
+ try{
+  /* nur die nächsten 45 Minuten: weniger Daten, reicht für die Zugbahn */
+  const end=new Date(Math.floor(Date.now()/900000)*900000+45*60000).toISOString().slice(0,16);
+  const j=await getJ(GS_NOW+"&bbox="+bb.map(x=>x.toFixed(3)).join(",")+"&end="+end);
+  if(mode!=="rv")return;
+  const d=atParse(j);d.bb=bb;
+  atTkNext=Math.max(Date.now()+5*60000,(d.t[0]+33*60)*1000);
+  atTrack(d,"atk");
+ }catch(e){console.error(e);atTkNext=Date.now()+3*60000}
 }
 
 /* ============ Radar-Prognose: das neueste Radarbild zieht mit dem Höhenwind weiter ============ */
@@ -1794,7 +1968,8 @@ function show(i){
  idx=i;const f=frames[i];
  if(!f)return;
  rvWindow(i);
- if(f.dw!=null){hideFc();showDw(f.dw)}
+ if(f.at!=null){hideFc();atShow(f.at)}
+ else if(f.dw!=null){hideFc();showDw(f.dw)}
  else if(f.ex!=null){hideFc();const L0=layers[pastCount-1];if(L0){L0.setOpacity(Math.max(.5,.78-f.ex*.03));exShift(f.ex)}}
  else if(f.fc!=null)showFc(f);else{hideFc();if(layers[idx])layers[idx].setOpacity(.78)}
  $("sl").value=i;
@@ -1819,15 +1994,21 @@ function setMode(m,user){
  if(timer)toggle();
  $("play").style.display="flex";
  if(m==="dwd"){
-  hideFc();exReset();layers.forEach(l=>{try{map.removeLayer(l)}catch(e){}l._wOn=0});
+  hideFc();exReset();layers.forEach(l=>{try{map.removeLayer(l)}catch(e){}l._wOn=0});atHide();
   frames=[];pastCount=0;idx=0;$("sl").max=0;$("ts").textContent="";$("fresh").textContent="";$("fnote").textContent="";placeTick();
   $("mnote").textContent="Radar des Deutschen Wetterdienstes (RADOLAN) mit 1 km Auflösung, alle 5 Minuten. Nach „Jetzt“ folgt die Radar-Vorhersage des DWD für 2 Stunden. Grau getönte Flächen liegen außerhalb der DWD-Radare.";
   dwKey="";loadDwd();
+ }else if(m==="at"){
+  hideFc();exReset();layers.forEach(l=>{try{map.removeLayer(l)}catch(e){}l._wOn=0});hideDw();clearTrk();atHide();
+  frames=[];pastCount=0;idx=0;$("sl").max=0;$("ts").textContent="";$("fresh").textContent="";$("fnote").textContent="";placeTick();
+  $("mnote").textContent="Radar von GeoSphere Austria (INCA): Niederschlag aus den österreichischen Radaren und Messstationen, mit 1 km Auflösung, alle 15 Minuten neu. Nach „Jetzt“ folgt die Vorhersage von GeoSphere für 3 Stunden. Beim weiten Herauszoomen wird nur der Bereich um die Kartenmitte geladen.";
+  atNext=0;loadAt(true);
  }else{
   rvLast=0;
-  hideDw();clearTrk();
+  hideDw();clearTrk();atHide();
   $("mnote").textContent=RVSRC[rvSrc].note;
   loadRadar();
+  atTkNext=0;atTrackOnly();
  }
 }
 
@@ -2717,6 +2898,7 @@ async function loadSkill(){
  res.key=key;skill=res;
  try{localStorage.setItem("wetter-skill|"+key,JSON.stringify({t:Date.now(),s:res}))}catch(e){}
  renderModels();renderPast();
+ try{if(ki&&!ki.err)renderKi()}catch(e){}
 }
 /* Messwerte der letzten Tage, Schlüssel: Stunde in UTC ("2026-11-07T14") */
 async function obsHist(days){
@@ -2853,41 +3035,89 @@ async function loadTrend(){
    Schneefallgrenze liefert, ist sie geschätzt (etwa 300 m unter der Nullgradgrenze).
    Gipfel in der Nähe: Werte aus dem Wettermodell, von Open-Meteo auf die Höhe des Gipfels umgerechnet. */
 const PEAKS=[
- ["Göblberg im Hausruck",48.093,13.526,801],["Traunstein",47.872,13.831,1691],["Feuerkogel",47.818,13.719,1592],["Schafberg",47.776,13.434,1783],
- ["Zwölferhorn",47.741,13.349,1522],["Gaisberg",47.805,13.113,1287],["Untersberg",47.721,13.000,1853],["Krippenstein",47.522,13.693,2100],
- ["Hoher Dachstein",47.475,13.606,2995],["Loser",47.665,13.779,1838],["Großer Priel",47.717,14.063,2515],["Kasberg",47.826,13.958,1747],
- ["Hochficht",48.743,13.928,1338],["Plöckenstein",48.772,13.852,1379],["Dreisessel",48.781,13.796,1333],["Sternstein",48.565,14.267,1125],
- ["Lusen",48.938,13.510,1373],["Großer Rachel",48.980,13.395,1453],["Großer Arber",49.113,13.136,1456],["Hochkar",47.718,14.921,1808],
- ["Ötscher",47.863,15.200,1893],["Schneeberg",47.768,15.807,2076],["Rax",47.696,15.753,2007],["Hohe Wand",47.828,16.044,1132],
- ["Jauerling",48.333,15.338,960],["Schöpfl",48.086,15.917,893],["Hermannskogel",48.271,16.294,542],["Hochwechsel",47.533,15.913,1743],
- ["Hochschwab",47.617,15.144,2277],["Schöckl",47.198,15.469,1445],["Zirbitzkogel",47.068,14.571,2396],["Koralpe",46.789,14.973,2140],
- ["Gerlitzen",46.694,13.915,1911],["Dobratsch",46.603,13.670,2166],["Großglockner",47.074,12.695,3798],["Sonnblick",47.054,12.958,3106],
- ["Schmittenhöhe",47.329,12.737,1965],["Kitzsteinhorn",47.188,12.687,3203],["Hochkönig",47.420,13.062,2941],["Ellmauer Halt",47.566,12.304,2344],
- ["Patscherkofel",47.209,11.461,2246],["Hafelekar",47.312,11.386,2334],["Wildspitze",46.885,10.867,3768],["Valluga",47.156,10.213,2811],
- ["Pfänder",47.509,9.781,1064],["Zugspitze",47.421,10.985,2962],["Wendelstein",47.704,12.012,1838],["Watzmann",47.554,12.921,2713],
- ["Jenner",47.578,13.023,1874],["Predigtstuhl",47.706,12.883,1613],["Hochfelln",47.761,12.565,1674],["Kampenwand",47.756,12.357,1669],
- ["Brauneck",47.667,11.524,1555],["Herzogstand",47.620,11.315,1731],["Hohenpeißenberg",47.801,11.010,988],["Nebelhorn",47.421,10.345,2224],
- ["Feldberg im Schwarzwald",47.874,8.004,1493],["Hornisgrinde",48.608,8.201,1164],["Brocken",51.799,10.616,1141],["Fichtelberg",50.429,12.954,1215],
- ["Ochsenkopf",50.031,11.808,1024],["Wasserkuppe",50.498,9.938,950],["Großer Feldberg im Taunus",50.233,8.457,879],["Kahler Asten",51.181,8.489,841],
- ["Schneekoppe",50.736,15.740,1603],["Säntis",47.249,9.343,2502],["Pilatus",46.979,8.254,2128],["Jungfraujoch",46.547,7.985,3466]
+ /* Oberösterreich */
+ ["Göblberg im Hausruck",48.093,13.526,801,"OÖ"],["Traunstein",47.872,13.831,1691,"OÖ"],["Feuerkogel",47.818,13.719,1592,"OÖ"],["Schafberg",47.776,13.434,1783,"OÖ"],
+ ["Krippenstein",47.522,13.693,2100,"OÖ"],["Hoher Dachstein",47.475,13.606,2995,"OÖ/Stmk"],["Großer Priel",47.717,14.063,2515,"OÖ"],["Kasberg",47.826,13.958,1747,"OÖ"],
+ ["Hochficht",48.743,13.928,1338,"OÖ"],["Plöckenstein",48.772,13.852,1379,"OÖ"],["Sternstein",48.565,14.267,1125,"OÖ"],["Hinterstoder (Höss)",47.669,14.185,1860,"OÖ"],
+ ["Wurzeralm",47.642,14.290,1870,"OÖ"],["Dachstein West (Zwieselalm)",47.573,13.488,1587,"OÖ"],["Großer Pyhrgas",47.648,14.393,2244,"OÖ/Stmk"],["Warscheneck",47.648,14.239,2388,"OÖ"],
+ ["Gis (Lichtenberg)",48.381,14.239,927,"OÖ"],
+ /* Salzburg */
+ ["Gaisberg",47.805,13.113,1287,"Sbg"],["Untersberg",47.721,13.000,1853,"Sbg"],["Zwölferhorn",47.741,13.349,1522,"Sbg"],["Hochkönig",47.420,13.062,2941,"Sbg"],
+ ["Schmittenhöhe",47.329,12.737,1965,"Sbg"],["Kitzsteinhorn",47.188,12.687,3203,"Sbg"],["Sonnblick",47.054,12.958,3106,"Sbg"],["Großvenediger",47.109,12.346,3657,"Sbg/Tirol"],
+ ["Obertauern",47.255,13.560,2313,"Sbg"],["Stubnerkogel (Bad Gastein)",47.103,13.100,2246,"Sbg"],["Schlossalm (Bad Hofgastein)",47.150,13.067,2050,"Sbg"],["Schattberg (Saalbach)",47.370,12.629,2020,"Sbg"],
+ ["Griessenkareck (Flachau)",47.324,13.393,1991,"Sbg"],["Ankogel",47.050,13.245,3252,"Sbg/Ktn"],["Hochalmspitze",47.017,13.322,3360,"Ktn"],["Loferer Alm",47.592,12.666,1747,"Sbg"],
+ ["Gamskogel (Zauchensee)",47.287,13.452,2188,"Sbg"],
+ /* Tirol */
+ ["Patscherkofel",47.209,11.461,2246,"Tirol"],["Hafelekar (Nordkette)",47.312,11.386,2334,"Tirol"],["Wildspitze",46.885,10.867,3768,"Tirol"],["Valluga (St. Anton)",47.156,10.213,2811,"Tirol"],
+ ["Hahnenkamm (Kitzbühel)",47.426,12.368,1712,"Tirol"],["Kitzbüheler Horn",47.462,12.426,1996,"Tirol"],["Ellmauer Halt",47.566,12.304,2344,"Tirol"],["Hintertuxer Gletscher",47.068,11.667,3250,"Tirol"],
+ ["Stubaier Gletscher",46.985,11.115,3210,"Tirol"],["Gaislachkogl (Sölden)",46.951,10.963,3058,"Tirol"],["Hohe Mut (Obergurgl)",46.856,11.022,2670,"Tirol"],["Idalpe (Ischgl)",46.990,10.315,2320,"Tirol"],
+ ["Penken (Mayrhofen)",47.169,11.830,2095,"Tirol"],["Kühtai",47.213,11.020,2020,"Tirol"],["Seefelder Joch",47.315,11.236,2064,"Tirol"],["Rofan (Achensee)",47.452,11.770,2299,"Tirol"],
+ ["Hoadl (Axamer Lizum)",47.188,11.299,2340,"Tirol"],["Grubigstein (Lermoos)",47.414,10.852,2233,"Tirol"],["Kaunertaler Gletscher",46.869,10.722,3108,"Tirol"],["Zettersfeld (Lienz)",46.858,12.769,2214,"Tirol"],
+ ["Großglockner",47.074,12.695,3798,"Tirol/Ktn"],["Lärchfilzkogel (Fieberbrunn)",47.448,12.539,1650,"Tirol"],["Schönjoch (Serfaus)",47.046,10.597,2490,"Tirol"],["Hochzeiger (Pitztal)",47.144,10.807,2560,"Tirol"],
+ ["Zugspitze",47.421,10.985,2962,"Bayern/Tirol"],
+ /* Vorarlberg */
+ ["Pfänder",47.509,9.781,1064,"Vbg"],["Rüfikopf (Lech)",47.211,10.142,2362,"Vbg"],["Hochjoch (Schruns)",47.050,9.936,2300,"Vbg"],["Piz Buin",46.844,10.119,3312,"Vbg"],
+ ["Diedamskopf",47.367,9.958,2090,"Vbg"],["Mittagsspitze (Damüls)",47.290,9.898,2095,"Vbg"],["Golm",47.057,9.825,2124,"Vbg"],["Zimba",46.962,9.832,2643,"Vbg"],
+ /* Kärnten */
+ ["Gerlitzen",46.694,13.915,1911,"Ktn"],["Dobratsch",46.603,13.670,2166,"Ktn"],["Koralpe",46.789,14.973,2140,"Ktn/Stmk"],["Nassfeld (Gartnerkofel)",46.565,13.300,2195,"Ktn"],
+ ["Kaiserburg (Bad Kleinkirchheim)",46.832,13.797,2055,"Ktn"],["Turracher Höhe",46.915,13.877,1763,"Ktn/Stmk"],["Mölltaler Gletscher",47.006,13.140,3122,"Ktn"],["Hochobir",46.505,14.484,2139,"Ktn"],
+ ["Petzen",46.517,14.778,2113,"Ktn"],["Katschberg",47.058,13.616,1641,"Ktn/Sbg"],["Goldeck",46.759,13.460,2142,"Ktn"],["Saualpe",46.858,14.664,2079,"Ktn"],
+ /* Steiermark */
+ ["Schöckl",47.198,15.469,1445,"Stmk"],["Zirbitzkogel",47.068,14.571,2396,"Stmk"],["Hochschwab",47.617,15.144,2277,"Stmk"],["Planai (Schladming)",47.374,13.705,1906,"Stmk"],
+ ["Hauser Kaibling",47.385,13.772,2015,"Stmk"],["Hochwurzen",47.363,13.637,1849,"Stmk"],["Loser",47.665,13.779,1838,"Stmk"],["Tauplitzalm (Lawinenstein)",47.588,14.025,1965,"Stmk"],
+ ["Kreischberg",47.093,14.106,2118,"Stmk"],["Präbichl (Polster)",47.524,14.946,1910,"Stmk"],["Stuhleck",47.574,15.792,1782,"Stmk"],["Speikkogel (Gleinalm)",47.198,15.044,1988,"Stmk"],
+ ["Hochlantsch",47.360,15.425,1720,"Stmk"],["Grimming",47.522,14.000,2351,"Stmk"],["Hochwechsel",47.533,15.913,1743,"Stmk/NÖ"],
+ /* Niederösterreich, Wien, Burgenland */
+ ["Schneeberg",47.768,15.807,2076,"NÖ"],["Rax",47.696,15.753,2007,"NÖ/Stmk"],["Hohe Wand",47.828,16.044,1132,"NÖ"],["Jauerling",48.333,15.338,960,"NÖ"],
+ ["Schöpfl",48.086,15.917,893,"NÖ"],["Ötscher",47.863,15.200,1893,"NÖ"],["Hochkar",47.718,14.921,1808,"NÖ"],["Dürrenstein",47.759,15.064,1878,"NÖ"],
+ ["Gemeindealpe (Mitterbach)",47.826,15.282,1626,"NÖ"],["Hirschenkogel (Semmering)",47.640,15.818,1340,"NÖ"],["Hermannskogel",48.271,16.294,542,"Wien"],["Kahlenberg",48.274,16.334,484,"Wien"],
+ ["Geschriebenstein",47.355,16.437,884,"Bgld"],
+ /* Nachbarländer */
+ ["Lusen",48.938,13.510,1373,"Bayern"],["Großer Rachel",48.980,13.395,1453,"Bayern"],["Großer Arber",49.113,13.136,1456,"Bayern"],["Dreisessel",48.781,13.796,1333,"Bayern"],
+ ["Wendelstein",47.704,12.012,1838,"Bayern"],["Watzmann",47.554,12.921,2713,"Bayern"],["Jenner",47.578,13.023,1874,"Bayern"],["Predigtstuhl",47.706,12.883,1613,"Bayern"],
+ ["Hochfelln",47.761,12.565,1674,"Bayern"],["Kampenwand",47.756,12.357,1669,"Bayern"],["Brauneck",47.667,11.524,1555,"Bayern"],["Herzogstand",47.620,11.315,1731,"Bayern"],
+ ["Hohenpeißenberg",47.801,11.010,988,"Bayern"],["Nebelhorn",47.421,10.345,2224,"Bayern"],["Feldberg im Schwarzwald",47.874,8.004,1493,"Deutschland"],["Hornisgrinde",48.608,8.201,1164,"Deutschland"],
+ ["Brocken",51.799,10.616,1141,"Deutschland"],["Fichtelberg",50.429,12.954,1215,"Deutschland"],["Ochsenkopf",50.031,11.808,1024,"Deutschland"],["Wasserkuppe",50.498,9.938,950,"Deutschland"],
+ ["Großer Feldberg im Taunus",50.233,8.457,879,"Deutschland"],["Kahler Asten",51.181,8.489,841,"Deutschland"],["Schneekoppe",50.736,15.740,1603,"Tschechien"],["Säntis",47.249,9.343,2502,"Schweiz"],
+ ["Pilatus",46.979,8.254,2128,"Schweiz"],["Jungfraujoch",46.547,7.985,3466,"Schweiz"]
 ];
-let alp=null;
+let alp=null,mtnOn=true,mtnFav=[],snowC={};
+try{mtnOn=localStorage.getItem("wetter-berge-an")!=="0";mtnFav=JSON.parse(localStorage.getItem("wetter-berge"))||[]}catch(e){}
+const AT_REG=/OÖ|NÖ|Wien|Stmk|Ktn|Sbg|Tirol|Vbg|Bgld/;
 const thou=n=>{const s=String(Math.round(Math.abs(n)));return(n<0?"−":"")+(s.length>3?s.slice(0,-3)+"."+s.slice(-3):s)};
 const mfmt=n=>thou(Math.round(n/50)*50);
-/* die nächsten vier Gipfel und dazu der höchste im Umkreis, sortiert nach Höhe */
+const pkObj=(p,la,lo)=>({n:p[0],la:p[1],lo:p[2],e:p[3],reg:p[4]||"",d:km(la,lo,p[1],p[2])});
+/* die nächsten vier Gipfel und dazu der höchste im Umkreis, sortiert nach Höhe (ohne deine gemerkten Berge) */
 function nearPeaks(){
  const la=+place.lat,lo=+place.lon;
- const all=PEAKS.map(p=>({n:p[0],la:p[1],lo:p[2],e:p[3],d:km(la,lo,p[1],p[2])})).filter(p=>p.d>=2).sort((a,b)=>a.d-b.d);
+ const all=PEAKS.map(p=>pkObj(p,la,lo)).filter(p=>p.d>=2&&mtnFav.indexOf(p.n)<0).sort((a,b)=>a.d-b.d);
  let near=all.filter(p=>p.d<=120);
  if(near.length<2)near=all.filter(p=>p.d<=200).slice(0,3);
  const out=near.slice(0,4),hi=near.slice().sort((a,b)=>b.e-a.e)[0];
  if(hi&&out.indexOf(hi)<0)out.push(hi);
  return out.sort((a,b)=>a.e-b.e);
 }
+function favPeaks(){const la=+place.lat,lo=+place.lon;return mtnFav.map(n=>PEAKS.find(p=>p[0]===n)).filter(Boolean).map(p=>pkObj(p,la,lo))}
+/* Schneehöhe aus dem Schneemodell SNOWGRID von GeoSphere Austria (1 km, täglich, etwa 1 Tag Verzögerung) */
+async function sgLoad(P){
+ const key=P.map(p=>p.n).join("|"),c=snowC[key];if(c&&Date.now()-c.t<6*3600000)return c.v;
+ const d=n=>new Date(Date.now()-n*86400000).toISOString().slice(0,10),ll=P.map(p=>"&lat_lon="+p.la.toFixed(3)+","+p.lo.toFixed(3)).join("");
+ let j=null;
+ for(const e of [1,2,3]){try{j=await getJ("https://dataset.api.hub.geosphere.at/v1/timeseries/historical/snowgrid_cl-v2-1d-1km?parameters=snow_depth&start="+d(e+6)+"&end="+d(e)+"&output_format=geojson"+ll);break}catch(x){}}
+ if(!j)return null;
+ const T=j.timestamps||[],out={};
+ (j.features||[]).forEach((f,i)=>{
+  const p=f&&f.properties&&f.properties.parameters&&f.properties.parameters.snow_depth;if(!p||!P[i])return;
+  const u=String(p.unit||"m").toLowerCase(),D=p.data||[];
+  for(let k=D.length-1;k>=0;k--)if(D[k]!=null&&isFinite(D[k])){const v=+D[k];out[P[i].n]={cm:u==="cm"?v:u==="mm"?v/10:v*100,t:T[k]};break}
+ });
+ snowC[key]={t:Date.now(),v:out};
+ return out;
+}
 async function loadAlpine(){
- const q=seq("alp"),P=nearPeaks(),B="https://api.open-meteo.com/v1/forecast?latitude=";
+ const q=seq("alp"),FP=mtnOn?favPeaks():[],NP=mtnOn?nearPeaks():[],P=FP.concat(NP),B="https://api.open-meteo.com/v1/forecast?latitude=";
  const loc="&latitude="+place.lat+"&longitude="+place.lon+"&timezone=auto&forecast_days=7&hourly=";
- const pv="temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,wind_direction_10m,wind_gusts_10m,is_day,cloud_cover";
+ const pv="temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,wind_direction_10m,wind_gusts_10m,is_day,cloud_cover,snow_depth";
  const pU=pp=>B+pp.map(p=>p.la).join(",")+"&longitude="+pp.map(p=>p.lo).join(",")+"&elevation="+pp.map(p=>p.e).join(",")+"&current="+pv+"&daily=weather_code,temperature_2m_max,temperature_2m_min&forecast_days=2&timezone=auto";
  /* zuerst das DWD-Modell (hat die Schneefallgrenze), sonst die normale Vorhersage (nur Nullgradgrenze) */
  const snow=async()=>{try{return await getJ("https://api.open-meteo.com/v1/dwd-icon?"+loc.slice(1)+"freezing_level_height,snowfall_height,precipitation")}catch(e){return await getJ("https://api.open-meteo.com/v1/forecast?"+loc.slice(1)+"freezing_level_height,precipitation")}};
@@ -2896,11 +3126,12 @@ async function loadAlpine(){
   try{const r=await getJ(pU(P)),a=Array.isArray(r)?r:[r];if(a.length!==P.length)throw new Error("n");return a}
   catch(e){return Promise.all(P.map(p=>getJ(pU([p])).catch(()=>null)))}
  };
- const [s,pk]=await Promise.all([snow().catch(()=>null),peaks().catch(()=>[])]);
+ const atP=P.filter(p=>AT_REG.test(p.reg));
+ const [s,pk,sg]=await Promise.all([snow().catch(()=>null),peaks().catch(()=>[]),atP.length?sgLoad(atP).catch(()=>null):Promise.resolve(null)]);
  if(!q.ok())return;
  const okS=!!(s&&s.hourly&&s.hourly.freezing_level_height),okP=(pk||[]).some(x=>x&&x.current);
- if(!okS&&!okP){if(!q.keep()){alp=null;$("sec-mtn").hidden=true}return}
- alp={s:okS?s:null,P,pk:pk||[],ts:Date.now()};
+ if(!okS&&!okP){if(!q.keep()){alp=null;renderAlpine()}return}
+ alp={s:okS?s:null,P,nFav:FP.length,pk:pk||[],sg:sg||{},ts:Date.now()};
  q.done();
  try{renderAlpine()}catch(e){console.error(e)}
  try{if(lastJ)renderFacts(lastJ,lastJ.current)}catch(e){}
@@ -2950,9 +3181,25 @@ function alpChart(hs,me){
  if(d)s+='<path class="sn" d="'+d+'"/>';
  return s+"</svg>";
 }
+function sgDate(t){const d=new Date(t);return isNaN(d.getTime())?"":d.toLocaleDateString("de-AT",{day:"numeric",month:"numeric"})}
+function pkRow(x){
+ const c=x.r.current,D=x.r.daily||{},k=kind(c.weather_code,!!c.is_day),fav=mtnFav.indexOf(x.p.n)>=0;
+ const cond=+c.relative_humidity_2m>=97&&+c.cloud_cover>=90?"In Wolken":DESC[c.weather_code]||"";
+ const gu=c.wind_gusts_10m!=null&&+c.wind_gusts_10m>=+c.wind_speed_10m+10?", Böen "+Math.round(c.wind_gusts_10m):"";
+ const wd=c.wind_direction_10m!=null&&+c.wind_speed_10m>=3?" aus "+compass(c.wind_direction_10m):"";
+ const dd=i=>D.time&&D.time[i]!=null&&D.temperature_2m_max&&D.temperature_2m_max[i]!=null?ic(kind(D.weather_code[i],true),20)+" <b>"+deg(D.temperature_2m_max[i])+"</b> / "+deg(D.temperature_2m_min[i]):"";
+ const d0=dd(0),d1=dd(1);
+ /* Schnee: zuerst das Schneemodell von GeoSphere (Österreich), sonst das Wettermodell */
+ const sg=alp.sg&&alp.sg[x.p.n],om=c.snow_depth!=null&&isFinite(c.snow_depth)?+c.snow_depth*100:null;
+ const sn=sg?'<span class="pksn">'+(sg.cm<1?"Kein Schnee":"Schnee: <b>"+Math.round(sg.cm)+" cm</b>")+" · Stand "+sgDate(sg.t)+"</span>":om!=null?'<span class="pksn">'+(om<1?"Kein Schnee":"Schnee: <b>etwa "+Math.round(om)+" cm</b>")+" (Wettermodell)</span>":"";
+ return'<div class="pkr"><div class="pkn"><b>'+esc(x.p.n)+'</b><button type="button" class="pkf'+(fav?" on":"")+'" data-n="'+esc(x.p.n)+'" aria-pressed="'+(fav?"true":"false")+'" aria-label="'+(fav?esc(x.p.n)+" aus deinen Bergen entfernen":esc(x.p.n)+" zu deinen Bergen hinzufügen")+'">'+STAR+"</button><span>"+thou(x.p.e)+" m · "+Math.round(x.p.d)+" km entfernt"+(x.p.reg?" · "+esc(x.p.reg):"")+"</span><span>"+esc(cond)+" · Wind "+Math.round(c.wind_speed_10m)+" km/h"+wd+gu+"</span>"+sn+'</div><div class="pkt">'+ic(k,34)+deg(c.temperature_2m)+"</div>"+(d0?'<div class="pkd">Heute '+d0+(d1?" · Morgen "+d1:"")+"</div>":"")+"</div>";
+}
 function renderAlpine(){
- const sec=$("sec-mtn"),el=$("mtn");
- if(!alp){sec.hidden=true;return}
+ const sec=$("sec-mtn"),el=$("mtn"),tg=$("mtn-t");
+ tg.textContent=mtnOn?"Ausblenden":"Einblenden";tg.setAttribute("aria-expanded",mtnOn?"true":"false");
+ sec.classList.toggle("col",!mtnOn);$("mtn-s").hidden=!mtnOn;
+ if(!mtnOn){el.innerHTML="";$("h-mtn").textContent="Berge und Schneefallgrenze";sec.hidden=false;return}
+ if(!alp){sec.hidden=!mtnFav.length;el.innerHTML=mtnFav.length?'<p class="muted">Wird geladen …</p>':"";return}
  const now=alpNow(),me=lastJ&&lastJ.elevation!=null?+lastJ.elevation:alp.s&&alp.s.elevation!=null?+alp.s.elevation:null;
  const pk=alp.P.map((p,i)=>({p,r:alp.pk[i]})).filter(x=>x.r&&x.r.current&&x.r.current.temperature_2m!=null);
  let h="";
@@ -2964,29 +3211,166 @@ function renderAlpine(){
   const ch=alpChart(now.hs,me);
   if(ch)h+=ch+'<div class="slk"><span><i style="background:#F08A24"></i>Nullgradgrenze</span><span><i style="background:var(--snow)"></i>Schneefallgrenze, wenn es etwas fällt</span>'+(me!=null?'<span><i class="mek"></i>Dein Ort ('+thou(me)+" m)</span>":"")+"</div>";
  }
- /* Inversion: oben wärmer als unten, typisch für Nebel und Hochnebel im Tal */
+ /* Inversion: oben wärmer als unten, typisch für Nebel und Hochnebel im Tal (nur Gipfel in der Nähe) */
  const c0=lastJ&&lastJ.current,tc=c0&&c0.temperature_2m!=null?+c0.temperature_2m:null;
  if(tc!=null&&me!=null){
-  const up=pk.filter(x=>x.p.e>=me+300&&+x.r.current.temperature_2m>=tc+1).sort((a,b)=>b.r.current.temperature_2m-a.r.current.temperature_2m)[0];
+  const up=pk.filter(x=>x.p.d<=80&&x.p.e>=me+300&&+x.r.current.temperature_2m>=tc+1).sort((a,b)=>b.r.current.temperature_2m-a.r.current.temperature_2m)[0];
   if(up){
    const u=up.r.current,fog=[45,48].includes(+c0.weather_code)||+c0.cloud_cover>=85,sun=!!u.is_day&&u.cloud_cover!=null&&+u.cloud_cover<=40;
    h+='<div class="inv"><b>'+(fog&&sun?"Über dem Nebel scheint die Sonne":"Oben ist es wärmer als im Tal")+"</b>"+esc(up.p.n)+" auf "+thou(up.p.e)+" m hat "+deg(u.temperature_2m)+", bei dir sind es "+deg(tc)+". Bei so einer Inversion bleibt kalte Luft unten liegen, oft mit Nebel oder Hochnebel"+(fog&&sun?", während es weiter oben sonnig ist.":".")+"</div>";
   }
  }
- if(pk.length){
-  h+='<div class="pkl"><h3>Gipfel in der Nähe</h3>'+pk.map(x=>{
-   const c=x.r.current,D=x.r.daily||{},k=kind(c.weather_code,!!c.is_day);
-   const cond=+c.relative_humidity_2m>=97&&+c.cloud_cover>=90?"In Wolken":DESC[c.weather_code]||"";
-   const gu=c.wind_gusts_10m!=null&&+c.wind_gusts_10m>=+c.wind_speed_10m+10?", Böen "+Math.round(c.wind_gusts_10m):"";
-   const wd=c.wind_direction_10m!=null&&+c.wind_speed_10m>=3?" aus "+compass(c.wind_direction_10m):"";
-   const dd=i=>D.time&&D.time[i]!=null&&D.temperature_2m_max&&D.temperature_2m_max[i]!=null?ic(kind(D.weather_code[i],true),20)+" <b>"+deg(D.temperature_2m_max[i])+"</b> / "+deg(D.temperature_2m_min[i]):"";
-   const d0=dd(0),d1=dd(1);
-   return'<div class="pkr"><div class="pkn"><b>'+esc(x.p.n)+"</b><span>"+thou(x.p.e)+" m · "+Math.round(x.p.d)+" km entfernt</span><span>"+esc(cond)+" · Wind "+Math.round(c.wind_speed_10m)+" km/h"+wd+gu+'</span></div><div class="pkt">'+ic(k,34)+deg(c.temperature_2m)+"</div>"+(d0?'<div class="pkd">Heute '+d0+(d1?" · Morgen "+d1:"")+"</div>":"")+"</div>";
-  }).join("")+"</div>";
- }
+ const fv=pk.filter(x=>mtnFav.indexOf(x.p.n)>=0),nr=pk.filter(x=>mtnFav.indexOf(x.p.n)<0);
+ if(fv.length)h+='<div class="pkl"><h3>Deine Berge</h3>'+fv.map(pkRow).join("")+"</div>";
+ if(nr.length)h+='<div class="pkl"><h3>Gipfel in der Nähe</h3>'+nr.map(pkRow).join("")+"</div>";
  if(!h){sec.hidden=true;return}
- h+='<p class="small">Wettermodell über Open-Meteo, in Mitteleuropa vom Deutschen Wetterdienst. Die Gipfelwerte sind auf die Höhe des Gipfels umgerechnet, am Gipfel selbst kann der Wind deutlich stärker sein. Wo das Modell keine Schneefallgrenze liefert, ist sie geschätzt: etwa 300 m unter der Nullgradgrenze.</p>';
+ h+='<p class="small">Wettermodell über Open-Meteo, in Mitteleuropa vom Deutschen Wetterdienst. Die Gipfelwerte sind auf die Höhe des Gipfels umgerechnet, am Gipfel selbst kann der Wind deutlich stärker sein. Schneehöhe in Österreich: Schneemodell SNOWGRID von GeoSphere Austria (1 km, einmal täglich), sonst Wettermodell. Das ist die Schneehöhe laut Modell, keine gemeldete Pistenhöhe der Skigebiete. Wo das Wettermodell keine Schneefallgrenze liefert, ist sie geschätzt: etwa 300 m unter der Nullgradgrenze. Mit dem Stern merkst du dir einen Berg.</p>';
  $("h-mtn").textContent=pk.length?"Berge und Schneefallgrenze":"Nullgrad- und Schneefallgrenze";
+ el.innerHTML=h;sec.hidden=false;
+}
+function saveFavM(){try{localStorage.setItem("wetter-berge",JSON.stringify(mtnFav))}catch(e){}}
+function togFavM(n){const i=mtnFav.indexOf(n);if(i>=0)mtnFav.splice(i,1);else mtnFav.push(n);saveFavM();renderAlpine();loadAlpine()}
+$("mtn").addEventListener("click",e=>{const b=e.target.closest(".pkf");if(b)togFavM(b.dataset.n)});
+$("mtn-t").onclick=()=>{mtnOn=!mtnOn;try{localStorage.setItem("wetter-berge-an",mtnOn?"1":"0")}catch(e){}renderAlpine();if(mtnOn)loadAlpine()};
+/* Suche in allen Bergen und Skigebieten */
+(function(){
+ const inp=$("mtn-q"),ul=$("mtn-r"),norm=s=>String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/ß/g,"ss");
+ let hits=[];
+ inp.addEventListener("input",()=>{
+  const v=norm(inp.value.trim());
+  if(v.length<2){ul.style.display="none";return}
+  hits=PEAKS.filter(p=>norm(p[0]+" "+(p[4]||"")).indexOf(v)>=0).sort((a,b)=>norm(a[0]).indexOf(v)-norm(b[0]).indexOf(v)||b[3]-a[3]).slice(0,8);
+  ul.innerHTML=hits.length?hits.map((p,i)=>'<li tabindex="0" data-i="'+i+'">'+esc(p[0])+' <small>'+thou(p[3])+" m · "+esc(p[4]||"")+(mtnFav.indexOf(p[0])>=0?" · gemerkt":"")+"</small></li>").join(""):'<li class="no">Nichts gefunden</li>';
+  ul.style.display="block";
+ });
+ const pick=li=>{const p=hits[+li.dataset.i];if(!p)return;if(mtnFav.indexOf(p[0])<0){mtnFav.push(p[0]);saveFavM()}inp.value="";ul.style.display="none";renderAlpine();loadAlpine()};
+ ul.addEventListener("click",e=>{const li=e.target.closest("li[data-i]");if(li)pick(li)});
+ ul.addEventListener("keydown",e=>{const li=e.target.closest("li[data-i]");if(li&&(e.key==="Enter"||e.key===" ")){e.preventDefault();pick(li)}});
+ inp.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();const li=ul.querySelector("li[data-i]");if(li&&ul.style.display==="block")pick(li)}else if(e.key==="Escape")ul.style.display="none"});
+ document.addEventListener("click",e=>{if(!e.target.closest(".pks"))ul.style.display="none"});
+})();
+
+/* ============ KI-Korrektur für deinen Ort ============
+   Ein kleines lernendes Modell, wie es Wetterdienste für ihre Ortsvorhersagen verwenden („Model Output Statistics“):
+   Es vergleicht 30 Tage lang, was das Wettermodell am Vortag vorhergesagt hat, mit den Messwerten der nächsten Station
+   und lernt, wann das Modell bei dir zu warm oder zu kalt liegt: je nach Tageszeit, klarer Nacht, Sonne, Nebel oder
+   tiefen Wolken, Wind und Temperatur (Ridge-Regression). Getestet wird ehrlich an den letzten Tagen, die beim Lernen
+   nicht verwendet wurden. Nur wenn die Korrektur dort besser ist, wird sie verwendet. */
+let ki=null,kiSeq=0;
+const KI_TTL=2*3600000;
+/* Sonnenhöhe in Grad (genügt auf etwa 1° genau) */
+function sunElev(ms,la,lo){
+ const n=ms/86400000+2440587.5-2451545,g=(357.529+.98560028*n)*Math.PI/180,q=280.459+.98564736*n,Lm=(q+1.915*Math.sin(g)+.02*Math.sin(2*g))*Math.PI/180,e=(23.439-3.6e-7*n)*Math.PI/180;
+ const dec=Math.asin(Math.sin(e)*Math.sin(Lm)),ra=Math.atan2(Math.cos(e)*Math.sin(Lm),Math.cos(Lm)),gmst=((18.697374558+24.06570982441908*n)%24+24)%24;
+ const ha=(gmst*15+lo)*Math.PI/180-ra,phi=la*Math.PI/180;
+ return Math.asin(Math.sin(phi)*Math.sin(dec)+Math.cos(phi)*Math.cos(dec)*Math.cos(ha))*180/Math.PI;
+}
+/* Merkmale einer Stunde: Grundwert, Tagesgang, klare Nacht, Sonne, tiefe Wolken/Nebel, Wind, Temperatur */
+function kiX(T,C,CL,W,el,hl){
+ const clear=1-Math.min(100,Math.max(0,C))/100,night=el<-4?1:el<2?(2-el)/6:0,sun=Math.max(0,Math.sin(el*Math.PI/180)),a=2*Math.PI*hl/24;
+ return[1,Math.sin(a),Math.cos(a),clear*night,clear*sun*2,Math.min(100,Math.max(0,CL))/100,Math.min(60,Math.max(0,W))/20,T/10];
+}
+/* Ridge-Regression: (XᵀX + λ·I)·b = Xᵀy, der Grundwert wird nicht bestraft */
+function kiFit(X,y,lam){
+ const m=X[0].length,A=Array.from({length:m},()=>new Float64Array(m+1));
+ X.forEach((x,r)=>{for(let i=0;i<m;i++){for(let j=0;j<m;j++)A[i][j]+=x[i]*x[j];A[i][m]+=x[i]*y[r]}});
+ for(let i=1;i<m;i++)A[i][i]+=lam;
+ for(let c=0;c<m;c++){
+  let p=c;for(let r=c+1;r<m;r++)if(Math.abs(A[r][c])>Math.abs(A[p][c]))p=r;
+  [A[c],A[p]]=[A[p],A[c]];const d=A[c][c];if(Math.abs(d)<1e-9)return null;
+  for(let r=0;r<m;r++){if(r===c)continue;const f=A[r][c]/d;if(!f)continue;for(let k=c;k<=m;k++)A[r][k]-=f*A[c][k]}
+ }
+ return A.map((row,i)=>row[m]/row[i]);
+}
+const kiDot=(b,x)=>x.reduce((s,v,i)=>s+v*b[i],0);
+async function loadKi(){
+ const my=++kiSeq,key=skKey();
+ try{const o=JSON.parse(localStorage.getItem("wetter-ki|"+key));if(o&&o.r&&Date.now()-o.t<KI_TTL){ki=o.r;renderKi();return}}catch(e){}
+ if(!ki||ki.key!==key){ki=null;renderKi()}
+ let r;
+ try{
+  const la=(+place.lat).toFixed(3),lo=(+place.lon).toFixed(3),base="https://previous-runs-api.open-meteo.com/v1/forecast?latitude="+la+"&longitude="+lo+"&past_days=30&forecast_days=3&timezone=GMT&hourly=";
+  const V1="temperature_2m,cloud_cover,cloud_cover_low,wind_speed_10m,temperature_2m_previous_day1,cloud_cover_previous_day1,cloud_cover_low_previous_day1,wind_speed_10m_previous_day1";
+  const V2="temperature_2m,cloud_cover,wind_speed_10m,temperature_2m_previous_day1,cloud_cover_previous_day1,wind_speed_10m_previous_day1";
+  const [ob,pr]=await Promise.all([obsHist(30),getJ(base+V1).catch(()=>getJ(base+V2))]);
+  r=kiCalc(ob,pr);
+ }catch(e){console.error(e);r={err:1}}
+ if(my!==kiSeq)return;
+ if(r.err&&ki&&ki.key===key&&!ki.err)return;
+ r.key=key;ki=r;
+ try{localStorage.setItem("wetter-ki|"+key,JSON.stringify({t:Date.now(),r}))}catch(e){}
+ renderKi();
+}
+function kiCalc(ob,pr){
+ if(!ob)return{none:1};
+ const H=pr&&pr.hourly;if(!H||!H.time)return{err:1};
+ const la=+place.lat,lo=+place.lon,off=((lastJ&&+lastJ.utc_offset_seconds)||0)*1000,now=Date.now();
+ const g=(nm,i)=>H[nm]&&H[nm][i]!=null?+H[nm][i]:null;
+ const rows=[];
+ H.time.forEach((t,i)=>{
+  const ms=Date.parse(t+":00Z"),o=ob.h[t.slice(0,13)];if(!o||o.T==null||ms>now-3600000)return;
+  const F=g("temperature_2m_previous_day1",i),C=g("cloud_cover_previous_day1",i),W=g("wind_speed_10m_previous_day1",i);if(F==null||C==null||W==null)return;
+  const CL=g("cloud_cover_low_previous_day1",i);
+  rows.push({ms,F,o:o.T,x:kiX(F,C,CL==null?0:CL,W,sunElev(ms,la,lo),new Date(ms+off).getUTCHours())});
+ });
+ if(rows.length<240)return{few:1,n:rows.length};
+ rows.sort((a,b)=>a.ms-b.ms);
+ /* Lernen mit den älteren 70 %, Prüfen mit den neuesten 30 % */
+ const cut=Math.floor(rows.length*.7),tr=rows.slice(0,cut),te=rows.slice(cut),lam=6;
+ const b0=kiFit(tr.map(r=>r.x),tr.map(r=>r.o-r.F),lam);if(!b0)return{err:1};
+ const clip=v=>Math.max(-5,Math.min(5,v));
+ let eRaw=0,eKi=0;te.forEach(r=>{eRaw+=Math.abs(r.F-r.o);eKi+=Math.abs(r.F+clip(kiDot(b0,r.x))-r.o)});
+ eRaw/=te.length;eKi/=te.length;
+ const b=kiFit(rows.map(r=>r.x),rows.map(r=>r.o-r.F),lam);if(!b)return{err:1};
+ const use=eKi<eRaw*.97;
+ /* Vorhersage der nächsten 48 Stunden: aktuelle Modellwerte plus gelernte Korrektur */
+ const fc=[];
+ H.time.forEach((t,i)=>{
+  const ms=Date.parse(t+":00Z");if(ms<now-3600000||ms>now+48*3600000)return;
+  const T=g("temperature_2m",i),C=g("cloud_cover",i),W=g("wind_speed_10m",i);if(T==null||C==null||W==null)return;
+  const CL=g("cloud_cover_low",i),c=clip(kiDot(b,kiX(T,C,CL==null?0:CL,W,sunElev(ms,la,lo),new Date(ms+off).getUTCHours())));
+  fc.push({ms,T,K:Math.round((T+c)*10)/10});
+ });
+ /* Was gelernt wurde, in Worten: Wirkung der einzelnen Merkmale in einer typischen Lage */
+ const noonEl=sunElev(Math.floor(now/86400000)*86400000+(12*3600000-lo/15*3600000),la,lo),tm=rows.reduce((s,r)=>s+r.F,0)/rows.length;
+ const base=hh=>b[0]+b[1]*Math.sin(2*Math.PI*hh/24)+b[2]*Math.cos(2*Math.PI*hh/24)+b[7]*tm/10;
+ const fx=[["In klaren Nächten",b[3]],["An sonnigen Tagen",b[4]*Math.max(.3,Math.sin(noonEl*Math.PI/180))*2],["Bei Nebel oder Hochnebel",b[5]],["Bei kräftigem Wind (40 km/h)",b[6]*2],["Grundsätzlich nachts (4 Uhr)",base(4)],["Grundsätzlich nachmittags (15 Uhr)",base(15)]];
+ return{st:ob.name,dist:ob.dist,src:ob.src,n:rows.length,days:Math.round(rows.length/24),test:Math.round(te.length/24),eRaw,eKi,use,fc,fx:fx.map(([t,v])=>[t,Math.round(v*10)/10])};
+}
+function kiChart(fc){
+ if(fc.length<6)return"";
+ const W=340,Ht=150,l=30,r=8,t=8,b=22,t0=fc[0].ms,t1=fc[fc.length-1].ms,off=((lastJ&&+lastJ.utc_offset_seconds)||0)*1000;
+ const vals=fc.flatMap(x=>[x.T,x.K]);let lo=Math.floor(Math.min(...vals)-1),hi=Math.ceil(Math.max(...vals)+1);if(hi-lo<6)hi=lo+6;
+ const X=x=>(l+(x-t0)/((t1-t0)||1)*(W-l-r)).toFixed(1),Y=v=>(t+(1-(v-lo)/(hi-lo))*(Ht-t-b)).toFixed(1);
+ let s='<svg class="kic" viewBox="0 0 '+W+" "+Ht+'" role="img" aria-label="Temperatur der nächsten 2 Tage: Wettermodell und KI-Korrektur">';
+ const st=hi-lo>14?5:2;
+ for(let v=Math.ceil(lo/st)*st;v<=hi;v+=st)s+='<line class="gr" x1="'+l+'" x2="'+(W-r)+'" y1="'+Y(v)+'" y2="'+Y(v)+'"/><text x="'+(l-5)+'" y="'+(+Y(v)+3.5)+'" text-anchor="end">'+String(v).replace("-","−")+"°</text>";
+ fc.forEach((x,i)=>{const h=new Date(x.ms+off).getUTCHours();if(h===0&&i>0)s+='<line class="gr" x1="'+X(x.ms)+'" x2="'+X(x.ms)+'" y1="'+t+'" y2="'+(Ht-b)+'"/>';if(h===12)s+='<text x="'+X(x.ms)+'" y="'+(Ht-6)+'" text-anchor="middle">'+fDayName(new Date(x.ms))+"</text>"});
+ s+='<path class="km" d="'+fc.map((x,i)=>(i?"L":"M")+X(x.ms)+" "+Y(x.T)).join("")+'"/><path class="kk" d="'+fc.map((x,i)=>(i?"L":"M")+X(x.ms)+" "+Y(x.K)).join("")+'"/>';
+ return s+"</svg>";
+}
+function renderKi(){
+ const sec=$("sec-ki"),el=$("ki");
+ if(!ki||ki.key!==skKey()){el.innerHTML='<p class="muted">Die KI lernt gerade aus den letzten 30 Tagen …</p>';sec.hidden=false;return}
+ if(ki.none){el.innerHTML='<p class="small">Für die KI-Korrektur braucht es eine Wetterstation im Umkreis von 25 km, deren Messwerte frei verfügbar sind. Für diesen Ort gibt es keine.</p>';sec.hidden=false;return}
+ if(ki.few){el.innerHTML='<p class="small">Für die KI-Korrektur gibt es noch zu wenige Vergleichswerte ('+Math.round((ki.n||0)/24)+" Tage). Sie braucht mindestens 10 Tage.</p>";sec.hidden=false;return}
+ if(ki.err){el.innerHTML='<p class="small">Die KI-Korrektur konnte gerade nicht berechnet werden. Es wird später wieder versucht.</p>';sec.hidden=false;return}
+ const sg=v=>(v>0?"+":"−")+fmt(Math.abs(v))+"°",better=Math.round((1-ki.eKi/ki.eRaw)*100);
+ let h='<p class="kis">Die KI hat aus '+ki.days+" Tagen gelernt, wie das Wettermodell bei dir danebenliegt. Vergleich mit der Messstation "+esc(ki.st)+(ki.dist!=null?" ("+Math.round(ki.dist)+" km entfernt)":"")+".</p>";
+ const mx=Math.max(ki.eRaw,ki.eKi),kcq=skill&&skill.m&&skill.m.kc;
+ const bar=(nm,v,c,tag)=>'<div class="sk" style="--c:'+c+'"><span>'+nm+(tag||"")+'</span><div class="skb"><i style="width:'+Math.max(5,v/mx*100).toFixed(0)+'%"></i></div><em>'+fmt(v)+"°</em></div>";
+ h+='<div class="skill" style="border-top:0;margin-top:6px;padding-top:0"><h3>Test an den letzten '+ki.test+" Tagen</h3>"+bar("Wettermodell",ki.eRaw,"#8FA2BA")+bar("Mit KI-Korrektur",ki.eKi,"#8E5BEA",ki.use?'<b class="best">Besser</b>':"")+'<p class="small">Zahl: so viel lag die Vorhersage vom Vortag im Schnitt daneben. Diese Tage hat die KI beim Lernen nicht gesehen.'+(kcq?" Zum Vergleich: Kachelmann lag in den letzten "+kcq.days+" Tagen im Schnitt "+fmt(kcq.mae)+"° daneben.":"")+"</p></div>";
+ const fx=ki.fx.filter(f=>Math.abs(f[1])>=.3);
+ h+='<div class="kil"><h3>Was die KI über deinen Ort gelernt hat</h3>'+(fx.length?"<ul>"+fx.map(f=>"<li>"+f[0]+": <b>"+(f[1]<0?fmt(-f[1])+"° kälter":fmt(f[1])+"° wärmer")+"</b> als vorhergesagt</li>").join("")+"</ul>":'<p class="small">Das Wettermodell passt bei dir schon gut, die KI hat keine deutlichen Muster gefunden.</p>')+"</div>";
+ if(ki.use&&ki.fc&&ki.fc.length){
+  const off=((lastJ&&+lastJ.utc_offset_seconds)||0)*1000,now=Date.now(),nx=ki.fc.filter(x=>x.ms>now&&x.ms<now+24*3600000);
+  if(nx.length){
+   const mn=nx.reduce((a,x)=>x.K<a.K?x:a),mxx=nx.reduce((a,x)=>x.K>a.K?x:a);
+   const hh=x=>new Date(x.ms+off).getUTCHours()+" Uhr";
+   h+='<div class="kil"><h3>KI-Prognose für die nächsten 24 Stunden</h3><p class="kin">Tiefstens <b>'+deg(mn.K)+"</b> gegen "+hh(mn)+" (Wettermodell: "+deg(mn.T)+"), höchstens <b>"+deg(mxx.K)+"</b> gegen "+hh(mxx)+" (Wettermodell: "+deg(mxx.T)+").</p>"+kiChart(ki.fc)+'<div class="slk"><span><i style="background:#8FA2BA"></i>Wettermodell</span><span><i style="background:#8E5BEA"></i>Mit KI-Korrektur</span></div></div>';
+  }
+ }else h+='<p class="small">Im Test war die Korrektur nicht besser als das Wettermodell selbst ('+(better>0?"nur "+better+" %":"kein Vorteil")+"). Deshalb zeigt die KI hier keine eigene Prognose. Mit mehr unterschiedlichen Wetterlagen lernt sie dazu.</p>";
+ h+='<p class="small">Gelernt wird mit den Werten des Wettermodells (Open-Meteo) und den Messwerten '+(ki.src==="Deutscher Wetterdienst"?"des Deutschen Wetterdienstes":"von "+esc(ki.src||"der Station"))+". Die Temperatur oben in der App bleibt die von Kachelmann bzw. dem Wettermodell, die KI-Korrektur steht hier zum Vergleich.</p>";
  el.innerHTML=h;sec.hidden=false;
 }
 
@@ -3048,7 +3432,7 @@ function alarmNow(){
  const wa=w?{k:"w|"+w.title+"|"+w.sub,h:w.title+" (Stufe "+(SEV[w.lvl-1]||SEV[0])[1]+")",s:w.sub,c:AL_C[Math.min(4,w.lvl)],i:AL_WARN}:null;
  if(w&&w.lvl>=3)return wa;
  /* Gewitter- oder Starkregenzelle aus dem Radar zieht auf den Ort zu */
- if(trkHit&&trkHit.min<=60&&Date.now()<trkHit.at+15*60000){const z=trkHit,m=Math.max(0,Math.round((z.at-Date.now())/300000)*5);return{k:"z|"+Math.round(z.at/1800000),h:(z.storm?"Gewitter":"Starkregen")+(m<=0?" ist bei dir":" in etwa "+m+" Minuten"),s:(z.storm?"Eine Gewitterzelle":"Eine Starkregenzelle")+(z.spd&&z.spd>=3?" zieht mit "+Math.round(z.spd)+" km/h"+(z.dir!=null?" nach "+(WDIR[compass(z.dir)]||""):""):"")+". Berechnet aus dem DWD-Radar.",c:z.storm?"#6741D9":"#1C64D9",i:z.storm?AL_BOLT:AL_RAIN}}
+ if(trkHit&&trkHit.min<=60&&Date.now()<trkHit.at+15*60000){const z=trkHit,m=Math.max(0,Math.round((z.at-Date.now())/300000)*5);return{k:"z|"+Math.round(z.at/1800000),h:(z.storm?"Gewitter":"Starkregen")+(m<=0?" ist bei dir":" in etwa "+m+" Minuten"),s:(z.storm?"Eine Gewitterzelle":"Eine Starkregenzelle")+(z.spd&&z.spd>=3?" zieht mit "+Math.round(z.spd)+" km/h"+(z.dir!=null?" nach "+(WDIR[compass(z.dir)]||""):""):"")+". Berechnet aus dem "+(trkSrc==="dwd"?"DWD-Radar":"Radar von GeoSphere Austria")+".",c:z.storm?"#6741D9":"#1C64D9",i:z.storm?AL_BOLT:AL_RAIN}}
  const j=lastJ,c=j&&j.current;
  if(c){
   const H=j.hourly||{time:[]},s0=H.time.findIndex(t=>t>=c.time.slice(0,13)+":00");
@@ -3399,8 +3783,8 @@ function refreshRadar(){
  /* Temperatur- oder Windkarte offen: nur deren Werte auffrischen, das Radar beim Zurückwechseln */
  if(lay!=="rain"){rdrSkip=true;loadField();return}
  /* War das DWD-Radar nur kurz weg, nach 10 Minuten wieder zurückwechseln (außer du hast „Weltweit“ selbst gewählt) */
- if(mode==="rv"&&dwFell&&Date.now()-dwFell>600000&&dwCovered(+place.lat,+place.lon)){let um=null;try{um=localStorage.getItem("wetter-mode")}catch(e){}if(um!=="rv"){dwFell=0;setMode("dwd");return}}
- if(mode==="dwd"){dwKey="";if(dwBox)loadDwd(dwBox[0],dwBox[1]);else loadDwd()}else loadRadar();
+ if(mode!=="dwd"&&dwFell&&Date.now()-dwFell>600000&&dwCovered(+place.lat,+place.lon)){let um=null;try{um=localStorage.getItem("wetter-mode")}catch(e){}if(um!=="rv"&&um!=="at"){dwFell=0;setMode("dwd");return}}
+ if(mode==="dwd"){dwKey="";if(dwBox)loadDwd(dwBox[0],dwBox[1]);else loadDwd()}else{loadRadar();if(mode==="rv")atTrackOnly()}
 }
 function tokenLeft(){try{const W=window.__worker;return W&&W.exp?W.exp()-Date.now():0}catch(e){return 0}}
 function autoRefresh(force){
