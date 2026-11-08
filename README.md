@@ -1,1 +1,1 @@
-Temporärer Testzweig (Abfrage GeoSphere/ECMWF für Version 2.4). Kann gelöscht werden.
+Temporärer Testzweig (Abfragen für Version 2.4 bis 2.7). Kann gelöscht werden.
