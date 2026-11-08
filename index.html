@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-kZ1ihuwXuZXiGhNHcoC1Uwwx01mW2at6xHbJXaQYuYU=' 'sha256-F1lreOLy84+sYAZwCiC5OGOTDcovKCCQAYSwbz7Ocq8=' https://unpkg.com https://cdnjs.cloudflare.com; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-MagcByRwlUd9p7ud1SW/PJeqvdlDoxLChHkXHnomZtE=' 'sha256-+CD5i0gDObdMiTFeSjBHM8SvIjSFGtFW+gQH/GdjeWc=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -14,9 +14,9 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/favicon-64.png">
-<meta name="app-build" content="37">
-<meta name="app-version" content="2.6">
-<meta name="app-notes" content="Version 2.6: Bei der Sonne steht jetzt auch der Mond: Mondphase mit Bild, wie viel beleuchtet ist, Auf- und Untergang und wann der nächste Neumond und Vollmond ist. Die Wandanzeige zeigt Warnungen übersichtlich mit Stufe, Dauer und Warndienst.">
+<meta name="app-build" content="38">
+<meta name="app-version" content="2.6.1">
+<meta name="app-notes" content="Version 2.6.1: Mehr Sicherheit: Die Seite lädt fremde Skripte nur noch, wenn es genau die geprüfte Kartenbibliothek ist, und Texte von außen werden noch strenger entschärft.">
 <script>/* alte Adresse wetter2.html -> neue Startseite */
 try{if(top!==self)document.documentElement.style.display="none"}catch(e){document.documentElement.style.display="none"}
 window.__redir=/\/wetter2\.html$/i.test(location.pathname);
@@ -927,7 +927,7 @@ html.locked body>*:not(#gate){display:none!important}
 /* ============ Hilfsfunktionen ============ */
 const $=id=>document.getElementById(id);
 const root=document.documentElement;
-const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const deg=n=>String(Math.round(n)).replace("-","−")+"°";
 const fmt=n=>String(Math.round(n*10)/10).replace(".",",");
 const compass=d=>["N","NO","O","SO","S","SW","W","NW"][Math.round(d/45)%8];
@@ -4268,10 +4268,10 @@ document.addEventListener("visibilitychange",()=>{
   }).catch(function(){});
  }
  window.__worker={base:API,token:token,exp:function(){var t=token(),p=t&&payload(t);return p?p.exp:0},renew:renew,logout:function(){clear();location.reload()}};
- /* Kartenbibliothek: erst mit Prüfsumme (SRI) von unpkg, bei Fehler Ersatzquelle */
+ /* Kartenbibliothek: mit Prüfsumme (SRI) von unpkg, bei Fehler dieselbe Datei von cdnjs (ebenfalls geprüft) */
  var LIB=[
   {js:"https://unpkg.com/leaflet@1.9.4/dist/leaflet.js",jsi:"sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=",css:"https://unpkg.com/leaflet@1.9.4/dist/leaflet.css",cssi:"sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="},
-  {js:"https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js",jsi:"",css:"https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css",cssi:""}
+  {js:"https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js",jsi:"sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=",css:"https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css",cssi:"sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="}
  ];
  function addCss(i){
   var l=document.createElement("link");l.rel="stylesheet";l.href=LIB[i].css;
@@ -4302,6 +4302,7 @@ document.addEventListener("visibilitychange",()=>{
    var j={};try{j=await r.json()}catch(x){}
    if(r.ok&&j.token&&payload(j.token))tok=j.token;
    else if(r.status===401)msg="Benutzername oder Passwort stimmt nicht.";
+   else if(r.status===429)msg=j.error||"Zu viele falsche Anmeldungen. Bitte in 15 Minuten noch einmal versuchen.";
    else msg="Der Anmeldeserver antwortet gerade nicht richtig. Versuche es später noch einmal.";
   }catch(x){msg="Keine Verbindung zum Anmeldeserver. Prüfe die Internetverbindung."}
   if(tok){

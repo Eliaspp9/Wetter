@@ -60,6 +60,13 @@ https://eliaspp9.github.io/Wetter/
 - **Flüssig bis 120 Hz:** Das Wettersymbol oben besteht aus Ebenen, die nur verschoben, gedreht oder überblendet werden. Das macht die Grafikeinheit allein, ohne dass die Seite neu zeichnet. Keine Unschärfe-Effekte über bewegten Inhalten. Radarbilder werden vorab vorbereitet, Windlinien in jeder Bildwiederholung gezeichnet.
 - **App und Offline:** als App auf dem Home-Bildschirm installierbar, offline mit dem letzten Stand.
 
+## Sicherheit
+
+- **Seite:** nur über HTTPS. Strenge Sicherheitsregel (CSP): Skripte laufen nur, wenn ihre Prüfsumme stimmt; von außen nur genau die Kartenbibliothek Leaflet 1.9.4 (ebenfalls mit Prüfsumme). Keine Formulare an fremde Seiten, keine Einbettung in fremde Seiten. Texte von Wetterdiensten werden vor der Anzeige entschärft.
+- **Geheimnisse:** Kachelmann-Schlüssel und Passwort liegen nur bei Cloudflare (Secrets), nie im Code.
+- **Anmeldung:** über den Worker. Signierte Tokens (30 Tage), Vergleich ohne Zeitunterschiede. Pro IP-Adresse höchstens 5 Fehlversuche in 15 Minuten, insgesamt höchstens 30, dann 15 Minuten Sperre. Ein neues Passwort meldet alle Geräte ab.
+- **Zu tun für den Besitzer:** Zwei-Faktor-Anmeldung bei GitHub und Cloudflare einschalten. Ein Passwort verwenden, das nirgends sonst benutzt wird.
+
 ## Cloudflare-Worker (`worker/kachelmann-proxy.js`)
 
 Der Worker hält den Kachelmann-Schlüssel geheim, prüft die Anmeldung, verlängert sie (`/renew`) und verschickt Benachrichtigungen.

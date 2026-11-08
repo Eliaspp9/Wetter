@@ -41,6 +41,40 @@ async function checkToken(env, req) {
   } catch (e) { return false; }
 }
 
+/* ---------- Schutz gegen Passwort-Raten ----------
+   Pro IP-Adresse höchstens 5 falsche Anmeldungen in 15 Minuten, von allen zusammen höchstens 30. Danach wird
+   15 Minuten lang jede neue Anmeldung abgelehnt. Schon angemeldete Geräte merken davon nichts (sie haben ein Token).
+   Gezählt wird im Speicher des Workers und, wenn der KV-Speicher SUBS eingerichtet ist, zusätzlich dort (gilt dann überall). */
+const RL_WIN = 15 * 60 * 1000, RL_IP = 5, RL_ALL = 30, mem = new Map();
+function memList(k, now) { const a = (mem.get(k) || []).filter((t) => now - t < RL_WIN); mem.set(k, a); return a; }
+async function loginBlocked(env, ip) {
+  const now = Date.now();
+  if (memList("ip:" + ip, now).length >= RL_IP || memList("all", now).length >= RL_ALL) return true;
+  if (env.SUBS) {
+    try {
+      const n = (x) => (Array.isArray(x) ? x : []).filter((t) => now - t < RL_WIN).length;
+      const [a, b] = await Promise.all([env.SUBS.get("rl:ip:" + ip, "json"), env.SUBS.get("rl:all", "json")]);
+      if (n(a) >= RL_IP || n(b) >= RL_ALL) return true;
+    } catch (e) {}
+  }
+  return false;
+}
+async function loginFailed(env, ip) {
+  const now = Date.now();
+  if (mem.size > 5000) mem.clear();
+  memList("ip:" + ip, now).push(now);
+  memList("all", now).push(now);
+  if (env.SUBS) {
+    for (const k of ["rl:ip:" + ip, "rl:all"]) {
+      try {
+        const old = await env.SUBS.get(k, "json"), a = (Array.isArray(old) ? old : []).filter((t) => now - t < RL_WIN);
+        a.push(now);
+        await env.SUBS.put(k, JSON.stringify(a.slice(-60)), { expirationTtl: 1800 });
+      } catch (e) {}
+    }
+  }
+}
+
 /* ---------- Web Push (RFC 8291 und RFC 8292) ---------- */
 async function hmac(key, data) {
   const k = await crypto.subtle.importKey("raw", key, { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
@@ -165,29 +199,41 @@ async function runAlerts(env) {
 export default {
   async fetch(req, env) {
     const origin = req.headers.get("Origin");
+    /* nur die eigene Seite darf Antworten im Browser lesen; fremde Seiten bekommen keine Freigabe (auch nicht für „null“) */
     const h = {
-      "Access-Control-Allow-Origin": origin && origin === env.ALLOWED_ORIGIN ? origin : "null",
       "Access-Control-Allow-Headers": "authorization,content-type",
       "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
       "Access-Control-Max-Age": "86400",
       "Vary": "Origin",
       "Cache-Control": "no-store",
       "Content-Type": "application/json; charset=utf-8",
+      "X-Content-Type-Options": "nosniff",
+      "Referrer-Policy": "no-referrer",
+      "X-Frame-Options": "DENY",
+      "Content-Security-Policy": "default-src 'none'; frame-ancestors 'none'",
     };
+    if (origin && env.ALLOWED_ORIGIN && origin === env.ALLOWED_ORIGIN) h["Access-Control-Allow-Origin"] = origin;
     const json = (o, s = 200) => new Response(JSON.stringify(o), { status: s, headers: h });
     if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: h });
     if (!env.KACHELMANN_KEY || !env.LOGIN_USER || !env.LOGIN_PASS || !env.ALLOWED_ORIGIN)
       return json({ error: "Der Worker ist noch nicht fertig eingerichtet (Variablen fehlen)." }, 500);
     const url = new URL(req.url);
 
-    if (url.pathname === "/") return json({ ok: true, name: "wetter-proxy", version: "1.0", renew: true, push: !!env.SUBS });
+    if (url.pathname === "/") return json({ ok: true, name: "wetter-proxy", version: "1.1", renew: true, push: !!env.SUBS, guard: true });
 
     if (url.pathname === "/login" && req.method === "POST") {
+      const ip = req.headers.get("CF-Connecting-IP") || "unbekannt";
+      if (await loginBlocked(env, ip)) {
+        await new Promise((r) => setTimeout(r, 1000));
+        return json({ error: "Zu viele falsche Anmeldungen. Bitte in 15 Minuten noch einmal versuchen." }, 429);
+      }
+      if (Number(req.headers.get("Content-Length") || 0) > 2000) return json({ error: "Ungültig" }, 400);
       let b = {};
       try { b = await req.json(); } catch (e) {}
       const u = await safeEq(String(b.user || "").toLowerCase(), env.LOGIN_USER.toLowerCase());
-      const p = await safeEq(b.pass || "", env.LOGIN_PASS);
+      const p = await safeEq(String(b.pass || ""), env.LOGIN_PASS);
       if (u && p) return json({ token: await makeToken(env, env.LOGIN_USER), days: 30 });
+      await loginFailed(env, ip);
       await new Promise((r) => setTimeout(r, 1500));
       return json({ error: "Anmeldung fehlgeschlagen" }, 401);
     }
