@@ -3,7 +3,7 @@
 Persönliche Wetter-App im Stil von WetterOnline, als Webseite auf GitHub Pages:
 https://eliaspp9.github.io/Wetter/
 
-**Version 2.0**: die zweite finale Version, mit Temperatur- und Windkarte, Bergwetter und Schneefallgrenze.
+**Version 2.1**: mit Wetter teilen, vielen Kartenansichten, Zugbahnen von Gewittern und Nachtanzeige an der Wand.
 
 ## Was die App kann
 
@@ -12,11 +12,11 @@ https://eliaspp9.github.io/Wetter/
   - DWD 1 km mit 2 Stunden Radar-Vorhersage.
   - „Weltweit“: in Europa das OPERA-Radar über LibreWXR, Ersatz RainViewer.
   - Dazu Blitze (EUMETSAT MTG), Wolken, Warnungen und Niederschlagsart.
-- **Temperatur- und Windkarte:**
-  - Umschalten über der Karte: Regen, Temperatur, Wind.
-  - Temperatur als Farbfläche mit Zahlen, Wind mit animierten Strömungslinien und Pfeilen.
+  - **Zugbahnen von Gewittern und Starkregen:** starke Zellen werden in den DWD-Radarbildern der letzten 30 Minuten verfolgt. Linie mit Punkten alle 15 Minuten, Ankunftszeit beim Ort und Alarm.
+- **Kartenansichten aus dem Wettermodell:**
+  - Temperatur, Wind (animierte Strömungslinien), Böen, Wolken, Niederschlag, Neuschnee (zusammengezählt) und Luftdruck mit Isobaren.
   - Jetzt und Stunde für Stunde 2 Tage voraus, mit Abspielen.
-  - Tippen auf die Karte zeigt Temperatur, Wind und Böen an der Stelle.
+  - Tippen auf die Karte zeigt die genauen Werte an der Stelle.
 - **Vorhersage:**
   - Regen in den nächsten 2 Stunden.
   - Nächste 24 Stunden.
@@ -38,13 +38,15 @@ https://eliaspp9.github.io/Wetter/
 - **Luft und Pollen**, Details mit Wind, UV, Sonne und Nullgradgrenze.
 - **Wandanzeige fürs Tablet:**
   - Uhr, Wetter, großes Radar, Stunden und 7 Tage ohne Scrollen.
-  - Nachts gedimmt, Bildschirm bleibt an.
+  - Nachtanzeige von 22 bis 6 Uhr: große, gedämpfte Uhr, Temperatur und Hinweise; Antippen zeigt alles. Abschaltbar.
+  - Bildschirm bleibt an.
   - Direkt aufrufen mit `?wand=1`.
 - **Automatik:**
   - Aktualisiert sich alle 5 Minuten.
   - Bleibt bei kurzen Verbindungsproblemen auf dem letzten Stand.
   - Installiert neue Versionen selbst, wenn niemand das Gerät benutzt.
   - In der App auf dem Home-Bildschirm: zum Aktualisieren nach unten ziehen.
+- **Wetter teilen:** erzeugt ein Bild mit Wetter, nächsten Stunden und 3 Tagen, zum Verschicken (z. B. WhatsApp) oder Speichern.
 - **App und Offline:** als App auf dem Home-Bildschirm installierbar, offline mit dem letzten Stand.
 
 ## Cloudflare-Worker (`worker/kachelmann-proxy.js`)
