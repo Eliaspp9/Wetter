@@ -23,8 +23,8 @@ https://eliaspp9.github.io/Wetter/
 - **Vorhersage:**
   - Regen in den nächsten 2 Stunden.
   - Nächste 24 Stunden.
-  - 7 Tage zum Aufklappen. An deinen Kachelmann-Standorten von Kachelmann, sonst ECMWF; darunter steht, woher die Werte kommen.
-  - Trend bis 14 Tage, mit dem KI-Modell AIFS zum Vergleich.
+  - 7 Tage zum Aufklappen und Trend bis 14 Tage: überall vom ECMWF-Modell. Kachelmann gibt es an deinen Kachelmann-Standorten für das Wetter jetzt und die nächsten 24 Stunden.
+  - Beim Trend das KI-Modell AIFS zum Vergleich.
 - **Modellvergleich:**
   - Eine gemeinsame Linie aus ICON-D2, ICON-EU, ECMWF, GFS, KI-Modell und Kachelmann.
   - Die Modelle werden nach ihren Treffern der letzten 14 Tage gewichtet (Vergleich mit der nächsten Messstation).

@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-znJvIYz3CqaSNzQs594atsWMJXQ/gzYc9+qFysNIlVA=' 'sha256-F1lreOLy84+sYAZwCiC5OGOTDcovKCCQAYSwbz7Ocq8=' https://unpkg.com https://cdnjs.cloudflare.com; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-rSLr3kzK+m+LbKrxC1/FFaTCRPWN/iWUZ0wB9QvvUl8=' 'sha256-F1lreOLy84+sYAZwCiC5OGOTDcovKCCQAYSwbz7Ocq8=' https://unpkg.com https://cdnjs.cloudflare.com; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -14,9 +14,9 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/favicon-64.png">
-<meta name="app-build" content="35">
-<meta name="app-version" content="2.5">
-<meta name="app-notes" content="Version 2.5: Der Himmel oben bewegt sich mit dem Wetter: ziehende Wolken in Windrichtung, Sonnenstrahlen, Mondlicht und Sternschnuppen, Nebelschwaden, Regen schräg im Wind, dichter Schnee und Blitze. Unter den 7 Tagen steht, woher die Werte kommen.">
+<meta name="app-build" content="36">
+<meta name="app-version" content="2.5.1">
+<meta name="app-notes" content="Version 2.5.1: Die 7 Tage und der 14-Tage-Trend kommen jetzt überall vom ECMWF-Modell. Kachelmann bleibt an deinen Kachelmann-Standorten für das Wetter jetzt und die nächsten 24 Stunden.">
 <script>/* alte Adresse wetter2.html -> neue Startseite */
 try{if(top!==self)document.documentElement.style.display="none"}catch(e){document.documentElement.style.display="none"}
 window.__redir=/\/wetter2\.html$/i.test(location.pathname);
@@ -1241,23 +1241,12 @@ function isSnowDay(i){const v=dayVals(i);return!!(v&&v.snow)}
 function dayMm(i){
  const v=dayVals(i);return v?v.mm:null;
 }
-/* Tageswerte: Kachelmann, wenn der Tag abgedeckt ist, sonst das Wettermodell (ECMWF) */
+/* Tageswerte: immer vom Wettermodell (ECMWF). Kachelmann zeigt die App nur für jetzt und die nächsten 24 Stunden. */
 function dayVals(i){
  const j=lastJ;if(!j)return null;
- const D=j.daily,date=D.time[i];
+ const D=j.daily;
  const om={lo:D.temperature_2m_min[i],hi:D.temperature_2m_max[i],mm:D.precipitation_sum&&D.precipitation_sum[i]!=null?+D.precipitation_sum[i]:null,p:D.precipitation_probability_max?D.precipitation_probability_max[i]:null,k:kind(D.weather_code[i],true),src:"om",snow:[71,73,75,77,85,86].includes(D.weather_code[i])};
- const off=(+j.utc_offset_seconds||0)*1000,f=a=>(a||[]).filter(x=>x.d&&new Date(x.d.getTime()+off).toISOString().slice(0,10)===date);
- let R=f(kcDaily.h1),kk="1h";
- if(R.length<20){R=f(kcDaily.h6);kk="6h";if(R.length<4)return om}
- const kd={kind:kk};
- const Tn=R.map(r=>r.Tn!=null?r.Tn:r.T).filter(x=>x!=null),Tx=R.map(r=>r.Tx!=null?r.Tx:r.T).filter(x=>x!=null);
- if(!Tn.length||!Tx.length)return om;
- const Ps=R.map(r=>r.P).filter(x=>x!=null),mm=Ps.length?Ps.reduce((a,x)=>a+x,0):null;
- const Pr=R.map(r=>r.Pr).filter(x=>x!=null);
- const lo=Math.min(...Tn),hi=Math.max(...Tx),snow=mm!=null&&mm>=0.5&&hi<=1;
- const Cs=R.map(r=>r.C).filter(x=>x!=null),cav=Cs.length?Cs.reduce((a,x)=>a+x,0)/Cs.length:null;
- const k=mm!=null&&mm>=0.5?(snow?"snow":"rain"):cav!=null?(cav>=75?"cloud":cav>=30?"pcd":"sun"):(om.k==="rain"||om.k==="snow"||om.k==="storm"?"cloud":om.k);
- return{lo,hi,mm,p:Pr.length?Math.max(...Pr):null,k,src:kd.kind==="1h"?"k1":"k6",snow};
+ return om;
 }
 function renderDays(j){
  lastJ=j;
@@ -1272,9 +1261,7 @@ function renderDays(j){
   return'<div class="dw" data-i="'+i+'"><div class="day" role="button" tabindex="0" aria-expanded="false" aria-label="Details für '+esc(name)+' ein- oder ausklappen"><div class="dn"><b>'+name+'</b><span>'+dt.getDate()+"."+(dt.getMonth()+1)+".</span></div><div>"+ic(v.k,30)+'</div><div class="dp">'+(p>=10?"<span>"+Math.round(+p)+" %</span>":"")+(mm!=null&&mm>=0.1?"<small"+(isSnowDay(i)?' class="snow"':"")+">"+fmt(mm)+" mm</small>":"")+'</div><div class="dlo">'+deg(lo)+'</div><div class="dbar"><i style="left:'+l.toFixed(1)+"%;width:"+Math.min(wd,100-l).toFixed(1)+"%;background:linear-gradient(90deg,"+tcol(lo)+","+tcol(hi)+')"></i></div><div class="dhi">'+deg(hi)+'</div><div class="dch">'+CHEV+'</div></div><div class="dd" hidden></div></div>';
  }).join("");
  openDays.forEach(i=>setDay(i,true));
- /* woher die Werte kommen: Kachelmann nur an deinen Kachelmann-Standorten, sonst ECMWF */
- const nk=V.filter(v=>v&&v.src&&v.src!=="om").length,mdl=j.src==="ecmwf"?"Wettermodell ECMWF IFS (über Open-Meteo)":"Wettermodelle über Open-Meteo";
- $("days-src").textContent=!nk?"Werte: "+mdl+".":nk===V.length?"Werte: KachelmannWetter, weil das einer deiner Kachelmann-Standorte ist.":"Werte: KachelmannWetter (dein Kachelmann-Standort), Tage ohne Kachelmann-Werte: "+mdl+".";
+ $("days-src").textContent="Werte: "+(j.src==="ecmwf"?"Wettermodell ECMWF IFS (über Open-Meteo)":"Wettermodelle über Open-Meteo")+".";
 }
 function setDay(i,open){
  const w=$("days").querySelector('.dw[data-i="'+i+'"]');if(!w)return;
@@ -1285,26 +1272,13 @@ function setDay(i,open){
 }
 $("days").addEventListener("click",e=>{const r=e.target.closest(".day");if(r)setDay(+r.parentNode.dataset.i,!r.parentNode.classList.contains("open"))});
 $("days").addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&e.target.classList&&e.target.classList.contains("day")){e.preventDefault();setDay(+e.target.parentNode.dataset.i,!e.target.parentNode.classList.contains("open"))}});
-/* Kachelmann-Werte eines Tages: stündlich, sonst in 6-Stunden-Schritten */
-function kcDayRows(date){
- const off=(+(lastJ&&lastJ.utc_offset_seconds)||0)*1000;
- const f=a=>(a||[]).filter(x=>x.d&&new Date(x.d.getTime()+off).toISOString().slice(0,10)===date);
- const a=f(kcDaily.h1);if(a.length>=12)return{rows:a,kind:"1h",m:kcDaily.mh1};
- const b=f(kcDaily.h6);if(b.length>=3)return{rows:b,kind:"6h",m:kcDaily.mh6};
- return null;
-}
-function kcDayStat(date){
- const r=kcDayRows(date);
- if(!r||r.kind!=="1h"||r.rows.length<22||!r.m||!r.m.kP)return null;
- const v=r.rows.map(x=>x.P).filter(x=>x!=null);
- return v.length>=22?{P:v.reduce((a,x)=>a+x,0)}:null;
-}
 function dayDetail(i){
  const j=lastJ;if(!j)return"";
+ const mdl=j.src==="ecmwf"?"ECMWF":"Open-Meteo";
  const H=j.hourly||{time:[]},D=j.daily,date=D.time[i];
  const off=(+j.utc_offset_seconds||0)*1000;
  const hr=d=>new Date(d.getTime()+off).getUTCHours();
- const kd=kcDayRows(date);
+ const kd=null;
  const omAt=h=>{
   const k=H.time.indexOf(date+"T"+String(h).padStart(2,"0")+":00");if(k<0)return null;
   const g=a=>a&&a[k]!=null?+a[k]:null;
@@ -1328,15 +1302,14 @@ function dayDetail(i){
  const dayW=[];for(let h=0;h<24;h++){const o=omAt(h);if(o&&o.W!=null)dayW.push(o.W)}
  const gu=[];for(let h=0;h<24;h++){const o=omAt(h);if(o&&o.G!=null)gu.push(o.G)}
  const parts=[];
- parts.push("<span>"+(st?"Tiefst- und Höchstwert <b>"+deg(dv.lo)+" / "+deg(dv.hi)+"</b></span><span>":"")+"Niederschlag <b>"+(pmm==null?"–":(pmm<0.1?"keiner":fmt(pmm)+" mm"))+"</b>"+(pmm!=null?" ("+(st?"Kachelmann":"Open-Meteo")+")":"")+"</span>");
+ parts.push("<span>"+(st?"Tiefst- und Höchstwert <b>"+deg(dv.lo)+" / "+deg(dv.hi)+"</b></span><span>":"")+"Niederschlag <b>"+(pmm==null?"–":(pmm<0.1?"keiner":fmt(pmm)+" mm"))+"</b>"+(pmm!=null?" ("+(st?"Kachelmann":mdl)+")":"")+"</span>");
  if(pp!=null)parts.push("<span>Regenwahrscheinlichkeit <b>"+Math.round(+pp)+" %</b></span>");
  if(st){const Ws=(kd&&kd.rows||[]).map(r=>r.W).filter(x=>x!=null),Gs=(kd&&kd.rows||[]).map(r=>r.G).filter(x=>x!=null);dayW.length=0;gu.length=0;dayW.push(...Ws);gu.push(...Gs)}
  if(dayW.length)parts.push("<span>Wind bis <b>"+Math.round(Math.max(...dayW))+" km/h</b>"+(gu.length?", Böen "+Math.round(Math.max(...gu)):"")+"</span>");
  if(D.sunrise&&D.sunset)parts.push("<span>Sonne <b>"+D.sunrise[i].slice(11,16)+"–"+D.sunset[i].slice(11,16)+"</b></span>");
  if(D.uv_index_max&&D.uv_index_max[i]!=null)parts.push("<span>UV <b>"+fmt(D.uv_index_max[i])+"</b></span>");
  {const zl=alpDay(date,pmm);if(zl)parts.push(zl)}
- const mdl=lastJ&&lastJ.src==="ecmwf"?"ECMWF":"Open-Meteo";
- const note=src==="k1"?"Kachelmann, stündliche Werte. Nur wo Kachelmann keinen Wert hat, ergänzt "+mdl+".":src==="k6"?"Kachelmann, 6-Stunden-Werte. Nur wo Kachelmann keinen Wert hat, ergänzt "+mdl+".":(mdl==="ECMWF"?"Wettermodell ECMWF IFS (über Open-Meteo).":"Open-Meteo.")+" Kachelmann-Werte gibt es nur für die ersten Tage und für angemeldete Nutzer.";
+ const note=mdl==="ECMWF"?"Wettermodell ECMWF IFS (über Open-Meteo).":"Wettermodelle über Open-Meteo.";
  return'<div class="dd-sum">'+parts.join("")+"</div>"+(body?'<table class="kc-tab"><tr><th>Uhrzeit</th><th></th><th>Temp.</th><th>Regen</th><th>Wind</th></tr>'+body+"</table>":'<p class="muted">Für diesen Tag liegen keine Details vor.</p>')+'<p class="dd-src">Quelle: '+note+"</p>";
 }
 function renderFacts(j,c){
@@ -3208,25 +3181,6 @@ async function loadTrend(){
  let rows=null,src="";
  const kiP=getJ("https://api.open-meteo.com/v1/forecast?latitude="+(+place.lat).toFixed(3)+"&longitude="+(+place.lon).toFixed(3)+"&daily=temperature_2m_max,temperature_2m_min,precipitation_sum&models=ecmwf_aifs025_single&forecast_days=15&timezone=auto")
   .then(k=>{const o={},D=k.daily;D.time.forEach((d,i)=>{const hi=D.temperature_2m_max[i],lo=D.temperature_2m_min[i];if(hi!=null&&lo!=null)o[d]={hi:+hi,lo:+lo,p:D.precipitation_sum?D.precipitation_sum[i]:null}});return o}).catch(()=>null);
- try{
-  const t=window.__worker&&window.__worker.token()?kcTarget():null;
-  if(t){
-   const res=await kcFetch("forecast/"+t.o.lat+"/"+t.o.lon+"/trend14days");
-   if(res.s===200){
-    const j=JSON.parse(res.b),R=kcRows(j);
-    if(R.length){
-     const ks=Object.keys(R[0]);
-     const kd=kcKey(ks,["dateTime","date","day","time"],/date|time|day/i);
-     const kx=kcKey(ks,["tempMax","temperatureMax","maxTemp","tmax","tempMax2m"],/max/i,/wind|gust|prec|prob/i);
-     const kn=kcKey(ks,["tempMin","temperatureMin","minTemp","tmin","tempMin2m"],/min/i,/wind|gust|prec|prob/i);
-     const kp=kcKey(ks,["prec","precSum","precipitation","prec24h","precTotal"],/^prec/i,/prob|chance/i);
-     const kr=kcKey(ks,["precProb","precipitationProbability"],/prob|chance/i);
-     const r=R.map(x=>({d:kcDate(x[kd]),hi:kcNum(x[kx]),lo:kcNum(x[kn]),p:kp?kcNum(x[kp]):null,pr:kr?kcNum(x[kr]):null})).filter(x=>x.d&&x.hi!=null&&x.lo!=null);
-     if(r.length>=8){rows=r.map(x=>({date:new Date(x.d.getTime()+((lastJ&&+lastJ.utc_offset_seconds)||0)*1000).toISOString().slice(0,10),hi:x.hi,lo:x.lo,p:x.p,pr:x.pr,code:null}));src="KachelmannWetter, 14-Tage-Trend"}
-    }
-   }
-  }
- }catch(e){rows=null}
  if(!rows){
   try{
    const tu="https://api.open-meteo.com/v1/forecast?latitude="+(+place.lat).toFixed(3)+"&longitude="+(+place.lon).toFixed(3)+"&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max&forecast_days=14&timezone=auto";
