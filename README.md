@@ -3,6 +3,8 @@
 Persönliche Wetter-App im Stil von WetterOnline, als Webseite auf GitHub Pages:
 https://eliaspp9.github.io/Wetter/
 
+**Version 2.8**: Eigenes Radar für Niederlande, Tschechien, Kanada und Japan (zusätzlich zu USA und Finnland); liegt der Ort dort, startet das Radar gleich damit.
+
 **Version 2.7.1**: In Österreich Temperatur und Wind oben von GeoSphere Austria (INCA, 1 km), Radar Österreich holt neue Läufe sofort, roter Ortspunkt auch auf den Wetterkarten.
 
 **Version 2.7**: Neue Reihenfolge, Warnungen aus ganz Europa und den USA auf Deutsch, eigenes Radar für die USA und Finnland. Dazu ECMWF als Wettermodell, bewegter Himmel oben, Sonne und Mond.
@@ -17,7 +19,8 @@ https://eliaspp9.github.io/Wetter/
 - **Regenradar:**
   - DWD 1 km mit 2 Stunden Radar-Vorhersage.
   - „Weltweit“: in Europa das OPERA-Radar über LibreWXR, Ersatz RainViewer.
-  - „USA“ bzw. „Finnland“: das Radar des jeweiligen Wetterdienstes (NOAA NEXRAD über Iowa Environmental Mesonet, FMI), der Knopf erscheint nur, wenn der Ort dort liegt.
+  - Radar des Landes: USA (NOAA NEXRAD über Iowa Environmental Mesonet, 5 Min.), Finnland (FMI, 5 Min.), Niederlande (KNMI, 5 Min.), Tschechien (ČHMÚ, 5 Min.), Kanada (Environment and Climate Change Canada, Regen und Schnee, 6 Min.) und Japan (JMA, 5 Min., mit 1 Stunde Vorhersage). Der Knopf erscheint nur, wenn der Ort dort liegt, und das Radar startet dann gleich damit (außer „Weltweit“ wurde selbst gewählt).
+  - Geprüft und nicht nutzbar (Stand November 2026): Belgien (RMI sperrt Kartenabrufe), Schweiz, Schweden, Norwegen, Dänemark, Ungarn, Italien (nur Rohdaten oder andere Kartenprojektion), Großbritannien, Frankreich, Spanien (nur mit Schlüssel). Dort und überall sonst gibt es „Weltweit“, in Europa mit dem gemeinsamen Radarbild aller Wetterdienste (EUMETNET OPERA).
   - „Österreich“: INCA-Nowcast von GeoSphere Austria, 1 km, alle 15 Minuten, 3 Stunden voraus. GeoSphere braucht für eine Antwort oft ein paar Sekunden, manchmal eine halbe Minute: die App wartet bis zu 90 Sekunden, zeigt solange einen Hinweis, behält den letzten Stand und versucht es nach einem Fehlschlag in einer Minute wieder. Ein neuer Lauf ist 17 bis 21 Minuten nach seiner Startzeit abrufbar: ab dann schaut die App alle 2 Minuten in der kleinen Beschreibung des Datensatzes (`/metadata`, 1,6 kB) nach und lädt das große Bild erst, wenn dort ein neuerer Lauf steht. „Jetzt“ rückt jede Viertelstunde von selbst weiter. Das erste Bild ist die letzte Messung, danach folgt die Vorhersage.
   - Dazu Blitze (EUMETSAT MTG), Wolken, Warnungen und Niederschlagsart.
   - **Zugbahnen von Gewittern und Starkregen:** starke Zellen werden in den DWD-Radarbildern der letzten 30 Minuten verfolgt, in Österreich zusätzlich mit dem Nowcast von GeoSphere. Linie mit Punkten alle 15 Minuten, Ankunftszeit beim Ort und Alarm.

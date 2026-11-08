@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-Oqb4MzUX4z8jv1tIJQMQ2eJYU6eaBChWzRyGD+/Wmy8=' 'sha256-+CD5i0gDObdMiTFeSjBHM8SvIjSFGtFW+gQH/GdjeWc=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://openwms.fmi.fi; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-TkytPgGFRnYoPQs/etoQAYTon9HqXLqZkICPnXpiscg=' 'sha256-+CD5i0gDObdMiTFeSjBHM8SvIjSFGtFW+gQH/GdjeWc=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -14,9 +14,9 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/favicon-64.png">
-<meta name="app-build" content="40">
-<meta name="app-version" content="2.7.1">
-<meta name="app-notes" content="Version 2.7.1: In Österreich kommen Temperatur und Wind oben jetzt von GeoSphere Austria (INCA, 1 km, aus Messstationen und Gelände). Radar Österreich holt jeden neuen Lauf, sobald er da ist (bisher bis zu einer Viertelstunde später), und „Jetzt“ rückt von selbst weiter. Der rote Ortspunkt ist auf der Temperatur-, Wind- und den anderen Wetterkarten wieder zu sehen.">
+<meta name="app-build" content="41">
+<meta name="app-version" content="2.8">
+<meta name="app-notes" content="Version 2.8: Eigenes Radar jetzt auch für die Niederlande (KNMI), Tschechien (ČHMÚ), Kanada (Regen und Schnee) und Japan (mit 1 Stunde Vorhersage), dazu wie bisher USA und Finnland. Liegt der Ort in einem dieser Länder, startet das Radar gleich mit dem Radar des Landes.">
 <script>/* alte Adresse wetter2.html -> neue Startseite */
 try{if(top!==self)document.documentElement.style.display="none"}catch(e){document.documentElement.style.display="none"}
 window.__redir=/\/wetter2\.html$/i.test(location.pathname);
@@ -926,7 +926,7 @@ html.locked body>*:not(#gate){display:none!important}
 </main>
 
 <footer class="foot">
- <p>Daten: Europäisches Zentrum für mittelfristige Wettervorhersage ECMWF (Vorhersage mit dem Modell IFS und KI-Modell AIFS, über Open-Meteo), Open-Meteo (Radar-Prognose, UV-Index und ICON-D2 des Deutschen Wetterdienstes), KachelmannWetter (stündliche Prognose für freigeschaltete Orte), LibreWXR (Radar weltweit, in Europa mit EUMETNET OPERA, teils NOAA Enterprise Rain Rate), RainViewer (Ersatz-Radar), Deutscher Wetterdienst (RADOLAN-Radar mit Radar-Vorhersage, Messwerte und Warnungen über Bright Sky), GeoSphere Austria (Warnungen und Messwerte), Copernicus CAMS über Open-Meteo (Luft und Pollen), BigDataCloud (Ortsname), EUMETSAT (Blitze vom Wettersatelliten MTG), Messwerte für die Treffer-Statistik von GeoSphere Austria und vom DWD. Temperatur- und Windkarte sowie Bergwetter: ECMWF IFS über Open-Meteo. Nullgrad- und Schneefallgrenze sowie die Vorhersage für die nächsten 2 Stunden: ICON des Deutschen Wetterdienstes über Open-Meteo. Zugbahnen von Gewittern: aus den Bildern des DWD-Radars und dem Nowcast von GeoSphere Austria berechnet. Radar „Österreich“: GeoSphere Austria (INCA-Nowcast, CC BY 4.0). Schneehöhe am Berg: GeoSphere Austria (SNOWGRID, CC BY 4.0). Warnungen anderer Länder: MeteoAlarm (EUMETNET, Regionsgrenzen CC BY 4.0, © EuroGeographics) und National Weather Service (USA), Übersetzung: MyMemory. Radar USA: NOAA NEXRAD über Iowa Environmental Mesonet. Radar Finnland: Ilmatieteen laitos (FMI, CC BY 4.0).</p>
+ <p>Daten: Europäisches Zentrum für mittelfristige Wettervorhersage ECMWF (Vorhersage mit dem Modell IFS und KI-Modell AIFS, über Open-Meteo), Open-Meteo (Radar-Prognose, UV-Index und ICON-D2 des Deutschen Wetterdienstes), KachelmannWetter (stündliche Prognose für freigeschaltete Orte), LibreWXR (Radar weltweit, in Europa mit EUMETNET OPERA, teils NOAA Enterprise Rain Rate), RainViewer (Ersatz-Radar), Deutscher Wetterdienst (RADOLAN-Radar mit Radar-Vorhersage, Messwerte und Warnungen über Bright Sky), GeoSphere Austria (Warnungen und Messwerte), Copernicus CAMS über Open-Meteo (Luft und Pollen), BigDataCloud (Ortsname), EUMETSAT (Blitze vom Wettersatelliten MTG), Messwerte für die Treffer-Statistik von GeoSphere Austria und vom DWD. Temperatur- und Windkarte sowie Bergwetter: ECMWF IFS über Open-Meteo. Nullgrad- und Schneefallgrenze sowie die Vorhersage für die nächsten 2 Stunden: ICON des Deutschen Wetterdienstes über Open-Meteo. Zugbahnen von Gewittern: aus den Bildern des DWD-Radars und dem Nowcast von GeoSphere Austria berechnet. Radar „Österreich“: GeoSphere Austria (INCA-Nowcast, CC BY 4.0). Schneehöhe am Berg: GeoSphere Austria (SNOWGRID, CC BY 4.0). Warnungen anderer Länder: MeteoAlarm (EUMETNET, Regionsgrenzen CC BY 4.0, © EuroGeographics) und National Weather Service (USA), Übersetzung: MyMemory. Radar USA: NOAA NEXRAD über Iowa Environmental Mesonet. Radar Finnland: Ilmatieteen laitos (FMI, CC BY 4.0). Radar Niederlande: KNMI (CC BY 4.0). Radar Tschechien: ČHMÚ. Radar Kanada: Environment and Climate Change Canada (MSC GeoMet). Radar Japan: Japan Meteorological Agency.</p>
  <p>Karten und Bilder: © OpenStreetMap-Mitwirkende, Esri, Maxar, Earthstar Geographics, Sentinel-2 cloudless von EOX. Grenzen und Ortsnamen: Esri, Garmin, HERE. Wolken: Meteosat (EUMETSAT) über den Deutschen Wetterdienst.</p>
  <p>Version <span id="ver"></span></p>
  <p id="login-info"></p>
@@ -1816,15 +1816,52 @@ async function loadRadar(){
 /* ============ Radar des Landes: nur dort, wo ein Wetterdienst sein Radar frei anbietet ============
    USA: NEXRAD-Radarverbund von NOAA über das Iowa Environmental Mesonet (alle 5 Minuten, 50 Minuten zurück).
    Finnland: Radarverbund des Finnischen Meteorologischen Instituts (WMS, alle 5 Minuten, 1 Stunde zurück).
+   Niederlande: KNMI (WMS, alle 5 Minuten). Tschechien: ČHMÚ (Bild in Web-Mercator, alle 5 Minuten).
+   Kanada: Environment and Climate Change Canada (WMS GeoMet, Regen und Schnee, alle 6 Minuten).
+   Japan: Japan Meteorological Agency (Kacheln, alle 5 Minuten, mit 1 Stunde Vorhersage).
+   Geprüft am 8.11.2026 und nicht nutzbar: Belgien (RMI sperrt Kartenabrufe), Schweiz, Schweden, Norwegen, Dänemark,
+   Ungarn, Italien (nur Rohdaten oder fremde Projektion), Großbritannien, Frankreich, Spanien (nur mit Schlüssel).
    Für ganz Europa gibt es zusätzlich das gemeinsame Radarbild unter „Weltweit“ (EUMETNET OPERA). */
+const isoZ=t=>new Date(t*1000).toISOString().replace(".000",""),GEOMET="https://geo.weather.gc.ca/geomet";
 const NATR={
  US:{n:"USA",att:"Radar: NOAA NEXRAD über Iowa Environmental Mesonet",note:"Radar der USA: Radarverbund des US-Wetterdienstes (NOAA NEXRAD), alle 5 Minuten, die letzten 50 Minuten. Bereitgestellt vom Iowa Environmental Mesonet.",
   frames(){const t0=Math.floor(Date.now()/300000)*300-300;return[50,45,40,35,30,25,20,15,10,5,0].map(m=>({time:t0-m*60,m}))},
   layer(f){return L.tileLayer("https://mesonet.agron.iastate.edu/cache/tile.py/1.0.0/nexrad-n0q-900913"+(f.m?"-m"+String(f.m).padStart(2,"0")+"m":"")+"/{z}/{x}/{y}.png",{opacity:0,maxNativeZoom:10,maxZoom:19,zIndex:5,className:"rdr",attribution:this.att})}},
  FI:{n:"Finnland",att:"Radar: Ilmatieteen laitos (FMI), CC BY 4.0",note:"Radar von Finnland: Radarverbund des Finnischen Meteorologischen Instituts (FMI), Regenmenge pro Stunde, alle 5 Minuten, die letzte Stunde.",
   frames(){const t0=Math.floor((Date.now()-7*60000)/300000)*300;return Array.from({length:12},(_,k)=>({time:t0-(11-k)*300}))},
-  layer(f){return L.tileLayer.wms("https://openwms.fmi.fi/geoserver/Radar/wms",{layers:"Radar:suomi_rr_eureffin",format:"image/png",transparent:true,version:"1.3.0",time:new Date(f.time*1000).toISOString().replace(".000",""),opacity:0,maxZoom:19,zIndex:5,className:"rdr",attribution:this.att})}}
+  layer(f){return L.tileLayer.wms("https://openwms.fmi.fi/geoserver/Radar/wms",{layers:"Radar:suomi_rr_eureffin",format:"image/png",transparent:true,version:"1.3.0",time:isoZ(f.time),opacity:0,maxZoom:19,zIndex:5,className:"rdr",attribution:this.att})}},
+ NL:{n:"Niederlande",att:"Radar: KNMI, CC BY 4.0",note:"Radar der Niederlande: Radarverbund des Königlich Niederländischen Meteorologischen Instituts (KNMI), Niederschlag, 1 km, alle 5 Minuten, die letzte Stunde.",
+  frames(){const t0=Math.floor((Date.now()-6*60000)/300000)*300;return Array.from({length:12},(_,k)=>({time:t0-(11-k)*300}))},
+  layer(f){return L.tileLayer.wms("https://geoservices.knmi.nl/adagucserver?dataset=RADAR",{layers:"RAD_NL25_PCP_CM",styles:"precip-blue-transparent/nearest",format:"image/png",transparent:true,version:"1.3.0",time:isoZ(f.time),opacity:0,maxZoom:19,zIndex:5,className:"rdr",attribution:this.att})}},
+ CZ:{n:"Tschechien",att:"Radar: ČHMÚ (opendata.chmi.cz)",fnote:"Das Radarbild von ČHMÚ deckt Tschechien und die Grenzgebiete ab.",
+  note:"Radar von Tschechien: Radarverbund des Tschechischen Hydrometeorologischen Instituts (ČHMÚ), stärkstes Echo in der Säule, 1 km, alle 5 Minuten, die letzte Stunde.",
+  frames(){const t0=Math.floor((Date.now()-4*60000)/300000)*300;return Array.from({length:12},(_,k)=>({time:t0-(11-k)*300}))},
+  /* fertiges Bild in Web-Mercator mit festen Ecken (laut ČHMÚ: 11,267–20,770° O, 48,047–52,167° N) */
+  layer(f){const d=new Date(f.time*1000),p=n=>String(n).padStart(2,"0"),st=d.getUTCFullYear()+p(d.getUTCMonth()+1)+p(d.getUTCDate())+"."+p(d.getUTCHours())+p(d.getUTCMinutes());
+   return L.imageOverlay("https://opendata.chmi.cz/meteorology/weather/radar/composite/maxz/png/pacz2gmaps3.z_max3d."+st+".0.png",[[48.047,11.267],[52.167,20.770]],{pane:"tilePane",zIndex:5,opacity:0,className:"rdr",interactive:false,attribution:this.att})}},
+ CA:{n:"Kanada",att:"Radar: Environment and Climate Change Canada (MSC GeoMet)",note:"Radar von Kanada: Radarverbund von Environment and Climate Change Canada, Regen und Schnee, 1 km, alle 6 Minuten, die letzte Stunde.",
+  async frames(){
+   let end=0;
+   try{const r=await tfetch(GEOMET+"?service=WMS&version=1.3.0&request=GetCapabilities&layer=RADAR_1KM_RRAI",undefined,12000),x=await r.text(),m=x.match(/<Dimension name="time"[^>]*>[^<\/]*\/(\d{4}-\d\d-\d\dT\d\d:\d\d:\d\dZ)\/PT6M/);if(m)end=Date.parse(m[1])/1000}catch(e){}
+   if(!end||end>Date.now()/1000+60)end=Math.floor((Date.now()-7*60000)/360000)*360;
+   return Array.from({length:11},(_,k)=>({time:end-(10-k)*360}))},
+  /* Regen und Schnee sind zwei Ebenen; zusammen in einer Gruppe, die sich wie eine Ebene ein- und ausblenden lässt */
+  layer(f){const o={format:"image/png",transparent:true,version:"1.3.0",time:isoZ(f.time),opacity:0,maxZoom:19,zIndex:5,className:"rdr",attribution:this.att},
+   g=L.layerGroup([L.tileLayer.wms(GEOMET,Object.assign({layers:"RADAR_1KM_RRAI"},o)),L.tileLayer.wms(GEOMET,Object.assign({layers:"RADAR_1KM_RSNO"},o))]);
+   g.setOpacity=function(v){this.eachLayer(l=>l.setOpacity(v));return this};return g}},
+ JP:{n:"Japan",att:"Radar: Japan Meteorological Agency (JMA)",note:"Radar von Japan: Niederschlags-Nowcast des japanischen Wetterdienstes (JMA), alle 5 Minuten, die letzte Stunde. Nach „Jetzt“ folgt die Vorhersage des JMA für eine Stunde.",
+  async frames(){
+   const B="https://www.jma.go.jp/bosai/jmatile/data/nowc/",[a,b]=await Promise.all([getJ(B+"targetTimes_N1.json",12000),getJ(B+"targetTimes_N2.json",12000).catch(()=>[])]);
+   const ok=x=>x&&/^\d{14}$/.test(x.basetime)&&/^\d{14}$/.test(x.validtime)&&(x.elements||[]).indexOf("hrpns")>=0;
+   const ts=v=>Date.UTC(+v.slice(0,4),+v.slice(4,6)-1,+v.slice(6,8),+v.slice(8,10),+v.slice(10,12))/1000;
+   const fr=x=>({time:ts(x.validtime),b:x.basetime,v:x.validtime});
+   const past=(Array.isArray(a)?a:[]).filter(x=>ok(x)&&x.basetime===x.validtime).map(fr).sort((p,q)=>p.time-q.time).slice(-12);
+   if(!past.length)throw new Error("leer");
+   const t1=past[past.length-1].time,bl=(Array.isArray(b)?b:[]).filter(ok),nb=bl.reduce((m,x)=>x.basetime>m?x.basetime:m,"");
+   return past.concat(bl.filter(x=>x.basetime===nb).map(fr).filter(x=>x.time>t1).sort((p,q)=>p.time-q.time))},
+  layer(f){return L.tileLayer("https://www.jma.go.jp/bosai/jmatile/data/nowc/"+f.b+"/none/"+f.v+"/surf/hrpns/{z}/{x}/{y}.png",{opacity:0,minNativeZoom:4,maxNativeZoom:10,maxZoom:19,zIndex:5,className:"rdr",attribution:this.att})}}
 };
+let natAuto="";
 let natFor="",natLast=0;
 function ccNow(){
  const k=(+place.lat).toFixed(2)+","+(+place.lon).toFixed(2);
@@ -1836,26 +1873,33 @@ function natUpdate(){
  const b=$("natbtn");if(!b||!map)return;
  const cc=ccNow(),c=NATR[cc];
  b.hidden=!c;if(c)b.textContent=c.n;
+ /* neuer Ort im Land: gleich das Radar des Landes zeigen (statt „Weltweit“ oder einem Nachbarradar, das nur die
+    Grenzgebiete abdeckt), außer „Weltweit“ wurde selbst gewählt */
+ if(c&&(mode==="rv"||mode==="dwd"||mode==="at")&&natAuto!==PK()){natAuto=PK();let um=null;try{um=localStorage.getItem("wetter-mode")}catch(e){}if(um!=="rv"){setMode("nat");return}}
  if(mode!=="nat")return;
  if(!c){const la=+place.lat,lo=+place.lon;setMode(dwCovered(la,lo)?"dwd":atCovered(la,lo)?"at":"rv");return}
  if(natFor!==cc){natLast=0;loadNat()}
 }
-function loadNat(){
+let natSeq=0;
+async function loadNat(){
  if(!map||mode!=="nat")return;
  const cc=ccNow(),c=NATR[cc];if(!c)return;
  if(natFor===cc&&Date.now()-natLast<4*60000&&layers.length)return;
- natFor=cc;natLast=Date.now();
+ natFor=cc;natLast=Date.now();const my=++natSeq;
+ let F;
+ try{F=await c.frames()}catch(e){console.error(e);if(my===natSeq&&mode==="nat"){natLast=Date.now()-3*60000;$("mnote").textContent="Das Radar von "+c.n+" konnte gerade nicht geladen werden. Unter „Weltweit“ gibt es das gemeinsame Radarbild."}return}
+ if(my!==natSeq||mode!=="nat"||ccNow()!==cc||!F||!F.length)return;
  const wasPlaying=!!timer;if(timer)toggle();
  hideFc();exReset();
  layers.forEach(l=>{try{map.removeLayer(l)}catch(e){}l._wOn=0});
- const F=c.frames(),now=Date.now()/1000;
+ const now=Date.now()/1000;
  frames=F.map(f=>({time:f.time,nat:1}));
  pastCount=Math.max(1,frames.filter(f=>f.time<=now+60).length);
  layers=F.map(f=>c.layer(f));
  idx=0;$("sl").max=Math.max(0,frames.length-1);placeTick();
  show(pastCount-1);
- $("mnote").textContent=c.note;freshNote(F[F.length-1].time);
- $("fnote").textContent="Die Zeiten sind auf 5 Minuten gerundet.";
+ $("mnote").textContent=c.note;freshNote(F[pastCount-1].time);
+ $("fnote").textContent=c.fnote||(cc==="US"?"Die Zeiten sind auf 5 Minuten gerundet.":"");
  if(wasPlaying||(wallOn&&wallPlay()))toggle();
 }
 
