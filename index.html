@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-TkytPgGFRnYoPQs/etoQAYTon9HqXLqZkICPnXpiscg=' 'sha256-+CD5i0gDObdMiTFeSjBHM8SvIjSFGtFW+gQH/GdjeWc=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-ERAtJi9HVPZRW2f2H9gt8yICf9BVakLxJyY1T4PhXNk=' 'sha256-+CD5i0gDObdMiTFeSjBHM8SvIjSFGtFW+gQH/GdjeWc=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -14,9 +14,9 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/favicon-64.png">
-<meta name="app-build" content="41">
-<meta name="app-version" content="2.8">
-<meta name="app-notes" content="Version 2.8: Eigenes Radar jetzt auch für die Niederlande (KNMI), Tschechien (ČHMÚ), Kanada (Regen und Schnee) und Japan (mit 1 Stunde Vorhersage), dazu wie bisher USA und Finnland. Liegt der Ort in einem dieser Länder, startet das Radar gleich mit dem Radar des Landes.">
+<meta name="app-build" content="42">
+<meta name="app-version" content="2.8.1">
+<meta name="app-notes" content="Version 2.8.1: Die Kachel unter dem Kopf heißt jetzt so, wie das Wetter in den nächsten 2 Stunden wird: Sonne, Sonne und Wolken, Klarer Himmel, Ein paar Wolken, Wolken, Nebel, Regen, Schnee, Schneeregen oder Gewitter – mit passendem Symbol.">
 <script>/* alte Adresse wetter2.html -> neue Startseite */
 try{if(top!==self)document.documentElement.style.display="none"}catch(e){document.documentElement.style.display="none"}
 window.__redir=/\/wetter2\.html$/i.test(location.pathname);
@@ -613,6 +613,18 @@ html.noscroll .mini,html.noscroll .tabs{display:none}
 .ch h2::after{content:"";position:absolute;left:6px;top:50%;width:18px;height:18px;margin-top:-9px;background:var(--hc,var(--accent));-webkit-mask:var(--hi) center/contain no-repeat;mask:var(--hi) center/contain no-repeat}
 #h-warn{--hc:#E8590C;--hi:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222.1%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M12 3.5l9.5 16.5h-19z%22/%3E%3Cpath d=%22M12 10v4.5M12 17.5v.01%22/%3E%3C/svg%3E")}
 #h-now{--hc:#2F6FE4;--hi:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222.1%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M12 3.5c3.4 4.4 5.8 7.3 5.8 10.6a5.8 5.8 0 0 1-11.6 0c0-3.3 2.4-6.2 5.8-10.6z%22/%3E%3C/svg%3E")}
+/* Die nächsten 2 Stunden: Symbol und Farbe passend zum Wetter; lange Titel gleichmäßig auf zwei Zeilen */
+#h-now{text-wrap:balance}
+#h-now.k-sun{--hc:#F08A24;--hi:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222.1%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Ccircle cx=%2212%22 cy=%2212%22 r=%224%22/%3E%3Cpath d=%22M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6%22/%3E%3C/svg%3E")}
+#h-now.k-pcd{--hc:#E8930C;--hi:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222.1%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M8 2.8v1.4M2.8 8h1.4M4.3 4.3l1 1M11.7 4.3l-1 1%22/%3E%3Cpath d=%22M5.3 10.6a3.4 3.4 0 0 1 5.9-3.3%22/%3E%3Cpath d=%22M8.8 20.5h8.7a3.6 3.6 0 0 0 .3-7.2 5.2 5.2 0 0 0-9.9 1.4 2.9 2.9 0 0 0 .9 5.8z%22/%3E%3C/svg%3E")}
+#h-now.k-moon{--hc:#6E7FD6;--hi:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222.1%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M19.5 14.6A8 8 0 1 1 9.4 4.5a6.3 6.3 0 0 0 10.1 10.1z%22/%3E%3C/svg%3E")}
+#h-now.k-pcn{--hc:#6E7FD6;--hi:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222.1%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M10.6 3.6a4.6 4.6 0 0 0-5.9 6.3 4.4 4.4 0 0 0 4.4 1.2%22/%3E%3Cpath d=%22M8.8 20.5h8.7a3.6 3.6 0 0 0 .3-7.2 5.2 5.2 0 0 0-9.9 1.4 2.9 2.9 0 0 0 .9 5.8z%22/%3E%3C/svg%3E")}
+#h-now.k-cloud{--hc:#64748B;--hi:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222.1%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M7 19h10.3a4.2 4.2 0 0 0 .5-8.4 6.2 6.2 0 0 0-11.9 1.7A3.6 3.6 0 0 0 7 19z%22/%3E%3C/svg%3E")}
+#h-now.k-fog{--hc:#64748B;--hi:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222.1%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M4 8h16M3 12h18M5 16h14M8 20h8%22/%3E%3C/svg%3E")}
+#h-now.k-rain{--hc:#2F6FE4;--hi:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222.1%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M12 3.5c3.4 4.4 5.8 7.3 5.8 10.6a5.8 5.8 0 0 1-11.6 0c0-3.3 2.4-6.2 5.8-10.6z%22/%3E%3C/svg%3E")}
+#h-now.k-mix{--hc:#5E6AD2;--hi:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222.1%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M12 3.5c3.4 4.4 5.8 7.3 5.8 10.6a5.8 5.8 0 0 1-11.6 0c0-3.3 2.4-6.2 5.8-10.6z%22/%3E%3C/svg%3E")}
+#h-now.k-snow{--hc:#7C5CE6;--hi:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222.1%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M12 3v18M4.2 7.5l15.6 9M4.2 16.5l15.6-9M9.6 4.6 12 7l2.4-2.4M9.6 19.4 12 17l2.4 2.4%22/%3E%3C/svg%3E")}
+#h-now.k-storm{--hc:#E8590C;--hi:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222.1%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M13.2 2.5 5.8 13.4h5.6l-1 8.1 7.8-11.4h-5.7l.7-7.6z%22/%3E%3C/svg%3E")}
 #h-ice{--hc:#7C5CE6;--hi:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222.1%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M12 2.5v19M3.8 7.2l16.4 9.6M20.2 7.2 3.8 16.8M9.3 4 12 6.5 14.7 4M9.3 20l2.7-2.5 2.7 2.5%22/%3E%3C/svg%3E")}
 #h-radar{--hc:var(--accent);--hi:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222.1%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Ccircle cx=%2212%22 cy=%2212%22 r=%229%22/%3E%3Ccircle cx=%2212%22 cy=%2212%22 r=%224.5%22/%3E%3Cpath d=%22M12 12l6.3-6.3%22/%3E%3C/svg%3E")}
 #h-obs{--hc:#0CA678;--hi:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222.1%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M14 14.8V5a2 2 0 0 0-4 0v9.8a4 4 0 1 0 4 0z%22/%3E%3Cpath d=%22M12 11v6%22/%3E%3C/svg%3E")}
@@ -805,7 +817,7 @@ html.locked body>*:not(#gate){display:none!important}
   </section>
 
   <section class="card s-now" id="sec-now" aria-labelledby="h-now">
-   <div class="ch"><h2 id="h-now">Regen in den nächsten 2 Stunden</h2></div>
+   <div class="ch"><h2 id="h-now">Die nächsten 2 Stunden</h2></div>
    <p class="say1" id="say1">Wird geladen …</p><p class="say2" id="say2"></p>
    <div id="nc"></div>
   </section>
@@ -1208,6 +1220,14 @@ function heroStats(){
   (W!=null?it(I_WIND(WD),Math.round(W)+" km/h","Wind"+(WD!=null?" "+compass(WD):"")):"")+
   (pp!=null?it(I_DROP,Math.round(pp)+" %","Regenrisiko"):"");
 }
+const NOWT={rain:"Regen",snow:"Schnee",mix:"Schneeregen",storm:"Gewitter",sun:"Sonne",pcd:"Sonne und Wolken",moon:"Klarer Himmel",pcn:"Ein paar Wolken",cloud:"Wolken",fog:"Nebel"};
+/* Himmel jetzt (ohne Niederschlag): wie das Symbol oben, bei Kachelmann nach dessen Bewölkung */
+function skyNow(c){
+ const day=c.is_day==null?1:c.is_day;
+ if(c.weather_code===45||c.weather_code===48)return"fog";
+ if(kcActive()){const x=kcAt(Date.now())||{},d=x.D!=null?x.D:!!day;if(x.C!=null)return x.C>=75?"cloud":x.C>=30?(d?"pcd":"pcn"):(d?"sun":"moon")}
+ const k=kind(c.weather_code,!!day);return k==="rain"||k==="snow"||k==="storm"?"cloud":k;
+}
 /* Der Satz oben: zuerst die 15-Minuten-Vorschau, danach die Stundenprognose */
 let ncState=null;
 function heroSay(){
@@ -1216,18 +1236,18 @@ function heroSay(){
  const s0=H.time.findIndex(t=>t>=c.time.slice(0,13)+":00"),s=s0<0?0:s0;
  const SUB={rain:"Nimm einen Schirm mit.",snow:"Es kann glatt werden.",mix:"Es kann glatt werden."};
  const SNOWC_=[71,73,75,77,85,86];
- let a,b="";
+ let a,b="",tk="";
  let storm=-1;for(let k=0;k<6;k++){const w=H.weather_code?H.weather_code[s+k]:null;if(w!=null&&w>=95){storm=k;break}}
- if(c.weather_code>=95){a="Gewitter in der Nähe.";b="Bleib bei Blitz und Donner drinnen."}
- else if(n&&n.wet0){a={rain:"Es regnet.",snow:"Es schneit.",mix:"Es fällt Schneeregen."}[n.ty0]||"Es regnet.";b=n.end<0?"Das hält noch mindestens 2 Stunden an.":"Ab etwa "+n.tEnd+" Uhr wird es trocken."}
- else if(n&&n.first>=0){a="Ab "+n.tFirst+" "+({rain:"regnet es.",snow:"schneit es.",mix:"kommt Schneeregen."}[n.tyF]||"regnet es.");b=SUB[n.tyF]||SUB.rain}
- else if(storm>=0&&H.time[s+storm]){a="Ab etwa "+(+H.time[s+storm].slice(11,13))+" Uhr sind Gewitter möglich.";b="Behalte das Radar im Blick."}
+ if(c.weather_code>=95){a="Gewitter in der Nähe.";b="Bleib bei Blitz und Donner drinnen.";tk="storm"}
+ else if(n&&n.wet0){a={rain:"Es regnet.",snow:"Es schneit.",mix:"Es fällt Schneeregen."}[n.ty0]||"Es regnet.";b=n.end<0?"Das hält noch mindestens 2 Stunden an.":"Ab etwa "+n.tEnd+" Uhr wird es trocken.";tk=n.ty0||"rain"}
+ else if(n&&n.first>=0){a="Ab "+n.tFirst+" "+({rain:"regnet es.",snow:"schneit es.",mix:"kommt Schneeregen."}[n.tyF]||"regnet es.");b=SUB[n.tyF]||SUB.rain;tk=n.tyF||"rain"}
+ else if(storm>=0&&H.time[s+storm]){a="Ab etwa "+(+H.time[s+storm].slice(11,13))+" Uhr sind Gewitter möglich.";b="Behalte das Radar im Blick.";if(storm<=1)tk="storm"}
  else if(kcActive()){
   const t0=Date.now()+(n?2*3600000:0),rows=kcDaily.h1.filter(x=>x.d.getTime()>=t0-1800000&&x.d.getTime()<=Date.now()+12*3600000);
   const r=rows.find(x=>x.P!=null&&x.P>=0.3);
   const cx=kcAt(Date.now())||{},day=cx.D!=null?cx.D:!!(c.is_day==null?1:c.is_day);
-  if(r&&r.d.getTime()-Date.now()<3600000){a="Es kann jederzeit regnen.";b=SUB.rain}
-  else if(r){const sn=r.T!=null&&r.T<=0.5;a="Bis "+r.d.getHours()+" Uhr bleibt es trocken.";b=sn?"Danach kann es schneien.":"Danach wird Regen wahrscheinlich."}
+  if(r&&r.d.getTime()-Date.now()<3600000){a="Es kann jederzeit regnen.";b=SUB.rain;tk=r.T!=null&&r.T<=0.5?"snow":"rain"}
+  else if(r){const sn=r.T!=null&&r.T<=0.5;a="Bis "+r.d.getHours()+" Uhr bleibt es trocken.";b=sn?"Danach kann es schneien.":"Danach wird Regen wahrscheinlich.";if(r.d.getTime()-Date.now()<2*3600000)tk=sn?"snow":"rain"}
   else{a=day?"Es bleibt trocken.":"Die Nacht bleibt trocken.";b=cx.C!=null?(cx.C>=75?"Bewölkt, aber ohne Regen.":cx.C>=30?(day?"Mal Sonne, mal Wolken.":"Ein paar Wolken."):(day?"Viel Sonne.":"Der Himmel ist klar.")):"Kein Regen in Sicht."}
  }
  else{
@@ -1236,8 +1256,8 @@ function heroSay(){
    const pv=H.precipitation?H.precipitation[s+k]:null,pr=H.precipitation_probability?H.precipitation_probability[s+k]:0,code=H.weather_code?H.weather_code[s+k]:0;
    if((pv!=null&&pv>=0.3)||(pr>=60&&code>=51)){w=k;break}
   }
-  if(w===0){a="Es kann jederzeit regnen.";b=SUB.rain}
-  else if(w>0){const snowy=SNOWC_.includes(H.weather_code[s+w]);a="Bis "+(+H.time[s+w].slice(11,13))+" Uhr bleibt es trocken.";b=snowy?"Danach kann es schneien.":"Danach wird Regen wahrscheinlich."}
+  if(w===0){a="Es kann jederzeit regnen.";b=SUB.rain;tk=SNOWC_.includes(H.weather_code[s])?"snow":"rain"}
+  else if(w>0){const snowy=SNOWC_.includes(H.weather_code[s+w]);a="Bis "+(+H.time[s+w].slice(11,13))+" Uhr bleibt es trocken.";b=snowy?"Danach kann es schneien.":"Danach wird Regen wahrscheinlich.";if(w===1)tk=snowy?"snow":"rain"}
   else{
    const day=c.is_day==null?1:c.is_day,code=c.weather_code;
    if(code===45||code===48){a="Es ist neblig.";b="Die Sicht ist eingeschränkt."}
@@ -1246,6 +1266,9 @@ function heroSay(){
  }
  if(c.wind_gusts_10m!=null&&c.wind_gusts_10m>=60&&!(n&&(n.wet0||n.first>=0))&&c.weather_code<95)b="Böen bis "+Math.round(c.wind_gusts_10m)+" km/h.";
  $("say1").textContent=a;$("say2").textContent=b;
+ /* Titel der Kachel: bei Regen, Schnee oder Gewitter in den nächsten 2 Stunden das, sonst wie der Himmel gerade ist */
+ if(!tk)tk=skyNow(c);
+ const ht=$("h-now");if(ht){ht.textContent=(NOWT[tk]||"Wetter")+" in den nächsten 2\u00a0Stunden";ht.className="k-"+tk}
  checkAlarm();
 }
 function smooth(p){

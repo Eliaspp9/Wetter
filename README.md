@@ -3,6 +3,8 @@
 Persönliche Wetter-App im Stil von WetterOnline, als Webseite auf GitHub Pages:
 https://eliaspp9.github.io/Wetter/
 
+**Version 2.8.1**: Titel der 2-Stunden-Kachel richtet sich nach dem Wetter (Sonne, Wolken, Regen, Schnee …).
+
 **Version 2.8**: Eigenes Radar für Niederlande, Tschechien, Kanada und Japan (zusätzlich zu USA und Finnland); liegt der Ort dort, startet das Radar gleich damit.
 
 **Version 2.7.1**: In Österreich Temperatur und Wind oben von GeoSphere Austria (INCA, 1 km), Radar Österreich holt neue Läufe sofort, roter Ortspunkt auch auf den Wetterkarten.
@@ -29,7 +31,7 @@ https://eliaspp9.github.io/Wetter/
   - Jetzt und Stunde für Stunde 2 Tage voraus, mit Abspielen.
   - Tippen auf die Karte zeigt die genauen Werte an der Stelle.
 - **Vorhersage:**
-  - Regen in den nächsten 2 Stunden.
+  - Die nächsten 2 Stunden: der Titel zeigt, was kommt (Regen, Schnee, Schneeregen, Gewitter) oder sonst, wie der Himmel gerade ist (Sonne, Sonne und Wolken, Klarer Himmel, Ein paar Wolken, Wolken, Nebel), jeweils mit passendem Symbol.
   - Nächste 24 Stunden.
   - 7 Tage zum Aufklappen und Trend bis 14 Tage: überall vom ECMWF-Modell. Kachelmann gibt es an deinen Kachelmann-Standorten für das Wetter jetzt und die nächsten 24 Stunden.
   - Beim Trend das KI-Modell AIFS zum Vergleich.
