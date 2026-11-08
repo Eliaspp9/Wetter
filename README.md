@@ -43,8 +43,10 @@ https://eliaspp9.github.io/Wetter/
   - Kachel mit einem Knopf ein- und ausblendbar.
   - Hinweis bei Inversion (oben wärmer als im Tal, oft Nebel unten und Sonne oben).
 - **Luft und Pollen**, Details mit Wind, UV, Sonne und Nullgradgrenze.
+- **Sonne und Mond:** Sonnenbogen mit Auf- und Untergang, dazu Mondphase als Bild, wie viel beleuchtet ist, Mondauf- und -untergang und die nächsten Termine für Neumond und Vollmond (eigene Rechnung, genau auf wenige Minuten bzw. Stunden).
 - **Wandanzeige fürs Tablet:**
   - Uhr, Wetter, großes Radar, Stunden und 7 Tage ohne Scrollen.
+  - Warnungen übersichtlich im Kopf: Art, Stufe (farbig) und wie lange sie gilt, dazu Glätte- und Frosthinweis. Ohne Warnung steht „Keine Warnungen“.
   - Die Knöpfe über der Karte blenden nach 4 Sekunden aus (auch am Handy), Antippen holt sie zurück.
   - Nachtanzeige von 22 bis 6 Uhr: große, gedämpfte Uhr, Temperatur und Hinweise; Antippen zeigt alles. Abschaltbar.
   - Bildschirm bleibt an.

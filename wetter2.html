@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-rSLr3kzK+m+LbKrxC1/FFaTCRPWN/iWUZ0wB9QvvUl8=' 'sha256-F1lreOLy84+sYAZwCiC5OGOTDcovKCCQAYSwbz7Ocq8=' https://unpkg.com https://cdnjs.cloudflare.com; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-kZ1ihuwXuZXiGhNHcoC1Uwwx01mW2at6xHbJXaQYuYU=' 'sha256-F1lreOLy84+sYAZwCiC5OGOTDcovKCCQAYSwbz7Ocq8=' https://unpkg.com https://cdnjs.cloudflare.com; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -14,9 +14,9 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/favicon-64.png">
-<meta name="app-build" content="36">
-<meta name="app-version" content="2.5.1">
-<meta name="app-notes" content="Version 2.5.1: Die 7 Tage und der 14-Tage-Trend kommen jetzt überall vom ECMWF-Modell. Kachelmann bleibt an deinen Kachelmann-Standorten für das Wetter jetzt und die nächsten 24 Stunden.">
+<meta name="app-build" content="37">
+<meta name="app-version" content="2.6">
+<meta name="app-notes" content="Version 2.6: Bei der Sonne steht jetzt auch der Mond: Mondphase mit Bild, wie viel beleuchtet ist, Auf- und Untergang und wann der nächste Neumond und Vollmond ist. Die Wandanzeige zeigt Warnungen übersichtlich mit Stufe, Dauer und Warndienst.">
 <script>/* alte Adresse wetter2.html -> neue Startseite */
 try{if(top!==self)document.documentElement.style.display="none"}catch(e){document.documentElement.style.display="none"}
 window.__redir=/\/wetter2\.html$/i.test(location.pathname);
@@ -295,8 +295,16 @@ html.wall .deg{font-size:34px}
 html.wall .hstats{margin-top:10px}
 html.wall .hsrc{display:none}
 html.wall .st{padding:4px 9px 4px 7px;gap:6px}html.wall .st svg{width:17px;height:17px}html.wall .st b{font-size:13.5px}
-html.wall .wchips{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-top:8px}
-.wchips span{font-size:12.5px;font-weight:600;padding:3px 10px;border-radius:999px;background:rgba(255,255,255,.22);color:#fff}
+html.wall .wchips{display:flex;flex-direction:column;gap:5px;width:100%;max-width:460px;margin:10px auto 0;text-align:left}
+.wchips .ww{display:flex;align-items:center;gap:9px;padding:5px 11px 5px 8px;border-radius:12px;background:rgba(8,14,26,.3);border:1px solid rgba(255,255,255,.12);border-left:4px solid var(--wc,rgba(255,255,255,.55))}
+.wchips .ww>svg{width:21px;height:21px;flex:none;color:var(--wc,#fff)}
+.wchips .ww>div{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:8px;min-width:0}
+.wchips .ww b{font-size:14px;font-weight:600;line-height:1.3}
+.wchips .ww span{font-size:12.5px;opacity:.86;line-height:1.3;font-variant-numeric:tabular-nums}
+.wchips .ww.hint b{font-size:13.5px}
+.wchips .wok{display:inline-flex;align-self:center;align-items:center;gap:6px;font-size:12.5px;font-weight:600;padding:3px 11px 3px 8px;border-radius:999px;background:rgba(255,255,255,.16)}
+.wchips .wok svg{width:16px;height:16px}
+.wchips .wmore{font-size:12px;opacity:.8;text-align:center}
 html.wall .grid>.s-radar{display:flex;flex-direction:column;grid-area:1/2/4/3;min-height:0;position:static;margin:0}
 html.wall .s-radar .ch{margin-bottom:8px}
 html.wall .s-radar .mapwrap{flex:1;min-height:0}
@@ -485,6 +493,12 @@ html.wall .upd{bottom:14px}
 .warr{width:22px;height:22px;color:var(--accent)}
 .sunarc{width:100%;max-width:240px;display:block}
 .sun-t{display:flex;justify-content:space-between;max-width:240px;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.sm{display:flex;flex-wrap:wrap;align-items:center;gap:14px 26px}
+.sm-s{flex:1 1 200px;max-width:260px}
+.sm-m{flex:1 1 210px;display:flex;align-items:center;gap:14px}
+.sm-m>svg{width:58px;height:58px;flex:none;filter:drop-shadow(0 0 9px rgba(244,240,220,.35))}
+.sm-m b{display:block;font-size:15.5px;font-weight:600;line-height:1.3}
+.sm-m span{display:block;font-size:13px;color:var(--muted);line-height:1.45;font-variant-numeric:tabular-nums}
 
 /* Radar */
 .mapwrap{position:relative;border-radius:14px;overflow:hidden;background:#1a2438;margin:0 -4px}
@@ -1053,7 +1067,7 @@ function tcol(t){
 /* ============ Zustand ============ */
 let place={name:"Wien",lat:48.2082,lon:16.3738},follow=true;
 let lastJ=null,kcDaily={},openDays=new Set();
-let warnList=[],alarmKey="",iceState=null,wallOn=false,skill=null;
+let warnList=[],warnOk=false,alarmKey="",iceState=null,wallOn=false,skill=null;
 let map,marker,mode="rv",frames=[],layers=[],idx=0,timer=null,host="",pastCount=0,dwd;
 
 /* ============ Wetter laden und anzeigen ============ */
@@ -1312,6 +1326,58 @@ function dayDetail(i){
  const note=mdl==="ECMWF"?"Wettermodell ECMWF IFS (über Open-Meteo).":"Wettermodelle über Open-Meteo.";
  return'<div class="dd-sum">'+parts.join("")+"</div>"+(body?'<table class="kc-tab"><tr><th>Uhrzeit</th><th></th><th>Temp.</th><th>Regen</th><th>Wind</th></tr>'+body+"</table>":'<p class="muted">Für diesen Tag liegen keine Details vor.</p>')+'<p class="dd-src">Quelle: '+note+"</p>";
 }
+/* Mond: Phase, Beleuchtung, Auf- und Untergang (vereinfachte Formeln nach Meeus, wie in SunCalc; genau auf wenige Minuten) */
+const MR=Math.PI/180,MJ=d=>d/864e5-0.5+2440588-2451545,MOB=MR*23.4397;
+const mRa=(l,b)=>Math.atan2(Math.sin(l)*Math.cos(MOB)-Math.tan(b)*Math.sin(MOB),Math.cos(l));
+const mDec=(l,b)=>Math.asin(Math.sin(b)*Math.cos(MOB)+Math.cos(b)*Math.sin(MOB)*Math.sin(l));
+function sunEq(d){const M=MR*(357.5291+0.98560028*d),C=MR*(1.9148*Math.sin(M)+0.02*Math.sin(2*M)+0.0003*Math.sin(3*M)),L=M+C+MR*102.9372+Math.PI;return{ra:mRa(L,0),dec:mDec(L,0)}}
+function moonEq(d){const L=MR*(218.316+13.176396*d),M=MR*(134.963+13.064993*d),F=MR*(93.272+13.229350*d),l=L+MR*6.289*Math.sin(M),b=MR*5.128*Math.sin(F);return{ra:mRa(l,b),dec:mDec(l,b),dist:385001-20905*Math.cos(M)}}
+function moonAlt(t,lat,lon){const d=MJ(t),c=moonEq(d),H=MR*(280.16+360.9856235*d)+MR*lon-c.ra,p=MR*lat;let h=Math.asin(Math.sin(p)*Math.sin(c.dec)+Math.cos(p)*Math.cos(c.dec)*Math.cos(H));return h+MR*0.017/Math.tan(h+MR*10.26/(h+MR*5.10))}
+/* Anteil beleuchtet (0–1) und Phase (0 Neumond, 0,25 erstes Viertel, 0,5 Vollmond, 0,75 letztes Viertel) */
+function moonIll(t){const d=MJ(t),s=sunEq(d),m=moonEq(d),sd=149598000,phi=Math.acos(Math.sin(s.dec)*Math.sin(m.dec)+Math.cos(s.dec)*Math.cos(m.dec)*Math.cos(s.ra-m.ra)),inc=Math.atan2(sd*Math.sin(phi),m.dist-sd*Math.cos(phi)),ang=Math.atan2(Math.cos(s.dec)*Math.sin(s.ra-m.ra),Math.sin(s.dec)*Math.cos(m.dec)-Math.cos(s.dec)*Math.sin(m.dec)*Math.cos(s.ra-m.ra));return{f:(1+Math.cos(inc))/2,p:.5+.5*inc*(ang<0?-1:1)/Math.PI}}
+/* Auf- und Untergang zwischen t0 und t0+24 h */
+function moonRS(t0,lat,lon){
+ const hc=.133*MR,ha=x=>moonAlt(t0+x*3600000,lat,lon)-hc;
+ let h0=ha(0),rise=null,set=null;
+ for(let i=1;i<=24;i+=2){
+  const h1=ha(i),h2=ha(i+1),a=(h0+h2)/2-h1,b=(h2-h0)/2,xe=-b/(2*a),ye=(a*xe+b)*xe+h1,dd=b*b-4*a*h1;let n=0,x1=0,x2=0;
+  if(dd>=0){const dx=Math.sqrt(dd)/(Math.abs(a)*2);x1=xe-dx;x2=xe+dx;if(Math.abs(x1)<=1)n++;if(Math.abs(x2)<=1)n++;if(x1<-1)x1=x2}
+  if(n===1){if(h0<0)rise=i+x1;else set=i+x1}else if(n===2){rise=i+(ye<0?x2:x1);set=i+(ye<0?x1:x2)}
+  if(rise!=null&&set!=null)break;h0=h2;
+ }
+ return{rise:rise!=null?t0+rise*3600000:null,set:set!=null?t0+set*3600000:null};
+}
+/* nächster Zeitpunkt, an dem die Phase einen Wert erreicht (0 = Neumond, 0,5 = Vollmond) */
+function moonNext(t,target){
+ const g=x=>{let v=moonIll(x).p-target;return v-Math.round(v)};
+ let a=t,ga=g(a);
+ for(let k=0;k<130;k++){const b=a+6*3600000,gb=g(b);if(ga<0&&gb>=0&&gb-ga<.5){let lo=a,hi=b;for(let m=0;m<30;m++){const md=(lo+hi)/2;if(g(md)<0)lo=md;else hi=md}return(lo+hi)/2}a=b;ga=gb}
+ return null;
+}
+/* Bild der Mondphase: beleuchteter Teil hell, der Rest dunkel (wie man ihn bei uns sieht) */
+function moonSvg(f,p){
+ const r=20,c=24,w=p<.5,x=(r*Math.abs(1-2*f)).toFixed(2);
+ const d="M"+c+" "+(c-r)+"A"+r+" "+r+" 0 0 "+(w?1:0)+" "+c+" "+(c+r)+"A"+x+" "+r+" 0 0 "+(f<.5?(w?0:1):(w?1:0))+" "+c+" "+(c-r)+"Z";
+ return'<svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="20" fill="#2C3650"/>'+(f>.01?'<path d="'+d+'" fill="#F4F0DC"/>':"")+'<circle cx="24" cy="24" r="20" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="1"/></svg>';
+}
+function moonName(f,p){
+ const w=p<.5,dn=Math.min(p,1-p)*29.53,df=Math.abs(p-.5)*29.53;
+ if(dn<.75)return"Neumond";if(df<.75)return"Vollmond";
+ if(Math.abs(f-.5)<.07)return w?"Zunehmender Halbmond":"Abnehmender Halbmond";
+ return f<.5?(w?"Zunehmende Sichel":"Abnehmende Sichel"):(w?"Zunehmender Mond":"Abnehmender Mond");
+}
+function moonHtml(j){
+ const la=+place.lat,lo=+place.lon,off=(+j.utc_offset_seconds||0)*1000,now=Date.now(),t0=Date.parse(j.daily.time[0]+"T00:00:00Z")-off;
+ if(!isFinite(t0))return"";
+ const il=moonIll(now),rs=moonRS(t0,la,lo),pad=n=>String(n).padStart(2,"0");
+ const hm=t=>{const d=new Date(t+off);return pad(d.getUTCHours())+":"+pad(d.getUTCMinutes())};
+ const day=t=>{const d=new Date(t+off),n=new Date(now+off),dd=Math.round((Date.UTC(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate())-Date.UTC(n.getUTCFullYear(),n.getUTCMonth(),n.getUTCDate()))/864e5);
+  return dd===0?"heute":dd===1?"morgen":d.toLocaleDateString("de-AT",{weekday:"short",day:"numeric",month:"numeric",timeZone:"UTC"}).replace(".,",",")};
+ const nn=moonNext(now,0),nf=moonNext(now,.5),nm=moonName(il.f,il.p);
+ const next=[[nn,"Neumond"],[nf,"Vollmond"]].filter(x=>x[0]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]+" "+day(x[0]));
+ const rt=rs.rise!=null?"Aufgang "+hm(rs.rise):"",st=rs.set!=null?"Untergang "+hm(rs.set):"";
+ return'<div class="sm-m">'+moonSvg(il.f,il.p)+"<div><b>"+nm+"</b><span>"+Math.round(il.f*100)+" % beleuchtet</span><span>"+([rt,st].filter(Boolean).join(" · ")||"Heute kein Auf- oder Untergang")+"</span>"+(next.length?"<span>"+next.join(" · ")+"</span>":"")+"</div></div>";
+}
 function renderFacts(j,c){
  const mm=s=>(+s.slice(11,13))*60+(+s.slice(14,16));
  const sr=(j.daily.sunrise&&j.daily.sunrise[0])||"",ss=(j.daily.sunset&&j.daily.sunset[0])||"",hasSun=sr.length>=16&&ss.length>=16,a=hasSun?mm(sr):0,b=hasSun?mm(ss):0,f=hasSun?(mm(c.time)-a)/((b-a)||1):-1;
@@ -1330,7 +1396,8 @@ function renderFacts(j,c){
  {const az=alpNow();if(az)h+=fact("Nullgradgrenze",mfmt(az.fz)+"<small>m</small>",az.sn!=null?"Schneefall ab etwa "+mfmt(az.sn)+" m":"")}
  if(uv!=null)h+=fact("UV-Index heute",fmt(uv),uvl);
  if(c.cloud_cover!=null)h+=fact("Bewölkung",Math.round(c.cloud_cover)+"<small>%</small>","");
- if(hasSun)h+='<div class="fact wide"><h3>Sonne</h3>'+arc+'<div class="sun-t"><span>Aufgang '+sr.slice(11,16)+"</span><span>Untergang "+ss.slice(11,16)+"</span></div></div>";
+ let mh="";try{mh=moonHtml(j)}catch(e){console.error(e)}
+ if(hasSun||mh)h+='<div class="fact wide"><h3>'+(hasSun&&mh?"Sonne und Mond":mh?"Mond":"Sonne")+'</h3><div class="sm">'+(hasSun?'<div class="sm-s">'+arc+'<div class="sun-t"><span>Aufgang '+sr.slice(11,16)+"</span><span>Untergang "+ss.slice(11,16)+"</span></div></div>":"")+mh+"</div></div>";
  $("facts").innerHTML=h;
 }
 
@@ -1339,17 +1406,18 @@ const SEV=[["#F2C200","Gelb"],["#FF9500","Orange"],["#E5484D","Rot"],["#9B1C4B",
 const AT_TYPES={1:"Sturm",2:"Regen",3:"Schnee",4:"Glatteis",5:"Gewitter",6:"Hitze",7:"Kälte"};
 const DE_SEV={minor:1,moderate:2,severe:3,extreme:4};
 const inBox=b=>place.lat>=b[0]&&place.lat<=b[1]&&place.lon>=b[2]&&place.lon<=b[3];
+const toMs=t=>{if(t==null||t==="")return null;const n=Number(t),d=new Date(isNaN(n)?t:(n<1e12?n*1000:n)).getTime();return isNaN(d)?null:d};
 const fmtT=t=>{if(t==null||t==="")return"";const n=Number(t);const d=new Date(isNaN(n)?t:(n<1e12?n*1000:n));return isNaN(d.getTime())?"":d.toLocaleString("de-AT",{weekday:"short",hour:"2-digit",minute:"2-digit"})+" Uhr"};
 async function warnDE(){
  const j=await getJ("https://api.brightsky.dev/alerts?lat="+place.lat+"&lon="+place.lon);
- return(j.alerts||[]).map(w=>({lvl:DE_SEV[w.severity]||1,title:w.event_de||w.headline_de,sub:["Deutscher Wetterdienst",fmtT(w.onset)&&fmtT(w.onset)+" bis "+fmtT(w.expires)].filter(Boolean).join(", "),body:w.description_de||w.headline_de,instr:w.instruction_de}));
+ return(j.alerts||[]).map(w=>({lvl:DE_SEV[w.severity]||1,title:w.event_de||w.headline_de,sub:["Deutscher Wetterdienst",fmtT(w.onset)&&fmtT(w.onset)+" bis "+fmtT(w.expires)].filter(Boolean).join(", "),body:w.description_de||w.headline_de,instr:w.instruction_de,src:"DWD",t0:toMs(w.onset),t1:toMs(w.expires)}));
 }
 async function warnAT(){
  const j=await getJ("https://warnungen.zamg.at/wsapp/api/getWarningsForCoords?lon="+place.lon+"&lat="+place.lat+"&lang=de");
  const arr=(j.properties&&j.properties.warnings)||j.warnings||[];
  return arr.map(w=>{const p=w.properties||w,r=p.rawinfo||{};
   const t0=p.begin||r.start,t1=p.end||r.end;
-  return{lvl:Math.min(4,Number(p.warnstufeid||r.wlevel)||1),title:(AT_TYPES[p.warntypid||r.wtype]||"Wetter")+"warnung",sub:["GeoSphere Austria",fmtT(t0)&&fmtT(t0)+" bis "+fmtT(t1)].filter(Boolean).join(", "),body:[p.text,p.meteotext,p.auswirkungen].filter(Boolean).join(" "),instr:p.empfehlungen};
+  return{lvl:Math.min(4,Number(p.warnstufeid||r.wlevel)||1),title:(AT_TYPES[p.warntypid||r.wtype]||"Wetter")+"warnung",sub:["GeoSphere Austria",fmtT(t0)&&fmtT(t0)+" bis "+fmtT(t1)].filter(Boolean).join(", "),body:[p.text,p.meteotext,p.auswirkungen].filter(Boolean).join(" "),instr:p.empfehlungen,src:"GeoSphere",t0:toMs(t0),t1:toMs(t1)};
  });
 }
 const CHECK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M7.8 12.4l3 3 5.6-6"/></svg>';
@@ -1359,13 +1427,14 @@ async function loadWarnings(){
  /* Der deutsche Warndienst kennt nur Orte in Deutschland: hat er für diesen Ort „nicht gefunden“ gemeldet, eine Stunde lang nicht mehr fragen */
  if(inBox([47.2,55.1,5.8,15.1])&&!(deNone[pk]&&Date.now()-deNone[pk]<3600000))jobs.push(warnDE);
  if(inBox([46.3,49.1,9.5,17.2]))jobs.push(warnAT);
- if(!jobs.length){warnList=[];checkAlarm();wallChips();box.innerHTML='<p class="muted">Für diesen Ort ist kein Warndienst angebunden. <a href="https://meteoalarm.org/de" target="_blank" rel="noopener noreferrer">MeteoAlarm Europa</a></p>';q.done();return}
+ if(!jobs.length){warnList=[];warnOk=false;checkAlarm();wallChips();box.innerHTML='<p class="muted">Für diesen Ort ist kein Warndienst angebunden. <a href="https://meteoalarm.org/de" target="_blank" rel="noopener noreferrer">MeteoAlarm Europa</a></p>';q.done();return}
  const res=await Promise.allSettled(jobs.map(f=>f()));
  if(!q.ok())return;
  const list=[];let failed=0;
  res.forEach((r,k)=>{if(r.status==="fulfilled")list.push(...r.value);else if(jobs[k]===warnDE&&String(r.reason&&r.reason.message)==="404")deNone[pk]=Date.now();else failed++});
  if(failed&&failed===jobs.length&&q.keep())return;
  list.sort((x,y)=>y.lvl-x.lvl);
+ warnOk=failed<jobs.length;
  warnList=list;checkAlarm();wallChips();q.done();
  const opened={};box.querySelectorAll(".warn").forEach(w=>{const d=w.querySelector("details");if(d)opened[w.dataset.k]=d.open});
  const fail=failed&&failed<jobs.length?'<p class="small">Ein Warndienst konnte nicht abgefragt werden. Bitte die Warnkarten unten prüfen.</p>':"";
@@ -4108,12 +4177,24 @@ function clockTick(){
  root.classList.toggle("night",n);
  if(n!==was)nightChange(n);else if(n)nightRender();
 }
+/* Wandanzeige: Warnungen mit Stufe, Dauer und Warndienst, dazu Glätte- oder Frosthinweis */
+const WTRI='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8 22.6 21H1.4z" fill="currentColor" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M12 9.3v5.4" stroke="#13202E" stroke-width="2.3" stroke-linecap="round"/><circle cx="12" cy="17.7" r="1.3" fill="#13202E"/></svg>';
+function wTime(ms){
+ const off=((lastJ&&+lastJ.utc_offset_seconds)||0)*1000,d=new Date(ms+off),n=new Date(Date.now()+off);
+ const dd=Math.round((Date.UTC(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate())-Date.UTC(n.getUTCFullYear(),n.getUTCMonth(),n.getUTCDate()))/864e5);
+ const hm=String(d.getUTCHours()).padStart(2,"0")+":"+String(d.getUTCMinutes()).padStart(2,"0");
+ return(dd===0?"heute ":dd===1?"morgen ":d.toLocaleDateString("de-AT",{weekday:"short",timeZone:"UTC"}).replace(".","")+" ")+hm;
+}
 function wallChips(){
  const el=$("wchips");if(!el)return;
- const out=[];
- warnList.forEach(w=>out.push('<span style="background:'+(SEV[w.lvl-1]||SEV[0])[0]+";color:"+(w.lvl===1?"#13202E":"#fff")+'">'+esc(w.title)+"</span>"));
- if(iceState&&iceState.short)out.push("<span>"+esc(iceState.short)+"</span>");
- el.innerHTML=out.slice(0,4).join("");
+ const now=Date.now(),out=warnList.slice(0,3).map(w=>{
+  const s=SEV[w.lvl-1]||SEV[0],when=w.t1?(w.t0&&w.t0>now+5*60000?"ab "+wTime(w.t0)+" bis "+wTime(w.t1):"bis "+wTime(w.t1)):"";
+  return'<div class="ww" style="--wc:'+s[0]+'">'+WTRI+"<div><b>"+esc(w.title)+"</b><span>"+[s[1],when].filter(Boolean).map(esc).join(" · ")+"</span></div></div>";
+ });
+ if(warnList.length>3)out.push('<p class="wmore">und '+(warnList.length-3)+" weitere Warnung"+(warnList.length>4?"en":"")+"</p>");
+ if(iceState&&iceState.short)out.push('<div class="ww hint">'+SV_FLAKE+"<div><b>"+esc(iceState.short)+"</b></div></div>");
+ if(!warnList.length&&warnOk)out.unshift('<p class="wok">'+CHECK+"Keine Warnungen</p>");
+ el.innerHTML=out.join("");
 }
 function setWall(on,user){
  wallOn=on;root.classList.toggle("wall",on);
