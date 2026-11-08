@@ -9,6 +9,7 @@
 //   Bindung SUBS    (KV-Namespace, z. B. "wetter-push")
 //   Cron-Trigger    */10 * * * *   (alle 10 Minuten)
 const enc = new TextEncoder();
+const MA_SLUGS = new Set(["austria", "belgium", "bosnia-herzegovina", "bulgaria", "croatia", "cyprus", "czechia", "denmark", "estonia", "finland", "france", "germany", "greece", "hungary", "iceland", "ireland", "israel", "italy", "latvia", "lithuania", "luxembourg", "malta", "moldova", "montenegro", "netherlands", "republic-of-north-macedonia", "norway", "poland", "portugal", "romania", "serbia", "slovakia", "slovenia", "spain", "sweden", "switzerland", "ukraine", "united-kingdom"]);
 const API = "https://api.kachelmannwetter.com/v02/";
 const SITE = "https://eliaspp9.github.io/Wetter/";
 const b64u = (buf) => btoa(String.fromCharCode(...new Uint8Array(buf))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
@@ -219,7 +220,7 @@ export default {
       return json({ error: "Der Worker ist noch nicht fertig eingerichtet (Variablen fehlen)." }, 500);
     const url = new URL(req.url);
 
-    if (url.pathname === "/") return json({ ok: true, name: "wetter-proxy", version: "1.1", renew: true, push: !!env.SUBS, guard: true });
+    if (url.pathname === "/") return json({ ok: true, name: "wetter-proxy", version: "1.2", renew: true, push: !!env.SUBS, guard: true, ma: true });
 
     if (url.pathname === "/login" && req.method === "POST") {
       const ip = req.headers.get("CF-Connecting-IP") || "unbekannt";
@@ -253,6 +254,15 @@ export default {
         cf: { cacheTtl: 300, cacheEverything: true },
       });
       return new Response(r.body, { status: r.status, headers: { ...h, "Content-Type": r.headers.get("Content-Type") || h["Content-Type"], "Cache-Control": "private, max-age=120" } });
+    }
+
+    // Wetterwarnungen anderer Länder Europas von MeteoAlarm (dort ist kein direkter Abruf aus dem Browser erlaubt)
+    if (url.pathname.startsWith("/ma/") && req.method === "GET") {
+      if (!(await checkToken(env, req))) return json({ error: "Nicht angemeldet" }, 401);
+      const slug = url.pathname.slice(4);
+      if (!MA_SLUGS.has(slug)) return json({ error: "Unbekanntes Land" }, 400);
+      const r = await fetch("https://feeds.meteoalarm.org/api/v1/warnings/feeds-" + slug, { headers: { Accept: "application/json" }, cf: { cacheTtl: 600, cacheEverything: true } });
+      return new Response(r.body, { status: r.ok ? 200 : 502, headers: { ...h, "Content-Type": "application/json; charset=utf-8", "Cache-Control": "private, max-age=300" } });
     }
 
     if (url.pathname.startsWith("/push/")) {

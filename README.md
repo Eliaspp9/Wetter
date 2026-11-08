@@ -3,9 +3,11 @@
 Persönliche Wetter-App im Stil von WetterOnline, als Webseite auf GitHub Pages:
 https://eliaspp9.github.io/Wetter/
 
-**Version 2.5**: Der Himmel oben bewegt sich mit dem Wetter. Dazu Vorhersage mit dem ECMWF-Modell IFS (9 km), zuverlässiges Radar „Österreich“ und ein Ortspunkt, der immer obenauf liegt.
+**Version 2.7**: Neue Reihenfolge, Warnungen aus ganz Europa und den USA auf Deutsch, eigenes Radar für die USA und Finnland. Dazu ECMWF als Wettermodell, bewegter Himmel oben, Sonne und Mond.
 
 ## Was die App kann
+
+**Aufbau (von oben nach unten):** Kopf mit Wetter jetzt, „Keine Warnungen“ bzw. der wichtigsten Warnung und dem Messwert der nächsten Station → Warnungen (nur wenn es welche gibt) → Regen in den nächsten 2 Stunden → Gemessen → Regenradar → Nächste 24 Stunden (Kacheln oder Tabelle) → Glätte (nur bei Bedarf) → 7 Tage → Trend bis 14 Tage → Details mit Sonne und Mond → Luft und Pollen → Berge → „Für Wetter-Fans“ (eingeklappt: Modellvergleich, KI-Korrektur, Rückblick; geladen wird erst beim Öffnen) → Benachrichtigungen. Unten in der Leiste: Wetter, Radar, Stunden, 7 Tage, Mehr.
 
 - **Bewegter Himmel oben:** Wolken ziehen in Windrichtung (bei mehr Wind schneller), dazu je nach Wetter Sonnenstrahlen, Mondlicht mit Sternen und Sternschnuppe, Nebelschwaden, Regen schräg im Wind (bei Starkregen dichter), Schnee in drei Ebenen und Blitze bei Gewitter. Alles läuft auf der Grafikeinheit, steht still, wenn der Kopf nicht sichtbar ist oder ruhige Bewegung eingestellt ist.
 - **Wetter jetzt:** aktuelle Werte von KachelmannWetter (Super HD) oder vom ECMWF-Modell IFS (9 km, über Open-Meteo). Oben steht, woher die Werte kommen.
@@ -13,6 +15,7 @@ https://eliaspp9.github.io/Wetter/
 - **Regenradar:**
   - DWD 1 km mit 2 Stunden Radar-Vorhersage.
   - „Weltweit“: in Europa das OPERA-Radar über LibreWXR, Ersatz RainViewer.
+  - „USA“ bzw. „Finnland“: das Radar des jeweiligen Wetterdienstes (NOAA NEXRAD über Iowa Environmental Mesonet, FMI), der Knopf erscheint nur, wenn der Ort dort liegt.
   - „Österreich“: INCA-Nowcast von GeoSphere Austria, 1 km, alle 15 Minuten, 3 Stunden voraus. GeoSphere braucht für eine Antwort oft ein paar Sekunden, manchmal eine halbe Minute: die App wartet bis zu 90 Sekunden, zeigt solange einen Hinweis, behält den letzten Stand und versucht es nach einem Fehlschlag in einer Minute wieder. Das erste Bild ist die letzte Messung, danach folgt die Vorhersage.
   - Dazu Blitze (EUMETSAT MTG), Wolken, Warnungen und Niederschlagsart.
   - **Zugbahnen von Gewittern und Starkregen:** starke Zellen werden in den DWD-Radarbildern der letzten 30 Minuten verfolgt, in Österreich zusätzlich mit dem Nowcast von GeoSphere. Linie mit Punkten alle 15 Minuten, Ankunftszeit beim Ort und Alarm.
@@ -32,7 +35,7 @@ https://eliaspp9.github.io/Wetter/
 - **KI-Korrektur für den Ort:** lernt aus 30 Tagen Vorhersage und Messung (Ridge-Regression nach Tageszeit, klarer Nacht, Sonne, Nebel, Wind), prüft sich an zurückgehaltenen Tagen und zeigt eine korrigierte 48-Stunden-Prognose, wenn sie besser ist.
 - **Messwerte und Rückblick:** Messwerte der nächsten Station. Der Rückblick zeigt echte Messwerte, wenn eine Station in der Nähe ist.
 - **Warnungen und Hinweise:**
-  - Amtliche Warnungen (DWD, GeoSphere Austria).
+  - Amtliche Warnungen (DWD, GeoSphere Austria). In anderen Ländern Europas von MeteoAlarm (über den Worker, Regionen über die Grenzen von MeteoAlarm, CC BY 4.0 EUMETNET, © EuroGeographics), in den USA vom National Weather Service. Was nicht auf Deutsch vorliegt, wird automatisch übersetzt (MyMemory) und 7 Tage gemerkt.
   - Glätte-, Frost- und Schnee-Hinweise.
   - Alarm-Banner bei Regen in Kürze, Gewitter oder Unwetter.
 - **Berge und Schneefallgrenze:**

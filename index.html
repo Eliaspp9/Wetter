@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-MagcByRwlUd9p7ud1SW/PJeqvdlDoxLChHkXHnomZtE=' 'sha256-+CD5i0gDObdMiTFeSjBHM8SvIjSFGtFW+gQH/GdjeWc=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-xtYZ0L7Lc/hWnrHYrE0y+w69zBxN7JK6IP3dEBcmtyM=' 'sha256-+CD5i0gDObdMiTFeSjBHM8SvIjSFGtFW+gQH/GdjeWc=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://openwms.fmi.fi; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -14,9 +14,9 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/favicon-64.png">
-<meta name="app-build" content="38">
-<meta name="app-version" content="2.6.1">
-<meta name="app-notes" content="Version 2.6.1: Mehr Sicherheit: Die Seite lädt fremde Skripte nur noch, wenn es genau die geprüfte Kartenbibliothek ist, und Texte von außen werden noch strenger entschärft.">
+<meta name="app-build" content="39">
+<meta name="app-version" content="2.7">
+<meta name="app-notes" content="Version 2.7: Neue Reihenfolge (erst jetzt, dann heute, dann die nächsten Tage), oben „Keine Warnungen“ und der Messwert der nächsten Station, Stunden als Kacheln oder Tabelle, „Für Wetter-Fans“ einklappbar, unten „Mehr“. Warnungen auch aus anderen Ländern Europas und den USA, auf Deutsch übersetzt. Eigenes Radar für die USA und Finnland, wenn du dort bist.">
 <script>/* alte Adresse wetter2.html -> neue Startseite */
 try{if(top!==self)document.documentElement.style.display="none"}catch(e){document.documentElement.style.display="none"}
 window.__redir=/\/wetter2\.html$/i.test(location.pathname);
@@ -232,8 +232,8 @@ main{position:relative;z-index:1;max-width:1180px;margin:-30px auto 0;padding:0 
  .tabs,.mini{display:none}
  .hero{padding-bottom:66px}
  main{margin-top:-42px;padding:0 20px}
- .grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:16px;align-items:start;grid-template-areas:"radar warn" "radar now" "radar ice" "radar obs" "radar hours" "radar kc" "radar models" "radar ki" "radar days" "radar mtn" "radar trend" "radar past" "radar air" "radar facts" "radar push"}
- .s-warn{grid-area:warn}.s-now{grid-area:now}.s-ice{grid-area:ice}.s-hours{grid-area:hours}.s-kc{grid-area:kc}.s-days{grid-area:days}.s-facts{grid-area:facts}.s-obs{grid-area:obs}.s-models{grid-area:models}.s-trend{grid-area:trend}.s-past{grid-area:past}.s-air{grid-area:air}.s-push{grid-area:push}.s-mtn{grid-area:mtn}.s-ki{grid-area:ki}
+ .grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:16px;align-items:start;grid-template-areas:"radar warn" "radar now" "radar obs" "radar hours" "radar ice" "radar days" "radar trend" "radar facts" "radar air" "radar mtn" "radar fans" "radar models" "radar ki" "radar past" "radar push"}
+ .s-warn{grid-area:warn}.s-now{grid-area:now}.s-ice{grid-area:ice}.s-hours{grid-area:hours}.s-fans{grid-area:fans}.s-days{grid-area:days}.s-facts{grid-area:facts}.s-obs{grid-area:obs}.s-models{grid-area:models}.s-trend{grid-area:trend}.s-past{grid-area:past}.s-air{grid-area:air}.s-push{grid-area:push}.s-mtn{grid-area:mtn}.s-ki{grid-area:ki}
  .s-radar{grid-area:radar;position:sticky;top:16px}
  #map{height:min(72vh,700px)!important}
  .upd{bottom:calc(env(safe-area-inset-bottom,0px) + 12px)}
@@ -241,6 +241,24 @@ main{position:relative;z-index:1;max-width:1180px;margin:-30px auto 0;padding:0 
 
 /* Herkunft der Werte, Alarm, Glätte */
 .hsrc{font-size:12px;opacity:.78;margin-top:6px}
+/* Kopf: Messwert der nächsten Station und kurzer Hinweis zu Warnungen */
+.hobs{font-size:13.5px;font-weight:500;opacity:.92;margin-top:4px;font-variant-numeric:tabular-nums}
+.hobs[hidden],.hok[hidden]{display:none}
+.hok{display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:4px 12px 4px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.14);color:#fff;font-size:12.5px;font-weight:600;line-height:1.4}
+.hok svg{width:16px;height:16px;flex:none}
+.hok.warn{background:rgba(8,14,26,.32);border-color:rgba(255,255,255,.18);border-left:4px solid var(--wc,#F2C200)}
+.hok.warn svg{color:var(--wc,#F2C200)}
+html.wall .hok,html.wall .hobs{display:none!important}
+/* Nächste 24 Stunden: Kacheln oder Tabelle */
+#hlist[hidden],#hours[hidden]{display:none}
+.hl-src{display:none}
+.s-hours.tbl .harr{display:none}
+html.wall #hview,html.wall #hlist,html.wall .s-hours.tbl .harr{display:none!important}
+html.wall .s-hours #hours{display:block!important}
+/* Für Wetter-Fans: eingeklappt, bis man sie öffnet */
+html.fans-off .fan{display:none!important}
+.fans-s{margin-top:0}
+html.wall .s-fans{display:none!important}
 .wclock,.wchips{display:none}
 #wallbtn{display:none}
 @media (min-width:600px){#wallbtn{display:grid}}
@@ -276,7 +294,7 @@ main{position:relative;z-index:1;max-width:1180px;margin:-30px auto 0;padding:0 
 .wdim,.wbar{display:none}
 .leaflet-tile-pane>.leaflet-layer{transition:opacity .22s linear}
 .leaflet-image-layer.dwov{transition:opacity .2s linear}
-@supports (content-visibility:auto){.s-ki,.s-mtn,.s-kc,.s-models,.s-trend,.s-past,.s-air,.s-facts,.s-push{content-visibility:auto;contain-intrinsic-size:auto 560px}}
+@supports (content-visibility:auto){.s-ki,.s-mtn,.s-models,.s-trend,.s-past,.s-air,.s-facts,.s-push{content-visibility:auto;contain-intrinsic-size:auto 560px}}
 
 /* ---------- Wandanzeige (Tablet an der Wand) ---------- */
 html.wall,html.wall body{height:100%;overflow:hidden}
@@ -305,6 +323,7 @@ html.wall .wchips{display:flex;flex-direction:column;gap:5px;width:100%;max-widt
 .wchips .wok{display:inline-flex;align-self:center;align-items:center;gap:6px;font-size:12.5px;font-weight:600;padding:3px 11px 3px 8px;border-radius:999px;background:rgba(255,255,255,.16)}
 .wchips .wok svg{width:16px;height:16px}
 .wchips .wmore{font-size:12px;opacity:.8;text-align:center}
+.wnote{font-size:12px;color:var(--muted);margin-top:6px}
 html.wall .grid>.s-radar{display:flex;flex-direction:column;grid-area:1/2/4/3;min-height:0;position:static;margin:0}
 html.wall .s-radar .ch{margin-bottom:8px}
 html.wall .s-radar .mapwrap{flex:1;min-height:0}
@@ -396,7 +415,7 @@ html.wall .upd{bottom:14px}
 .favs button.on{background:#fff;color:rgb(var(--a));border-color:#fff}
 
 /* Messwerte, Luft, Rückblick, Trend, Modelle, Benachrichtigungen */
-.obs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.obs{display:grid;grid-template-columns:repeat(auto-fit,minmax(92px,1fr));gap:8px}
 .ob{background:var(--tile);border-radius:12px;padding:10px 12px}
 .ob span{display:block;font-size:12px;color:var(--muted)}
 .ob b{font-size:19px;font-weight:600}
@@ -608,6 +627,8 @@ html.noscroll .mini,html.noscroll .tabs{display:none}
 #h-air{--hc:#2FA66A;--hi:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222.1%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M5 19c0-9 6-14 15-14 0 9-5 15-14 15%22/%3E%3Cpath d=%22M5 19l7-7%22/%3E%3C/svg%3E")}
 #h-facts{--hc:var(--accent);--hi:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222.1%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M4 7h10M18 7h2M4 17h4M12 17h8%22/%3E%3Ccircle cx=%2216%22 cy=%227%22 r=%222%22/%3E%3Ccircle cx=%2210%22 cy=%2217%22 r=%222%22/%3E%3C/svg%3E")}
 #h-push{--hc:#E64980;--hi:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222.1%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M6 16v-5a6 6 0 0 1 12 0v5l1.5 2h-15z%22/%3E%3Cpath d=%22M10 20.5a2.2 2.2 0 0 0 4 0%22/%3E%3C/svg%3E")}
+#h-fans{--hc:#8E5BEA;--hi:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222.1%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M4 20V12M10 20V6M16 20v-9M21 20H3%22/%3E%3Cpath d=%22M17.5 3.5l.9 1.9 2.1.3-1.5 1.4.4 2.1-1.9-1-1.9 1 .4-2.1-1.5-1.4 2.1-.3z%22/%3E%3C/svg%3E")}
+.s-fans .ch{margin-bottom:6px}
 #h-ki{--hc:#8E5BEA;--hi:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222.1%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M11 3.5l1.9 5.3 5.3 1.9-5.3 1.9L11 18l-1.9-5.4L3.8 10.7l5.3-1.9z%22/%3E%3Cpath d=%22M18.5 14.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z%22/%3E%3C/svg%3E")}
 .s-mtn.col .ch{margin-bottom:0}
 .pkf{display:inline-grid;place-items:center;border:0;background:transparent;color:var(--muted);width:32px;height:32px;padding:0;margin:-6px 0 -6px 2px;vertical-align:middle;cursor:pointer;border-radius:8px}
@@ -761,7 +782,9 @@ html.locked body>*:not(#gate){display:none!important}
   <div class="nowrow"><div class="hicon" id="hicon"></div><span class="temp" id="temp">–</span><span class="deg">°</span></div>
   <p class="cond" id="desc">Wird geladen …</p>
   <p class="range" id="range"></p>
+  <p class="hobs" id="hobs" hidden></p>
   <div class="hstats" id="hstats"></div>
+  <button type="button" class="hok" id="hok" hidden></button>
   <p class="hsrc" id="hsrc"></p>
   <div class="wchips" id="wchips"></div>
   <div class="wbar" id="wbar"><button type="button" id="wsound">Ton bei Alarm: aus</button><button type="button" id="wnight">Nachtanzeige: an</button><button type="button" id="wexit">Wandanzeige beenden</button></div>
@@ -779,7 +802,7 @@ html.locked body>*:not(#gate){display:none!important}
   <section class="card s-warn" id="sec-warn" aria-labelledby="h-warn">
    <div class="ch"><h2 id="h-warn">Warnungen</h2></div>
    <div id="warns"><p class="muted">Wird geladen …</p></div>
-   <p class="small">Amtliche Warnungen vom Deutschen Wetterdienst und von GeoSphere Austria. Warnkarten: <a href="https://www.dwd.de/DE/wetter/warnungen_gemeinden/warnWetter_node.html" target="_blank" rel="noopener noreferrer">DWD</a> und <a href="https://warnungen.zamg.at/" target="_blank" rel="noopener noreferrer">GeoSphere</a></p>
+   <p class="small">Amtliche Warnungen vom Deutschen Wetterdienst und von GeoSphere Austria, in anderen Ländern Europas über MeteoAlarm, in den USA vom National Weather Service. Texte, die es nicht auf Deutsch gibt, werden automatisch übersetzt (MyMemory). Warnkarten: <a href="https://www.dwd.de/DE/wetter/warnungen_gemeinden/warnWetter_node.html" target="_blank" rel="noopener noreferrer">DWD</a> und <a href="https://warnungen.zamg.at/" target="_blank" rel="noopener noreferrer">GeoSphere</a></p>
   </section>
 
   <section class="card s-now" id="sec-now" aria-labelledby="h-now">
@@ -788,9 +811,9 @@ html.locked body>*:not(#gate){display:none!important}
    <div id="nc"></div>
   </section>
 
-  <section class="card s-ice" id="sec-ice" aria-labelledby="h-ice" hidden>
-   <div class="ch"><h2 id="h-ice">Glätte, Frost und Schnee</h2></div>
-   <div id="ice"></div>
+  <section class="card s-obs" id="sec-obs" aria-labelledby="h-obs" hidden>
+   <div class="ch"><h2 id="h-obs">Gemessen</h2></div>
+   <div id="obs"></div>
   </section>
 
   <section class="card s-radar" id="sec-radar" aria-labelledby="h-radar">
@@ -799,7 +822,7 @@ html.locked body>*:not(#gate){display:none!important}
    <div class="mapwrap">
     <div id="map"></div>
     <div class="mctl">
-     <div class="seg" id="mode"><button type="button" data-m="rv" class="on">Weltweit</button><button type="button" data-m="dwd">DWD 1 km</button><button type="button" data-m="at">Österreich</button></div>
+     <div class="seg" id="mode"><button type="button" data-m="rv" class="on">Weltweit</button><button type="button" data-m="dwd">DWD 1 km</button><button type="button" data-m="at">Österreich</button><button type="button" data-m="nat" id="natbtn" hidden>Land</button></div>
      <div class="seg" id="basemode"><button type="button" data-b="street">Karte</button><button type="button" data-b="sat" class="on">Satellit</button></div>
      <div class="seg" id="lblseg"><button type="button" id="cld" aria-pressed="false">Wolken</button><button type="button" id="lbl" class="on" aria-pressed="true">Grenzen &amp; Orte</button><button type="button" id="wrn" aria-pressed="false">Warnungen</button><button type="button" id="blz" class="on" aria-pressed="true">Blitze</button></div>
     </div>
@@ -834,29 +857,18 @@ html.locked body>*:not(#gate){display:none!important}
    </div>
   </section>
 
-  <section class="card s-obs" id="sec-obs" aria-labelledby="h-obs" hidden>
-   <div class="ch"><h2 id="h-obs">Gemessen</h2></div>
-   <div id="obs"></div>
-  </section>
-
   <section class="card s-hours" id="sec-hours" aria-labelledby="h-hours">
-   <div class="ch"><h2 id="h-hours">Nächste 24 Stunden</h2><div class="harr"><button class="cbtn" id="hprev" type="button" aria-label="Frühere Stunden"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><button class="cbtn" id="hnext" type="button" aria-label="Spätere Stunden"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button></div></div>
+   <div class="ch"><h2 id="h-hours">Nächste 24 Stunden</h2><div class="kc-btns kc-src hview" id="hview" role="group" aria-label="Darstellung"><button type="button" data-v="t" class="on" aria-pressed="true">Kacheln</button><button type="button" data-v="l" aria-pressed="false">Tabelle</button></div><div class="harr"><button class="cbtn" id="hprev" type="button" aria-label="Frühere Stunden"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><button class="cbtn" id="hnext" type="button" aria-label="Spätere Stunden"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button></div></div>
    <div id="hours"></div>
+   <div id="hlist" hidden>
+    <div class="hl-src"><div class="kc-btns kc-src" id="kcsrc"><button type="button" data-s="icon">ICON-D2</button><button type="button" data-s="kach">Kachelmann</button></div></div>
+    <div id="kc"><p class="muted">Wird geladen …</p></div>
+   </div>
   </section>
 
-  <section class="card s-kc" aria-labelledby="h-kc">
-   <div class="ch"><h2 id="h-kc">Stündliche Prognose</h2><div class="kc-btns kc-src" id="kcsrc"><button type="button" data-s="icon">ICON-D2</button><button type="button" data-s="kach">Kachelmann</button></div></div>
-   <div id="kc"><p class="muted">Wird geladen …</p></div>
-  </section>
-
-  <section class="card s-models" id="sec-models" aria-labelledby="h-models">
-   <div class="ch"><h2 id="h-models">Modellvergleich</h2><button class="cbtn" id="mind" type="button" aria-pressed="false">Einzelne Modelle</button></div>
-   <div class="mc" id="models"><p class="muted">Wird geladen …</p></div>
-  </section>
-
-  <section class="card s-ki" id="sec-ki" aria-labelledby="h-ki" hidden>
-   <div class="ch"><h2 id="h-ki">KI-Korrektur für deinen Ort</h2></div>
-   <div id="ki"></div>
+  <section class="card s-ice" id="sec-ice" aria-labelledby="h-ice" hidden>
+   <div class="ch"><h2 id="h-ice">Glätte, Frost und Schnee</h2></div>
+   <div id="ice"></div>
   </section>
 
   <section class="card s-days" id="sec-days" aria-labelledby="h-days">
@@ -865,20 +877,14 @@ html.locked body>*:not(#gate){display:none!important}
    <p class="small" id="days-src"></p>
   </section>
 
-  <section class="card s-mtn" id="sec-mtn" aria-labelledby="h-mtn" hidden>
-   <div class="ch"><h2 id="h-mtn">Berge und Schneefallgrenze</h2><button class="cbtn" id="mtn-t" type="button" aria-expanded="true" aria-controls="mtn">Ausblenden</button></div>
-   <div id="mtn"></div>
-   <div class="pks" id="mtn-s" hidden><input id="mtn-q" type="search" placeholder="Berg oder Skigebiet hinzufügen" autocomplete="off" aria-label="Berg oder Skigebiet suchen"><ul class="pksr" id="mtn-r"></ul></div>
-  </section>
-
   <section class="card s-trend" id="sec-trend" aria-labelledby="h-trend">
    <div class="ch"><h2 id="h-trend">Trend bis 14 Tage</h2></div>
    <div id="trend"><p class="muted">Wird geladen …</p></div>
   </section>
 
-  <section class="card s-past" id="sec-past" aria-labelledby="h-past">
-   <div class="ch"><h2 id="h-past">Rückblick: letzte 7 Tage</h2></div>
-   <div id="past"><p class="muted">Wird geladen …</p></div>
+  <section class="card s-facts" id="sec-facts" aria-labelledby="h-facts">
+   <div class="ch"><h2 id="h-facts">Details</h2></div>
+   <div class="facts" id="facts"></div>
   </section>
 
   <section class="card s-air" id="sec-air" aria-labelledby="h-air">
@@ -886,9 +892,30 @@ html.locked body>*:not(#gate){display:none!important}
    <div id="air"><p class="muted">Wird geladen …</p></div>
   </section>
 
-  <section class="card s-facts" aria-labelledby="h-facts">
-   <div class="ch"><h2 id="h-facts">Details</h2></div>
-   <div class="facts" id="facts"></div>
+  <section class="card s-mtn" id="sec-mtn" aria-labelledby="h-mtn" hidden>
+   <div class="ch"><h2 id="h-mtn">Berge und Schneefallgrenze</h2><button class="cbtn" id="mtn-t" type="button" aria-expanded="true" aria-controls="mtn">Ausblenden</button></div>
+   <div id="mtn"></div>
+   <div class="pks" id="mtn-s" hidden><input id="mtn-q" type="search" placeholder="Berg oder Skigebiet hinzufügen" autocomplete="off" aria-label="Berg oder Skigebiet suchen"><ul class="pksr" id="mtn-r"></ul></div>
+  </section>
+
+  <section class="card s-fans" id="sec-fans" aria-labelledby="h-fans">
+   <div class="ch"><h2 id="h-fans">Für Wetter-Fans</h2><button class="cbtn" id="fans-t" type="button" aria-expanded="false" aria-controls="sec-models sec-ki sec-past">Einblenden</button></div>
+   <p class="small fans-s">Modellvergleich, KI-Korrektur und Rückblick auf die letzten 7 Tage. Geladen wird erst, wenn du sie einblendest.</p>
+  </section>
+
+  <section class="card fan s-models" id="sec-models" aria-labelledby="h-models">
+   <div class="ch"><h2 id="h-models">Modellvergleich</h2><button class="cbtn" id="mind" type="button" aria-pressed="false">Einzelne Modelle</button></div>
+   <div class="mc" id="models"><p class="muted">Wird geladen …</p></div>
+  </section>
+
+  <section class="card fan s-ki" id="sec-ki" aria-labelledby="h-ki" hidden>
+   <div class="ch"><h2 id="h-ki">KI-Korrektur für deinen Ort</h2></div>
+   <div id="ki"></div>
+  </section>
+
+  <section class="card fan s-past" id="sec-past" aria-labelledby="h-past">
+   <div class="ch"><h2 id="h-past">Rückblick: letzte 7 Tage</h2></div>
+   <div id="past"><p class="muted">Wird geladen …</p></div>
   </section>
 
   <section class="card s-push" id="sec-push" aria-labelledby="h-push">
@@ -900,7 +927,7 @@ html.locked body>*:not(#gate){display:none!important}
 </main>
 
 <footer class="foot">
- <p>Daten: Europäisches Zentrum für mittelfristige Wettervorhersage ECMWF (Vorhersage mit dem Modell IFS und KI-Modell AIFS, über Open-Meteo), Open-Meteo (Radar-Prognose, UV-Index und ICON-D2 des Deutschen Wetterdienstes), KachelmannWetter (stündliche Prognose für freigeschaltete Orte), LibreWXR (Radar weltweit, in Europa mit EUMETNET OPERA, teils NOAA Enterprise Rain Rate), RainViewer (Ersatz-Radar), Deutscher Wetterdienst (RADOLAN-Radar mit Radar-Vorhersage, Messwerte und Warnungen über Bright Sky), GeoSphere Austria (Warnungen und Messwerte), Copernicus CAMS über Open-Meteo (Luft und Pollen), BigDataCloud (Ortsname), EUMETSAT (Blitze vom Wettersatelliten MTG), Messwerte für die Treffer-Statistik von GeoSphere Austria und vom DWD. Temperatur- und Windkarte sowie Bergwetter: ECMWF IFS über Open-Meteo. Nullgrad- und Schneefallgrenze sowie die Vorhersage für die nächsten 2 Stunden: ICON des Deutschen Wetterdienstes über Open-Meteo. Zugbahnen von Gewittern: aus den Bildern des DWD-Radars und dem Nowcast von GeoSphere Austria berechnet. Radar „Österreich“: GeoSphere Austria (INCA-Nowcast, CC BY 4.0). Schneehöhe am Berg: GeoSphere Austria (SNOWGRID, CC BY 4.0).</p>
+ <p>Daten: Europäisches Zentrum für mittelfristige Wettervorhersage ECMWF (Vorhersage mit dem Modell IFS und KI-Modell AIFS, über Open-Meteo), Open-Meteo (Radar-Prognose, UV-Index und ICON-D2 des Deutschen Wetterdienstes), KachelmannWetter (stündliche Prognose für freigeschaltete Orte), LibreWXR (Radar weltweit, in Europa mit EUMETNET OPERA, teils NOAA Enterprise Rain Rate), RainViewer (Ersatz-Radar), Deutscher Wetterdienst (RADOLAN-Radar mit Radar-Vorhersage, Messwerte und Warnungen über Bright Sky), GeoSphere Austria (Warnungen und Messwerte), Copernicus CAMS über Open-Meteo (Luft und Pollen), BigDataCloud (Ortsname), EUMETSAT (Blitze vom Wettersatelliten MTG), Messwerte für die Treffer-Statistik von GeoSphere Austria und vom DWD. Temperatur- und Windkarte sowie Bergwetter: ECMWF IFS über Open-Meteo. Nullgrad- und Schneefallgrenze sowie die Vorhersage für die nächsten 2 Stunden: ICON des Deutschen Wetterdienstes über Open-Meteo. Zugbahnen von Gewittern: aus den Bildern des DWD-Radars und dem Nowcast von GeoSphere Austria berechnet. Radar „Österreich“: GeoSphere Austria (INCA-Nowcast, CC BY 4.0). Schneehöhe am Berg: GeoSphere Austria (SNOWGRID, CC BY 4.0). Warnungen anderer Länder: MeteoAlarm (EUMETNET, Regionsgrenzen CC BY 4.0, © EuroGeographics) und National Weather Service (USA), Übersetzung: MyMemory. Radar USA: NOAA NEXRAD über Iowa Environmental Mesonet. Radar Finnland: Ilmatieteen laitos (FMI, CC BY 4.0).</p>
  <p>Karten und Bilder: © OpenStreetMap-Mitwirkende, Esri, Maxar, Earthstar Geographics, Sentinel-2 cloudless von EOX. Grenzen und Ortsnamen: Esri, Garmin, HERE. Wolken: Meteosat (EUMETSAT) über den Deutschen Wetterdienst.</p>
  <p>Version <span id="ver"></span></p>
  <p id="login-info"></p>
@@ -915,6 +942,7 @@ html.locked body>*:not(#gate){display:none!important}
  <a href="#sec-radar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><path d="M12 12l6-6"/></svg>Radar</a>
  <a href="#sec-hours"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Stunden</a>
  <a href="#sec-days"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>7 Tage</a>
+ <a href="#sec-facts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="18" cy="12" r="1.6"/></svg>Mehr</a>
 </nav>
 
 <div class="upd" id="upd" role="alertdialog" aria-labelledby="upd-t">
@@ -1132,7 +1160,7 @@ async function loadWeather(auto){
  if(!auto||dN)loadNowcast();
  if(!auto||dO)loadObs();
  if(!auto||dI)loadIce();
- if(!auto||Date.now()-lastSlow>=SLOW_MS){lastSlow=Date.now();loadPtypes();loadAir();loadPast();loadModels();loadTrend();loadAlpine();loadKi()}
+ if(!auto||Date.now()-lastSlow>=SLOW_MS){lastSlow=Date.now();loadPtypes();loadAir();loadTrend();loadAlpine();if(fansOn){loadPast();loadModels();loadKi()}}
  if(!auto)renderPush();
  try{localStorage.setItem("wetter-ort",JSON.stringify(place))}catch(e){}
 }
@@ -1378,6 +1406,8 @@ function moonHtml(j){
  const rt=rs.rise!=null?"Aufgang "+hm(rs.rise):"",st=rs.set!=null?"Untergang "+hm(rs.set):"";
  return'<div class="sm-m">'+moonSvg(il.f,il.p)+"<div><b>"+nm+"</b><span>"+Math.round(il.f*100)+" % beleuchtet</span><span>"+([rt,st].filter(Boolean).join(" · ")||"Heute kein Auf- oder Untergang")+"</span>"+(next.length?"<span>"+next.join(" · ")+"</span>":"")+"</div></div>";
 }
+/* „WIEN/HOHE WARTE“ → „Wien/Hohe Warte“ */
+const prettySt=n=>{n=String(n||"");return n&&n===n.toUpperCase()?n.toLowerCase().replace(/(^|[\s\/\-(])(\p{L})/gu,(m,a,b)=>a+b.toUpperCase()):n};
 function renderFacts(j,c){
  const mm=s=>(+s.slice(11,13))*60+(+s.slice(14,16));
  const sr=(j.daily.sunrise&&j.daily.sunrise[0])||"",ss=(j.daily.sunset&&j.daily.sunset[0])||"",hasSun=sr.length>=16&&ss.length>=16,a=hasSun?mm(sr):0,b=hasSun?mm(ss):0,f=hasSun?(mm(c.time)-a)/((b-a)||1):-1;
@@ -1420,6 +1450,124 @@ async function warnAT(){
   return{lvl:Math.min(4,Number(p.warnstufeid||r.wlevel)||1),title:(AT_TYPES[p.warntypid||r.wtype]||"Wetter")+"warnung",sub:["GeoSphere Austria",fmtT(t0)&&fmtT(t0)+" bis "+fmtT(t1)].filter(Boolean).join(", "),body:[p.text,p.meteotext,p.auswirkungen].filter(Boolean).join(" "),instr:p.empfehlungen,src:"GeoSphere",t0:toMs(t0),t1:toMs(t1)};
  });
 }
+/* ============ Warnungen in anderen Ländern ============
+   Europa: MeteoAlarm (EUMETNET), geladen über den eigenen Worker, weil MeteoAlarm keinen direkten Abruf aus dem Browser
+   erlaubt. USA: National Weather Service. Überschrift, Stufe und Zeit schreibt die App selbst auf Deutsch; Beschreibung
+   und Verhaltenstipps werden übersetzt (MyMemory), wenn sie nicht auf Deutsch vorliegen, und bleiben 7 Tage gemerkt.
+   Ob eine Warnung für deinen Ort gilt: über den Umriss in der Warnung oder über die Regionsgrenzen von MeteoAlarm
+   (warn/<land>.json, CC BY 4.0 EUMETNET, © EuroGeographics, aufbereitet von linecast, MIT). */
+const MA_SLUG={BE:"belgium",BA:"bosnia-herzegovina",BG:"bulgaria",HR:"croatia",CY:"cyprus",CZ:"czechia",DK:"denmark",EE:"estonia",FI:"finland",FR:"france",GR:"greece",HU:"hungary",IS:"iceland",IE:"ireland",IL:"israel",IT:"italy",LV:"latvia",LT:"lithuania",LU:"luxembourg",MT:"malta",MD:"moldova",ME:"montenegro",NL:"netherlands",MK:"republic-of-north-macedonia",NO:"norway",PL:"poland",PT:"portugal",RO:"romania",RS:"serbia",SK:"slovakia",SI:"slovenia",ES:"spain",SE:"sweden",CH:"switzerland",UA:"ukraine",GB:"united-kingdom"};
+const MA_REG=new Set(["ba","be","bg","cy","cz","dk","es","fi","fr","gr","hr","hu","ie","is","it","lt","lv","md","me","mk","mt","nl","pl","pt","ro","rs","si","sk"]);
+const MA_TT={1:"Windwarnung",2:"Warnung vor Schnee und Glätte",3:"Gewitterwarnung",4:"Nebelwarnung",5:"Hitzewarnung",6:"Kältewarnung",7:"Warnung vor Sturmflut und hohen Wellen",8:"Waldbrandwarnung",9:"Lawinenwarnung",10:"Regenwarnung",12:"Hochwasserwarnung",13:"Warnung vor Regen und Hochwasser"};
+const landName=cc=>{try{return new Intl.DisplayNames(["de"],{type:"region"}).of(cc)||cc}catch(e){return cc}};
+const langName=l=>{try{return new Intl.DisplayNames(["de"],{type:"language"}).of(l)||l}catch(e){return l}};
+/* Land und Verwaltungsnamen des Ortes (einmal je Ort, dann gemerkt) */
+const ccMem={};
+async function placeCC(){
+ const k=(+place.lat).toFixed(2)+","+(+place.lon).toFixed(2);
+ if(ccMem[k])return ccMem[k];
+ try{const o=JSON.parse(localStorage.getItem("wetter-cc|"+k));if(o&&o.cc)return ccMem[k]=o}catch(e){}
+ const r=await getJ("https://api.bigdatacloud.net/data/reverse-geocode-client?latitude="+(+place.lat).toFixed(4)+"&longitude="+(+place.lon).toFixed(4)+"&localityLanguage=en",12000);
+ const adm=((r.localityInfo&&r.localityInfo.administrative)||[]).map(a=>a&&a.name).concat([r.principalSubdivision,r.city,r.locality]).filter(Boolean);
+ const o={t:Date.now(),cc:String(r.countryCode||"").toUpperCase(),adm:[...new Set(adm)].slice(0,12)};
+ if(o.cc){ccMem[k]=o;try{localStorage.setItem("wetter-cc|"+k,JSON.stringify(o))}catch(e){}}
+ return o;
+}
+/* Punkt in einem Umriss: CAP-Text „lat,lon lat,lon …“ bzw. Regionen als Ganzzahlen (1/1000 Grad, fortlaufende Differenzen) */
+function inCapPoly(la,lo,str){
+ const P=String(str).trim().split(/\s+/).map(p=>p.split(",").map(Number)).filter(p=>p.length>=2&&isFinite(p[0])&&isFinite(p[1]));
+ if(P.length<3)return false;let c=false;
+ for(let i=0,j=P.length-1;i<P.length;j=i++){const yi=P[i][0],xi=P[i][1],yj=P[j][0],xj=P[j][1];if((yi>la)!==(yj>la)&&lo<(xj-xi)*(la-yi)/(yj-yi)+xi)c=!c}
+ return c;
+}
+function inRings(la,lo,rings){
+ const y=la*1000,x=lo*1000;let c=false;
+ for(const f of rings){
+  const n=f.length/2;let py=f[0],px=f[1];const y0=py,x0=px;
+  for(let i=1;i<=n;i++){const qy=i<n?py+f[2*i]:y0,qx=i<n?px+f[2*i+1]:x0;if((py>y)!==(qy>y)&&x<(qx-px)*(y-py)/(qy-py)+px)c=!c;py=qy;px=qx}
+ }
+ return c;
+}
+/* Übersetzen ins Deutsche: in Stücken bis 450 Zeichen, gemerkt für 7 Tage */
+const trMem={};
+const hashS=s=>{let h=5381;for(let i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))|0;return(h>>>0).toString(36)+s.length.toString(36)};
+const unEnt=s=>String(s).replace(/&#(\d+);/g,(m,n)=>String.fromCharCode(+n)).replace(/&quot;/g,'"').replace(/&apos;/g,"'").replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&amp;/g,"&");
+async function trDe(text,from){
+ text=String(text||"").replace(/\s+/g," ").trim();if(!text||/^de/i.test(from))return text;
+ const key="wetter-tr|"+hashS(from+"|"+text);
+ if(trMem[key])return trMem[key];
+ try{const o=JSON.parse(localStorage.getItem(key));if(o&&o.v)return trMem[key]=o.v}catch(e){}
+ const parts=[];let cur="";
+ text.replace(/([.!?;:])\s+/g,"$1\n").split("\n").forEach(x=>{while(x.length>450){if(cur){parts.push(cur);cur=""}parts.push(x.slice(0,450));x=x.slice(450)}if((cur+" "+x).trim().length>450){parts.push(cur);cur=x}else cur=(cur?cur+" ":"")+x});
+ if(cur)parts.push(cur);
+ const out=[];
+ for(const p of parts.slice(0,6)){
+  const j=await getJ("https://api.mymemory.translated.net/get?q="+encodeURIComponent(p)+"&langpair="+encodeURIComponent(from)+"|de",15000);
+  const t=j&&j.responseData&&j.responseData.translatedText;
+  if(!t||j.quotaFinished||+j.responseStatus!==200||/MYMEMORY WARNING/i.test(t))throw new Error("tr");
+  out.push(unEnt(t));
+ }
+ const v=out.join(" ");trMem[key]=v;
+ try{localStorage.setItem(key,JSON.stringify({t:Date.now(),v}))}catch(e){}
+ return v;
+}
+async function trWarn(list){
+ await Promise.all(list.map(async w=>{
+  if(!w.lang||w.lang==="de")return;
+  const from=w.lang,ln=langName(from);
+  try{
+   const job=Promise.all([w.trTitle?trDe(w.title,from):w.title,trDe(w.body,from),w.instr?trDe(w.instr,from):""]);
+   const [t,b,i]=await Promise.race([job,new Promise((_,no)=>setTimeout(()=>no(new Error("zeit")),9000))]);
+   w.title=t||w.title;w.body=b||w.body;w.instr=i||w.instr;w.note="Automatisch übersetzt aus dem Original ("+ln+").";
+  }catch(e){w.note="Original auf "+ln+": Die Übersetzung ist gerade nicht erreichbar."}
+ }));
+}
+async function warnMA(cc,geo){
+ const W=window.__worker,tok=W&&W.token();if(!tok)throw new Error("login");
+ const lc=cc.toLowerCase();
+ const [r,reg]=await Promise.all([tfetch(W.base+"/ma/"+MA_SLUG[cc],{headers:{Authorization:"Bearer "+tok}},30000),MA_REG.has(lc)?getJ("warn/"+lc+".json").catch(()=>null):Promise.resolve(null)]);
+ if(r.status===404)throw new Error("ma-update");
+ if(!r.ok)throw new Error(String(r.status));
+ const j=await r.json(),la=+place.lat,lo=+place.lon,now=Date.now();
+ const norm=x=>String(x||"").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"");
+ const adm=((geo&&geo.adm)||[]).map(norm).filter(x=>x.length>=4);
+ const hit=a=>{
+  if(a.polygon&&a.polygon.length)return a.polygon.some(p=>inCapPoly(la,lo,p));
+  let known=false;
+  for(const g of a.geocode||[]){
+   const e=reg&&(reg[g.valueName==="EMMA_ID"?g.value:g.valueName+"/"+g.value]||reg[g.value]);if(!e)continue;known=true;
+   const b=e[0],y=la*1000,x=lo*1000;if(y<b[0]||y>b[1]||x<b[2]||x>b[3])continue;
+   if(inRings(la,lo,e[1]))return true;
+  }
+  if(known)return false;
+  const d=norm(a.areaDesc);return!!d&&adm.some(n=>d.indexOf(n)>=0||n.indexOf(d)>=0);
+ };
+ const out=[],seen={};
+ for(const w of j.warnings||[]){
+  const infos=(w.alert&&w.alert.info)||[];if(!infos.length)continue;
+  const pick=infos.find(i=>/^de/i.test(i.language||""))||infos.find(i=>/^en/i.test(i.language||""))||infos[0];
+  const par=n=>{for(const i of [pick].concat(infos)){const p=(i.parameter||[]).find(x=>x.valueName===n);if(p)return String(p.value)}return""};
+  const lv=parseInt(par("awareness_level"),10)||0,ty=parseInt(par("awareness_type"),10)||0;
+  if(lv<2)continue;
+  const t0=toMs(pick.onset||pick.effective),t1=toMs(pick.expires);
+  if(t1&&t1<now)continue;if(t0&&t0>now+48*3600000)continue;
+  const ar=(pick.area||[]).filter(hit);if(!ar.length)continue;
+  const key=ty+"|"+lv+"|"+t0+"|"+t1;if(seen[key])continue;seen[key]=1;
+  out.push({lvl:Math.min(4,lv-1),title:MA_TT[ty]||"Wetterwarnung",sub:[(pick.senderName||"Wetterdienst")+" über MeteoAlarm",ar[0].areaDesc,fmtT(t0)&&fmtT(t0)+" bis "+fmtT(t1)].filter(Boolean).join(", "),
+   body:pick.description||pick.headline||"",instr:pick.instruction||"",src:"MeteoAlarm",t0,t1,lang:String(pick.language||"en").slice(0,2).toLowerCase()});
+ }
+ await trWarn(out);
+ return out;
+}
+async function warnUS(){
+ const j=await getJ("https://api.weather.gov/alerts/active?point="+(+place.lat).toFixed(4)+","+(+place.lon).toFixed(4));
+ const now=Date.now(),out=(j.features||[]).map(f=>{const p=f.properties||{},t0=toMs(p.onset||p.effective),t1=toMs(p.ends||p.expires);
+  return{lvl:{Extreme:4,Severe:3,Moderate:2,Minor:1}[p.severity]||1,title:p.event||"Wetterwarnung",sub:["National Weather Service",String(p.areaDesc||"").split(";")[0],fmtT(t0)&&fmtT(t0)+" bis "+fmtT(t1)].filter(Boolean).join(", "),
+   body:p.description||p.headline||"",instr:p.instruction||"",src:"NWS",t0,t1,lang:"en",trTitle:true}}).filter(w=>!w.t1||w.t1>now);
+ await trWarn(out);
+ return out;
+}
+
 const CHECK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M7.8 12.4l3 3 5.6-6"/></svg>';
 const deNone={};
 async function loadWarnings(){
@@ -1427,22 +1575,32 @@ async function loadWarnings(){
  /* Der deutsche Warndienst kennt nur Orte in Deutschland: hat er für diesen Ort „nicht gefunden“ gemeldet, eine Stunde lang nicht mehr fragen */
  if(inBox([47.2,55.1,5.8,15.1])&&!(deNone[pk]&&Date.now()-deNone[pk]<3600000))jobs.push(warnDE);
  if(inBox([46.3,49.1,9.5,17.2]))jobs.push(warnAT);
- if(!jobs.length){warnList=[];warnOk=false;checkAlarm();wallChips();box.innerHTML='<p class="muted">Für diesen Ort ist kein Warndienst angebunden. <a href="https://meteoalarm.org/de" target="_blank" rel="noopener noreferrer">MeteoAlarm Europa</a></p>';q.done();return}
+ /* in anderen Ländern: MeteoAlarm bzw. National Weather Service */
+ let geo=null;try{geo=await placeCC()}catch(e){}
+ try{natUpdate()}catch(e){}
+ if(!q.ok())return;
+ const cc=geo&&geo.cc;
+ if(cc&&MA_SLUG[cc])jobs.push(()=>warnMA(cc,geo));else if(cc==="US")jobs.push(warnUS);
+ $("sec-warn").hidden=false;
+ if(!jobs.length){warnList=[];warnOk=false;checkAlarm();wallChips();box.innerHTML='<p class="muted">'+(cc?"Für "+esc(landName(cc))+" gibt es in der App noch keine Warnungen.":"Für diesen Ort ist kein Warndienst angebunden.")+' <a href="https://meteoalarm.org/de" target="_blank" rel="noopener noreferrer">MeteoAlarm Europa</a></p>';q.done();return}
  const res=await Promise.allSettled(jobs.map(f=>f()));
  if(!q.ok())return;
  const list=[];let failed=0;
- res.forEach((r,k)=>{if(r.status==="fulfilled")list.push(...r.value);else if(jobs[k]===warnDE&&String(r.reason&&r.reason.message)==="404")deNone[pk]=Date.now();else failed++});
+ let why="";
+ res.forEach((r,k)=>{if(r.status==="fulfilled")list.push(...r.value);else if(jobs[k]===warnDE&&String(r.reason&&r.reason.message)==="404")deNone[pk]=Date.now();else{failed++;const m=String(r.reason&&r.reason.message);if(m==="ma-update"||m==="login")why=m}});
  if(failed&&failed===jobs.length&&q.keep())return;
  list.sort((x,y)=>y.lvl-x.lvl);
  warnOk=failed<jobs.length;
  warnList=list;checkAlarm();wallChips();q.done();
  const opened={};box.querySelectorAll(".warn").forEach(w=>{const d=w.querySelector("details");if(d)opened[w.dataset.k]=d.open});
- const fail=failed&&failed<jobs.length?'<p class="small">Ein Warndienst konnte nicht abgefragt werden. Bitte die Warnkarten unten prüfen.</p>':"";
+ const fail=(why==="ma-update"?'<p class="small">Für Warnungen aus '+esc(landName(cc||""))+' braucht der Worker bei Cloudflare ein Update: <a href="worker.html">Code kopieren und bei Cloudflare einfügen</a>.</p>':why==="login"?'<p class="small">Warnungen aus anderen Ländern gibt es nur, wenn du angemeldet bist.</p>':"")+(failed&&failed<jobs.length&&!why?'<p class="small">Ein Warndienst konnte nicht abgefragt werden. Bitte die Warnkarten unten prüfen.</p>':"");
+ /* keine Warnung: Karte ausblenden, oben steht dann „Keine Warnungen“ */
+ $("sec-warn").hidden=!list.length&&!failed;
  if(!list.length){box.innerHTML=(failed&&failed===jobs.length?'<p class="muted">Warnungen konnten nicht geladen werden.</p>':'<p class="ok">'+CHECK+'Aktuell keine Warnungen für diesen Ort.</p>')+fail;return}
  box.innerHTML=list.map(w=>{
   const s=SEV[w.lvl-1]||SEV[0];
   const wk=w.title+"|"+w.sub,op=wk in opened?opened[wk]:w.lvl>=3;
-  return'<div class="warn" data-k="'+esc(wk)+'" style="--wc:'+s[0]+'"><div class="wh"><b>'+esc(w.title)+"</b><span>Stufe "+s[1]+'</span></div><p class="ws">'+esc(w.sub)+"</p><details"+(op?" open":"")+"><summary>Details</summary><p>"+esc(w.body)+"</p>"+(w.instr?"<p><b>Verhalten:</b> "+esc(w.instr)+"</p>":"")+"</details></div>";
+  return'<div class="warn" data-k="'+esc(wk)+'" style="--wc:'+s[0]+'"><div class="wh"><b>'+esc(w.title)+"</b><span>Stufe "+s[1]+'</span></div><p class="ws">'+esc(w.sub)+"</p><details"+(op?" open":"")+"><summary>Details</summary><p>"+esc(w.body)+"</p>"+(w.instr?"<p><b>Verhalten:</b> "+esc(w.instr)+"</p>":"")+(w.note?'<p class="wnote">'+esc(w.note)+"</p>":"")+"</details></div>";
  }).join("")+fail;
 }
 
@@ -1611,6 +1769,7 @@ function freshNote(t){const min=Math.round((Date.now()/1000-t)/60);$("fresh").te
 async function loadRadar(){
  if(mode==="dwd")return loadDwd();
  if(mode==="at")return loadAt();
+ if(mode==="nat")return loadNat();
  if(rvSrc===1&&Date.now()-rvSrcT>3600000){rvSrc=0;lxNat=10;rvLast=0}
  const src=RVSRC[rvSrc];
  try{
@@ -1647,6 +1806,52 @@ async function loadRadar(){
   if(mode==="rv"&&(wasPlaying||(wallOn&&wallPlay())))toggle();
  }catch(e){$("mnote").textContent="Radardaten konnten nicht geladen werden."}
 }
+/* ============ Radar des Landes: nur dort, wo ein Wetterdienst sein Radar frei anbietet ============
+   USA: NEXRAD-Radarverbund von NOAA über das Iowa Environmental Mesonet (alle 5 Minuten, 50 Minuten zurück).
+   Finnland: Radarverbund des Finnischen Meteorologischen Instituts (WMS, alle 5 Minuten, 1 Stunde zurück).
+   Für ganz Europa gibt es zusätzlich das gemeinsame Radarbild unter „Weltweit“ (EUMETNET OPERA). */
+const NATR={
+ US:{n:"USA",att:"Radar: NOAA NEXRAD über Iowa Environmental Mesonet",note:"Radar der USA: Radarverbund des US-Wetterdienstes (NOAA NEXRAD), alle 5 Minuten, die letzten 50 Minuten. Bereitgestellt vom Iowa Environmental Mesonet.",
+  frames(){const t0=Math.floor(Date.now()/300000)*300-300;return[50,45,40,35,30,25,20,15,10,5,0].map(m=>({time:t0-m*60,m}))},
+  layer(f){return L.tileLayer("https://mesonet.agron.iastate.edu/cache/tile.py/1.0.0/nexrad-n0q-900913"+(f.m?"-m"+String(f.m).padStart(2,"0")+"m":"")+"/{z}/{x}/{y}.png",{opacity:0,maxNativeZoom:10,maxZoom:19,zIndex:5,className:"rdr",attribution:this.att})}},
+ FI:{n:"Finnland",att:"Radar: Ilmatieteen laitos (FMI), CC BY 4.0",note:"Radar von Finnland: Radarverbund des Finnischen Meteorologischen Instituts (FMI), Regenmenge pro Stunde, alle 5 Minuten, die letzte Stunde.",
+  frames(){const t0=Math.floor((Date.now()-7*60000)/300000)*300;return Array.from({length:12},(_,k)=>({time:t0-(11-k)*300}))},
+  layer(f){return L.tileLayer.wms("https://openwms.fmi.fi/geoserver/Radar/wms",{layers:"Radar:suomi_rr_eureffin",format:"image/png",transparent:true,version:"1.3.0",time:new Date(f.time*1000).toISOString().replace(".000",""),opacity:0,maxZoom:19,zIndex:5,className:"rdr",attribution:this.att})}}
+};
+let natFor="",natLast=0;
+function ccNow(){
+ const k=(+place.lat).toFixed(2)+","+(+place.lon).toFixed(2);
+ if(ccMem[k])return ccMem[k].cc;
+ try{const o=JSON.parse(localStorage.getItem("wetter-cc|"+k));return(o&&o.cc)||""}catch(e){return""}
+}
+/* Knopf zeigen oder verstecken; liegt der Ort nicht mehr im Land, zurück zum passenden Radar */
+function natUpdate(){
+ const b=$("natbtn");if(!b||!map)return;
+ const cc=ccNow(),c=NATR[cc];
+ b.hidden=!c;if(c)b.textContent=c.n;
+ if(mode!=="nat")return;
+ if(!c){const la=+place.lat,lo=+place.lon;setMode(dwCovered(la,lo)?"dwd":atCovered(la,lo)?"at":"rv");return}
+ if(natFor!==cc){natLast=0;loadNat()}
+}
+function loadNat(){
+ if(!map||mode!=="nat")return;
+ const cc=ccNow(),c=NATR[cc];if(!c)return;
+ if(natFor===cc&&Date.now()-natLast<4*60000&&layers.length)return;
+ natFor=cc;natLast=Date.now();
+ const wasPlaying=!!timer;if(timer)toggle();
+ hideFc();exReset();
+ layers.forEach(l=>{try{map.removeLayer(l)}catch(e){}l._wOn=0});
+ const F=c.frames(),now=Date.now()/1000;
+ frames=F.map(f=>({time:f.time,nat:1}));
+ pastCount=Math.max(1,frames.filter(f=>f.time<=now+60).length);
+ layers=F.map(f=>c.layer(f));
+ idx=0;$("sl").max=Math.max(0,frames.length-1);placeTick();
+ show(pastCount-1);
+ $("mnote").textContent=c.note;freshNote(F[F.length-1].time);
+ $("fnote").textContent="Die Zeiten sind auf 5 Minuten gerundet.";
+ if(wasPlaying||(wallOn&&wallPlay()))toggle();
+}
+
 /* ============ DWD-Radar (RADOLAN RV) über Bright Sky: 1 km, 5 Minuten, 2 Stunden Radar-Vorhersage ============ */
 const DWD_RADARS=[[53.56,6.75],[54.0,10.05],[51.13,13.77],[49.54,12.40],[53.34,7.02],[51.41,6.97],[47.87,8.0],[51.31,8.80],[52.46,9.69],[48.17,12.10],[48.04,10.22],[50.50,11.14],[50.11,6.55],[49.98,8.71],[52.65,13.86],[54.18,12.06],[48.59,9.78],[52.16,11.18]];
 const dwCovered=(la,lo)=>DWD_RADARS.some(r=>km(la,lo,r[0],r[1])<=150);
@@ -1654,6 +1859,7 @@ function startMode(){
  let m=null;try{m=localStorage.getItem("wetter-mode")}catch(e){}
  if(m==="rv"||m==="dwd")return m;
  if(m==="at"&&atCovered(+place.lat,+place.lon))return m;
+ if(m==="nat"&&NATR[ccNow()])return m;
  return dwCovered(+place.lat,+place.lon)?"dwd":atCovered(+place.lat,+place.lon)?"at":"rv";
 }
 const RS=6370.04,SP0=Math.PI/3,SL0=Math.PI/18;
@@ -2187,7 +2393,7 @@ function refreshFcFrames(){
 }
 function placeTick(){
  const t=$("nowtick"),l=$("nowline"),max=+$("sl").max;
- const on=(mode==="rv"||mode==="dwd"||mode==="at")&&pastCount>=1&&max>=2&&pastCount-1<max;
+ const on=(mode==="rv"||mode==="dwd"||mode==="at"||mode==="nat")&&pastCount>=1&&max>=2&&pastCount-1<max;
  t.style.display=l.style.display=on?"block":"none";
  if(!on)return;
  const x="calc(8px + (100% - 16px) * "+((pastCount-1)/max).toFixed(4)+")";
@@ -2206,7 +2412,7 @@ function showFc(f){
 /* Speicher sparen: von den Radarbildern hängen nur das aktuelle, das vorige und die zwei nächsten an der Karte.
    Vorher hingen alle (bis zu 30) gleichzeitig dran, das brachte Safari auf dem iPhone zum Absturz. */
 function rvWindow(i){
- if(mode!=="rv"||!map||!layers.length)return;
+ if((mode!=="rv"&&mode!=="nat")||!map||!layers.length)return;
  const n=layers.length,f=frames[i],b=f&&(f.ex!=null||f.fc!=null||i>=n)?Math.min(n-1,pastCount-1):i;
  const keep=[b-1,b,(b+1)%n,(b+2)%n];
  layers.forEach((l,k)=>{const want=keep.indexOf(k)>=0;try{if(want&&!l._wOn){l.addTo(map);l._wOn=1}else if(!want&&l._wOn){map.removeLayer(l);l._wOn=0}}catch(e){}});
@@ -2256,6 +2462,10 @@ function setMode(m,user){
   $("mnote").textContent="Radar von GeoSphere Austria (INCA): Niederschlag aus den österreichischen Radaren und Messstationen, mit 1 km Auflösung, alle 15 Minuten neu. Nach „Jetzt“ folgt die Vorhersage von GeoSphere für 3 Stunden. Beim weiten Herauszoomen wird nur der Bereich um die Kartenmitte geladen.";
   /* schon geladene Daten sofort zeigen und nur bei Bedarf neu laden */
   if(lay==="rain"&&atData&&Date.now()-atData.at<20*60000){atUse(atData);loadAt(false)}else{atNext=0;loadAt(true)}
+ }else if(m==="nat"){
+  hideFc();exReset();hideDw();clearTrk();atHide();
+  frames=[];pastCount=0;idx=0;$("sl").max=0;$("ts").textContent="";$("fresh").textContent="";$("fnote").textContent="";placeTick();
+  natLast=0;natFor="";loadNat();
  }else{
   rvLast=0;
   hideDw();clearTrk();atHide();
@@ -2914,6 +3124,15 @@ async function loadIcon(my,why){
  const o={hasT:true,hasP:true,hasW:true,pu:"mm",wu:"km/h",note:(why?esc(why)+" ":"")+"ICON-D2 des Deutschen Wetterdienstes (Auflösung etwa 2 km, stündlich, bis zu 48 Stunden) über Open-Meteo."};
  kcLast=()=>kcTable(head,L,o);kcLast();
 }
+/* Nächste 24 Stunden: Kacheln oder Tabelle (gemerkt) */
+let hView="t";try{if(localStorage.getItem("wetter-hview")==="l")hView="l"}catch(e){}
+function setHView(v,save){
+ hView=v;$("hours").hidden=v!=="t";$("hlist").hidden=v!=="l";$("sec-hours").classList.toggle("tbl",v==="l");
+ document.querySelectorAll("#hview button").forEach(b=>{const on=b.dataset.v===v;b.classList.toggle("on",on);b.setAttribute("aria-pressed",on?"true":"false")});
+ if(save){try{localStorage.setItem("wetter-hview",v)}catch(e){}}
+}
+$("hview").addEventListener("click",e=>{const b=e.target.closest("button[data-v]");if(b)setHView(b.dataset.v,true)});
+setHView(hView);
 $("kcsrc").addEventListener("click",e=>{const b=e.target.closest("button[data-s]");if(!b)return;kcSrc=b.dataset.s;try{localStorage.setItem("wetter-kcsrc",kcSrc)}catch(x){}loadKc()});
 $("kc").addEventListener("click",e=>{
  const b=e.target.closest("button");if(!b)return;
@@ -2976,13 +3195,15 @@ async function loadObs(){
  try{if(inBox2([46.3,49.1,9.5,17.2]))o=await obsAT()}catch(e){o=null;err=true}
  try{if(!o&&inBox2([47.2,55.1,5.8,15.1]))o=await obsDE()}catch(e){o=null;err=true}
  if(!q.ok())return;
- if(!o||o.T==null){if(!(err&&q.keep()))sec.hidden=true;return}
+ if(!o||o.T==null){if(!(err&&q.keep())){sec.hidden=true;const ho=$("hobs");if(ho)ho.hidden=true}return}
  const nm=x=>x!=null&&isFinite(x);
  const cell=(l,v,u)=>'<div class="ob"><span>'+l+"</span><b>"+v+"</b>"+(u?"<small>"+u+"</small>":"")+"</div>";
  let h='<div class="obs">'+cell("Temperatur",deg(o.T),"")+(nm(o.H)?cell("Luftfeuchte",Math.round(o.H),"%"):"")+(nm(o.W)?cell("Wind",Math.round(o.W),"km/h"):"")+(nm(o.G)?cell("Böen",Math.round(o.G),"km/h"):"")+(nm(o.R)?cell("Niederschlag",fmt(o.R),"mm"):"")+(nm(o.Pa)?cell("Luftdruck",Math.round(o.Pa),"hPa"):"")+"</div>";
  const age=o.t?Math.round((Date.now()-o.t.getTime())/60000):null;
- h+='<p class="small">Station '+esc(o.name)+(o.dist!=null?" ("+Math.round(o.dist)+" km entfernt)":"")+", "+esc(o.src)+(o.t?", Stand "+o.t.toLocaleTimeString("de-AT",{hour:"2-digit",minute:"2-digit"})+" Uhr"+(age!=null&&age>=0?" (vor "+age+" Min.)":""):"")+". Niederschlag der letzten 10 Minuten.</p>";
+ h+='<p class="small">Station '+esc(prettySt(o.name))+(o.dist!=null?" ("+Math.round(o.dist)+" km entfernt)":"")+", "+esc(o.src)+(o.t?", Stand "+o.t.toLocaleTimeString("de-AT",{hour:"2-digit",minute:"2-digit"})+" Uhr"+(age!=null&&age>=0?" (vor "+age+" Min.)":""):"")+". Niederschlag der letzten 10 Minuten.</p>";
  el.innerHTML=h;sec.hidden=false;q.done();
+ /* im Kopf eine Zeile: so viel zeigt die Station gerade */
+ const ho=$("hobs");if(ho){const fresh=age==null||age<=90;ho.hidden=!fresh;if(fresh)ho.textContent="Gemessen: "+deg(o.T)+" in "+prettySt(o.name)+(o.dist!=null&&o.dist>=15?" ("+Math.round(o.dist)+" km)":"")}
 }
 
 /* ============ Luft und Pollen ============ */
@@ -3683,7 +3904,7 @@ function alarmNow(){
   if(st)return{k:"g|"+st,h:"Gewitter in der Nähe möglich",s:"Bei Blitz und Donner drinnen bleiben. Die Blitze siehst du auf dem Radar.",c:"#6741D9",i:AL_BOLT};
  }
  const n=ncState;
- if(n&&!n.wet0&&n.first>=0&&n.first<=1){const sn=n.tyF==="snow";return{k:"r|"+(lastJ?lastJ.daily.time[0]:"")+"|"+n.tFirst,h:(NAME[n.tyF]||"Regen")+" ab etwa "+n.tFirst+" Uhr",s:"In der nächsten Viertelstunde beginnt es zu "+(sn?"schneien":"regnen")+".",c:sn?"#7048E8":"#1C64D9",i:AL_RAIN}}
+ if(n&&!n.wet0&&n.first>=0&&n.first<=1){const sn=n.tyF==="snow";return{k:"r|"+(lastJ?lastJ.daily.time[0]:"")+"|"+n.tFirst,h:(NAME[n.tyF]||"Regen")+" ab etwa "+n.tFirst+" Uhr",s:(n.first<=0?"In der nächsten Viertelstunde":"In etwa einer halben Stunde")+" beginnt es zu "+(sn?"schneien":"regnen")+".",c:sn?"#7048E8":"#1C64D9",i:AL_RAIN}}
  return wa;
 }
 function checkAlarm(){
@@ -3850,9 +4071,21 @@ try{
  new IntersectionObserver(es=>es.forEach(e=>document.body.classList.toggle("scrolled",!e.isIntersecting)),{rootMargin:"-90px 0px 0px 0px"}).observe($("top"));
  new IntersectionObserver(es=>es.forEach(e=>$("top").classList.toggle("off",!e.isIntersecting))).observe($("top"));
  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)tabs.forEach(a=>a.classList.toggle("on",a.getAttribute("href")==="#"+e.target.id))}),{rootMargin:"-40% 0px -55% 0px"});
- ["top","sec-radar","sec-hours","sec-days"].forEach(id=>{const el=$(id);if(el)io.observe(el)});
+ ["top","sec-radar","sec-hours","sec-days","sec-facts"].forEach(id=>{const el=$(id);if(el)io.observe(el)});
  tabs.forEach(a=>a.addEventListener("click",()=>{tabs.forEach(x=>x.classList.toggle("on",x===a))}));
 }catch(e){}
+
+/* ============ Für Wetter-Fans: Modellvergleich, KI-Korrektur, Rückblick ============
+   Eingeklappt wird nichts davon geladen; das spart Abfragen und Akku. Beim Öffnen wird sofort geladen. */
+let fansOn=false;try{fansOn=localStorage.getItem("wetter-fans")==="1"}catch(e){}
+function setFans(on,user){
+ fansOn=on;root.classList.toggle("fans-off",!on);
+ const b=$("fans-t");b.textContent=on?"Ausblenden":"Einblenden";b.setAttribute("aria-expanded",on?"true":"false");
+ if(user){try{localStorage.setItem("wetter-fans",on?"1":"0")}catch(e){}}
+ if(on&&user&&lastJ){loadPast();loadModels();loadKi()}
+}
+$("fans-t").onclick=()=>setFans(!fansOn,true);
+setFans(fansOn,false);
 
 /* ============ Start ============ */
 try{const s=JSON.parse(localStorage.getItem("wetter-ort"));if(s&&s.lat)place=s;follow=localStorage.getItem("wetter-follow")!=="0"}catch(e){}
@@ -3865,7 +4098,7 @@ try{setLay(lay)}catch(e){console.error(e)}
 try{
  const now=Date.now(),ks=[];for(let i=0;i<localStorage.length;i++)ks.push(localStorage.key(i));
  const age=k=>{try{const o=JSON.parse(localStorage.getItem(k));return o&&o.t?now-o.t:1e15}catch(e){return 1e15}};
- ks.forEach(k=>{if(!k)return;if((k.indexOf("wetter-kc|")===0&&age(k)>86400000)||(k.indexOf("wetter-skill|")===0&&age(k)>3*86400000))localStorage.removeItem(k)});
+ ks.forEach(k=>{if(!k)return;if((k.indexOf("wetter-kc|")===0&&age(k)>86400000)||(k.indexOf("wetter-skill|")===0&&age(k)>3*86400000)||(k.indexOf("wetter-tr|")===0&&age(k)>7*86400000)||(k.indexOf("wetter-cc|")===0&&age(k)>60*86400000))localStorage.removeItem(k)});
  const logs=ks.filter(k=>k&&k.indexOf("wetter-kclog|")===0&&k!==kcLogKey());
  if(logs.length>2)logs.slice(0,logs.length-2).forEach(k=>localStorage.removeItem(k));
 }catch(e){}
@@ -4195,6 +4428,18 @@ function wallChips(){
  if(iceState&&iceState.short)out.push('<div class="ww hint">'+SV_FLAKE+"<div><b>"+esc(iceState.short)+"</b></div></div>");
  if(!warnList.length&&warnOk)out.unshift('<p class="wok">'+CHECK+"Keine Warnungen</p>");
  el.innerHTML=out.join("");
+ heroWarn();
+}
+function heroWarn(){
+ const b=$("hok");if(!b)return;
+ if(warnList.length){
+  const w=warnList[0],s=SEV[w.lvl-1]||SEV[0];
+  b.className="hok warn";b.style.setProperty("--wc",s[0]);
+  b.innerHTML=WTRI+"<span>"+esc(w.title)+" · "+s[1]+(warnList.length>1?" · und "+(warnList.length-1)+" weitere":"")+"</span>";
+  b.setAttribute("aria-label",warnList.length+" Warnung"+(warnList.length>1?"en":"")+", zu den Details");b.hidden=false;
+  b.onclick=()=>{const el=$("sec-warn");if(el)el.scrollIntoView({behavior:"smooth",block:"start"})};
+ }else if(warnOk){b.className="hok";b.innerHTML=CHECK+"<span>Keine Warnungen</span>";b.removeAttribute("aria-label");b.hidden=false;b.onclick=null}
+ else b.hidden=true;
 }
 function setWall(on,user){
  wallOn=on;root.classList.toggle("wall",on);
