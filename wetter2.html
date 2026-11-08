@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-4ZMbi6XO6SuCvtnlU9cqh+OQ2E93apKBAivVW6m+wMI=' 'sha256-F1lreOLy84+sYAZwCiC5OGOTDcovKCCQAYSwbz7Ocq8=' https://unpkg.com https://cdnjs.cloudflare.com; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-7nFiAZJolumXrwXfhozDHFF6iT5vgIjrZDj0UVEJlHY=' 'sha256-F1lreOLy84+sYAZwCiC5OGOTDcovKCCQAYSwbz7Ocq8=' https://unpkg.com https://cdnjs.cloudflare.com; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -14,9 +14,9 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/favicon-64.png">
-<meta name="app-build" content="31">
-<meta name="app-version" content="2.2.1">
-<meta name="app-notes" content="Version 2.2.1: Die Knöpfe über der Karte blenden nach ein paar Sekunden aus, Antippen holt sie zurück. Die App aktualisiert sich jetzt jede Minute.">
+<meta name="app-build" content="33">
+<meta name="app-version" content="2.3">
+<meta name="app-notes" content="Version 2.3: Flüssigere Bewegungen bis 120 Hz: Wettersymbol und Effekte laufen auf der Grafikeinheit, Radarbilder werden vorab vorbereitet, Windlinien in jeder Bildwiederholung. Die Kartenknöpfe blenden nach jedem Antippen wieder aus.">
 <script>/* alte Adresse wetter2.html -> neue Startseite */
 try{if(top!==self)document.documentElement.style.display="none"}catch(e){document.documentElement.style.display="none"}
 window.__redir=/\/wetter2\.html$/i.test(location.pathname);
@@ -96,16 +96,18 @@ html[data-sky=cloud-night] .deco i,html[data-sky=storm] .deco i{--ca:.09}
  html[data-sky=clear-night] .deco .d2{animation:tw 6.8s ease-in-out infinite alternate-reverse}
  .deco .d1{animation:dr1 38s ease-in-out infinite alternate}
  .deco .d2{animation:dr2 52s ease-in-out infinite alternate}
- /* bewegte Wettersymbole (nur das große oben) */
- .hicon .ry{transform-box:fill-box;transform-origin:center;animation:spin 40s linear infinite}
- .hicon .sc{transform-box:fill-box;transform-origin:center;animation:pulse 4.5s ease-in-out infinite alternate}
- .hicon .cw,.hicon .s2{animation:float 7s ease-in-out infinite alternate}
- .hicon .mn{transform-box:fill-box;transform-origin:center;animation:moon 8s ease-in-out infinite alternate}
- .hicon .dr line{animation:fall 1.15s linear infinite}
- .hicon .dr line:nth-child(2){animation-delay:-.38s}.hicon .dr line:nth-child(3){animation-delay:-.77s}
- .hicon .fl circle{animation:flake 2.6s ease-in-out infinite}
- .hicon .fl circle:nth-child(2){animation-delay:-.9s}.hicon .fl circle:nth-child(3){animation-delay:-1.7s}
- .hicon .bt{animation:flash 4.8s linear infinite}
+ /* bewegte Wettersymbole (nur das große oben): jede Ebene ist ein eigenes Element und wird nur verschoben, gedreht
+    oder überblendet. Das erledigt die Grafikeinheit selbst, in der vollen Bildwiederholrate (auch 120 Hz),
+    ohne dass die Seite neu zeichnen muss. */
+ .hicon .h-ry{animation:spin 40s linear infinite}
+ .hicon .h-sc{animation:pulse 4.5s ease-in-out infinite alternate}
+ .hicon .h-cw,.hicon .h-s2{animation:hfloat 7s ease-in-out infinite alternate}
+ .hicon .h-mn{animation:moon 8s ease-in-out infinite alternate}
+ .hicon .h-dr{animation:hfall 1.15s linear infinite}
+ .hicon .h-dr.n2{animation-delay:-.38s}.hicon .h-dr.n3{animation-delay:-.77s}
+ .hicon .h-fl{animation:hflake 2.6s ease-in-out infinite}
+ .hicon .h-fl.n2{animation-delay:-.9s}.hicon .h-fl.n3{animation-delay:-1.7s}
+ .hicon .h-bt{animation:flash 4.8s linear infinite}
  /* nicht sichtbar: anhalten (spart Akku und hält das Scrollen flüssig) */
  .hero.off .deco i,.hero.off .hicon *,.hero.off .fx::before,.hero.off .fx::after{animation-play-state:paused!important}
 }
@@ -113,19 +115,19 @@ html[data-sky=cloud-night] .deco i,html[data-sky=storm] .deco i{--ca:.09}
 @keyframes tw{from{opacity:.35}to{opacity:1}}
 @keyframes dr1{from{transform:translate3d(0,0,0)}to{transform:translate3d(24%,0,0)}}
 @keyframes dr2{from{transform:translate3d(0,0,0)}to{transform:translate3d(-20%,0,0)}}
-@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
 @keyframes pulse{from{transform:scale(1)}to{transform:scale(1.07)}}
-@keyframes float{from{transform:translateX(-1.3px)}to{transform:translateX(1.7px)}}
+@keyframes hfloat{from{transform:translate3d(-2.7%,0,0)}to{transform:translate3d(3.5%,0,0)}}
 @keyframes moon{from{transform:rotate(-5deg)}to{transform:rotate(5deg)}}
-@keyframes fall{0%{transform:translateY(-3px);opacity:0}25%{opacity:1}100%{transform:translateY(4.5px);opacity:0}}
-@keyframes flake{0%{transform:translate(0,-3px);opacity:0}30%{opacity:1}100%{transform:translate(1.6px,4.5px);opacity:0}}
+@keyframes hfall{0%{transform:translate3d(0,-6.3%,0);opacity:0}25%{opacity:1}100%{transform:translate3d(0,9.4%,0);opacity:0}}
+@keyframes hflake{0%{transform:translate3d(0,-6.3%,0);opacity:0}30%{opacity:1}100%{transform:translate3d(3.3%,9.4%,0);opacity:0}}
 @keyframes flash{0%,84%,100%{opacity:1}86%{opacity:.2}88%{opacity:1}90%{opacity:.35}92%{opacity:1}}
 .bar{position:relative;display:flex;gap:10px;align-items:center;max-width:1180px;margin:0 auto;padding:calc(env(safe-area-inset-top,0px) + 12px) 16px 0}
 .search{position:relative;flex:1}
 .search svg{position:absolute;z-index:1;left:14px;top:12px;width:20px;height:20px;pointer-events:none}
-.search input{width:100%;height:44px;border-radius:14px;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.15);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);color:#fff;padding:0 14px 0 42px;font-size:16px}
+.search input{width:100%;height:44px;border-radius:14px;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.18);color:#fff;padding:0 14px 0 42px;font-size:16px}
 .search input::placeholder{color:rgba(255,255,255,.82)}
-.iconbtn{width:44px;height:44px;flex:none;border-radius:14px;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.15);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);color:#fff;display:grid;place-items:center}
+.iconbtn{width:44px;height:44px;flex:none;border-radius:14px;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.18);color:#fff;display:grid;place-items:center}
 .iconbtn svg{width:22px;height:22px}
 .res{position:absolute;left:0;right:0;top:52px;background:var(--card);color:var(--ink);border-radius:14px;list-style:none;margin:0;padding:6px;box-shadow:0 14px 44px rgba(0,0,0,.3);display:none;z-index:1000;text-align:left}
 .res li{padding:11px 12px;border-radius:9px;cursor:pointer}
@@ -136,8 +138,11 @@ html[data-sky=cloud-night] .deco i,html[data-sky=storm] .deco i{--ca:.09}
 .follow .place svg{display:block}
 .when{font-size:13px;opacity:.85;margin-top:1px}
 .nowrow{display:flex;align-items:center;justify-content:center;gap:2px;margin-top:4px}
-.hicon{--cloud:#fff;--cloud2:#DCE6F2;--moon:#EEF2FF;width:108px;height:108px;flex:none;margin-right:-2px;filter:drop-shadow(0 8px 18px rgba(0,0,0,.18))}
+.hicon{--cloud:#fff;--cloud2:#DCE6F2;--moon:#EEF2FF;position:relative;width:108px;height:108px;flex:none;margin-right:-2px}
 .hicon svg{display:block;width:100%;height:100%}
+/* Schatten auf jeder Ebene: wird einmal gezeichnet und beim Bewegen nur mitgeschoben */
+.hicon .hl{position:absolute;inset:0;filter:drop-shadow(0 6px 12px rgba(0,0,0,.16));will-change:transform;backface-visibility:hidden}
+.hicon .h-dr,.hicon .h-fl,.hicon .h-bt{filter:none;will-change:transform,opacity}
 .temp{font-size:104px;font-weight:200;line-height:1;letter-spacing:-.05em;font-variant-numeric:tabular-nums;text-shadow:0 8px 34px rgba(0,0,0,.16)}
 .deg{font-size:48px;font-weight:200;line-height:1;align-self:flex-start;margin-top:10px;opacity:.92}
 .cond{font-size:19px;font-weight:600;margin-top:2px;letter-spacing:-.01em}
@@ -441,22 +446,22 @@ html.wall .upd{bottom:14px}
 .mapwrap{position:relative;border-radius:14px;overflow:hidden;background:#1a2438;margin:0 -4px}
 #map{height:min(62vh,540px);z-index:0}
 .mctl{position:absolute;left:10px;right:62px;top:10px;z-index:5;display:flex;flex-wrap:wrap;gap:6px;align-items:flex-start}
-.seg{display:inline-flex;padding:3px;border-radius:12px;background:rgba(246,248,250,.92);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 1px 4px rgba(0,0,0,.14)}
+.seg{display:inline-flex;padding:3px;border-radius:12px;background:rgba(246,248,250,.96);box-shadow:0 1px 4px rgba(0,0,0,.14)}
 .seg button{border:0;background:transparent;color:#14202C;padding:6px 10px;border-radius:9px;font-size:12.5px;font-weight:600;min-height:30px;white-space:nowrap}
 .mctl .seg{flex-wrap:wrap;max-width:100%}
 .seg button.on{background:#14202C;color:#fff}
-.gbtn{position:absolute;z-index:5;border:0;color:#fff;background:rgba(10,16,28,.62);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-radius:12px}
+.gbtn{position:absolute;z-index:5;border:0;color:#fff;background:rgba(10,16,28,.74);border-radius:12px}
 #ctr{right:10px;bottom:116px;width:40px;height:40px;display:grid;place-items:center}
 #ctr svg{width:20px;height:20px}
 .lockb{display:none;left:10px;bottom:116px;padding:8px 12px;font-size:13px;font-weight:600}
 .touch .lockb{display:block}
-.scrub{position:absolute;left:10px;right:10px;bottom:10px;z-index:5;display:flex;align-items:center;gap:12px;padding:8px 14px 8px 8px;border-radius:16px;background:rgba(10,16,28,.66);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);color:#fff}
+.scrub{position:absolute;left:10px;right:10px;bottom:10px;z-index:5;display:flex;align-items:center;gap:12px;padding:8px 14px 8px 8px;border-radius:16px;background:rgba(10,16,28,.76);color:#fff}
 #pp,#fpp{width:38px;height:38px;flex:none;border:0;border-radius:50%;background:#fff;color:#0E1726;display:grid;place-items:center}
 #pp svg,#fpp svg{width:16px;height:16px}
 .slw{position:relative;flex:1;min-width:0;height:28px}
 #sl,#fsl{display:block;width:100%;margin:0;accent-color:#fff;height:28px}
 #nowline{position:absolute;top:50%;height:20px;margin-top:-10px;width:2px;margin-left:-1px;border-radius:1px;background:rgba(255,255,255,.95);pointer-events:none;display:none}
-#nowtick{position:absolute;bottom:calc(100% + 16px);transform:translateX(-50%);display:none;padding:6px 12px;border:0;border-radius:12px;background:rgba(10,16,28,.72);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);color:#fff;font:inherit;font-size:13px;font-weight:650;line-height:1;white-space:nowrap;cursor:pointer}
+#nowtick{position:absolute;bottom:calc(100% + 16px);transform:translateX(-50%);display:none;padding:6px 12px;border:0;border-radius:12px;background:rgba(10,16,28,.8);color:#fff;font:inherit;font-size:13px;font-weight:650;line-height:1;white-space:nowrap;cursor:pointer}
 #ts,#fts{font-size:14px;font-variant-numeric:tabular-nums;min-width:74px;text-align:right}
 #fts{min-width:122px}
 .leaflet-top.leaflet-right .leaflet-control-zoom{margin:10px;border:0;border-radius:12px;overflow:hidden;box-shadow:none;background:rgba(10,16,28,.62)}
@@ -507,7 +512,7 @@ html.noscroll .mini,html.noscroll .tabs{display:none}
 .lay button.on{background:var(--accent);border-color:var(--accent);color:var(--paper)}
 .lay button.on svg{opacity:1}
 .mctl .lay{flex:0 1 auto;max-width:100%;margin:0;padding:0}
-.mctl .lay button{background:rgba(246,248,250,.92);color:#14202C;border-color:transparent;box-shadow:0 1px 4px rgba(0,0,0,.14)}
+.mctl .lay button{background:rgba(246,248,250,.96);color:#14202C;border-color:transparent;box-shadow:0 1px 4px rgba(0,0,0,.14)}
 .mctl .lay button.on{background:#14202C;color:#fff}
 .legend .lgu{flex:0 0 100%;min-width:0;display:block}
 @media (max-width:420px){.mctl .seg button{padding:6px 8px;font-size:12px}}
@@ -909,6 +914,29 @@ function inner(k){
   default:return cloud(0,-9,"c1")+FOGL;
  }
 }
+/* Großes Symbol oben: aus Ebenen zusammengesetzt, damit jede Bewegung auf der Grafikeinheit läuft */
+function icHero(k){
+ const Ly=(c,inner,o,ex)=>'<svg class="hl h-'+c+(ex?" "+ex:"")+'" viewBox="0 0 48 48" aria-hidden="true" style="transform-origin:'+(o||"50% 50%")+'">'+inner+"</svg>";
+ const RAYS='<g stroke="#FFB020" stroke-width="3" stroke-linecap="round">'+rays(24,24,14,19.5)+"</g>",CORE='<circle cx="24" cy="24" r="9" fill="#FFB020"/>',MOON='<path class="mn" d="M30 7a17 17 0 1 0 11 29A14 14 0 0 1 30 7z"/>';
+ const cl=(dx,dy,c)=>Ly("cw",'<path class="'+c+'" transform="translate('+dx+" "+dy+')" d="M15 38h20a8.5 8.5 0 0 0 1.2-16.9A11.5 11.5 0 0 0 14.6 24 7.2 7.2 0 0 0 15 38z"/>');
+ const drops=()=>[[17,15],[25,23],[33,31]].map((p,i)=>Ly("dr",'<line x1="'+p[0]+'" y1="36" x2="'+p[1]+'" y2="42" stroke="#3A7BFF" stroke-width="3" stroke-linecap="round"/>',0,"n"+(i+1))).join("");
+ const flakes=()=>[[17,39],[25,42],[33,39]].map((p,i)=>Ly("fl",'<circle cx="'+p[0]+'" cy="'+p[1]+'" r="2.3" fill="#8A55E6"/>',0,"n"+(i+1))).join("");
+ const sm=(t,sc,o)=>Ly("ry",'<g transform="translate('+t+" "+t+") scale("+sc+')">'+RAYS+"</g>",o)+Ly("sc",'<g transform="translate('+t+" "+t+") scale("+sc+')">'+CORE+"</g>",o);
+ let h;
+ switch(k){
+  case"sun":h=Ly("ry",RAYS)+Ly("sc",CORE);break;
+  case"moon":h=Ly("mn",MOON,"55% 48%");break;
+  case"pcd":h=sm(1,.62,"33.1% 33.1%")+cl(2,4,"c1");break;
+  case"pcn":h=Ly("mn",'<g transform="translate(-2 -2) scale(.72)">'+MOON+"</g>","35% 31%")+cl(2,4,"c1");break;
+  case"cloud":h=cl(0,0,"c1");break;
+  case"rain":h=cl(0,-5,"c2")+drops();break;
+  case"snow":h=cl(0,-5,"c2")+flakes();break;
+  case"storm":h=cl(0,-6,"c2")+Ly("bt",BOLT);break;
+  default:h=cl(0,-9,"c1")+Ly("s2",FOGL);
+ }
+ return h;
+}
+function setHeroIcon(k){const e=$("hicon");if(e.dataset.k===k&&e.firstChild)return;e.dataset.k=k;e.innerHTML=icHero(k)}
 const ic=(k,size)=>'<svg viewBox="0 0 48 48"'+(size?' width="'+size+'" height="'+size+'"':"")+' aria-hidden="true">'+inner(k)+'</svg>';
 
 /* ============ Himmel (Farben passend zum Wetter) ============ */
@@ -997,7 +1025,7 @@ function renderAll(j,at){
  const lt=new Date((at||Date.now())+(+j.utc_offset_seconds||0)*1000),p2=x=>(x<10?"0":"")+x;
  $("when").textContent=d.toLocaleDateString("de-AT",{weekday:"long",day:"numeric",month:"long"})+" · Stand "+p2(lt.getUTCHours())+":"+p2(lt.getUTCMinutes())+" Uhr";
  $("temp").textContent=String(Math.round(c.temperature_2m)).replace("-","−");
- $("hicon").innerHTML=ic(k);
+ setHeroIcon(k);
  $("micon").innerHTML=ic(k);$("mname").textContent=place.name;$("mtemp").textContent=deg(c.temperature_2m);
  $("desc").textContent=DESC[c.weather_code]||"Unbekannt";
  $("range").innerHTML=rangeHtml(j.daily.temperature_2m_max[0],j.daily.temperature_2m_min[0],"Höchstens","Tiefstens");
@@ -1524,6 +1552,7 @@ async function loadDwd(cla,clo){
   const gk=JSON.stringify(j.geometry)+"|"+first.length;
   if(dwGeoC.k!==gk)dwGeoC={k:gk,g:dwGeometry(j.geometry,first.length)};
   const geo=dwGeoC.g;
+  const oldD=dwData;if(oldD&&oldD.img)setTimeout(()=>oldD.img.forEach(u=>{if(u&&u.startsWith("blob:"))URL.revokeObjectURL(u)}),5000);
   dwData={geo,R,packed,vals:[first],img:[],snow:!!(lastJ&&lastJ.current&&lastJ.current.temperature_2m<=0.5)};
   dwBox=[la,lo];
   const now=Date.now();
@@ -1553,11 +1582,14 @@ async function loadDwd(cla,clo){
   dwFell=Date.now();setMode(atCovered(+place.lat,+place.lon)?"at":"rv");
  }
 }
-async function showDw(k){
- const d=dwData;if(!d||!d.R[k])return;
- if(!d.img[k]){
+/* Bild für einen Zeitpunkt vorbereiten: als Blob speichern und schon entschlüsseln, damit der Wechsel ohne Ruckeln geht */
+async function dwPrep(k){
+ const d=dwData;if(!d||!d.R[k])return null;
+ if(d.img[k])return d.img[k];
+ if(d.busy&&d.busy[k])return d.busy[k];
+ (d.busy||(d.busy={}))[k]=(async()=>{
   const v=d.vals[k]||(d.vals[k]=await u16(d.R[k].precipitation_5,d.packed));
-  if(dwData!==d)return;
+  if(dwData!==d)return null;
   const g=d.geo,cv=document.createElement("canvas");cv.width=g.Wc;cv.height=g.Hc;
   const ctx=cv.getContext("2d"),im=ctx.createImageData(g.Wc,g.Hc),px=im.data,pal=d.snow?SNOWC:RAINC;
   for(let o=0;o<g.idxMap.length;o++){
@@ -1569,8 +1601,19 @@ async function showDw(k){
    px[p]=c[0];px[p+1]=c[1];px[p+2]=c[2];px[p+3]=Math.round(255*Math.min(1,.35+r*.6)*.92);
   }
   ctx.putImageData(im,0,0);
-  d.img[k]=cv.toDataURL("image/png");
- }
+  let url=null;
+  try{const b=await new Promise(r=>cv.toBlob(r,"image/png"));if(b)url=URL.createObjectURL(b)}catch(e){}
+  if(!url)url=cv.toDataURL("image/png");
+  try{const i2=new Image();i2.src=url;if(i2.decode)await i2.decode()}catch(e){}
+  if(dwData!==d){if(url.startsWith("blob:"))URL.revokeObjectURL(url);return null}
+  d.img[k]=url;return url;
+ })();
+ return d.busy[k];
+}
+async function showDw(k){
+ const d=dwData;if(!d||!d.R[k])return;
+ if(!d.img[k])await dwPrep(k);
+ if(dwData!==d||!d.img[k])return;
  if(frames[idx]&&frames[idx].dw!==k)return;
  try{
   const mk=op=>L.imageOverlay(d.img[k],d.geo.bounds,{pane:"fc",opacity:op,interactive:false,className:"dwov",attribution:"Radar: DWD über Bright Sky"}).addTo(map);
@@ -1718,7 +1761,7 @@ function trkAlarm(){
    zu einem Bild gemalt. Aus denselben Daten kommen die Zugbahnen von Gewittern für ganz Österreich. */
 const AT_BOX=[45.5,8.1,49.48,17.74],GS_NOW="https://dataset.api.hub.geosphere.at/v1/grid/forecast/nowcast-v1-15min-1km?parameters=rr&output_format=geojson";
 const atCovered=(la,lo)=>la>=45.6&&la<=49.4&&lo>=8.2&&lo<=17.6;
-let atData=null,atCv=null,atBusy=false,atNext=0,atSeq=0,atProj=null,atMoveT=0,atTk=null,atTkNext=0;
+let atImg=null,atData=null,atCv=null,atBusy=false,atNext=0,atSeq=0,atProj=null,atMoveT=0,atTk=null,atTkNext=0;
 /* Ausschnitt für die Abfrage: Karte plus etwas Rand, bei großem Ausschnitt nur die Mitte */
 function atBbox(pad,maxKm2){
  const sz=map.getSize(),c=map.getCenter(),a=map.containerPointToLatLng([-sz.x*pad,-sz.y*pad]),b=map.containerPointToLatLng([sz.x*(1+pad),sz.y*(1+pad)]);
@@ -1783,6 +1826,7 @@ function atPanes(){
  });
 }
 function atHide(){if(atCv){const c=atCv.getContext("2d");c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,atCv.width,atCv.height)}}
+function im0Clear(){if(atImg)atImg.data.fill(0)}
 /* Bild für einen Zeitpunkt: jeder 1-km-Punkt wird als kleines Quadrat in seiner Farbe gemalt */
 function atShow(k){
  const d=atData;if(!d||!atCv||!map)return;
@@ -1796,7 +1840,8 @@ function atShow(k){
   atProj={W,H,x,y,s:Math.max(1,1000/mpp*dp*1.12)};
  }
  atCv.style.visibility="";
- const c=atCv.getContext("2d"),im=c.createImageData(W,H),px=im.data,P=atProj,V=d.V[k]||d.V[0],pal=d.snow?SNOWC:RAINC,h=P.s/2;
+ im0Clear();
+ const c=atCv.getContext("2d"),im=atImg&&atImg.width===W&&atImg.height===H?atImg:(atImg=c.createImageData(W,H)),px=im.data,P=atProj,V=d.V[k]||d.V[0],pal=d.snow?SNOWC:RAINC,h=P.s/2;
  for(let i=0;i<d.n;i++){
   const v=V[i];if(v<.025)continue;
   const X=P.x[i],Y=P.y[i];if(X<-h||Y<-h||X>W+h||Y>H+h)continue;
@@ -1988,7 +2033,7 @@ function show(i){
  if(!f)return;
  rvWindow(i);
  if(f.at!=null){hideFc();atShow(f.at)}
- else if(f.dw!=null){hideFc();showDw(f.dw)}
+ else if(f.dw!=null){hideFc();showDw(f.dw);const nx=frames[(i+1)%frames.length];if(timer&&nx&&nx.dw!=null)setTimeout(()=>dwPrep(nx.dw),80)}
  else if(f.ex!=null){hideFc();const L0=layers[pastCount-1];if(L0){L0.setOpacity(Math.max(.5,.78-f.ex*.03));exShift(f.ex)}}
  else if(f.fc!=null)showFc(f);else{hideFc();if(layers[idx])layers[idx].setOpacity(.78)}
  $("sl").value=i;
@@ -2257,14 +2302,14 @@ function fFlowGrid(){
  for(let y=0;y<gh;y++)for(let x=0;x<gw;x++){const o=y*gw+x,u=fAt(f.U,lat[y],lon[x]),v=fAt(f.V,lat[y],lon[x]),sp=Math.hypot(u,v),m=sp>.01?.13*Math.pow(sp,.7)/sp:0;VX[o]=u*m;VY[o]=-v*m}
  return{st,gw,gh,VX,VY,W,H};
 }
-function fSpawn(P,i){const g=fGrid,x=Math.random()*g.W,y=Math.random()*g.H;for(let k=0;k<FTL;k++){P.x[i*FTL+k]=x;P.y[i*FTL+k]=y}P.h[i]=0;P.len[i]=1;P.age[i]=30+Math.random()*70}
+function fSpawn(P,i){const g=fGrid,x=Math.random()*g.W,y=Math.random()*g.H;for(let k=0;k<FTL;k++){P.x[i*FTL+k]=x;P.y[i*FTL+k]=y}P.h[i]=0;P.len[i]=1;P.age[i]=30+Math.random()*70;if(P.vx){P.vx[i]=0;P.vy[i]=0}}
 const nightNow=()=>wallOn&&nightOn&&root.classList.contains("night");
 function fFlowStart(){
  if(lay!=="wind"||!fld||fld.g!=="w"||!fPc||reduced||document.hidden||!fVis||nightNow()){fFlowStop();return}
  fGrid=fFlowGrid();if(!fGrid)return;
  if(!fParts){
   const n=Math.round(Math.max(250,Math.min(wallOn?1100:900,fGrid.W*fGrid.H/320)));
-  fParts={n,x:new Float32Array(n*FTL),y:new Float32Array(n*FTL),h:new Uint8Array(n),len:new Uint8Array(n),age:new Float32Array(n)};
+  fParts={n,x:new Float32Array(n*FTL),y:new Float32Array(n*FTL),h:new Uint8Array(n),len:new Uint8Array(n),age:new Float32Array(n),vx:new Float32Array(n),vy:new Float32Array(n)};
   for(let i=0;i<n;i++){fSpawn(fParts,i);fParts.age[i]=Math.random()*100}
  }
  if(!fAnim){fPrevT=0;fAcc=1;fAnim=requestAnimationFrame(fTick)}
@@ -2277,7 +2322,7 @@ function fStepParts(){
   const fx=x/st,fy=y/st,x0=fx|0,y0=fy|0,tx=fx-x0,ty=fy-y0,o=y0*gw+x0;
   const vx=(VX[o]*(1-tx)+VX[o+1]*tx)*(1-ty)+(VX[o+gw]*(1-tx)+VX[o+gw+1]*tx)*ty;
   const vy=(VY[o]*(1-tx)+VY[o+1]*tx)*(1-ty)+(VY[o+gw]*(1-tx)+VY[o+gw+1]*tx)*ty;
-  const nh=(hd+1)%FTL;P.x[b+nh]=x+vx;P.y[b+nh]=y+vy;P.h[i]=nh;if(P.len[i]<FTL)P.len[i]++;P.age[i]--;
+  const nh=(hd+1)%FTL;P.x[b+nh]=x+vx;P.y[b+nh]=y+vy;P.vx[i]=vx;P.vy[i]=vy;P.h[i]=nh;if(P.len[i]<FTL)P.len[i]++;P.age[i]--;
  }
 }
 function fTick(ts){
@@ -2286,14 +2331,18 @@ function fTick(ts){
  const dt=fPrevT?Math.min(4,(ts-fPrevT)/16.667):1;fPrevT=ts;fAcc+=dt;
  /* Gerät kommt nicht mit (z. B. altes Tablet): weniger Linien */
  fSlow=fSlow*.97+(dt>1.8?.03:0);if(fSlow>.5&&fParts.n>250){fParts.n=Math.max(250,Math.floor(fParts.n*.7));fSlow=0}
- if(fAcc>=1){
-  let n=0;while(fAcc>=1&&n<3){fStepParts();fAcc-=1;n++}fAcc=Math.min(fAcc,1);
-  const g=fGrid,P=fParts,c=fPc.getContext("2d");c.setTransform(fDpr,0,0,fDpr,0,0);c.clearRect(0,0,g.W,g.H);c.lineWidth=1.3;c.lineCap="round";
+ /* Bewegung in festen 60-stel Sekunden rechnen; gezeichnet wird in jeder Bildwiederholung (auch 120 Hz),
+    die Spitze jeder Linie läuft dabei zwischen zwei Rechenschritten weiter */
+ let n=0;while(fAcc>=1&&n<3){fStepParts();fAcc-=1;n++}if(fAcc>1)fAcc=1;
+ {
+  const g=fGrid,P=fParts,c=fPc.getContext("2d"),fr=fAcc;c.setTransform(fDpr,0,0,fDpr,0,0);c.clearRect(0,0,g.W,g.H);c.lineWidth=1.3;c.lineCap="round";
   /* vier Stufen: vorne kräftig, hinten blass */
   [[1,3,.9],[4,6,.6],[7,9,.34],[10,11,.14]].forEach(([a,z,o])=>{
    c.beginPath();
    for(let i=0;i<P.n;i++){
-    const L1=P.len[i];if(L1<=a)continue;const b=i*FTL,hd=P.h[i];
+    const L1=P.len[i],b=i*FTL,hd=P.h[i];
+    if(a===1){const hx=P.x[b+hd],hy=P.y[b+hd];c.moveTo(hx,hy);c.lineTo(hx+P.vx[i]*fr,hy+P.vy[i]*fr)}
+    if(L1<=a)continue;
     for(let s=a;s<=z&&s<L1;s++){const p=b+(hd-s+1+FTL)%FTL,q=b+(hd-s+FTL)%FTL;c.moveTo(P.x[p],P.y[p]);c.lineTo(P.x[q],P.y[q])}
    }
    c.strokeStyle="rgba(255,255,255,"+o+")";c.stroke();
@@ -2559,7 +2608,7 @@ function kcApplyHeader(){
  const c=j.current,x=kcAt(Date.now());if(!x||x.T==null)return;
  const day=x.D!=null?x.D:!!(c.is_day==null?1:c.is_day),k=kcKind(x,c.weather_code,day);
  $("temp").textContent=String(Math.round(x.T)).replace("-","−");
- $("hicon").innerHTML=ic(k);$("micon").innerHTML=ic(k);$("mtemp").textContent=deg(x.T);
+ setHeroIcon(k);$("micon").innerHTML=ic(k);$("mtemp").textContent=deg(x.T);
  $("desc").textContent=kcDescOf(x,c.weather_code,day);
  setSky(skyKey(k,day));$("top").dataset.fx=k==="rain"?"rain":k==="snow"?"snow":"";
  const off=(+j.utc_offset_seconds||0)*1000,today=j.daily.time[0],now=Date.now();
@@ -3590,10 +3639,15 @@ let calmTap=0;
 (function(){
  const w=document.querySelector(".mapwrap");if(!w)return;
  let t=0;
- const hide=()=>{if(!w.contains(document.activeElement)||document.activeElement===document.body)w.classList.add("calm")};
+ /* Nur wenn jemand mit der Tastatur in den Knöpfen ist, bleiben sie stehen. Antippen der Karte gibt ihr den Fokus,
+    das zählt nicht (sonst blieben die Knöpfe nach dem ersten Antippen für immer sichtbar). */
+ const kbd=()=>{try{const a=document.activeElement;return!!a&&a!==document.body&&a!==$("map")&&w.contains(a)&&a.matches(":focus-visible")}catch(e){return false}};
+ const hide=()=>{if(kbd())arm();else w.classList.add("calm")};
  const arm=()=>{clearTimeout(t);t=setTimeout(hide,4000)};
- w.addEventListener("pointerdown",()=>{if(w.classList.contains("calm")){w.classList.remove("calm");calmTap=Date.now()}arm()},{capture:true,passive:true});
- w.addEventListener("focusin",()=>{w.classList.remove("calm");arm()});
+ const poke=()=>{if(w.classList.contains("calm")){w.classList.remove("calm");calmTap=Date.now()}arm()};
+ if(window.PointerEvent)w.addEventListener("pointerdown",poke,{capture:true,passive:true});
+ else{w.addEventListener("touchstart",poke,{capture:true,passive:true});w.addEventListener("mousedown",poke,true)}
+ w.addEventListener("focusin",e=>{if(e.target===$("map"))return;try{if(!e.target.matches(":focus-visible"))return}catch(x){}w.classList.remove("calm");arm()});
  w.addEventListener("wheel",arm,{passive:true});
  arm();
 })();
@@ -3674,7 +3728,7 @@ async function shareImage(){
  fitText(g,$("pname").textContent,940,62,600);g.fillText($("pname").textContent,W/2,122);
  g.font="400 30px "+SHR_F;g.globalAlpha=.86;g.fillText($("when").textContent,W/2,172);g.globalAlpha=1;
  /* Symbol und Temperatur */
- const hi=await svgImg(svgIn($("hicon")),280);
+ const hi=await svgImg(inner($("hicon").dataset.k||"cloud"),280);
  const tv=$("temp").textContent;g.font="300 250px "+SHR_F;const tw=g.measureText(tv).width;
  const total=(hi?260:0)+tw+70,x0=(W-total)/2;
  if(hi){g.shadowBlur=24;g.drawImage(hi,x0-10,222,280,280);g.shadowBlur=12}
@@ -3904,7 +3958,7 @@ function nightRender(){
  const d=new Date();
  $("nv-c").textContent=d.toLocaleTimeString("de-AT",{hour:"2-digit",minute:"2-digit"});
  $("nv-d").textContent=d.toLocaleDateString("de-AT",{weekday:"long",day:"numeric",month:"long"});
- $("nv-i").innerHTML=$("hicon").innerHTML;
+ $("nv-i").innerHTML=ic($("hicon").dataset.k||"cloud");
  $("nv-t").textContent=$("temp").textContent+"°";
  $("nv-s").textContent=$("desc").textContent;
  $("nv-r").textContent=nightTemps();

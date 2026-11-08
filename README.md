@@ -53,6 +53,7 @@ https://eliaspp9.github.io/Wetter/
   - Installiert neue Versionen selbst, wenn niemand das Gerät benutzt.
   - In der App auf dem Home-Bildschirm: zum Aktualisieren nach unten ziehen.
 - **Wetter teilen:** erzeugt ein Bild mit Wetter, nächsten Stunden und 3 Tagen, zum Verschicken (z. B. WhatsApp) oder Speichern.
+- **Flüssig bis 120 Hz:** Das Wettersymbol oben besteht aus Ebenen, die nur verschoben, gedreht oder überblendet werden. Das macht die Grafikeinheit allein, ohne dass die Seite neu zeichnet. Keine Unschärfe-Effekte über bewegten Inhalten. Radarbilder werden vorab vorbereitet, Windlinien in jeder Bildwiederholung gezeichnet.
 - **App und Offline:** als App auf dem Home-Bildschirm installierbar, offline mit dem letzten Stand.
 
 ## Cloudflare-Worker (`worker/kachelmann-proxy.js`)
