@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-6c17WLfSOEwQM/4zGjFLjDNZFjPQKaLCQMH9r8vnabY=' 'sha256-F1lreOLy84+sYAZwCiC5OGOTDcovKCCQAYSwbz7Ocq8=' https://unpkg.com https://cdnjs.cloudflare.com; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-BqVpWG8Z9MouGJ0dXFpSm5Soa6ycC9Un2cJSbaNUzGo=' 'sha256-F1lreOLy84+sYAZwCiC5OGOTDcovKCCQAYSwbz7Ocq8=' https://unpkg.com https://cdnjs.cloudflare.com; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -1149,7 +1149,7 @@ function isSnowDay(i){const v=dayVals(i);return!!(v&&v.snow)}
 function dayMm(i){
  const v=dayVals(i);return v?v.mm:null;
 }
-/* Tageswerte: Kachelmann, wenn der Tag abgedeckt ist, sonst Open-Meteo */
+/* Tageswerte: Kachelmann, wenn der Tag abgedeckt ist, sonst das Wettermodell (ECMWF) */
 function dayVals(i){
  const j=lastJ;if(!j)return null;
  const D=j.daily,date=D.time[i];
@@ -1240,7 +1240,8 @@ function dayDetail(i){
  if(D.sunrise&&D.sunset)parts.push("<span>Sonne <b>"+D.sunrise[i].slice(11,16)+"–"+D.sunset[i].slice(11,16)+"</b></span>");
  if(D.uv_index_max&&D.uv_index_max[i]!=null)parts.push("<span>UV <b>"+fmt(D.uv_index_max[i])+"</b></span>");
  {const zl=alpDay(date,pmm);if(zl)parts.push(zl)}
- const note=src==="k1"?"Kachelmann, stündliche Werte. Nur wo Kachelmann keinen Wert hat, ergänzt Open-Meteo.":src==="k6"?"Kachelmann, 6-Stunden-Werte. Nur wo Kachelmann keinen Wert hat, ergänzt Open-Meteo.":"Open-Meteo. Kachelmann-Werte gibt es nur für die ersten Tage und für angemeldete Nutzer.";
+ const mdl=lastJ&&lastJ.src==="ecmwf"?"ECMWF":"Open-Meteo";
+ const note=src==="k1"?"Kachelmann, stündliche Werte. Nur wo Kachelmann keinen Wert hat, ergänzt "+mdl+".":src==="k6"?"Kachelmann, 6-Stunden-Werte. Nur wo Kachelmann keinen Wert hat, ergänzt "+mdl+".":(mdl==="ECMWF"?"Wettermodell ECMWF IFS (über Open-Meteo).":"Open-Meteo.")+" Kachelmann-Werte gibt es nur für die ersten Tage und für angemeldete Nutzer.";
  return'<div class="dd-sum">'+parts.join("")+"</div>"+(body?'<table class="kc-tab"><tr><th>Uhrzeit</th><th></th><th>Temp.</th><th>Regen</th><th>Wind</th></tr>'+body+"</table>":'<p class="muted">Für diesen Tag liegen keine Details vor.</p>')+'<p class="dd-src">Quelle: '+note+"</p>";
 }
 function renderFacts(j,c){
