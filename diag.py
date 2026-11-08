@@ -1,56 +1,59 @@
-import json, time, gzip, urllib.request, urllib.parse, urllib.error
+import re, time, gzip, urllib.request, urllib.error, datetime
 
-UA = {"User-Agent": "Mozilla/5.0 wetter-diag", "Origin": "https://eliaspp9.github.io", "Accept-Encoding": "gzip", "Accept": "application/json"}
+UA = {"User-Agent": "Mozilla/5.0 (wetter-diag)", "Origin": "https://eliaspp9.github.io", "Accept-Encoding": "gzip"}
 
 
-def get(url, data=None, hdr=None):
+def get(url, show=True):
     t = time.time()
-    h = dict(UA); h.update(hdr or {})
-    req = urllib.request.Request(url, headers=h, data=data)
     try:
-        r = urllib.request.urlopen(req, timeout=60); b = r.read(); hh = dict(r.headers); code = r.status
+        r = urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=40); b = r.read(); h = dict(r.headers); c = r.status
     except urllib.error.HTTPError as e:
-        b = e.read(); hh = dict(e.headers); code = e.code
+        b = e.read(); h = dict(e.headers); c = e.code
     except Exception as e:
-        print("ERR", url[:150], repr(e)); return None, None, None
-    raw = len(b)
-    if (hh.get("Content-Encoding") or "").lower() == "gzip": b = gzip.decompress(b)
-    print("%s raw=%d json=%d %.1fs %s" % (code, raw, len(b), time.time() - t, url[:160]))
-    print("   hdr", {k: v for k, v in hh.items() if k.lower() in ("access-control-allow-origin", "content-encoding", "content-type", "cache-control")})
-    return code, hh, b
+        print("ERR", url[:160], repr(e)[:120]); return None, None, b""
+    if (h.get("Content-Encoding") or "").lower() == "gzip": b = gzip.decompress(b)
+    if show:
+        print("%s %d bytes %.1fs %s" % (c, len(b), time.time() - t, url[:170]))
+        print("   ", {k: v for k, v in h.items() if k.lower() in ("access-control-allow-origin", "content-type")})
+    return c, h, b
 
 
-for slug in ("italy", "croatia", "switzerland", "czechia", "slovenia", "netherlands", "france", "spain", "united-kingdom", "hungary"):
-    print("=== meteoalarm", slug)
-    c, h, b = get("https://feeds.meteoalarm.org/api/v1/warnings/feeds-" + slug)
-    if c != 200: continue
-    j = json.loads(b); W = j.get("warnings") or []
-    print("   keys", list(j.keys()), "n", len(W))
-    langs = {}; poly = 0; geot = {}; aw = {}
-    for w in W:
-        for inf in (w.get("alert") or {}).get("info") or []:
-            langs[inf.get("language")] = langs.get(inf.get("language"), 0) + 1
-            for a in inf.get("area") or []:
-                if a.get("polygon"): poly += 1
-                for g in a.get("geocode") or []:
-                    geot[g.get("valueName")] = geot.get(g.get("valueName"), 0) + 1
-            for p in inf.get("parameter") or []:
-                if p.get("valueName") in ("awareness_type", "awareness_level"):
-                    aw[p.get("value")] = aw.get(p.get("value"), 0) + 1
-    print("   langs", langs); print("   polygons", poly, "geocodes", geot); print("   aw", list(aw.items())[:12])
-    if W:
-        w = W[0]; print("   sample", json.dumps(w)[:1500])
+def caps(name, url, pat):
+    print("=====", name)
+    c, h, b = get(url)
+    if not b: return
+    t = b.decode("utf-8", "replace")
+    names = re.findall(r"<Layer[^>]*>\s*<Name>([^<]+)</Name>\s*<Title>([^<]*)</Title>", t)
+    hits = [n for n in names if re.search(pat, n[0] + " " + n[1], re.I)]
+    print("   layers", len(names), "matching", hits[:15])
+    for n, _ in hits[:4]:
+        i = t.find("<Name>" + n + "</Name>")
+        seg = t[i:i + 4000]
+        dm = re.search(r'<(Dimension|Extent)[^>]*name="time"[^>]*>([^<]*)<', seg)
+        print("   ", n, "time:", (dm.group(2)[:200] if dm else None))
 
-print("=== MyMemory")
-c, h, b = get("https://api.mymemory.translated.net/get?q=" + urllib.parse.quote("Strong wind gusts up to 80 km/h are expected in the afternoon.") + "&langpair=en|de")
-if b: print("   ", b[:400])
-c, h, b = get("https://api.mymemory.translated.net/get?q=" + urllib.parse.quote("Possibili temporali forti con grandine nel pomeriggio.") + "&langpair=it|de")
-if b: print("   ", b[:400])
 
-print("=== NWS")
-c, h, b = get("https://api.weather.gov/alerts/active?point=39.74,-104.99", hdr={"Accept": "application/geo+json"})
-if b: print("   ", b[:600])
+caps("KNMI", "https://geoservices.knmi.nl/adagucserver?dataset=RADAR&SERVICE=WMS&REQUEST=GetCapabilities", "rad|pcp|precip")
+caps("FMI", "https://openwms.fmi.fi/geoserver/Radar/wms?service=WMS&version=1.3.0&request=GetCapabilities", "suomi|rr|dbz")
+caps("Canada", "https://geo.weather.gc.ca/geomet?service=WMS&version=1.3.0&request=GetCapabilities&layer=RADAR_1KM_RRAI", "RADAR")
+caps("Schweiz geo.admin", "https://wms.geo.admin.ch/?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities", "meteoschweiz|radar|niederschlag")
+caps("Belgien RMI", "https://opendata.meteo.be/geoserver/wms?service=WMS&version=1.3.0&request=GetCapabilities", "radar|rain|precip")
+caps("Norwegen MET", "https://public-wms.met.no/verportal/verportal.map?service=WMS&version=1.3.0&request=GetCapabilities", "radar|precip")
+caps("Italien DPC", "https://radar-geowms.protezionecivile.it/service?service=WMS&version=1.3.0&request=GetCapabilities", "radar|sri|vmi")
+caps("Polen IMGW", "https://mapy.meteo.pl/geoserver/wms?service=WMS&request=GetCapabilities", "radar|cmax")
+caps("Tschechien CHMI", "https://geoportal.chmi.cz/server/services/RADAR/MapServer/WMSServer?service=WMS&request=GetCapabilities", "radar|max")
+caps("Slowenien ARSO", "https://gis.arso.gov.si/wms/meteo?service=WMS&request=GetCapabilities", "radar|padav")
+caps("Dänemark DMI", "https://dmigw.govcloud.dk/v2/radardata/wms?service=WMS&request=GetCapabilities", "radar")
+caps("Estland", "https://kaart.ilmateenistus.ee/geoserver/wms?service=WMS&request=GetCapabilities", "radar")
 
-print("=== Lingva / others")
-for u in ("https://lingva.ml/api/v1/en/de/Strong%20wind", "https://translate.argosopentech.com/translate"):
+print("===== US IEM NEXRAD tiles")
+for u in ("https://mesonet.agron.iastate.edu/cache/tile.py/1.0.0/nexrad-n0q-900913/6/18/24.png",
+          "https://mesonet.agron.iastate.edu/cache/tile.py/1.0.0/nexrad-n0q-900913-m05m/6/18/24.png",
+          "https://mesonet.agron.iastate.edu/cache/tile.py/1.0.0/nexrad-n0q-900913-m50m/6/18/24.png"):
     get(u)
+
+print("===== KNMI GetMap test")
+now = datetime.datetime.now(datetime.timezone.utc)
+get("https://geoservices.knmi.nl/adagucserver?dataset=RADAR&SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=RAD_NL25_PCP_CM&STYLES=&CRS=EPSG:3857&BBOX=0,6000000,1000000,7200000&WIDTH=256&HEIGHT=256&FORMAT=image/png&TRANSPARENT=true")
+print("===== FMI GetMap test")
+get("https://openwms.fmi.fi/geoserver/Radar/wms?service=WMS&version=1.3.0&request=GetMap&layers=Radar:suomi_rr_eureffin&styles=&crs=EPSG:3857&bbox=2000000,8000000,3500000,11000000&width=256&height=256&format=image/png&transparent=true")
