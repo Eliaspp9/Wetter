@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-xtYZ0L7Lc/hWnrHYrE0y+w69zBxN7JK6IP3dEBcmtyM=' 'sha256-+CD5i0gDObdMiTFeSjBHM8SvIjSFGtFW+gQH/GdjeWc=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://openwms.fmi.fi; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-Oqb4MzUX4z8jv1tIJQMQ2eJYU6eaBChWzRyGD+/Wmy8=' 'sha256-+CD5i0gDObdMiTFeSjBHM8SvIjSFGtFW+gQH/GdjeWc=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://openwms.fmi.fi; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -14,9 +14,9 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/favicon-64.png">
-<meta name="app-build" content="39">
-<meta name="app-version" content="2.7">
-<meta name="app-notes" content="Version 2.7: Neue Reihenfolge (erst jetzt, dann heute, dann die nächsten Tage), oben „Keine Warnungen“ und der Messwert der nächsten Station, Stunden als Kacheln oder Tabelle, „Für Wetter-Fans“ einklappbar, unten „Mehr“. Warnungen auch aus anderen Ländern Europas und den USA, auf Deutsch übersetzt. Eigenes Radar für die USA und Finnland, wenn du dort bist.">
+<meta name="app-build" content="40">
+<meta name="app-version" content="2.7.1">
+<meta name="app-notes" content="Version 2.7.1: In Österreich kommen Temperatur und Wind oben jetzt von GeoSphere Austria (INCA, 1 km, aus Messstationen und Gelände). Radar Österreich holt jeden neuen Lauf, sobald er da ist (bisher bis zu einer Viertelstunde später), und „Jetzt“ rückt von selbst weiter. Der rote Ortspunkt ist auf der Temperatur-, Wind- und den anderen Wetterkarten wieder zu sehen.">
 <script>/* alte Adresse wetter2.html -> neue Startseite */
 try{if(top!==self)document.documentElement.style.display="none"}catch(e){document.documentElement.style.display="none"}
 window.__redir=/\/wetter2\.html$/i.test(location.pathname);
@@ -594,8 +594,7 @@ html.noscroll .mini,html.noscroll .tabs{display:none}
 .legend .lgu{flex:0 0 100%;min-width:0;display:block}
 @media (max-width:420px){.mctl .seg button{padding:6px 8px;font-size:12px}}
 .fcv{position:absolute;left:0;top:0;pointer-events:none}
-.mek-ic{background:none;border:0}
-.medot{position:absolute;left:-11px;top:-11px;width:22px;height:22px;box-sizing:border-box;border-radius:50%;background:#E5484D;border:3px solid #fff;box-shadow:0 1px 5px rgba(0,0,0,.45)}
+.medot{box-sizing:border-box;border-radius:50%;background:#E5484D;border:3px solid #fff;box-shadow:0 1px 5px rgba(0,0,0,.45)}
 #fplay,#fldnote{display:none}
 #sec-radar.fld #fplay{display:flex}
 #sec-radar.fld #fldnote{display:block}
@@ -1155,7 +1154,7 @@ async function loadWeather(auto){
  }
  try{moveMap()}catch(e){console.error(e)}
  /* jede Minute: Warnungen und Kachelmann (hat eigenen Zwischenspeicher); die anderen, sobald es Neues geben kann */
- loadWarnings();loadKc();loadKcDaily();renderFavs();
+ loadWarnings();loadKc();loadKcDaily();loadGs();renderFavs();
  const dN=due("nc",300000),dO=due("obs",120000),dI=due("ice",900000);
  if(!auto||dN)loadNowcast();
  if(!auto||dO)loadObs();
@@ -1185,7 +1184,7 @@ function renderAll(j,at){
  $("desc").textContent=DESC[c.weather_code]||"Unbekannt";
  $("range").innerHTML=rangeHtml(j.daily.temperature_2m_max[0],j.daily.temperature_2m_min[0],"Höchstens","Tiefstens");
  $("hsrc").textContent=j.src==="ecmwf"?"Werte: Wettermodell ECMWF IFS, 9 km (über Open-Meteo)":"Werte: Wettermodelle über Open-Meteo";
- [()=>renderHours(j,c),()=>renderDays(j),()=>renderFacts(j,c),kcApplyHeader,heroStats,heroSay,heroScene].forEach(f=>{try{f()}catch(e){console.error(e)}});
+ [()=>renderHours(j,c),()=>renderDays(j),()=>renderFacts(j,c),kcApplyHeader,heroStats,gsApply,heroSay,heroScene].forEach(f=>{try{f()}catch(e){console.error(e)}});
 }
 /* Höchst- und Tiefstwert mit Pfeilen; Gefühlt, Wind und Regen als kleine Werte-Leiste */
 const UPA='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg>';
@@ -1198,12 +1197,15 @@ function heroStats(){
  const j=lastJ,el=$("hstats");if(!j||!j.current||!el)return;
  const c=j.current,H=j.hourly||{time:[]};
  let T=c.temperature_2m;const x=kcActive()?kcAt(Date.now()):null;if(x&&x.T!=null)T=x.T;
+ /* in Österreich: Temperatur und Wind von GeoSphere; „Gefühlt“ behält den Unterschied, den das Wettermodell rechnet */
+ const g=gsNow();let W=c.wind_speed_10m,WD=c.wind_direction_10m;
+ if(g){T=g.T;if(g.W!=null){W=g.W;if(g.D!=null)WD=g.D}}
  const feels=c.apparent_temperature!=null&&c.temperature_2m!=null?T+(c.apparent_temperature-c.temperature_2m):null;
  const s0=H.time.findIndex(t=>t>=c.time.slice(0,13)+":00");
  let pp=null;if(H.precipitation_probability&&s0>=0)for(let k=0;k<3;k++){const v=H.precipitation_probability[s0+k];if(v!=null)pp=Math.max(pp==null?0:pp,v)}
  const it=(i,v,l)=>'<div class="st">'+i+"<div><b>"+v+"</b><span>"+l+"</span></div></div>";
  el.innerHTML=(feels!=null?it(I_TH,deg(feels),"Gefühlt"):"")+
-  (c.wind_speed_10m!=null?it(I_WIND(c.wind_direction_10m),Math.round(c.wind_speed_10m)+" km/h","Wind"+(c.wind_direction_10m!=null?" "+compass(c.wind_direction_10m):"")):"")+
+  (W!=null?it(I_WIND(WD),Math.round(W)+" km/h","Wind"+(WD!=null?" "+compass(WD):"")):"")+
   (pp!=null?it(I_DROP,Math.round(pp)+" %","Regenrisiko"):"");
 }
 /* Der Satz oben: zuerst die 15-Minuten-Vorschau, danach die Stundenprognose */
@@ -1463,10 +1465,15 @@ const landName=cc=>{try{return new Intl.DisplayNames(["de"],{type:"region"}).of(
 const langName=l=>{try{return new Intl.DisplayNames(["de"],{type:"language"}).of(l)||l}catch(e){return l}};
 /* Land und Verwaltungsnamen des Ortes (einmal je Ort, dann gemerkt) */
 const ccMem={};
+const ccInf={};
 async function placeCC(){
  const k=(+place.lat).toFixed(2)+","+(+place.lon).toFixed(2);
  if(ccMem[k])return ccMem[k];
  try{const o=JSON.parse(localStorage.getItem("wetter-cc|"+k));if(o&&o.cc)return ccMem[k]=o}catch(e){}
+ if(!ccInf[k])ccInf[k]=placeCC0(k).finally(()=>{delete ccInf[k]});
+ return ccInf[k];
+}
+async function placeCC0(k){
  const r=await getJ("https://api.bigdatacloud.net/data/reverse-geocode-client?latitude="+(+place.lat).toFixed(4)+"&longitude="+(+place.lon).toFixed(4)+"&localityLanguage=en",12000);
  const adm=((r.localityInfo&&r.localityInfo.administrative)||[]).map(a=>a&&a.name).concat([r.principalSubdivision,r.city,r.locality]).filter(Boolean);
  const o={t:Date.now(),cc:String(r.countryCode||"").toUpperCase(),adm:[...new Set(adm)].slice(0,12)};
@@ -1738,7 +1745,7 @@ function initMap(){
  setClouds();setWarnLayer();setBlitz();
  /* dein Ort: eigenes Symbol in einer eigenen Ebene über Radar, Zugbahnen und Symbolen */
  try{const mp=map.createPane("me");mp.style.zIndex=620;mp.style.pointerEvents="none"}catch(e){}
- marker=L.marker([place.lat,place.lon],{pane:"me",icon:L.divIcon({className:"mek-ic",html:'<span class="medot"></span>',iconSize:[0,0]}),interactive:false,keyboard:false}).addTo(map);
+ marker=L.marker([place.lat,place.lon],{pane:"me",icon:L.divIcon({className:"medot",html:"",iconSize:[22,22],iconAnchor:[11,11]}),interactive:false,keyboard:false}).addTo(map);
  try{map.on("moveend",()=>{if(lay==="rain"&&mode==="dwd"&&dwBox){const c=map.getCenter();if(km(c.lat,c.lng,dwBox[0],dwBox[1])>110)loadDwd(c.lat,c.lng)}})}catch(e){}
 }
 function moveMap(){
@@ -2131,7 +2138,20 @@ const AT_BOX=[45.5,8.1,49.48,17.74],GS_NOW="https://dataset.api.hub.geosphere.at
    und einen etwas kleineren Ausschnitt laden (25.000 km² sind etwa 6 MB). */
 const AT_KM2=25000,AT_MS=90000;
 const atCovered=(la,lo)=>la>=45.6&&la<=49.4&&lo>=8.2&&lo<=17.6;
-let atImg=null,atData=null,atCv=null,atBusy=false,atWant=false,atFail=0,atPause=0,atNext=0,atSeq=0,atProj=null,atMoveT=0,atTk=null,atTkNext=0;
+let atImg=null,atData=null,atCv=null,atBusy=false,atWant=false,atFail=0,atPause=0,atNext=0,atSeq=0,atProj=null,atMoveT=0,atTk=null,atTkNext=0,atChkBusy=false,atMetaBad=0;
+/* Ob es einen neuen Lauf gibt, verrät die kleine Beschreibung des Datensatzes (wenige kB, schnell).
+   Erst wenn dort ein neuerer Lauf steht, wird das große Radarbild geladen. Gemessen am 8.11.2026: ein Lauf ist
+   17 bis 21 Minuten nach seiner Startzeit abrufbar; ab 16 Minuten wird alle 2 Minuten nachgesehen. */
+const GS_META="https://dataset.api.hub.geosphere.at/v1/grid/forecast/nowcast-v1-15min-1km/metadata",AT_LAG=16*60,AT_POLL=2*60000;
+async function atLatest(){
+ if(Date.now()<atMetaBad)return null;
+ try{
+  const j=await getJ(GS_META+"?t="+Math.floor(Date.now()/60000),20000),r=Date.parse(j&&j.last_forecast_reftime);
+  if(isFinite(r))return r/1000;
+ }catch(e){}
+ /* klappt die Abfrage nicht, eine halbe Stunde lang wie früher nach der Uhr gehen */
+ atMetaBad=Date.now()+30*60000;return null;
+}
 const atCovers=(d,bb)=>!!d&&d.bb[0]<=bb[0]+.02&&d.bb[1]<=bb[1]+.02&&d.bb[2]>=bb[2]-.02&&d.bb[3]>=bb[3]-.02;
 /* Bild, das jetzt gilt: das letzte, das nicht in der Zukunft liegt */
 function atNowIdx(d){const now=Date.now()/1000+60;let k=0;for(let i=0;i<d.t.length;i++)if(d.t[i]<=now)k=i;return k}
@@ -2164,7 +2184,15 @@ async function loadAt(force){
  const bb=atBbox(.08,AT_KM2);
  if(!bb){$("fnote").textContent="Dieser Kartenausschnitt liegt außerhalb von Österreich. Das Radar „Österreich“ gibt es nur dort.";return}
  const cov=atCovers(atData,bb);
- if(!force&&cov&&Date.now()<atNext)return;
+ if(!force&&cov){
+  atTick();
+  if(Date.now()<atNext||atChkBusy||atBusy)return;
+  /* alle paar Minuten nachsehen, ob GeoSphere schon einen neueren Lauf hat */
+  atChkBusy=true;atNext=Date.now()+AT_POLL;
+  let r=null;try{r=await atLatest()}finally{atChkBusy=false}
+  if(!map||mode!=="at"||lay!=="rain"||!atData)return;
+  if(r!=null?r<=atData.ref+60:Date.now()<(atData.ref+15*60+AT_LAG+5*60)*1000)return;
+ }
  /* nach einem Fehlschlag eine halbe Minute Pause, außer du wählst das Radar selbst neu */
  if(!force&&Date.now()<atPause)return;
  /* läuft schon eine Abfrage: danach noch einmal prüfen, statt eine zweite zu starten */
@@ -2177,8 +2205,8 @@ async function loadAt(force){
   const d=atParse(j);d.bb=bb;d.snow=!!(lastJ&&lastJ.current&&lastJ.current.temperature_2m<=0.5);d.at=Date.now();
   const rf=Date.parse(j.reference_time);d.ref=isFinite(rf)?rf/1000:d.t[0];
   atData=d;atFail=0;atPause=0;
-  /* ein neuer Lauf kommt alle 15 Minuten und ist etwa eine halbe Stunde nach seiner Startzeit abrufbar */
-  atNext=Math.max(Date.now()+5*60000,(d.ref+47*60)*1000);
+  /* ein neuer Lauf kommt alle 15 Minuten; frühestens, wenn er fertig sein kann, wird nachgesehen */
+  atNext=Math.max(Date.now()+AT_POLL,(d.ref+15*60+AT_LAG)*1000);
   atUse(d);
  }catch(e){
   console.error(e);
@@ -2203,10 +2231,20 @@ function atUse(d){
  idx=0;$("sl").max=Math.max(0,frames.length-1);placeTick();
  atPanes();show(pastCount-1);
  if(wasPlaying||(wallOn&&wallPlay()))toggle();
- const min=Math.round(now/60-d.ref/60);
- $("fresh").textContent="Letzte Messung: "+new Date(d.ref*1000).toLocaleTimeString("de-AT",{hour:"2-digit",minute:"2-digit"})+" Uhr"+(min>=0?" (vor "+min+" Min.)":"")+", danach Vorhersage";
+ atFresh(d);
  $("fnote").textContent="Vorhersage von GeoSphere Austria bis "+new Date(d.t[d.t.length-1]*1000).toLocaleTimeString("de-AT",{hour:"2-digit",minute:"2-digit"})+" Uhr.";
  atTrack(d,"at");
+}
+function atFresh(d){
+ const min=Math.round(Date.now()/60000-d.ref/60);
+ $("fresh").textContent="Letzte Messung: "+new Date(d.ref*1000).toLocaleTimeString("de-AT",{hour:"2-digit",minute:"2-digit"})+" Uhr"+(min>=0?" (vor "+min+" Min.)":"")+", danach Vorhersage";
+}
+/* Jede Minute: „Jetzt“ rückt auf das Bild der aktuellen Viertelstunde weiter, auch bevor ein neuer Lauf da ist */
+function atTick(){
+ const d=atData;if(!d||mode!=="at"||lay!=="rain"||!frames.length||frames[0].at==null)return;
+ const now=Date.now()/1000,pc=Math.max(1,frames.filter(f=>f.time<=now+60).length);
+ if(pc!==pastCount){const was=idx===pastCount-1;pastCount=pc;placeTick();if(was&&!timer)show(pc-1)}
+ atFresh(d);
 }
 function atPanes(){
  if(atCv||!map)return;
@@ -2617,6 +2655,14 @@ function fColor(l,k,la,lo,A){
  if(l==="snow"){if(v<.3)return null;const c=ramp(SNMAP,v);return[c[0],c[1],c[2],Math.round(255*Math.min(.9,.45+v*.08))]}
  const c=ramp(PMAP,v);return[c[0],c[1],c[2],100];
 }
+/* Ortspunkt in die oberste Ebene der Wetterkarte malen. Er liegt genau unter dem roten Punkt der Karte und
+   bleibt so auch dann sichtbar, wenn ein Browser die Farbflächen über den Punkt legt. */
+function fMePt(){if(!map||!place)return null;const p=map.latLngToContainerPoint([+place.lat,+place.lon]);return p}
+function fMe(c,W,H){
+ const p=fMePt();if(!p||p.x<-12||p.y<-12||p.x>W+12||p.y>H+12)return;
+ c.save();c.beginPath();c.arc(p.x,p.y,9.5,0,Math.PI*2);c.shadowColor="rgba(0,0,0,.45)";c.shadowBlur=5;c.shadowOffsetY=1;c.fillStyle="#E5484D";c.fill();
+ c.shadowColor="transparent";c.lineWidth=3;c.strokeStyle="#fff";c.stroke();c.restore();
+}
 /* Farbfläche (in grobem Raster berechnet und weich hochgezogen), dazu Zahlen an den Gitterpunkten oder Isobaren */
 function fDraw(){
  if(!fCv||!fld||lay==="rain"||!map||fld.g!==FG[lay])return;
@@ -2639,6 +2685,7 @@ function fDraw(){
  if(l==="pres"){
   const V=new Float32Array(w*h);for(let y=0;y<h;y++)for(let x=0;x<w;x++)V[y*w+x]=fAt(A,lat[y],lon[x]);
   fIsobars(c,V,w,h,st,W,H,txt);
+  fMe(c,W,H);
   return;
  }
  const pts=[];
@@ -2646,7 +2693,7 @@ function fDraw(){
   const p=map.latLngToContainerPoint([fld.la0+(fld.la1-fld.la0)*r/(fld.rows-1),fld.lo0+(fld.lo1-fld.lo0)*k/(fld.cols-1)]);
   if(p.x>=16&&p.y>=12&&p.x<=W-16&&p.y<=H-12)pts.push([p.x,p.y,r*fld.cols+k]);
  }
- const keep=[];pts.forEach(p=>{if(keep.every(q=>Math.abs(q[0]-p[0])>=46||Math.abs(q[1]-p[1])>=28))keep.push(p)});
+ const me=fMePt(),keep=[];pts.forEach(p=>{if(me&&Math.abs(p[0]-me.x)<30&&Math.abs(p[1]-me.y)<20)return;if(keep.every(q=>Math.abs(q[0]-p[0])>=46||Math.abs(q[1]-p[1])>=28))keep.push(p)});
  const D=f.v.wind_direction_10m;
  keep.forEach(([x,y,k])=>{
   const v=A[k];
@@ -2659,6 +2706,7 @@ function fDraw(){
   c.lineCap="round";c.lineWidth=4.2;c.strokeStyle="rgba(0,0,0,.5)";c.stroke();c.lineWidth=2;c.strokeStyle="#fff";c.stroke();c.restore();
   txt(String(Math.round(v)),x-1,y,"left");
  });
+ fMe(c,W,H);
 }
 /* Linien gleichen Luftdrucks (Isobaren), berechnet mit „Marching Squares“ auf dem feinen Raster */
 function fIsobars(c,V,w,h,st,W,H,txt){
@@ -3017,6 +3065,53 @@ function kcApplyHeader(){
  $("hsrc").textContent="Werte: KachelmannWetter (Super HD)";
  heroStats();
  try{heroScene()}catch(e){console.error(e)}
+ gsApply();
+}
+/* ============ Österreich: Temperatur und Wind „jetzt“ von GeoSphere Austria (INCA-Nowcast, 1 km) ============
+   INCA verbindet die Messstationen mit Gelände und Wettermodell und rechnet alle 15 Minuten für jeden Quadratkilometer
+   Österreichs. Für „jetzt“ wird zwischen den Viertelstunden-Werten gemittelt. Außerhalb Österreichs bleibt alles wie bisher. */
+const GS_PT="https://dataset.api.hub.geosphere.at/v1/timeseries/forecast/nowcast-v1-15min-1km?parameters=t2m,ff,dd&output_format=geojson&lat_lon=";
+let gsPt=null,gsBusy=false,gsFail=0,gsSeq=0;
+function gsNow(){
+ const g=gsPt;if(!g||g.k!==PK())return null;
+ const now=Date.now()/1000,t=g.t;
+ /* zu alt (z. B. lange ohne Verbindung): lieber wieder das Wettermodell */
+ if(!t.length||now-g.ref>2*3600||now>t[t.length-1]+900)return null;
+ let i=0;while(i+1<t.length&&t[i+1]<=now)i++;
+ const f=i+1<t.length&&now>t[i]?(now-t[i])/(t[i+1]-t[i]):0;
+ const v=a=>{if(!a||a[i]==null)return null;const b=a[i+1];return b!=null&&f>0?a[i]+(b-a[i])*f:a[i]};
+ const T=v(g.T);if(T==null||!isFinite(T))return null;
+ const ff=v(g.FF),dd=g.DD&&g.DD[f>.5&&g.DD[i+1]!=null?i+1:i];
+ return{T,W:ff!=null?ff*3.6:null,D:dd!=null?dd:null,ref:g.ref};
+}
+function gsApply(){
+ const g=gsNow();if(!g||!lastJ)return;
+ $("temp").textContent=String(Math.round(g.T)).replace("-","−");$("mtemp").textContent=deg(g.T);
+ /* „Jetzt“ in den nächsten 24 Stunden zeigt denselben Wert wie oben */
+ const hb=document.querySelector("#hours .hc.now b");if(hb)hb.textContent=deg(g.T);
+ const h=$("hsrc");if(h&&h.textContent.indexOf("GeoSphere")<0)h.textContent+=" · Temperatur und Wind jetzt: GeoSphere Austria (INCA, 1 km)";
+ heroStats();
+}
+async function loadGs(){
+ const k=PK(),now=Date.now(),la=+place.lat,lo=+place.lon;
+ if(!atCovered(la,lo)||gsBusy)return;
+ if(gsPt&&gsPt.k===k&&now<gsPt.next)return;
+ if(now-gsFail<90000)return;
+ let cc="";try{cc=((await placeCC())||{}).cc||""}catch(e){cc=ccNow()}
+ if(cc!=="AT"||PK()!==k)return;
+ gsBusy=true;const my=++gsSeq;
+ try{
+  const j=await getJ(GS_PT+la.toFixed(4)+","+lo.toFixed(4),25000);
+  if(my!==gsSeq||PK()!==k)return;
+  const P=j&&j.features&&j.features[0]&&j.features[0].properties&&j.features[0].properties.parameters;
+  if(!P||!P.t2m||!Array.isArray(P.t2m.data))throw new Error("leer");
+  const t=(j.timestamps||[]).map(x=>Date.parse(x)/1000),rf=Date.parse(j.reference_time)/1000;
+  const g={k,t,T:P.t2m.data,FF:P.ff&&P.ff.data,DD:P.dd&&P.dd.data,ref:isFinite(rf)?rf:t[0]-900};
+  /* der nächste Lauf kommt 15 Minuten später; erst dann wieder fragen, höchstens alle 4 Minuten */
+  g.next=Math.max(now+4*60000,(g.ref+15*60+AT_LAG)*1000);
+  gsPt=g;gsFail=0;gsApply();
+ }catch(e){console.error(e);gsFail=Date.now()}
+ finally{if(my===gsSeq)gsBusy=false}
 }
 let kcdSeq=0;
 async function loadKcDaily(){
@@ -4181,7 +4276,11 @@ async function shareImage(){
   }
  }
  g.fillStyle="#fff";g.textAlign="center";g.font="400 24px "+SHR_F;g.globalAlpha=.75;
- g.fillText(($("hsrc").textContent||"").replace(/^Werte: /,"Daten: "),W/2,H-44);g.globalAlpha=1;
+ {const st=($("hsrc").textContent||"").replace(/^Werte: /,"Daten: "),p=st.split(" · ");
+  /* lange Quellenangabe auf zwei Zeilen */
+  if(p.length>1&&g.measureText(st).width>W-80){g.font="400 21px "+SHR_F;g.fillText(p[0],W/2,H-62,W-80);g.fillText(p.slice(1).join(" · "),W/2,H-34,W-80)}
+  else g.fillText(st,W/2,H-44,W-80)}
+ g.globalAlpha=1;
  return await new Promise(res=>{try{cv.toBlob(b=>res(b),"image/png")}catch(e){res(null)}});
 }
 async function openShare(){
