@@ -3,15 +3,16 @@
 Persönliche Wetter-App im Stil von WetterOnline, als Webseite auf GitHub Pages:
 https://eliaspp9.github.io/Wetter/
 
-**Version 2.2**: mit Radar „Österreich“ (GeoSphere), Gewitter-Zugbahnen für ganz Österreich, allen Bergen Österreichs mit Schneehöhe und einer KI-Korrektur für den Ort.
+**Version 2.4**: Vorhersage mit dem ECMWF-Modell IFS (9 km), zuverlässiges Radar „Österreich“ und ein Ortspunkt, der immer obenauf liegt.
 
 ## Was die App kann
 
-- **Wetter jetzt:** aktuelle Werte von KachelmannWetter (Super HD) oder Open-Meteo. Oben steht, woher die Werte kommen.
+- **Wetter jetzt:** aktuelle Werte von KachelmannWetter (Super HD) oder vom ECMWF-Modell IFS (9 km, über Open-Meteo). Oben steht, woher die Werte kommen.
+- **Wettermodell ECMWF:** Vorhersage, 7 Tage, 14-Tage-Trend, Temperatur- und Windkarte, Bergwetter und die KI-Korrektur rechnen mit ECMWF IFS. Was ECMWF nicht liefert, kommt vom Standardmodell von Open-Meteo: UV-Index, Regen in den nächsten 2 Stunden (15-Minuten-Werte), Niederschlagsart sowie Nullgrad- und Schneefallgrenze (ICON des DWD).
 - **Regenradar:**
   - DWD 1 km mit 2 Stunden Radar-Vorhersage.
   - „Weltweit“: in Europa das OPERA-Radar über LibreWXR, Ersatz RainViewer.
-  - „Österreich“: INCA-Nowcast von GeoSphere Austria, 1 km, alle 15 Minuten, 3 Stunden voraus.
+  - „Österreich“: INCA-Nowcast von GeoSphere Austria, 1 km, alle 15 Minuten, 3 Stunden voraus. GeoSphere braucht für eine Antwort oft ein paar Sekunden, manchmal eine halbe Minute: die App wartet bis zu 90 Sekunden, zeigt solange einen Hinweis, behält den letzten Stand und versucht es nach einem Fehlschlag in einer Minute wieder. Das erste Bild ist die letzte Messung, danach folgt die Vorhersage.
   - Dazu Blitze (EUMETSAT MTG), Wolken, Warnungen und Niederschlagsart.
   - **Zugbahnen von Gewittern und Starkregen:** starke Zellen werden in den DWD-Radarbildern der letzten 30 Minuten verfolgt, in Österreich zusätzlich mit dem Nowcast von GeoSphere. Linie mit Punkten alle 15 Minuten, Ankunftszeit beim Ort und Alarm.
 - **Kartenansichten aus dem Wettermodell:**

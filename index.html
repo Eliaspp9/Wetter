@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-7nFiAZJolumXrwXfhozDHFF6iT5vgIjrZDj0UVEJlHY=' 'sha256-F1lreOLy84+sYAZwCiC5OGOTDcovKCCQAYSwbz7Ocq8=' https://unpkg.com https://cdnjs.cloudflare.com; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-6c17WLfSOEwQM/4zGjFLjDNZFjPQKaLCQMH9r8vnabY=' 'sha256-F1lreOLy84+sYAZwCiC5OGOTDcovKCCQAYSwbz7Ocq8=' https://unpkg.com https://cdnjs.cloudflare.com; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -14,9 +14,9 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/favicon-64.png">
-<meta name="app-build" content="33">
-<meta name="app-version" content="2.3">
-<meta name="app-notes" content="Version 2.3: Flüssigere Bewegungen bis 120 Hz: Wettersymbol und Effekte laufen auf der Grafikeinheit, Radarbilder werden vorab vorbereitet, Windlinien in jeder Bildwiederholung. Die Kartenknöpfe blenden nach jedem Antippen wieder aus.">
+<meta name="app-build" content="34">
+<meta name="app-version" content="2.4">
+<meta name="app-notes" content="Version 2.4: Vorhersage jetzt mit dem ECMWF-Modell. Das Radar „Österreich“ lädt zuverlässig, auch wenn GeoSphere langsam antwortet, und dein Ort ist auf der Karte immer zu sehen.">
 <script>/* alte Adresse wetter2.html -> neue Startseite */
 try{if(top!==self)document.documentElement.style.display="none"}catch(e){document.documentElement.style.display="none"}
 window.__redir=/\/wetter2\.html$/i.test(location.pathname);
@@ -517,6 +517,8 @@ html.noscroll .mini,html.noscroll .tabs{display:none}
 .legend .lgu{flex:0 0 100%;min-width:0;display:block}
 @media (max-width:420px){.mctl .seg button{padding:6px 8px;font-size:12px}}
 .fcv{position:absolute;left:0;top:0;pointer-events:none}
+.mek-ic{background:none;border:0}
+.medot{position:absolute;left:-11px;top:-11px;width:22px;height:22px;box-sizing:border-box;border-radius:50%;background:#E5484D;border:3px solid #fff;box-shadow:0 1px 5px rgba(0,0,0,.45)}
 #fplay,#fldnote{display:none}
 #sec-radar.fld #fplay{display:flex}
 #sec-radar.fld #fldnote{display:block}
@@ -838,7 +840,7 @@ html.locked body>*:not(#gate){display:none!important}
 </main>
 
 <footer class="foot">
- <p>Daten: Open-Meteo (Vorhersage, Radar-Prognose und ICON-D2 des Deutschen Wetterdienstes), KachelmannWetter (stündliche Prognose für freigeschaltete Orte), LibreWXR (Radar weltweit, in Europa mit EUMETNET OPERA, teils NOAA Enterprise Rain Rate), RainViewer (Ersatz-Radar), Deutscher Wetterdienst (RADOLAN-Radar mit Radar-Vorhersage, Messwerte und Warnungen über Bright Sky), GeoSphere Austria (Warnungen und Messwerte), Copernicus CAMS über Open-Meteo (Luft und Pollen), BigDataCloud (Ortsname), EUMETSAT (Blitze vom Wettersatelliten MTG), Europäisches Wetterzentrum EZMW (KI-Modell AIFS über Open-Meteo), Messwerte für die Treffer-Statistik von GeoSphere Austria und vom DWD. Temperatur- und Windkarte, Bergwetter sowie Nullgrad- und Schneefallgrenze: Wettermodelle über Open-Meteo (in Mitteleuropa vom Deutschen Wetterdienst). Zugbahnen von Gewittern: aus den Bildern des DWD-Radars und dem Nowcast von GeoSphere Austria berechnet. Radar „Österreich“: GeoSphere Austria (INCA-Nowcast, CC BY 4.0). Schneehöhe am Berg: GeoSphere Austria (SNOWGRID, CC BY 4.0).</p>
+ <p>Daten: Europäisches Zentrum für mittelfristige Wettervorhersage ECMWF (Vorhersage mit dem Modell IFS und KI-Modell AIFS, über Open-Meteo), Open-Meteo (Radar-Prognose, UV-Index und ICON-D2 des Deutschen Wetterdienstes), KachelmannWetter (stündliche Prognose für freigeschaltete Orte), LibreWXR (Radar weltweit, in Europa mit EUMETNET OPERA, teils NOAA Enterprise Rain Rate), RainViewer (Ersatz-Radar), Deutscher Wetterdienst (RADOLAN-Radar mit Radar-Vorhersage, Messwerte und Warnungen über Bright Sky), GeoSphere Austria (Warnungen und Messwerte), Copernicus CAMS über Open-Meteo (Luft und Pollen), BigDataCloud (Ortsname), EUMETSAT (Blitze vom Wettersatelliten MTG), Messwerte für die Treffer-Statistik von GeoSphere Austria und vom DWD. Temperatur- und Windkarte sowie Bergwetter: ECMWF IFS über Open-Meteo. Nullgrad- und Schneefallgrenze sowie die Vorhersage für die nächsten 2 Stunden: ICON des Deutschen Wetterdienstes über Open-Meteo. Zugbahnen von Gewittern: aus den Bildern des DWD-Radars und dem Nowcast von GeoSphere Austria berechnet. Radar „Österreich“: GeoSphere Austria (INCA-Nowcast, CC BY 4.0). Schneehöhe am Berg: GeoSphere Austria (SNOWGRID, CC BY 4.0).</p>
  <p>Karten und Bilder: © OpenStreetMap-Mitwirkende, Esri, Maxar, Earthstar Geographics, Sentinel-2 cloudless von EOX. Grenzen und Ortsnamen: Esri, Garmin, HERE. Wolken: Meteosat (EUMETSAT) über den Deutschen Wetterdienst.</p>
  <p>Version <span id="ver"></span></p>
  <p id="login-info"></p>
@@ -876,7 +878,7 @@ function tfetch(u,o,ms){
  const c=new AbortController(),t=setTimeout(()=>c.abort(),ms||25000);
  return fetch(u,Object.assign({},o||{},{signal:c.signal})).then(r=>{clearTimeout(t);return r},e=>{clearTimeout(t);throw e});
 }
-async function getJ(u){const r=await tfetch(u);if(!r.ok)throw new Error(r.status);return r.json()}
+async function getJ(u,ms){const r=await tfetch(u,undefined,ms);if(!r.ok)throw new Error(r.status);return r.json()}
 /* Reihenfolge der Abrufe: alte Antworten (z. B. vom vorherigen Ort) werden verworfen.
    Klappt eine automatische Aktualisierung nicht, bleibt die letzte gute Anzeige stehen. */
 const SEQ={},SHOWN={},PK=()=>(+place.lat).toFixed(3)+","+(+place.lon).toFixed(3);
@@ -969,6 +971,20 @@ const SLOW_MS=1800000,DUE={};
 /* true, wenn seit dem letzten Mal genug Zeit vergangen ist (und merkt sich den nächsten Zeitpunkt) */
 function due(k,ms){const n=Date.now();if(n<(DUE[k]||0))return false;DUE[k]=n+ms;return true}
 /* Open-Meteo rechnet die aktuellen Werte in 15-Minuten-Schritten: neu laden, sobald der nächste Schritt da ist */
+/* Abfrage mit zwei Modellen zusammenführen: Werte von a, Lücken aus b */
+function omPrefer(j,a,b){
+ const sa="_"+a,sb="_"+b;
+ ["current","hourly","daily","current_units","hourly_units","daily_units"].forEach(sec=>{
+  const S=j[sec];if(!S)return;const o={};
+  Object.keys(S).forEach(k=>{
+   if(k.endsWith(sa)){const n=k.slice(0,-sa.length),x=S[k],y=S[n+sb];o[n]=Array.isArray(x)&&Array.isArray(y)?x.map((v,i)=>v!=null?v:y[i]):x!=null?x:y}
+   else if(k.endsWith(sb)){const n=k.slice(0,-sb.length);if(!((n+sa) in S))o[n]=S[k]}
+   else o[k]=S[k];
+  });
+  j[sec]=o;
+ });
+ return j;
+}
 function omSlot(j){
  try{const c=j.current,off=(+j.utc_offset_seconds||0)*1000,iv=(+c.interval||900)*1000,sl=Date.parse(c.time+":00Z")-off;if(isFinite(sl))return Math.max(Date.now()+60000,Math.min(Date.now()+15*60000,sl+iv+30000))}catch(e){}
  return Date.now()+5*60000;
@@ -984,9 +1000,14 @@ async function loadWeather(auto){
   const cur="temperature_2m,apparent_temperature,relative_humidity_2m,precipitation,weather_code,wind_speed_10m,wind_direction_10m,surface_pressure";
   const hr="temperature_2m,precipitation_probability,weather_code,precipitation,wind_speed_10m,wind_gusts_10m,snowfall";
   const dl="weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max,sunrise,sunset";
+  const full="&current="+cur+",is_day,cloud_cover,wind_gusts_10m&hourly="+hr+",is_day&daily="+dl+",uv_index_max";
   let j;
-  try{j=await getJ(base+"&current="+cur+",is_day,cloud_cover,wind_gusts_10m&hourly="+hr+",is_day&daily="+dl+",uv_index_max")}
-  catch(e){j=await getJ(base+"&current="+cur+"&hourly="+hr+"&daily="+dl)}
+  /* Hauptmodell: ECMWF IFS (9 km). Was ECMWF nicht rechnet (UV-Index), kommt aus dem Standardmodell von Open-Meteo. */
+  try{j=omPrefer(await getJ(base+full+"&models=ecmwf_ifs,best_match"),"ecmwf_ifs","best_match");if(!j.current||j.current.temperature_2m==null)throw new Error("ecmwf");j.src="ecmwf"}
+  catch(e){
+   try{j=await getJ(base+full)}catch(e2){j=await getJ(base+"&current="+cur+"&hourly="+hr+"&daily="+dl)}
+   j.src="om";
+  }
   if(my!==wSeq)return;
   if(auto)showErr("");
   renderAll(j,Date.now());omNext=omSlot(j);
@@ -998,7 +1019,7 @@ async function loadWeather(auto){
   try{const o=JSON.parse(localStorage.getItem("wetter-last"));if(o&&o.j&&o.k===(+place.lat).toFixed(2)+","+(+place.lon).toFixed(2)){renderAll(o.j,o.t);used=true;showErr("Keine Verbindung. Du siehst den Stand von "+new Date(o.t).toLocaleString("de-AT",{weekday:"short",hour:"2-digit",minute:"2-digit"})+" Uhr.")}}catch(x){}
   if(!used){showErr("Wetterdaten konnten nicht geladen werden. Prüfe die Internetverbindung.");if(!lastJ)$("desc").textContent="Keine Verbindung"}
  }
- moveMap();
+ try{moveMap()}catch(e){console.error(e)}
  /* jede Minute: Warnungen und Kachelmann (hat eigenen Zwischenspeicher); die anderen, sobald es Neues geben kann */
  loadWarnings();loadKc();loadKcDaily();renderFavs();
  const dN=due("nc",300000),dO=due("obs",120000),dI=due("ice",900000);
@@ -1029,7 +1050,7 @@ function renderAll(j,at){
  $("micon").innerHTML=ic(k);$("mname").textContent=place.name;$("mtemp").textContent=deg(c.temperature_2m);
  $("desc").textContent=DESC[c.weather_code]||"Unbekannt";
  $("range").innerHTML=rangeHtml(j.daily.temperature_2m_max[0],j.daily.temperature_2m_min[0],"Höchstens","Tiefstens");
- $("hsrc").textContent=+place.lat>43&&+place.lat<58&&+place.lon>-4&&+place.lon<20?"Werte: Wettermodell des Deutschen Wetterdienstes (über Open-Meteo)":"Werte: Wettermodelle über Open-Meteo";
+ $("hsrc").textContent=j.src==="ecmwf"?"Werte: Wettermodell ECMWF IFS, 9 km (über Open-Meteo)":"Werte: Wettermodelle über Open-Meteo";
  [()=>renderHours(j,c),()=>renderDays(j),()=>renderFacts(j,c),kcApplyHeader,heroStats,heroSay].forEach(f=>{try{f()}catch(e){console.error(e)}});
 }
 /* Höchst- und Tiefstwert mit Pfeilen; Gefühlt, Wind und Regen als kleine Werte-Leiste */
@@ -1419,7 +1440,9 @@ function initMap(){
  try{map.on("zoomend",updLab);map.on("moveend",()=>{clearTimeout(fcTimer);fcTimer=setTimeout(()=>loadFc(),900)})}catch(e){}
  setBase(baseKind);
  setClouds();setWarnLayer();setBlitz();
- marker=L.circleMarker([place.lat,place.lon],{radius:8,color:"#fff",weight:3,fillColor:"#E5484D",fillOpacity:1}).addTo(map);
+ /* dein Ort: eigenes Symbol in einer eigenen Ebene über Radar, Zugbahnen und Symbolen */
+ try{const mp=map.createPane("me");mp.style.zIndex=620;mp.style.pointerEvents="none"}catch(e){}
+ marker=L.marker([place.lat,place.lon],{pane:"me",icon:L.divIcon({className:"mek-ic",html:'<span class="medot"></span>',iconSize:[0,0]}),interactive:false,keyboard:false}).addTo(map);
  try{map.on("moveend",()=>{if(lay==="rain"&&mode==="dwd"&&dwBox){const c=map.getCenter();if(km(c.lat,c.lng,dwBox[0],dwBox[1])>110)loadDwd(c.lat,c.lng)}})}catch(e){}
 }
 function moveMap(){
@@ -1760,8 +1783,16 @@ function trkAlarm(){
    Geladen wird der Kartenausschnitt (höchstens etwa 35.000 km²). GeoSphere liefert die Werte als Punkte; sie werden hier
    zu einem Bild gemalt. Aus denselben Daten kommen die Zugbahnen von Gewittern für ganz Österreich. */
 const AT_BOX=[45.5,8.1,49.48,17.74],GS_NOW="https://dataset.api.hub.geosphere.at/v1/grid/forecast/nowcast-v1-15min-1km?parameters=rr&output_format=geojson";
+/* GeoSphere stellt die Antwort erst zusammen: meist in ein paar Sekunden, manchmal dauert es eine halbe Minute. Deshalb großzügig warten
+   und einen etwas kleineren Ausschnitt laden (25.000 km² sind etwa 6 MB). */
+const AT_KM2=25000,AT_MS=90000;
 const atCovered=(la,lo)=>la>=45.6&&la<=49.4&&lo>=8.2&&lo<=17.6;
-let atImg=null,atData=null,atCv=null,atBusy=false,atNext=0,atSeq=0,atProj=null,atMoveT=0,atTk=null,atTkNext=0;
+let atImg=null,atData=null,atCv=null,atBusy=false,atWant=false,atFail=0,atPause=0,atNext=0,atSeq=0,atProj=null,atMoveT=0,atTk=null,atTkNext=0;
+const atCovers=(d,bb)=>!!d&&d.bb[0]<=bb[0]+.02&&d.bb[1]<=bb[1]+.02&&d.bb[2]>=bb[2]-.02&&d.bb[3]>=bb[3]-.02;
+/* Bild, das jetzt gilt: das letzte, das nicht in der Zukunft liegt */
+function atNowIdx(d){const now=Date.now()/1000+60;let k=0;for(let i=0;i<d.t.length;i++)if(d.t[i]<=now)k=i;return k}
+/* Beginn der Abfrage: 45 Minuten zurück, GeoSphere beginnt dann beim Messbild des neuesten Laufs */
+const atStart=()=>new Date(Math.floor(Date.now()/900000)*900000-45*60000).toISOString().slice(0,16);
 /* Ausschnitt für die Abfrage: Karte plus etwas Rand, bei großem Ausschnitt nur die Mitte */
 function atBbox(pad,maxKm2){
  const sz=map.getSize(),c=map.getCenter(),a=map.containerPointToLatLng([-sz.x*pad,-sz.y*pad]),b=map.containerPointToLatLng([sz.x*(1+pad),sz.y*(1+pad)]);
@@ -1786,34 +1817,52 @@ function atParse(j){
 async function loadAt(force){
  if(!map||mode!=="at")return;
  if(lay!=="rain"){rdrSkip=true;return}
- const bb=atBbox(.08,35000);
+ const bb=atBbox(.08,AT_KM2);
  if(!bb){$("fnote").textContent="Dieser Kartenausschnitt liegt außerhalb von Österreich. Das Radar „Österreich“ gibt es nur dort.";return}
- const cov=atData&&atData.bb[0]<=bb[0]+.02&&atData.bb[1]<=bb[1]+.02&&atData.bb[2]>=bb[2]-.02&&atData.bb[3]>=bb[3]-.02;
+ const cov=atCovers(atData,bb);
  if(!force&&cov&&Date.now()<atNext)return;
- if(atBusy)return;
- atBusy=true;const my=++atSeq;
+ /* nach einem Fehlschlag eine halbe Minute Pause, außer du wählst das Radar selbst neu */
+ if(!force&&Date.now()<atPause)return;
+ /* läuft schon eine Abfrage: danach noch einmal prüfen, statt eine zweite zu starten */
+ if(atBusy){atWant=true;return}
+ atBusy=true;atWant=false;const my=++atSeq;
+ if(!cov){$("fnote").textContent=atFail?"GeoSphere antwortet gerade sehr langsam, neuer Versuch läuft … Bis dahin zeigen „DWD 1 km“ und „Weltweit“ den Regen.":"Radar von GeoSphere Austria wird geladen … das kann bis zu einer halben Minute dauern.";if(!frames.length)$("ts").textContent="Lädt …"}
  try{
-  const j=await getJ(GS_NOW+"&bbox="+bb.map(x=>x.toFixed(3)).join(","));
+  const j=await getJ(GS_NOW+"&bbox="+bb.map(x=>x.toFixed(3)).join(",")+"&start="+atStart(),AT_MS);
   if(my!==atSeq||mode!=="at")return;
-  const d=atParse(j);d.bb=bb;d.snow=!!(lastJ&&lastJ.current&&lastJ.current.temperature_2m<=0.5);
-  atData=d;atProj=null;
-  /* neuer Lauf kommt etwa 15 Minuten nach dem letzten, plus etwas Puffer */
-  atNext=Math.max(Date.now()+5*60000,(d.t[0]+33*60)*1000);
-  const now=Date.now()/1000,wasPlaying=!!timer;
-  if(timer)toggle();
-  frames=d.t.map((t,k)=>({time:t,at:k}));
-  pastCount=Math.max(1,frames.filter(f=>f.time<=now+60).length);
-  idx=0;$("sl").max=Math.max(0,frames.length-1);placeTick();
-  atPanes();show(pastCount-1);
-  if(wasPlaying||(wallOn&&wallPlay()))toggle();
-  freshNote(d.t[0]);
-  $("fnote").textContent="Vorhersage von GeoSphere Austria bis "+new Date(d.t[d.t.length-1]*1000).toLocaleTimeString("de-AT",{hour:"2-digit",minute:"2-digit"})+" Uhr.";
-  atTrack(d,"at");
+  const d=atParse(j);d.bb=bb;d.snow=!!(lastJ&&lastJ.current&&lastJ.current.temperature_2m<=0.5);d.at=Date.now();
+  const rf=Date.parse(j.reference_time);d.ref=isFinite(rf)?rf/1000:d.t[0];
+  atData=d;atFail=0;atPause=0;
+  /* ein neuer Lauf kommt alle 15 Minuten und ist etwa eine halbe Stunde nach seiner Startzeit abrufbar */
+  atNext=Math.max(Date.now()+5*60000,(d.ref+47*60)*1000);
+  atUse(d);
  }catch(e){
   console.error(e);
-  if(my===atSeq)$("fnote").textContent=atData?"GeoSphere antwortet gerade nicht. Du siehst den letzten Stand, es wird gleich wieder versucht.":"Das Radar von GeoSphere Austria ist gerade nicht erreichbar. Versuche es gleich noch einmal oder wähle „DWD 1 km“ oder „Weltweit“.";
-  atNext=Date.now()+90000;
- }finally{if(my===atSeq)atBusy=false}
+  if(my===atSeq&&mode==="at"){
+   const slow=!!e&&e.name==="AbortError";
+   $("fnote").textContent=atData?(slow?"GeoSphere antwortet gerade sehr langsam. Du siehst den letzten Stand, es wird gleich wieder versucht.":"GeoSphere antwortet gerade nicht. Du siehst den letzten Stand, es wird gleich wieder versucht."):
+    (slow?"GeoSphere Austria antwortet gerade sehr langsam.":"Das Radar von GeoSphere Austria ist gerade nicht erreichbar.")+" Es wird in einer Minute wieder versucht. Bis dahin zeigen „DWD 1 km“ und „Weltweit“ den Regen.";
+   if(!frames.length)$("ts").textContent="";
+  }
+  atNext=Date.now()+60000;atFail++;atPause=Date.now()+30000;
+ }finally{
+  if(my===atSeq){atBusy=false;if(atWant&&mode==="at"){atWant=false;setTimeout(()=>loadAt(false),0)}}
+ }
+}
+/* Daten anzeigen: Zeitleiste, Bild für jetzt, Zugbahnen */
+function atUse(d){
+ const now=Date.now()/1000,wasPlaying=!!timer;
+ if(timer)toggle();
+ atProj=null;
+ frames=d.t.map((t,k)=>({time:t,at:k}));
+ pastCount=Math.max(1,frames.filter(f=>f.time<=now+60).length);
+ idx=0;$("sl").max=Math.max(0,frames.length-1);placeTick();
+ atPanes();show(pastCount-1);
+ if(wasPlaying||(wallOn&&wallPlay()))toggle();
+ const min=Math.round(now/60-d.ref/60);
+ $("fresh").textContent="Letzte Messung: "+new Date(d.ref*1000).toLocaleTimeString("de-AT",{hour:"2-digit",minute:"2-digit"})+" Uhr"+(min>=0?" (vor "+min+" Min.)":"")+", danach Vorhersage";
+ $("fnote").textContent="Vorhersage von GeoSphere Austria bis "+new Date(d.t[d.t.length-1]*1000).toLocaleTimeString("de-AT",{hour:"2-digit",minute:"2-digit"})+" Uhr.";
+ atTrack(d,"at");
 }
 function atPanes(){
  if(atCv||!map)return;
@@ -1855,8 +1904,9 @@ function atShow(k){
    Die Bewegung dazwischen ist die Zugbahn, die GeoSphere selbst aus den Radarbildern berechnet hat. */
 function atTrack(d,src){
  const S=d.bb[0],W=d.bb[1],N=d.bb[2],E=d.bb[3],mid=(S+N)/2,dy=.009,dx=.009/Math.cos(mid*Math.PI/180);
- const GW=Math.max(2,Math.ceil((E-W)/dx)+1),GH=Math.max(2,Math.ceil((N-S)/dy)+1),F=[];
- for(let k=0;k<Math.min(3,d.V.length);k++){
+ const GW=Math.max(2,Math.ceil((E-W)/dx)+1),GH=Math.max(2,Math.ceil((N-S)/dy)+1),F=[],k0=atNowIdx(d);
+ /* jetzt, in 15 und in 30 Minuten */
+ for(let k=k0;k<Math.min(k0+3,d.V.length);k++){
   const g=new Uint16Array(GW*GH),V=d.V[k];
   for(let i=0;i<d.n;i++){
    const v=V[i];if(v<.5)continue;
@@ -1876,7 +1926,7 @@ async function atTrackOnly(){
  try{
   /* nur die nächsten 45 Minuten: weniger Daten, reicht für die Zugbahn */
   const end=new Date(Math.floor(Date.now()/900000)*900000+45*60000).toISOString().slice(0,16);
-  const j=await getJ(GS_NOW+"&bbox="+bb.map(x=>x.toFixed(3)).join(",")+"&end="+end);
+  const j=await getJ(GS_NOW+"&bbox="+bb.map(x=>x.toFixed(3)).join(",")+"&end="+end,AT_MS);
   if(mode!=="rv")return;
   const d=atParse(j);d.bb=bb;
   atTkNext=Math.max(Date.now()+5*60000,(d.t[0]+33*60)*1000);
@@ -1999,7 +2049,7 @@ function refreshFcFrames(){
 }
 function placeTick(){
  const t=$("nowtick"),l=$("nowline"),max=+$("sl").max;
- const on=(mode==="rv"||mode==="dwd")&&pastCount>=1&&max>=2&&pastCount-1<max;
+ const on=(mode==="rv"||mode==="dwd"||mode==="at")&&pastCount>=1&&max>=2&&pastCount-1<max;
  t.style.display=l.style.display=on?"block":"none";
  if(!on)return;
  const x="calc(8px + (100% - 16px) * "+((pastCount-1)/max).toFixed(4)+")";
@@ -2066,7 +2116,8 @@ function setMode(m,user){
   hideFc();exReset();layers.forEach(l=>{try{map.removeLayer(l)}catch(e){}l._wOn=0});hideDw();clearTrk();atHide();
   frames=[];pastCount=0;idx=0;$("sl").max=0;$("ts").textContent="";$("fresh").textContent="";$("fnote").textContent="";placeTick();
   $("mnote").textContent="Radar von GeoSphere Austria (INCA): Niederschlag aus den österreichischen Radaren und Messstationen, mit 1 km Auflösung, alle 15 Minuten neu. Nach „Jetzt“ folgt die Vorhersage von GeoSphere für 3 Stunden. Beim weiten Herauszoomen wird nur der Bereich um die Kartenmitte geladen.";
-  atNext=0;loadAt(true);
+  /* schon geladene Daten sofort zeigen und nur bei Bedarf neu laden */
+  if(lay==="rain"&&atData&&Date.now()-atData.at<20*60000){atUse(atData);loadAt(false)}else{atNext=0;loadAt(true)}
  }else{
   rvLast=0;
   hideDw();clearTrk();atHide();
@@ -2077,8 +2128,8 @@ function setMode(m,user){
 }
 
 /* ============ Kartenansichten aus dem Wettermodell ============
-   Temperatur, Wind, Böen, Wolken, Niederschlag, Neuschnee und Luftdruck: Werte aus dem Wettermodell (Open-Meteo,
-   in Mitteleuropa das Modell des DWD) für ein Gitter aus gut 100 Punkten über dem Kartenausschnitt, jetzt und Stunde für
+   Temperatur, Wind, Böen, Wolken, Niederschlag, Neuschnee und Luftdruck: Werte aus dem Wettermodell ECMWF IFS
+   (über Open-Meteo) für ein Gitter aus gut 100 Punkten über dem Kartenausschnitt, jetzt und Stunde für
    Stunde 2 Tage voraus. Geladen wird nur, was die gewählte Ansicht braucht; neu geladen erst, wenn der Ausschnitt verlassen
    wird, der Zoom sich ändert oder die Werte älter als 45 Minuten sind. */
 let nightOn=true;try{nightOn=localStorage.getItem("wetter-nacht")!=="0"}catch(e){}
@@ -2154,7 +2205,8 @@ async function loadField(){
   const la0=Math.min(84,nw.lat),la1=Math.max(-84,se.lat),lo0=nw.lng,lo1=se.lng,lats=[],lons=[];
   for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){lats.push((la0+(la1-la0)*r/(rows-1)).toFixed(3));lons.push(((((lo0+(lo1-lo0)*c/(cols-1))+180)%360+360)%360-180).toFixed(3))}
   const V=FV[g],v=V.join(",");
-  const j=await getJ("https://api.open-meteo.com/v1/forecast?latitude="+lats.join(",")+"&longitude="+lons.join(",")+(FCUR[g]?"&current="+v:"")+"&hourly="+v+"&forecast_hours=49&timeformat=unixtime&timezone=GMT");
+  const fu="https://api.open-meteo.com/v1/forecast?latitude="+lats.join(",")+"&longitude="+lons.join(",")+(FCUR[g]?"&current="+v:"")+"&hourly="+v+"&forecast_hours=49&timeformat=unixtime&timezone=GMT";
+  let j;try{j=await getJ(fu+"&models=ecmwf_ifs")}catch(e){j=await getJ(fu)}
   const arr=Array.isArray(j)?j:[j],n=rows*cols;
   if(arr.length!==n||!arr[0].hourly||!arr[0].hourly.time)throw new Error("grid");
   const F=[];
@@ -2846,9 +2898,9 @@ function renderPast(){
 }
 
 /* ============ Modellvergleich: eine gemeinsame Linie (Modell-Mix) mit KI-Modell und Treffer-Statistik ============ */
-const MODELS=[["icon_d2","ICON-D2","#1F6FEB"],["icon_eu","ICON-EU","#12A4A0"],["ecmwf_ifs025","ECMWF","#F08A24"],["gfs_seamless","GFS","#8E5BEA"],["ecmwf_aifs025_single","KI-Modell","#D6336C",1]];
+const MODELS=[["icon_d2","ICON-D2","#1F6FEB"],["icon_eu","ICON-EU","#12A4A0"],["ecmwf_ifs","ECMWF","#F08A24"],["gfs_seamless","GFS","#8E5BEA"],["ecmwf_aifs025_single","KI-Modell","#D6336C",1]];
 let mcData=null,mInd=false;
-const MODEL_ALT={icon_d2:"dwd_icon_d2",icon_eu:"dwd_icon_eu"};
+const MODEL_ALT={icon_d2:"dwd_icon_d2",icon_eu:"dwd_icon_eu",ecmwf_ifs:"ecmwf_ifs025"};
 try{mInd=localStorage.getItem("wetter-mind")==="1"}catch(e){}
 /* Mehrere Modelle in einer Abfrage. Klappt das nicht (z. B. weil ein Modell eingestellt wurde), jedes Modell einzeln holen. */
 async function omMulti(base,ids){
@@ -3080,8 +3132,9 @@ async function loadTrend(){
  }catch(e){rows=null}
  if(!rows){
   try{
-   const j=await getJ("https://api.open-meteo.com/v1/forecast?latitude="+(+place.lat).toFixed(3)+"&longitude="+(+place.lon).toFixed(3)+"&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max&forecast_days=14&timezone=auto");
-   const D=j.daily;rows=D.time.map((d,i)=>({date:d,hi:D.temperature_2m_max[i],lo:D.temperature_2m_min[i],p:D.precipitation_sum[i],pr:D.precipitation_probability_max?D.precipitation_probability_max[i]:null,code:D.weather_code[i]}));src="Open-Meteo (Wettermodelle)";
+   const tu="https://api.open-meteo.com/v1/forecast?latitude="+(+place.lat).toFixed(3)+"&longitude="+(+place.lon).toFixed(3)+"&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max&forecast_days=14&timezone=auto";
+   let j,ec=true;try{j=await getJ(tu+"&models=ecmwf_ifs");if(!j.daily||j.daily.temperature_2m_max.filter(x=>x!=null).length<10)throw new Error("kurz")}catch(e){j=await getJ(tu);ec=false}
+   const D=j.daily;rows=D.time.map((d,i)=>({date:d,hi:D.temperature_2m_max[i],lo:D.temperature_2m_min[i],p:D.precipitation_sum[i],pr:D.precipitation_probability_max?D.precipitation_probability_max[i]:null,code:D.weather_code[i]})).filter(r=>r.hi!=null&&r.lo!=null);src=ec?"ECMWF IFS (über Open-Meteo)":"Open-Meteo (Wettermodelle)";
   }catch(e){if(q.ok()&&!q.keep())el.innerHTML='<p class="muted">Der 14-Tage-Trend konnte nicht geladen werden.</p>';return}
  }
  if(!q.ok())return;
@@ -3102,7 +3155,7 @@ async function loadTrend(){
 /* ============ Berge, Nullgrad- und Schneefallgrenze ============
    Für den Ort: Nullgradgrenze und Schneefallgrenze aus dem Wettermodell des DWD (über Open-Meteo). Wo das Modell keine
    Schneefallgrenze liefert, ist sie geschätzt (etwa 300 m unter der Nullgradgrenze).
-   Gipfel in der Nähe: Werte aus dem Wettermodell, von Open-Meteo auf die Höhe des Gipfels umgerechnet. */
+   Gipfel in der Nähe: Werte aus dem Wettermodell ECMWF IFS, von Open-Meteo auf die Höhe des Gipfels umgerechnet. */
 const PEAKS=[
  /* Oberösterreich */
  ["Göblberg im Hausruck",48.093,13.526,801,"OÖ"],["Traunstein",47.872,13.831,1691,"OÖ"],["Feuerkogel",47.818,13.719,1592,"OÖ"],["Schafberg",47.776,13.434,1783,"OÖ"],
@@ -3187,13 +3240,13 @@ async function loadAlpine(){
  const q=seq("alp"),FP=mtnOn?favPeaks():[],NP=mtnOn?nearPeaks():[],P=FP.concat(NP),B="https://api.open-meteo.com/v1/forecast?latitude=";
  const loc="&latitude="+place.lat+"&longitude="+place.lon+"&timezone=auto&forecast_days=7&hourly=";
  const pv="temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,wind_direction_10m,wind_gusts_10m,is_day,cloud_cover,snow_depth";
- const pU=pp=>B+pp.map(p=>p.la).join(",")+"&longitude="+pp.map(p=>p.lo).join(",")+"&elevation="+pp.map(p=>p.e).join(",")+"&current="+pv+"&daily=weather_code,temperature_2m_max,temperature_2m_min&forecast_days=2&timezone=auto";
+ const pU=pp=>B+pp.map(p=>p.la).join(",")+"&longitude="+pp.map(p=>p.lo).join(",")+"&elevation="+pp.map(p=>p.e).join(",")+"&current="+pv+"&daily=weather_code,temperature_2m_max,temperature_2m_min&forecast_days=2&timezone=auto&models=ecmwf_ifs";
  /* zuerst das DWD-Modell (hat die Schneefallgrenze), sonst die normale Vorhersage (nur Nullgradgrenze) */
  const snow=async()=>{try{return await getJ("https://api.open-meteo.com/v1/dwd-icon?"+loc.slice(1)+"freezing_level_height,snowfall_height,precipitation")}catch(e){return await getJ("https://api.open-meteo.com/v1/forecast?"+loc.slice(1)+"freezing_level_height,precipitation")}};
  const peaks=async()=>{
   if(!P.length)return[];
   try{const r=await getJ(pU(P)),a=Array.isArray(r)?r:[r];if(a.length!==P.length)throw new Error("n");return a}
-  catch(e){return Promise.all(P.map(p=>getJ(pU([p])).catch(()=>null)))}
+  catch(e){return Promise.all(P.map(p=>getJ(pU([p])).catch(()=>getJ(pU([p]).replace("&models=ecmwf_ifs","")).catch(()=>null))))}
  };
  const atP=P.filter(p=>AT_REG.test(p.reg));
  const [s,pk,sg]=await Promise.all([snow().catch(()=>null),peaks().catch(()=>[]),atP.length?sgLoad(atP).catch(()=>null):Promise.resolve(null)]);
@@ -3293,7 +3346,7 @@ function renderAlpine(){
  if(fv.length)h+='<div class="pkl"><h3>Deine Berge</h3>'+fv.map(pkRow).join("")+"</div>";
  if(nr.length)h+='<div class="pkl"><h3>Gipfel in der Nähe</h3>'+nr.map(pkRow).join("")+"</div>";
  if(!h){sec.hidden=true;return}
- h+='<p class="small">Wettermodell über Open-Meteo, in Mitteleuropa vom Deutschen Wetterdienst. Die Gipfelwerte sind auf die Höhe des Gipfels umgerechnet, am Gipfel selbst kann der Wind deutlich stärker sein. Schneehöhe in Österreich: Schneemodell SNOWGRID von GeoSphere Austria (1 km, einmal täglich), sonst Wettermodell. Das ist die Schneehöhe laut Modell, keine gemeldete Pistenhöhe der Skigebiete. Wo das Wettermodell keine Schneefallgrenze liefert, ist sie geschätzt: etwa 300 m unter der Nullgradgrenze. Mit dem Stern merkst du dir einen Berg.</p>';
+ h+='<p class="small">Gipfel: Wettermodell ECMWF IFS über Open-Meteo. Nullgrad- und Schneefallgrenze: Modell ICON des Deutschen Wetterdienstes, weil ECMWF keine Schneefallgrenze liefert. Die Gipfelwerte sind auf die Höhe des Gipfels umgerechnet, am Gipfel selbst kann der Wind deutlich stärker sein. Schneehöhe in Österreich: Schneemodell SNOWGRID von GeoSphere Austria (1 km, einmal täglich), sonst Wettermodell. Das ist die Schneehöhe laut Modell, keine gemeldete Pistenhöhe der Skigebiete. Wo das Wettermodell keine Schneefallgrenze liefert, ist sie geschätzt: etwa 300 m unter der Nullgradgrenze. Mit dem Stern merkst du dir einen Berg.</p>';
  $("h-mtn").textContent=pk.length?"Berge und Schneefallgrenze":"Nullgrad- und Schneefallgrenze";
  el.innerHTML=h;sec.hidden=false;
 }
@@ -3358,7 +3411,7 @@ async function loadKi(){
  if(!ki||ki.key!==key){ki=null;renderKi()}
  let r;
  try{
-  const la=(+place.lat).toFixed(3),lo=(+place.lon).toFixed(3),base="https://previous-runs-api.open-meteo.com/v1/forecast?latitude="+la+"&longitude="+lo+"&past_days=30&forecast_days=3&timezone=GMT&hourly=";
+  const la=(+place.lat).toFixed(3),lo=(+place.lon).toFixed(3),base="https://previous-runs-api.open-meteo.com/v1/forecast?latitude="+la+"&longitude="+lo+"&past_days=30&forecast_days=3&timezone=GMT&models=ecmwf_ifs&hourly=";
   const V1="temperature_2m,cloud_cover,cloud_cover_low,wind_speed_10m,temperature_2m_previous_day1,cloud_cover_previous_day1,cloud_cover_low_previous_day1,wind_speed_10m_previous_day1";
   const V2="temperature_2m,cloud_cover,wind_speed_10m,temperature_2m_previous_day1,cloud_cover_previous_day1,wind_speed_10m_previous_day1";
   const [ob,pr]=await Promise.all([obsHist(30),getJ(base+V1).catch(()=>getJ(base+V2))]);
@@ -3439,7 +3492,7 @@ function renderKi(){
    h+='<div class="kil"><h3>KI-Prognose für die nächsten 24 Stunden</h3><p class="kin">Tiefstens <b>'+deg(mn.K)+"</b> gegen "+hh(mn)+" (Wettermodell: "+deg(mn.T)+"), höchstens <b>"+deg(mxx.K)+"</b> gegen "+hh(mxx)+" (Wettermodell: "+deg(mxx.T)+").</p>"+kiChart(ki.fc)+'<div class="slk"><span><i style="background:#8FA2BA"></i>Wettermodell</span><span><i style="background:#8E5BEA"></i>Mit KI-Korrektur</span></div></div>';
   }
  }else h+='<p class="small">Im Test war die Korrektur nicht besser als das Wettermodell selbst ('+(better>0?"nur "+better+" %":"kein Vorteil")+"). Deshalb zeigt die KI hier keine eigene Prognose. Mit mehr unterschiedlichen Wetterlagen lernt sie dazu.</p>";
- h+='<p class="small">Gelernt wird mit den Werten des Wettermodells (Open-Meteo) und den Messwerten '+(ki.src==="Deutscher Wetterdienst"?"des Deutschen Wetterdienstes":"von "+esc(ki.src||"der Station"))+". Die Temperatur oben in der App bleibt die von Kachelmann bzw. dem Wettermodell, die KI-Korrektur steht hier zum Vergleich.</p>";
+ h+='<p class="small">Gelernt wird mit den Werten des Wettermodells ECMWF IFS (über Open-Meteo) und den Messwerten '+(ki.src==="Deutscher Wetterdienst"?"des Deutschen Wetterdienstes":"von "+esc(ki.src||"der Station"))+". Die Temperatur oben in der App bleibt die von Kachelmann bzw. dem Wettermodell, die KI-Korrektur steht hier zum Vergleich.</p>";
  el.innerHTML=h;sec.hidden=false;
 }
 
