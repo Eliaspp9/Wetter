@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-m2CPVY0ofJrnHKZR9C2YRKuiZNFuBiEYbbKFuIZHHKY=' 'sha256-+CD5i0gDObdMiTFeSjBHM8SvIjSFGtFW+gQH/GdjeWc=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-I+bFcn0YXUhz835fSoqgp0bztCJXhblFYiFIzon4zGU=' 'sha256-+CD5i0gDObdMiTFeSjBHM8SvIjSFGtFW+gQH/GdjeWc=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -14,9 +14,9 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/favicon-64.png">
-<meta name="app-build" content="45">
-<meta name="app-version" content="2.11">
-<meta name="app-notes" content="Version 2.11: Sonne, Wolken oder Nebel oben kommen jetzt aus echten Messungen in der Nähe (Sonnenschein und Strahlung der GeoSphere-Stationen, Bewölkung von DWD, NOAA und Flughäfen) statt aus der Vorhersage – kein „Sonnig“ mehr bei Hochnebel. Erst ohne Station in der Nähe zählt das Wettermodell.">
+<meta name="app-build" content="46">
+<meta name="app-version" content="2.12">
+<meta name="app-notes" content="Version 2.12: Lernende Korrektur. Der Worker lernt jede Stunde für deine Lieblingsorte und deinen Standort, wie weit ECMWF und Kachelmann dort danebenliegen (nach Tageszeit, Bewölkung, Wind und Vorlauf), und hört nie auf damit. Die 24-Stunden- und 7-Tage-Vorhersage wird damit angepasst, sobald die Korrektur nachweislich besser trifft. Braucht Worker 1.5.">
 <script>/* alte Adresse wetter2.html -> neue Startseite */
 try{if(top!==self)document.documentElement.style.display="none"}catch(e){document.documentElement.style.display="none"}
 window.__redir=/\/wetter2\.html$/i.test(location.pathname);
@@ -252,6 +252,9 @@ main{position:relative;z-index:1;max-width:1180px;margin:-30px auto 0;padding:0 
 
 /* Herkunft der Werte, Alarm, Glätte */
 .hsrc{font-size:12px;opacity:.78;margin-top:6px}
+.klnote[hidden]{display:none}
+.klnote{margin-top:8px}
+.klnote b{font-weight:600}
 /* Kopf: Messwert der nächsten Station und kurzer Hinweis zu Warnungen */
 .hobs{font-size:13.5px;font-weight:500;opacity:.92;margin-top:4px;font-variant-numeric:tabular-nums}
 .hobs[hidden],.hok[hidden]{display:none}
@@ -887,6 +890,7 @@ html.locked body>*:not(#gate){display:none!important}
     <div class="hl-src"><div class="kc-btns kc-src" id="kcsrc"><button type="button" data-s="icon">ICON-D2</button><button type="button" data-s="kach">Kachelmann</button></div></div>
     <div id="kc"><p class="muted">Wird geladen …</p></div>
    </div>
+   <p class="small klnote" id="kl-h" hidden></p>
   </section>
 
   <section class="card s-ice" id="sec-ice" aria-labelledby="h-ice" hidden>
@@ -898,6 +902,7 @@ html.locked body>*:not(#gate){display:none!important}
    <div class="ch"><h2 id="h-days">7 Tage</h2></div>
    <div id="days"></div>
    <p class="small" id="days-src"></p>
+   <p class="small klnote" id="kl-d" hidden></p>
   </section>
 
   <section class="card s-trend" id="sec-trend" aria-labelledby="h-trend">
@@ -1155,7 +1160,7 @@ async function loadWeather(auto){
  else try{
   const base="https://api.open-meteo.com/v1/forecast?latitude="+place.lat+"&longitude="+place.lon+"&timezone=auto&forecast_days=7";
   const cur="temperature_2m,apparent_temperature,relative_humidity_2m,precipitation,weather_code,wind_speed_10m,wind_direction_10m,surface_pressure";
-  const hr="temperature_2m,precipitation_probability,weather_code,precipitation,wind_speed_10m,wind_gusts_10m,snowfall";
+  const hr="temperature_2m,precipitation_probability,weather_code,precipitation,wind_speed_10m,wind_gusts_10m,snowfall,cloud_cover";
   const dl="weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max,sunrise,sunset";
   const full="&current="+cur+",is_day,cloud_cover,wind_gusts_10m&hourly="+hr+",is_day&daily="+dl+",uv_index_max";
   let j;
@@ -1178,7 +1183,7 @@ async function loadWeather(auto){
  }
  try{moveMap()}catch(e){console.error(e)}
  /* jede Minute: Warnungen und Kachelmann (hat eigenen Zwischenspeicher); die anderen, sobald es Neues geben kann */
- loadWarnings();loadKc();loadKcDaily();loadTn();renderFavs();
+ loadWarnings();loadKc();loadKcDaily();loadTn();klLoad();renderFavs();
  const dN=due("nc",300000),dO=due("obs",120000),dI=due("ice",900000);
  if(!auto||dN)loadNowcast();
  if(!auto||dO)loadObs();
@@ -1193,6 +1198,7 @@ function dayPart(j,c){
  return null;
 }
 function renderAll(j,at){
+ try{klApplyJ(j)}catch(e){console.error(e)}
  lastJ=j;
  const c=j.current,day=c.is_day==null?1:c.is_day,k=kind(c.weather_code,!!day);
  let sk=skyKey(k,!!day);
@@ -3198,6 +3204,104 @@ function kcApplyHeader(){
  try{heroScene()}catch(e){console.error(e)}
  tnApply();
 }
+/* ============ Lernende Korrektur ============
+   Der Worker lernt jede Stunde für deine Orte (Lieblingsorte und Standort, höchstens 6), wie weit ECMWF und Kachelmann dort
+   danebenliegen – je nach Tageszeit, Bewölkung, Wind und Vorlaufzeit – und hört nie auf damit. Die App holt das Gelernte und
+   korrigiert damit die Temperaturen in „Nächste 24 Stunden“ und „7 Tage“. Eingeschaltet wird die Korrektur erst, wenn sie aus
+   mindestens 48 Vergleichen gelernt hat und dabei nachweislich besser trifft als ohne (gemessen vor jedem Lernschritt). */
+let klData=null,klFor="",klAt=0,klBusy=false;
+function klX(m,hour,cloud,wind,leadH){
+ const nl=m==="ec"?5:3,x=new Array(13+nl).fill(0);
+ x[0]=1;x[1+(Math.floor((((hour%24)+24)%24)/3)%8)]=1;
+ x[9+(cloud==null?1:cloud<30?0:cloud<75?1:2)]=1;
+ x[12+(m==="ec"?(leadH<24?0:leadH<48?1:leadH<72?2:leadH<120?3:4):(leadH<6?0:leadH<24?1:2))]=1;
+ if(wind!=null&&wind<7)x[12+nl]=1;
+ return x;
+}
+const klUse=L=>!!(L&&Array.isArray(L.w)&&L.n>=48&&L.er!=null&&L.ec!=null&&L.ec<L.er);
+function klP(L,x){let p=0;for(let i=0;i<x.length&&i<L.w.length;i++)p+=L.w[i]*x[i];return Math.max(-6,Math.min(6,p))}
+const klMine=()=>!!(klData&&klFor===PK()&&!klData.none);
+/* ECMWF-Werte (stündlich und Höchst-/Tiefstwerte) korrigieren; die Rohwerte bleiben in j._klRaw */
+function klApplyJ(j){
+ if(!j||!j.hourly||!j.hourly.temperature_2m)return;
+ const H=j.hourly,D=j.daily;
+ if(!j._klRaw)j._klRaw={T:H.temperature_2m.slice(),mx:D&&D.temperature_2m_max?D.temperature_2m_max.slice():null,mn:D&&D.temperature_2m_min?D.temperature_2m_min.slice():null};
+ const R=j._klRaw;H.temperature_2m=R.T.slice();if(R.mx)D.temperature_2m_max=R.mx.slice();if(R.mn)D.temperature_2m_min=R.mn.slice();
+ j._kl=false;
+ const L=klMine()?klData.ec:null;if(!klUse(L))return;
+ const off=(+j.utc_offset_seconds||0)*1000,now=Date.now(),cor=new Array(H.time.length).fill(null);
+ H.time.forEach((t,i)=>{const ms=Date.parse(t+":00Z")-off,lead=(ms-now)/3600000;if(lead<-1||R.T[i]==null)return;
+  const c=klP(L,klX("ec",+t.slice(11,13),H.cloud_cover?H.cloud_cover[i]:null,H.wind_speed_10m?H.wind_speed_10m[i]:null,Math.max(0,lead)));
+  cor[i]=c;H.temperature_2m[i]=Math.round((R.T[i]+c)*10)/10});
+ if(D&&D.time)D.time.forEach((day,d)=>{
+  const avg=(h0,h1)=>{const v=[];H.time.forEach((t,i)=>{if(t.slice(0,10)===day&&+t.slice(11,13)>=h0&&+t.slice(11,13)<=h1&&cor[i]!=null)v.push(cor[i])});return v.length?v.reduce((a,b)=>a+b,0)/v.length:null};
+  const a=avg(12,17),b=avg(3,8);
+  if(a!=null&&R.mx&&R.mx[d]!=null)D.temperature_2m_max[d]=Math.round((R.mx[d]+a)*10)/10;
+  if(b!=null&&R.mn&&R.mn[d]!=null)D.temperature_2m_min[d]=Math.round((R.mn[d]+b)*10)/10;
+ });
+ j._kl=true;
+}
+/* Kachelmann-Stundenwerte korrigieren; Rohwert bleibt in T0 */
+function klApplyKc(){
+ const a=kcDaily&&kcDaily.h1;if(!a)return;
+ const L=klMine()?klData.kc:null,ok=klUse(L),off=lastJ?(+lastJ.utc_offset_seconds||0)*1000:0,now=Date.now();
+ const wf=kcDaily.mh1&&/m\/s/i.test(kcDaily.mh1.wu||"")?3.6:1;
+ a.forEach(x=>{if(x.T0===undefined)x.T0=x.T;x.T=x.T0;if(!ok||x.T0==null||!x.d)return;const lead=(x.d.getTime()-now)/3600000;if(lead<-1)return;
+  x.T=Math.round((x.T0+klP(L,klX("kc",new Date(x.d.getTime()+off).getUTCHours(),x.C,x.W!=null?x.W*wf:null,Math.max(0,lead))))*10)/10});
+ kcDaily._kl=ok;
+}
+function klNote(){
+ const h=$("kl-h"),d=$("kl-d");if(!h||!d)return;
+ if(!klMine()){h.hidden=d.hidden=true;return}
+ const f=v=>String(Math.round(v*10)/10).replace(".",",");
+ const txt=(L,what)=>{
+  if(!klData.st)return"Lernende Korrektur: Für diesen Ort gibt es keine Messstation in 30 km, deshalb kann hier nichts gelernt werden.";
+  if(!L||!L.n)return"Lernende Korrektur: Der Ort ist angemeldet, das Lernen beginnt mit der nächsten vollen Stunde.";
+  if(klUse(L))return"Lernende Korrektur aktiv für "+what+": aus "+L.n.toLocaleString("de-AT")+" Vergleichen mit "+klData.st+(klData.st===1?" Messstation":" Messstationen")+" gelernt, im Mittel "+f(L.ec)+"° statt "+f(L.er)+"° daneben.";
+  if(L.n<48)return"Lernende Korrektur für "+what+" lernt noch: "+L.n+" von 48 Vergleichen, danach wird hier angepasst.";
+  return"Lernende Korrektur für "+what+": gelernt aus "+L.n.toLocaleString("de-AT")+" Vergleichen, trifft aber gerade nicht besser ("+f(L.ec)+"° statt "+f(L.er)+"°) und bleibt deshalb aus.";
+ };
+ const kc=kcActive();
+ h.textContent=txt(kc?klData.kc:klData.ec,kc?"Kachelmann":"ECMWF");h.hidden=false;
+ d.textContent=txt(klData.ec,"ECMWF");d.hidden=false;
+}
+function klRerender(){
+ if(!lastJ)return;
+ klApplyJ(lastJ);klApplyKc();
+ try{renderHours(lastJ,lastJ.current);renderDays(lastJ);kcApplyHeader();tnApply()}catch(e){console.error(e)}
+ klNote();
+}
+async function klLoad(force){
+ const W=window.__worker,tok=W&&W.token();if(!tok||klBusy)return;
+ const k=PK();if(!force&&klFor===k&&Date.now()-klAt<30*60000)return;
+ const la=+place.lat,lo=+place.lon,mine=favIdx()>=0||!!place.gps;
+ klBusy=true;
+ try{
+  const H={Authorization:"Bearer "+tok};
+  /* Lieblingsorte und Standort beim Worker anmelden (einmal am Tag), damit er dort lernt */
+  if(mine){let last=0;try{last=+localStorage.getItem("wetter-klreg|"+k)||0}catch(e){}
+   if(Date.now()-last>20*3600000){const r=await tfetch(W.base+"/kl/p",{method:"POST",headers:Object.assign({"Content-Type":"application/json"},H),body:JSON.stringify({la,lo,h:lastJ&&lastJ.elevation!=null?+lastJ.elevation:null,name:place.name})},30000);
+    if(r.ok){try{localStorage.setItem("wetter-klreg|"+k,String(Date.now()))}catch(e){}}}}
+  const r=await tfetch(W.base+"/kl/c?la="+la.toFixed(4)+"&lo="+lo.toFixed(4),{headers:H},20000);
+  if(PK()!==k)return;
+  klData=r.ok?await r.json():null;klFor=k;klAt=Date.now();
+  if(klData&&!klData.none)klSnap();
+ }catch(e){console.error(e)}
+ finally{klBusy=false}
+ if(PK()===k)klRerender();
+}
+/* die aktuelle Kachelmann-Vorhersage (Rohwerte) alle 3 Stunden an den Worker, damit er später vergleichen kann */
+async function klSnap(){
+ const W=window.__worker,tok=W&&W.token(),a=kcDaily&&kcDaily.h1;if(!tok||!a||!a.length||!klMine())return;
+ const k=PK();let last=0;try{last=+localStorage.getItem("wetter-klsnap|"+k)||0}catch(e){}
+ if(Date.now()-last<3*3600000)return;
+ const t0=Math.ceil(Date.now()/3600000)*3600000,T=[],C=[],Wd=[],wf=kcDaily.mh1&&/m\/s/i.test(kcDaily.mh1.wu||"")?3.6:1;
+ for(let i=0;i<36;i++){const t=t0+i*3600000,x=a.find(y=>y.d&&Math.abs(y.d.getTime()-t)<20*60000);T.push(x&&x.T0!=null?x.T0:x&&x.T!=null&&x.T0===undefined?x.T:null);C.push(x&&x.C!=null?x.C:null);Wd.push(x&&x.W!=null?Math.round(x.W*wf*10)/10:null)}
+ if(T.filter(v=>v!=null).length<12)return;
+ try{const r=await tfetch(W.base+"/kl/s",{method:"POST",headers:{"Content-Type":"application/json",Authorization:"Bearer "+tok},body:JSON.stringify({la:+place.lat,lo:+place.lon,t0,T,C,W:Wd})},20000);
+  if(r.ok){try{localStorage.setItem("wetter-klsnap|"+k,String(Date.now()))}catch(e){}}}catch(e){}
+}
+
 /* ============ Temperatur jetzt: so genau wie möglich ============
    Grundwert: in Österreich GeoSphere INCA (1 km), sonst das beste Regionalmodell von Open-Meteo (best_match).
    Dann wird er an den Messstationen der Umgebung ausgerichtet: Für jede Station (bis 8, höchstens 50 km weit) zählt,
@@ -3369,7 +3473,9 @@ async function loadKcDaily(){
  }catch(e){out={}}
  if(my!==kcdSeq)return;
  kcDaily=out;
+ try{klApplyKc()}catch(e){console.error(e)}
  if(kcActive())kcLogAdd();
+ try{klNote();klSnap()}catch(e){}
  if(lastJ){renderDays(lastJ);renderHours(lastJ,lastJ.current);kcApplyHeader();heroSay()}
  if(mcData)renderModels();
 }
@@ -3792,7 +3898,8 @@ function kcLogAdd(){
  let o=null;try{o=JSON.parse(localStorage.getItem(kcLogKey()))}catch(e){}
  if(!o||!o.h)o={h:{}};
  const now=Date.now();
- a.forEach(r=>{if(r.T==null||!r.d)return;const t=r.d.getTime(),lead=t-now;if(lead<20*3600000||lead>28*3600000)return;const k=new Date(t).toISOString().slice(0,13);if(o.h[k]==null)o.h[k]=Math.round(r.T*10)/10});
+ /* Rohwerte (ohne lernende Korrektur) merken */
+ a.forEach(r=>{const v=r.T0!==undefined?r.T0:r.T;if(v==null||!r.d)return;const t=r.d.getTime(),lead=t-now;if(lead<20*3600000||lead>28*3600000)return;const k=new Date(t).toISOString().slice(0,13);if(o.h[k]==null)o.h[k]=Math.round(v*10)/10});
  const lim=new Date(now-21*86400000).toISOString().slice(0,13);Object.keys(o.h).forEach(k=>{if(k<lim)delete o.h[k]});
  try{localStorage.setItem(kcLogKey(),JSON.stringify(o))}catch(e){}
 }

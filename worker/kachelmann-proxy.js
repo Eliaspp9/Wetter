@@ -1,4 +1,5 @@
-// Wetter-Proxy: hält den Kachelmann-Schlüssel geheim, prüft die Anmeldung und verschickt Wetter-Benachrichtigungen.
+// Wetter-Proxy: hält den Kachelmann-Schlüssel geheim, prüft die Anmeldung, verschickt Wetter-Benachrichtigungen
+// und lernt jede Stunde, wie weit die Vorhersage an deinen Orten danebenliegt (lernende Korrektur).
 // Einzurichten bei Cloudflare unter Workers & Pages. Variablen (Settings > Variables and Secrets):
 //   ALLOWED_ORIGIN  (Text)    https://eliaspp9.github.io
 //   LOGIN_USER      (Text)    dein Benutzername
@@ -136,6 +137,166 @@ async function sendPush(env, sub, msg) {
   });
 }
 
+/* ---------- Lernende Korrektur (läuft für immer) ----------
+   Jede Stunde vergleicht der Worker für deine Orte (höchstens 6, die du in der App öffnest), was ECMWF (Vorlauf 0 bis 7 Tage)
+   und Kachelmann (die Vorhersage, die die App zuletzt geschickt hat) für diese Stunde vorhergesagt haben, mit der Temperatur,
+   die die Messstationen in der Nähe ergeben. Daraus lernt er, wie weit die Vorhersage dort je nach Tageszeit, Bewölkung, Wind
+   und Vorlaufzeit danebenliegt (lineares Modell, das sich mit jeder Stunde ein Stück anpasst: NLMS). Er vergisst langsam,
+   lernt also auch neue Jahreszeiten. Gespeichert wird im KV-Speicher SUBS: je Ort ein Eintrag kl:p:<id>, Kachelmann-Vorhersage kl:s:<id>. */
+const KL_MAX = 6, KL_MU = 0.06, KL_A = 0.01;
+const klDist = (a, b, c, d) => Math.hypot((a - c) * 111.2, (b - d) * 111.2 * Math.cos((a * Math.PI) / 180));
+// Merkmale (gleich wie in der App): Grundwert, Tageszeit (8 × 3 h), Bewölkung (3), Vorlauf (ECMWF 5 / Kachelmann 3), Windstille
+function klX(m, hour, cloud, wind, leadH) {
+  const nl = m === "ec" ? 5 : 3, x = new Array(1 + 8 + 3 + nl + 1).fill(0);
+  x[0] = 1;
+  x[1 + (Math.floor(((hour % 24) + 24) % 24 / 3) % 8)] = 1;
+  x[9 + (cloud == null ? 1 : cloud < 30 ? 0 : cloud < 75 ? 1 : 2)] = 1;
+  const lb = m === "ec" ? (leadH < 24 ? 0 : leadH < 48 ? 1 : leadH < 72 ? 2 : leadH < 120 ? 3 : 4) : (leadH < 6 ? 0 : leadH < 24 ? 1 : 2);
+  x[12 + lb] = 1;
+  if (wind != null && wind < 7) x[12 + nl] = 1;
+  return x;
+}
+function klLearn(L, x, y) {
+  if (!L.w || L.w.length !== x.length) { L.w = new Array(x.length).fill(0); L.n = 0; L.er = null; L.ec = null; }
+  if (!isFinite(y) || Math.abs(y) > 15) return;
+  let p = 0, xx = 0;
+  for (let i = 0; i < x.length; i++) { p += L.w[i] * x[i]; xx += x[i] * x[i]; }
+  p = Math.max(-6, Math.min(6, p));
+  // Fehler ohne und mit Korrektur (vor dem Lernschritt gemessen, also ehrlich), gleitend gemittelt
+  L.er = L.er == null ? Math.abs(y) : (1 - KL_A) * L.er + KL_A * Math.abs(y);
+  L.ec = L.ec == null ? Math.abs(y - p) : (1 - KL_A) * L.ec + KL_A * Math.abs(y - p);
+  const e = y - p;
+  for (let i = 0; i < x.length; i++) L.w[i] += (KL_MU * e * x[i]) / xx;
+  L.n = (L.n || 0) + 1;
+}
+const klR = (v, d = 3) => Math.round(v * 10 ** d) / 10 ** d;
+async function klJ(u, opt) { const r = await fetch(u, Object.assign({ headers: { Accept: "application/json", "User-Agent": "wetter-proxy (eliaspp9.github.io)" } }, opt || {})); if (!r.ok) throw new Error(r.status); return r.json(); }
+// Messstationen bis 30 km um einen Ort aussuchen (einmal beim Anmelden des Orts)
+async function klStations(la, lo) {
+  const st = [], add = (s) => { if (st.length < 3 && !st.some((x) => klDist(x.la, x.lo, s.la, s.lo) < 1)) st.push(s); };
+  const inB = (b) => la >= b[0] && la <= b[1] && lo >= b[2] && lo <= b[3];
+  if (inB([46.3, 49.1, 9.5, 17.2])) {
+    try {
+      const m = await klJ("https://dataset.api.hub.geosphere.at/v1/station/current/tawes-v1-10min/metadata");
+      (m.stations || []).filter((s) => s.is_active !== false && s.altitude != null).map((s) => ({ k: "at", id: String(s.id), la: +s.lat, lo: +s.lon, h: +s.altitude, d: klDist(la, lo, +s.lat, +s.lon) }))
+        .filter((s) => s.d <= 30).sort((a, b) => a.d - b.d).slice(0, 3).forEach(add);
+    } catch (e) {}
+  }
+  if (st.length < 3 && inB([47.2, 55.1, 5.8, 15.1])) {
+    try {
+      const j = await klJ("https://api.brightsky.dev/sources?lat=" + la + "&lon=" + lo + "&max_dist=30000");
+      (j.sources || []).filter((s) => (s.observation_type === "synop" || s.observation_type === "current") && s.wmo_station_id && s.height != null && s.last_record && Date.now() - Date.parse(s.last_record) < 3 * 3600000)
+        .sort((a, b) => a.distance - b.distance).slice(0, 4).forEach((s) => { if (st.filter((x) => x.k === "de").length < 2) add({ k: "de", id: String(s.wmo_station_id), la: +s.lat, lo: +s.lon, h: +s.height, d: klDist(la, lo, +s.lat, +s.lon) }); });
+    } catch (e) {}
+  }
+  if (st.length < 2 && inB([18, 72, -170, -60])) {
+    try {
+      const p = await klJ("https://api.weather.gov/points/" + la.toFixed(4) + "," + lo.toFixed(4)), u = p.properties && p.properties.observationStations;
+      if (u && /^https:\/\/api\.weather\.gov\//.test(u)) {
+        const s = await klJ(u);
+        (s.features || []).slice(0, 6).map((f) => { const c = (f.geometry || {}).coordinates || [], q = f.properties || {}; return { k: "us", id: String(q.stationIdentifier || ""), la: +c[1], lo: +c[0], h: q.elevation && q.elevation.value != null ? +q.elevation.value : null }; })
+          .filter((s) => /^[A-Z0-9]{3,6}$/.test(s.id) && s.h != null).map((s) => Object.assign(s, { d: klDist(la, lo, s.la, s.lo) })).filter((s) => s.d <= 30).slice(0, 2).forEach(add);
+      }
+    } catch (e) {}
+  }
+  if (st.length < 2) {
+    try {
+      const d = 0.3, dl = 0.3 / Math.max(0.2, Math.cos((la * Math.PI) / 180));
+      const a = await klJ("https://aviationweather.gov/api/data/metar?format=json&bbox=" + [la - d, lo - dl, la + d, lo + dl].map((v) => v.toFixed(2)).join(","));
+      (Array.isArray(a) ? a : []).filter((x) => x && x.icaoId && typeof x.lat === "number" && typeof x.elev === "number").map((x) => ({ k: "mt", id: String(x.icaoId).slice(0, 6), la: x.lat, lo: x.lon, h: x.elev, d: klDist(la, lo, x.lat, x.lon) }))
+        .filter((s) => s.d <= 30 && /^[A-Z0-9]{3,6}$/.test(s.id)).sort((a, b) => a.d - b.d).forEach(add);
+    } catch (e) {}
+  }
+  return st;
+}
+// Messwerte (°C) aller Stationen; Schlüssel k:id
+async function klObs(places) {
+  const out = {}, all = places.flatMap((p) => p.st || []);
+  const at = [...new Set(all.filter((s) => s.k === "at").map((s) => s.id))], mt = [...new Set(all.filter((s) => s.k === "mt").map((s) => s.id))];
+  const de = [...new Set(all.filter((s) => s.k === "de").map((s) => s.id))].slice(0, 8), us = [...new Set(all.filter((s) => s.k === "us").map((s) => s.id))].slice(0, 6);
+  const jobs = [];
+  if (at.length) jobs.push(klJ("https://dataset.api.hub.geosphere.at/v1/station/current/tawes-v1-10min?parameters=TL&station_ids=" + at.join(",")).then((j) => {
+    const ts = (j.timestamps || []).map((t) => Date.parse(t));
+    (j.features || []).forEach((f) => { const p = f.properties || {}, d = p.parameters && p.parameters.TL && p.parameters.TL.data; if (!d) return;
+      for (let i = d.length - 1; i >= 0; i--) if (d[i] != null) { if (Date.now() - ts[i] < 45 * 60000) out["at:" + p.station] = +d[i]; break; } });
+  }).catch(() => {}));
+  if (mt.length) jobs.push(klJ("https://aviationweather.gov/api/data/metar?format=json&ids=" + mt.join(",")).then((a) => {
+    (Array.isArray(a) ? a : []).forEach((x) => { if (x && typeof x.temp === "number" && Date.now() / 1000 - x.obsTime < 5400 && out["mt:" + x.icaoId] == null) out["mt:" + x.icaoId] = x.temp; });
+  }).catch(() => {}));
+  de.forEach((id) => jobs.push(klJ("https://api.brightsky.dev/current_weather?wmo_station_id=" + id).then((j) => { const w = j.weather; if (w && w.temperature != null && Date.now() - Date.parse(w.timestamp) < 90 * 60000) out["de:" + id] = +w.temperature; }).catch(() => {})));
+  us.forEach((id) => jobs.push(klJ("https://api.weather.gov/stations/" + id + "/observations/latest").then((j) => { const q = j.properties || {}, T = q.temperature && q.temperature.value; if (T != null && Date.now() - Date.parse(q.timestamp) < 90 * 60000) out["us:" + id] = +T; }).catch(() => {})));
+  await Promise.all(jobs);
+  return out;
+}
+async function klRun(env) {
+  if (!env.SUBS) return;
+  const list = await env.SUBS.list({ prefix: "kl:p:" });
+  const places = [];
+  for (const k of list.keys.slice(0, KL_MAX)) { const p = await env.SUBS.get(k.name, "json"); if (p && p.st && p.st.length) places.push(p); }
+  if (!places.length) return;
+  const hourMs = Math.floor(Date.now() / 3600000) * 3600000;
+  const todo = places.filter((p) => p.last !== hourMs);
+  if (!todo.length) return;
+  const obs = await klObs(todo);
+  // Modell (Open-Meteo best_match) an Orten und Stationen, um aus den Stationen die Temperatur am Ort zu bestimmen
+  const pts = [];
+  todo.forEach((p) => { pts.push({ la: p.la, lo: p.lo, h: p.h }); p.st.forEach((s) => pts.push({ la: s.la, lo: s.lo, h: s.h })); });
+  let bm = [];
+  try {
+    const j = await klJ("https://api.open-meteo.com/v1/forecast?latitude=" + pts.map((p) => p.la.toFixed(4)).join(",") + "&longitude=" + pts.map((p) => p.lo.toFixed(4)).join(",") +
+      (pts.every((p) => p.h != null && isFinite(p.h)) ? "&elevation=" + pts.map((p) => Math.round(p.h)).join(",") : "") + "&current=temperature_2m&models=best_match&timezone=GMT");
+    bm = (Array.isArray(j) ? j : [j]).map((x) => (x && x.current && x.current.temperature_2m != null ? +x.current.temperature_2m : null));
+  } catch (e) { return; }
+  // ECMWF für diese Stunde, gerechnet 0 bis 7 Tage vorher
+  const V = ["temperature_2m", "cloud_cover", "wind_speed_10m"], vars = [];
+  V.forEach((v) => { vars.push(v); for (let d = 1; d <= 7; d++) vars.push(v + "_previous_day" + d); });
+  let pr = [];
+  try {
+    const j = await klJ("https://previous-runs-api.open-meteo.com/v1/forecast?latitude=" + todo.map((p) => p.la.toFixed(3)).join(",") + "&longitude=" + todo.map((p) => p.lo.toFixed(3)).join(",") +
+      "&hourly=" + vars.join(",") + "&models=ecmwf_ifs&past_days=1&forecast_days=1&timezone=auto");
+    pr = Array.isArray(j) ? j : [j];
+  } catch (e) {}
+  let i0 = 0;
+  for (let n = 0; n < todo.length; n++) {
+    const p = todo[n], b0 = bm[i0];
+    let num = 0, den = 0;
+    p.st.forEach((s, k) => { const o = obs[s.k + ":" + s.id], b = bm[i0 + 1 + k]; if (o == null || b == null) return;
+      const dh = p.h != null ? Math.abs(s.h - p.h) : 0, w = (1 / Math.pow(s.d + 5, 2)) * Math.exp(-Math.pow(dh / 250, 2)); num += w * (o - b); den += w; });
+    i0 += 1 + p.st.length;
+    p.last = hourMs;
+    if (!den || b0 == null) { await env.SUBS.put("kl:p:" + p.id, JSON.stringify(p)); continue; }
+    const truth = b0 + num / (den + 1 / 900);
+    p.obs = { t: hourMs, T: klR(truth, 2) };
+    const H = pr[n] && pr[n].hourly, off = pr[n] && +pr[n].utc_offset_seconds || 0, hour = new Date(hourMs + off * 1000).getUTCHours();
+    if (H && H.time) {
+      const loc = new Date(hourMs + off * 1000).toISOString().slice(0, 13), i = H.time.findIndex((t) => t.slice(0, 13) === loc);
+      if (i >= 0) {
+        p.ec = p.ec || {};
+        for (let d = 0; d <= 7; d++) {
+          const sfx = d ? "_previous_day" + d : "", f = H["temperature_2m" + sfx] && H["temperature_2m" + sfx][i];
+          if (f == null) continue;
+          const c = H["cloud_cover" + sfx] && H["cloud_cover" + sfx][i], wi = H["wind_speed_10m" + sfx] && H["wind_speed_10m" + sfx][i];
+          klLearn(p.ec, klX("ec", hour, c, wi, d * 24 + 6), truth - f);
+        }
+      }
+    }
+    // Kachelmann: die zuletzt aus der App geschickte Vorhersage für diese Stunde
+    try {
+      const sn = await env.SUBS.get("kl:s:" + p.id, "json");
+      if (sn && Array.isArray(sn.T)) {
+        const k = Math.round((hourMs - sn.t0) / 3600000), lead = (hourMs - sn.at) / 3600000;
+        if (k >= 0 && k < sn.T.length && sn.T[k] != null && lead >= 1 && lead <= 36) {
+          p.kc = p.kc || {};
+          klLearn(p.kc, klX("kc", hour, sn.C ? sn.C[k] : null, sn.W ? sn.W[k] : null, lead), truth - sn.T[k]);
+        }
+      }
+    } catch (e) {}
+    ["ec", "kc"].forEach((m) => { if (p[m] && p[m].w) { p[m].w = p[m].w.map((v) => klR(v)); p[m].er = klR(p[m].er); p[m].ec = klR(p[m].ec); } });
+    await env.SUBS.put("kl:p:" + p.id, JSON.stringify(p));
+  }
+}
+const klId = (la, lo) => (Math.round(la * 100) + "_" + Math.round(lo * 100)).replace(/-/g, "m");
+
 /* ---------- Prüfung alle 10 Minuten: Regen und Warnungen ---------- */
 const AT_TYPES = { 1: "Sturm", 2: "Regen", 3: "Schnee", 4: "Glatteis", 5: "Gewitter", 6: "Hitze", 7: "Kälte" };
 async function getJ(u) { const r = await fetch(u, { headers: { Accept: "application/json" } }); if (!r.ok) throw new Error(r.status); return r.json(); }
@@ -227,7 +388,7 @@ export default {
       return json({ error: "Der Worker ist noch nicht fertig eingerichtet (Variablen fehlen)." }, 500);
     const url = new URL(req.url);
 
-    if (url.pathname === "/") return json({ ok: true, name: "wetter-proxy", version: "1.4", renew: true, push: !!env.SUBS, guard: true, ma: true, mt: true, mtc: true });
+    if (url.pathname === "/") return json({ ok: true, name: "wetter-proxy", version: "1.5", renew: true, push: !!env.SUBS, guard: true, ma: true, mt: true, mtc: true, kl: !!env.SUBS });
 
     if (url.pathname === "/login" && req.method === "POST") {
       const ip = req.headers.get("CF-Connecting-IP") || "unbekannt";
@@ -294,6 +455,55 @@ export default {
       return new Response(JSON.stringify({ st }), { status: 200, headers: { ...h, "Cache-Control": "private, max-age=240" } });
     }
 
+    // Lernende Korrektur: Ort anmelden, Kachelmann-Vorhersage hinterlegen, Gelerntes abholen
+    if (url.pathname.startsWith("/kl/")) {
+      if (!(await checkToken(env, req))) return json({ error: "Nicht angemeldet" }, 401);
+      if (!env.SUBS) return json({ error: "kv-setup" }, 503);
+      const num = (v, a) => { const n = Number(v); return isFinite(n) && Math.abs(n) <= a ? n : null; };
+      if (url.pathname === "/kl/c" && req.method === "GET") {
+        const la = num(url.searchParams.get("la"), 90), lo = num(url.searchParams.get("lo"), 180);
+        if (la == null || lo == null) return json({ error: "Ungültig" }, 400);
+        const list = await env.SUBS.list({ prefix: "kl:p:" });
+        let best = null, bd = 3;
+        for (const k of list.keys) { const p = await env.SUBS.get(k.name, "json"); if (!p) continue; const d = klDist(la, lo, p.la, p.lo); if (d < bd) { bd = d; best = p; } }
+        if (!best) return json({ ok: true, none: true });
+        const pick = (L) => (L && L.w ? { w: L.w, n: L.n || 0, er: L.er, ec: L.ec } : null);
+        return json({ ok: true, v: 1, name: best.name, st: (best.st || []).length, ec: pick(best.ec), kc: pick(best.kc), obs: best.obs || null });
+      }
+      if (req.method !== "POST") return json({ error: "Nicht gefunden" }, 404);
+      if (Number(req.headers.get("Content-Length") || 0) > 6000) return json({ error: "Zu groß" }, 413);
+      let b = {};
+      try { b = await req.json(); } catch (e) {}
+      const la = num(b.la, 90), lo = num(b.lo, 180);
+      if (la == null || lo == null) return json({ error: "Ungültig" }, 400);
+      const id = klId(la, lo);
+      if (url.pathname === "/kl/p") {
+        // neuer Ort: Messstationen suchen; sind schon 6 Orte da, fällt der am längsten nicht mehr geöffnete heraus
+        const old = await env.SUBS.get("kl:p:" + id, "json");
+        if (old) { if (Date.now() - (old.seen || 0) > 86400000) { old.seen = Date.now(); await env.SUBS.put("kl:p:" + id, JSON.stringify(old)); } return json({ ok: true, id, st: (old.st || []).length }); }
+        const list = await env.SUBS.list({ prefix: "kl:p:" });
+        if (list.keys.length >= KL_MAX) {
+          let oldest = null, ot = Infinity;
+          for (const k of list.keys) { const p = await env.SUBS.get(k.name, "json"); const t = (p && p.seen) || 0; if (t < ot) { ot = t; oldest = k.name; } }
+          if (oldest) { await env.SUBS.delete(oldest); await env.SUBS.delete("kl:s:" + oldest.slice(5)); }
+        }
+        let h = num(b.h, 9000);
+        const st = await klStations(la, lo);
+        const p = { id, la: +la.toFixed(4), lo: +lo.toFixed(4), h, name: String(b.name || "").slice(0, 60), st, seen: Date.now(), ec: {}, kc: {} };
+        await env.SUBS.put("kl:p:" + id, JSON.stringify(p));
+        return json({ ok: true, id, st: st.length });
+      }
+      if (url.pathname === "/kl/s") {
+        const T = Array.isArray(b.T) ? b.T.slice(0, 48).map((v) => num(v, 70)) : null, t0 = num(b.t0, 1e14);
+        if (!T || t0 == null) return json({ error: "Ungültig" }, 400);
+        const C = Array.isArray(b.C) ? b.C.slice(0, 48).map((v) => num(v, 100)) : null, W = Array.isArray(b.W) ? b.W.slice(0, 48).map((v) => num(v, 300)) : null;
+        if (!(await env.SUBS.get("kl:p:" + id))) return json({ error: "Ort nicht angemeldet" }, 404);
+        await env.SUBS.put("kl:s:" + id, JSON.stringify({ t0, at: Date.now(), T, C, W }), { expirationTtl: 3 * 86400 });
+        return json({ ok: true });
+      }
+      return json({ error: "Nicht gefunden" }, 404);
+    }
+
     if (url.pathname.startsWith("/push/")) {
       if (!(await checkToken(env, req))) return json({ error: "Nicht angemeldet" }, 401);
       if (!env.SUBS) return json({ error: "push-setup" }, 503);
@@ -325,5 +535,7 @@ export default {
   },
   async scheduled(event, env, ctx) {
     ctx.waitUntil(runAlerts(env));
+    // einmal pro Stunde (in den ersten 10 Minuten) lernen
+    if (new Date(event.scheduledTime || Date.now()).getUTCMinutes() < 10) ctx.waitUntil(klRun(env).catch(() => {}));
   },
 };
