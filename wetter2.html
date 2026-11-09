@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-O7AYO5fdlaH5YGlJjATbYdlvS/ci/wGRK0rIAbFezAk=' 'sha256-+CD5i0gDObdMiTFeSjBHM8SvIjSFGtFW+gQH/GdjeWc=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://s3.amazonaws.com https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-kpKuYoq9RVpREMR3qVgF6gkvpBePft9Rby54TVzrdzo=' 'sha256-+CD5i0gDObdMiTFeSjBHM8SvIjSFGtFW+gQH/GdjeWc=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://s3.amazonaws.com https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -14,9 +14,9 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/favicon-64.png">
-<meta name="app-build" content="53">
-<meta name="app-version" content="2.17">
-<meta name="app-notes" content="Version 2.17: Regen oder Schnee entscheidet das Radar jetzt an jeder Stelle selbst, nach der Temperatur und Luftfeuchte dort und der Höhe des Geländes. In den Bergen kann es also lila (Schnee, cm/h) sein und im Tal blau (Regen, mm/h). Beim Antippen steht auch die Temperatur an der Stelle.">
+<meta name="app-build" content="54">
+<meta name="app-version" content="2.18">
+<meta name="app-notes" content="Version 2.18: „Regen in 2 Stunden“ kommt jetzt aus dem Radar (DWD bzw. GeoSphere). Länder-Radare mit Vorhersage aus der Bewegung im Radar. Gewitter zeigen, ob sie stärker oder schwächer werden und ob Hagel möglich ist. Pollen-Tagebuch, das lernt, welche Pollen dich stören. Nebel-Satellitenbild auf der Karte. Mit dem neuen Worker 1.6: Modellmix, angepasste Regenwahrscheinlichkeit, Wind und Böen, Hochnebel-Erkennung, KI-Übersetzung, Push-Texte in ganzen Sätzen und Ruhezeiten aus deinem Alltag, alles lernt für immer weiter.">
 <script>/* alte Adresse wetter2.html -> neue Startseite */
 try{if(top!==self)document.documentElement.style.display="none"}catch(e){document.documentElement.style.display="none"}
 window.__redir=/\/wetter2\.html$/i.test(location.pathname);
@@ -409,6 +409,13 @@ html.wall .upd{bottom:14px}
 .nc-bars i.mix{background:linear-gradient(180deg,var(--rain),var(--snow))}
 .nc-t{display:flex;justify-content:space-between;margin-top:6px;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
 .nc-key{display:flex;gap:16px;margin-top:10px;font-size:13px;color:var(--muted)}
+.nc-src{margin:8px 0 0;font-size:12px;color:var(--muted)}
+.ptb{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+.ptb-h{margin:0 0 8px;font-size:14px}.ptb-h b{margin-right:6px}
+.ptb-b{display:flex;flex-wrap:wrap;gap:6px}
+.ptb-b button{border:1px solid var(--line);background:var(--tile);color:var(--ink);border-radius:999px;padding:6px 14px;font-size:13.5px;font-weight:600;min-height:34px}
+.ptb-b button[aria-pressed=true]{background:rgb(var(--a));border-color:rgb(var(--a));color:#fff}
+.pbad{font-style:normal;font-size:11px;font-weight:700;color:#fff;background:#E5484D;border-radius:999px;padding:1px 7px;margin-left:4px;vertical-align:1px}
 .nc-key i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
 
 /* Warnungen */
@@ -879,7 +886,7 @@ html.locked body>*:not(#gate){display:none!important}
     <div class="mctl">
      <div class="seg" id="mode"><button type="button" data-m="rv" class="on">Weltweit</button><button type="button" data-m="dwd">DWD 1 km</button><button type="button" data-m="at">Österreich</button><button type="button" data-m="nat" id="natbtn" hidden>Land</button></div>
      <div class="seg" id="basemode"><button type="button" data-b="street">Karte</button><button type="button" data-b="sat" class="on">Satellit</button></div>
-     <div class="seg" id="lblseg"><button type="button" id="cld" aria-pressed="false">Wolken</button><button type="button" id="lbl" class="on" aria-pressed="true">Grenzen &amp; Orte</button><button type="button" id="wrn" aria-pressed="false">Warnungen</button><button type="button" id="blz" class="on" aria-pressed="true">Blitze</button></div>
+     <div class="seg" id="lblseg"><button type="button" id="cld" aria-pressed="false">Wolken</button><button type="button" id="fgl" aria-pressed="false">Nebel</button><button type="button" id="lbl" class="on" aria-pressed="true">Grenzen &amp; Orte</button><button type="button" id="wrn" aria-pressed="false">Warnungen</button><button type="button" id="blz" class="on" aria-pressed="true">Blitze</button></div>
     </div>
     <button class="gbtn" id="ctr" type="button" aria-label="Auf meinen Ort zentrieren"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></button>
     <button class="gbtn lockb" id="lock" type="button">Karte bewegen: aus</button>
@@ -902,6 +909,7 @@ html.locked body>*:not(#gate){display:none!important}
     <p id="mnote"></p>
     <p id="plegend"></p>
     <p id="cnote"></p>
+    <p id="gnote"></p>
     <p id="wnote"></p>
     <p id="bnote"></p>
     <p id="fnote"></p>
@@ -1189,7 +1197,7 @@ async function loadWeather(auto){
  else try{
   const base="https://api.open-meteo.com/v1/forecast?latitude="+place.lat+"&longitude="+place.lon+"&timezone=auto&forecast_days=7";
   const cur="temperature_2m,apparent_temperature,relative_humidity_2m,precipitation,weather_code,wind_speed_10m,wind_direction_10m,surface_pressure";
-  const hr="temperature_2m,precipitation_probability,weather_code,precipitation,wind_speed_10m,wind_gusts_10m,snowfall,cloud_cover";
+  const hr="temperature_2m,precipitation_probability,weather_code,precipitation,wind_speed_10m,wind_gusts_10m,snowfall,cloud_cover,cloud_cover_low,relative_humidity_2m";
   const dl="weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max,sunrise,sunset";
   const full="&current="+cur+",is_day,cloud_cover,wind_gusts_10m&hourly="+hr+",is_day&daily="+dl+",uv_index_max";
   let j;
@@ -1597,6 +1605,13 @@ async function trDe(text,from){
  const parts=[];let cur="";
  text.replace(/([.!?;:])\s+/g,"$1\n").split("\n").forEach(x=>{while(x.length>450){if(cur){parts.push(cur);cur=""}parts.push(x.slice(0,450));x=x.slice(450)}if((cur+" "+x).trim().length>450){parts.push(cur);cur=x}else cur=(cur?cur+" ":"")+x});
  if(cur)parts.push(cur);
+ /* zuerst die KI-Übersetzung im eigenen Worker (ab 1.6, Meta M2M100); fehlt sie, der Gratis-Dienst MyMemory */
+ {const W=window.__worker,tok=W&&W.token();let na=0;try{na=+localStorage.getItem("wetter-noai")||0}catch(e){}
+  if(tok&&Date.now()-na>86400000){try{
+   const r=await tfetch(W.base+"/tr",{method:"POST",headers:{Authorization:"Bearer "+tok,"Content-Type":"application/json"},body:JSON.stringify({from:String(from).slice(0,2).toLowerCase(),q:parts.slice(0,6)})},25000);
+   if(r.ok){const o=await r.json();if(o&&Array.isArray(o.t)&&o.t.length&&o.t.every(x=>x)){const v=o.t.join(" ");trMem[key]=v;try{localStorage.setItem(key,JSON.stringify({t:Date.now(),v,ai:1}))}catch(e){}return v}}
+   else if(r.status===404||r.status===503){try{localStorage.setItem("wetter-noai",String(Date.now()))}catch(e){}}
+  }catch(e){}}}
  const out=[];
  for(const p of parts.slice(0,6)){
   const j=await getJ("https://api.mymemory.translated.net/get?q="+encodeURIComponent(p)+"&langpair="+encodeURIComponent(from)+"|de",15000);
@@ -1711,12 +1726,59 @@ function ptype(p,rn,sn){
  const snow=(sn||0)>=0.05,rain=(rn||0)>=0.1;
  return snow&&rain?"mix":snow?"snow":"rain";
 }
+/* „Regen in 2 Stunden“ aus dem Radar, wo es geht: in der ersten Stunde ist die Radar-Vorhersage (Bewegung der echten
+   Regengebiete) genauer als jedes Wettermodell. Österreich: GeoSphere-Nowcast (1 km, 15 Minuten, 3 Stunden voraus) im Mittel
+   über 5 Punkte (Ort und je 1 km rundherum); Deutschland und Grenzgebiete: DWD-Radar mit 2 Stunden Vorhersage über Bright Sky,
+   Mittel über rund 3 × 3 km. Ergebnis: mm je Viertelstunde, endend zur Zeit t (wie bei Open-Meteo). */
+async function radarPoint(){
+ const la=+place.lat,lo=+place.lon,cc=ccNow(),now=Date.now();
+ const at=async()=>{
+  const pts=[[0,0],[.009,0],[-.009,0],[0,.013],[0,-.013]].map(d=>"lat_lon="+(la+d[0]).toFixed(4)+","+(lo+d[1]).toFixed(4)).join("&");
+  const j=await getJ("https://dataset.api.hub.geosphere.at/v1/timeseries/forecast/nowcast-v1-15min-1km?parameters=rr&output_format=geojson&"+pts,15000);
+  const d=atParse(j),s=[];
+  d.t.forEach((t,k)=>{let a=0,n=0;for(let i=0;i<d.n;i++){const v=d.V[k][i];if(v>=0){a+=v;n++}}if(n)s.push({t:t*1000,mm:a/n})});
+  return s.length?{src:"GeoSphere Austria (Radar-Nowcast)",s}:null;
+ };
+ const de=async()=>{
+  const iso=t=>new Date(t).toISOString().slice(0,16)+"Z";
+  const j=await getJ("https://api.brightsky.dev/radar?lat="+la.toFixed(3)+"&lon="+lo.toFixed(3)+"&distance=1500&format=bytes&date="+encodeURIComponent(iso(now-20*60000))+"&last_date="+encodeURIComponent(iso(now+125*60000)),15000);
+  const R=(j.radar||[]).filter(x=>x&&x.precipitation_5),B={};
+  for(const x of R){const v=await u16(x.precipitation_5,false);let a=0,n=0;for(const r of v){if(r<60000){a+=r;n++}}if(!n)continue;
+   const t=Date.parse(x.timestamp),k=Math.ceil(t/900000)*900000;(B[k]||(B[k]={a:0,n:0})).a+=a/n*.01;B[k].n++}
+  const s=Object.keys(B).map(Number).sort((a,b)=>a-b).filter(k=>B[k].n>=2).map(k=>({t:k,mm:B[k].a*3/B[k].n}));
+  return s.length?{src:"DWD-Radar mit Radar-Vorhersage",s}:null;
+ };
+ const order=cc==="AT"||(!dwCovered(la,lo)&&atCovered(la,lo))?[at,de]:dwCovered(la,lo)?[de,at]:atCovered(la,lo)?[at]:[];
+ for(const f of order){try{if(f===at&&!atCovered(la,lo))continue;if(f===de&&!dwCovered(la,lo))continue;const r=await f();if(r)return r}catch(e){}}
+ return null;
+}
+/* Radarwerte in die 15-Minuten-Reihe des Modells einsetzen; die Art (Regen/Schnee) kommt vom Modell oder, wo das Modell
+   trocken ist, aus der Temperatur an der Stelle */
+function ncMerge(j,rp){
+ const m=j.minutely_15;if(!m||!m.time||!m.precipitation||!rp)return false;
+ const off=(+j.utc_offset_seconds||0)*1000,now=Date.now();let used=0;
+ m.rain=m.rain||m.precipitation.map(()=>null);m.snowfall=m.snowfall||m.precipitation.map(()=>null);
+ const sa=snowAt(+place.lat,+place.lon),cold=sa!=null?sa:!!(j.current&&j.current.temperature_2m<=0.5);
+ for(let i=0;i<m.time.length;i++){
+  const t=Date.parse(m.time[i]+":00Z")-off;if(t<now-15*60000||t>now+130*60000)continue;
+  const r=rp.s.find(x=>Math.abs(x.t-t)<60000);if(!r)continue;
+  const mm=Math.round(r.mm*100)/100,P=+m.precipitation[i]||0,Rn=+m.rain[i]||0,Sn=+m.snowfall[i]||0;
+  if(P>=.05){const fr=Math.min(1,Rn/P),fs=Math.min(1,Sn*10/7/P);m.rain[i]=mm*fr;m.snowfall[i]=mm*fs*.7}
+  else{m.rain[i]=cold?0:mm;m.snowfall[i]=cold?mm*.7:0}
+  m.precipitation[i]=mm;used++;
+ }
+ if(used)j._ncSrc=rp.src;
+ return used>0;
+}
 async function loadNowcast(){
  const u="https://api.open-meteo.com/v1/forecast?latitude="+place.lat+"&longitude="+place.lon+"&current=temperature_2m&forecast_days=2&timezone=auto&minutely_15=",q=seq("nc");
  try{
   let j;
+  const rpP=radarPoint().catch(()=>null);
   try{j=await getJ(u+"precipitation,rain,snowfall")}catch(e){if(String(e.message)!=="400")throw e;j=await getJ(u+"precipitation")}
+  const rp=await rpP;
   if(!q.ok())return;
+  ncMerge(j,rp);
   renderNowcast(j,j.current);q.done();
  }catch(e){if(q.ok()&&!q.keep())$("nc").innerHTML='<p class="muted">Regen-Vorschau konnte nicht geladen werden.</p>'}
 }
@@ -1736,11 +1798,12 @@ function renderNowcast(j,c){
  const anySnow=v.some((x,k)=>ty(k)==="snow"||ty(k)==="mix");
  const end=v.findIndex(x=>!wet(x));
  ncState={wet0:wet(v[0]),end,tEnd:end>=0?t(end):"",first,tFirst:first>=0?t(first):"",ty0:ty(0),tyF:first>=0?ty(first):null};
- if(!wet(v[0])&&first<0){box.innerHTML='<p class="sr">'+msg+"</p>";heroSay();return}
+ if(!wet(v[0])&&first<0){box.innerHTML='<p class="sr">'+msg+"</p>"+(j._ncSrc?'<p class="nc-src">Laut Radar: '+esc(j._ncSrc)+".</p>":"");heroSay();return}
  const rgb=a=>"rgb("+a.map(Math.round).join(",")+")";
  const col=k=>{const x=v[k];if(!wet(x))return"var(--line)";const q=ty(k)||"rain",rc=rgb(ramp(RAINC,x)),sc=rgb(ramp(SNOWC,x));return q==="snow"?sc:q==="mix"?"linear-gradient(180deg,"+rc+","+sc+")":rc};
  box.innerHTML='<p class="sr">'+msg+'</p><div class="nc-bars">'+v.map((x,k)=>'<div title="'+t(k)+" Uhr: "+(NAME[ty(k)]||"trocken")+" "+(+x||0)+' mm"><i style="height:'+Math.max(wet(x)?12:3,Math.min(100,(x||0)/1.5*100))+"%;background:"+col(k)+'"></i></div>').join("")+'</div><div class="nc-t"><span>'+t(0)+"</span><span>"+t(Math.min(4,v.length-1))+"</span><span>"+t(v.length-1)+"</span></div>"+
-  (anySnow?'<div class="nc-key"><span><i style="background:var(--rain)"></i>Regen</span><span><i style="background:var(--snow)"></i>Schnee</span><span><i style="background:linear-gradient(90deg,var(--rain),var(--snow))"></i>Schneeregen</span></div>':"");
+  (anySnow?'<div class="nc-key"><span><i style="background:var(--rain)"></i>Regen</span><span><i style="background:var(--snow)"></i>Schnee</span><span><i style="background:linear-gradient(90deg,var(--rain),var(--snow))"></i>Schneeregen</span></div>':"")+
+  '<p class="nc-src">'+(j._ncSrc?"Aus dem Radar: "+esc(j._ncSrc)+".":"Aus dem Wettermodell ICON des DWD.")+"</p>";
  heroSay();
 }
 let ptLayer;
@@ -1797,6 +1860,19 @@ function updLab(){try{if(lab&&map)lab.setOpacity(map.getZoom()>13?0:1)}catch(e){
 let cld=null,cldOn=false;
 try{cldOn=localStorage.getItem("wetter-cld")==="1"}catch(e){}
 const CLD_LAYER="dwd:Satellite_meteosat_1km_euat_rgb_day_hrv_and_night_ir108_3h";
+/* Nebel und tiefe Wolken (Hochnebel) aus dem Wettersatelliten MTG: „Fog / Low Clouds RGB“ von EUMETSAT.
+   Nachts erscheinen Nebel und Hochnebel hellblau bis türkis, tagsüber gelblich-weiß; höhere Wolken sind rötlich oder dunkel. */
+let fgLay=null,fgOn=false;try{fgOn=localStorage.getItem("wetter-fgl")==="1"}catch(e){}
+function setFogSat(){
+ if(!map)return;
+ $("fgl").classList.toggle("on",fgOn);$("fgl").setAttribute("aria-pressed",fgOn?"true":"false");
+ try{
+  if(!fgOn){if(fgLay){map.removeLayer(fgLay);fgLay=null}$("gnote").textContent="";return}
+  if(fgLay)return;
+  fgLay=L.tileLayer.wms("https://view.eumetsat.int/geoserver/wms",{layers:"mtg_fd:rgb_fog",format:"image/png",transparent:true,opacity:.75,zIndex:3,className:"cldl",attribution:"Nebel: EUMETSAT (MTG, Fog/Low Clouds RGB)"}).addTo(map);
+  $("gnote").textContent="Nebel und Hochnebel aus dem Wettersatelliten MTG (EUMETSAT): nachts hellblau bis türkis, tagsüber gelblich-weiß; höhere Wolken rötlich oder dunkel.";
+ }catch(e){fgLay=null}
+}
 function setClouds(){
  if(!map)return;
  $("cld").classList.toggle("on",cldOn);$("cld").setAttribute("aria-pressed",cldOn?"true":"false");
@@ -1833,7 +1909,7 @@ function initMap(){
  try{const fp=map.createPane("fc");fp.style.zIndex=340;fp.style.pointerEvents="none"}catch(e){}
  try{map.on("zoomend",updLab);map.on("moveend",()=>{clearTimeout(fcTimer);fcTimer=setTimeout(()=>loadFc(),900)})}catch(e){}
  setBase(baseKind);
- setClouds();setWarnLayer();setBlitz();
+ setClouds();setFogSat();setWarnLayer();setBlitz();
  /* dein Ort: eigenes Symbol in einer eigenen Ebene über Radar, Zugbahnen und Symbolen */
  try{const mp=map.createPane("me");mp.style.zIndex=620;mp.style.pointerEvents="none"}catch(e){}
  marker=L.marker([place.lat,place.lon],{pane:"me",icon:L.divIcon({className:"medot",html:"",iconSize:[22,22],iconAnchor:[11,11]}),interactive:false,keyboard:false}).addTo(map);
@@ -2003,8 +2079,8 @@ function rcLayer(kind,url,opt,rcKey){
  return kind==="wms"?new RcWms(url,opt):new RcTile(url,opt);
 }
 /* Wert an einer Stelle aus der gerade gezeigten Ebene (bei Kanada aus Regen- und Schnee-Ebene) */
-function natVal(la,lo){
- const l=layers[idx];if(!l||!map)return null;
+function natVal(la,lo,L0){
+ const l=L0||layers[idx];if(!l||!map)return null;
  const subs=[];if(l.eachLayer)l.eachLayer(x=>subs.push(x));else subs.push(l);
  let res=null;
  for(const t of subs){
@@ -2123,6 +2199,58 @@ function snowTile(c){
   for(let bx=0;bx<64;bx++)m[by*64+bx]=snowAt(la,(c.x*256+bx*4+2)/n*360-180)?1:0}
  snTile.set(k,m);if(snTile.size>600)snTile.delete(snTile.keys().next().value);return m;
 }
+/* ============ Länder-Radare: Vorhersage aus der Bewegung im Radar selbst ============
+   Das neueste Bild und das von vor etwa 15 Minuten werden auf ein grobes Raster gelegt (alle 6 Bildpunkte ein Wert); gesucht
+   wird die Verschiebung, bei der die Regengebiete am besten übereinanderpassen (Kreuzkorrelation). Damit wird das neueste Bild
+   60 Minuten weitergeschoben. Neu entstehende oder zerfallende Schauer sind darin nicht enthalten. */
+let natMv=null;
+function lvAt(L,cp){
+ const subs=[];if(L.eachLayer)L.eachLayer(x=>subs.push(x));else subs.push(L);
+ let best=0;
+ for(const t of subs){const z=t._tileZoom;if(z==null||!t._tiles)continue;
+  const p=map.project(map.containerPointToLatLng(cp),z),x=Math.floor(p.x/256),y=Math.floor(p.y/256),tl=t._tiles[x+":"+y+":"+z],el=tl&&tl.el;
+  if(!el||!el._v)continue;const v=el._v[Math.floor(p.y-y*256)*256+Math.floor(p.x-x*256)];if(v>best)best=v}
+ return best;
+}
+function layerReady(L,ms){
+ const subs=[];if(L.eachLayer)L.eachLayer(x=>subs.push(x));else subs.push(L);
+ return Promise.all(subs.map(t=>new Promise(ok=>{if(t.isLoading&&!t.isLoading()&&t._tiles&&Object.keys(t._tiles).length)return ok();const f=()=>{t.off("load",f);ok()};t.on("load",f);setTimeout(ok,ms||15000)})));
+}
+function shiftEst(LA,LB,dtMin){
+ const sz=map.getSize(),S=6,GW=Math.floor(sz.x/S),GH=Math.floor(sz.y/S),A=new Float32Array(GW*GH),B=new Float32Array(GW*GH),nz=[];
+ for(let y=0;y<GH;y++)for(let x=0;x<GW;x++){const cp=L.point(x*S+S/2,y*S+S/2),a=lvAt(LA,cp),b=lvAt(LB,cp),i=y*GW+x;A[i]=a>=.1?Math.log(1+a):0;B[i]=b>=.1?Math.log(1+b):0;if(A[i])nz.push(i)}
+ if(nz.length<40)return null;
+ const mpp=156543.03392*Math.cos(map.getCenter().lat*Math.PI/180)/Math.pow(2,map.getZoom()),R=Math.min(40,Math.ceil(130*dtMin/60*1000/mpp/S));
+ let best=-1,bx=0,by=0;
+ for(let sy=-R;sy<=R;sy++)for(let sx=-R;sx<=R;sx++){
+  let ab=0,aa=0,bb=0;
+  for(const i of nz){const x=i%GW+sx,y=((i/GW)|0)+sy;if(x<0||y<0||x>=GW||y>=GH)continue;const a=A[i],b=B[y*GW+x];ab+=a*b;aa+=a*a;bb+=b*b}
+  const c=aa&&bb?ab/Math.sqrt(aa*bb):0;if(c>best){best=c;bx=sx;by=sy}
+ }
+ if(best<.35||Math.abs(bx)===R||Math.abs(by)===R)return null;
+ const e=bx*S*mpp/1000/dtMin,n=-by*S*mpp/1000/dtMin,spd=Math.hypot(e,n)*60;
+ return{e,n,spd,to:(Math.atan2(e,n)*180/Math.PI+360)%360,c:best};
+}
+async function natMotion(c,F,my){
+ natMv=null;
+ const pc=pastCount;if(!c||!c.rc||ccNow()==="JP"||pc<4||!map)return;
+ const k0=pc-4,dt=(F[pc-1].time-F[k0].time)/60;if(dt<10)return;
+ const LB=layers[pc-1];if(!LB)return;
+ let LA=null;
+ try{
+  LA=c.layer(F[k0]);LA.setOpacity(0);LA.addTo(map);
+  await Promise.all([layerReady(LB),layerReady(LA)]);
+  if(my!==natSeq||mode!=="nat")return;
+  const mv=shiftEst(LA,LB,dt);
+  if(!mv)return;
+  natMv=mv;refreshFcFrames();natNote();
+ }catch(e){console.error(e)}
+ finally{try{if(LA)map.removeLayer(LA)}catch(e){}}
+}
+function natNote(){
+ if(mode!=="nat"||!natMv)return;
+ $("fnote").textContent="Nach „Jetzt“: Vorhersage für 60 Minuten aus der Bewegung im Radar selbst (letzte 15 Minuten). Der Niederschlag zieht nach "+(WDIR[compass(natMv.to)]||"")+", etwa "+Math.round(natMv.spd)+" km/h. Neu entstehende oder zerfallende Schauer sind nicht enthalten.";
+}
 const NATR={
  US:{n:"USA",att:"Radar: NOAA NEXRAD über Iowa Environmental Mesonet",note:"Radar der USA: Radarverbund des US-Wetterdienstes (NOAA NEXRAD), alle 5 Minuten, die letzten 50 Minuten. Bereitgestellt vom Iowa Environmental Mesonet. In den Farben der App: aus der Stärke des Radarechos in mm pro Stunde umgerechnet (ungefähr). Tippe auf den Regen (oder fahr mit der Maus darüber), dann siehst du die Menge an dieser Stelle.",rc:1,
   frames(){const t0=Math.floor(Date.now()/300000)*300-300;return[50,45,40,35,30,25,20,15,10,5,0].map(m=>({time:t0-m*60,m}))},
@@ -2193,7 +2321,7 @@ async function loadNat(){
  hideFc();exReset();
  layers.forEach(l=>{try{map.removeLayer(l)}catch(e){}l._wOn=0});
  const now=Date.now()/1000;
- frames=F.map(f=>({time:f.time,nat:1}));
+ natMv=null;frames=F.map(f=>({time:f.time,nat:1}));
  pastCount=Math.max(1,frames.filter(f=>f.time<=now+60).length);
  layers=F.map(f=>c.layer(f));
  idx=0;$("sl").max=Math.max(0,frames.length-1);placeTick();
@@ -2201,6 +2329,7 @@ async function loadNat(){
  $("mnote").textContent=c.note;freshNote(F[pastCount-1].time);
  $("fnote").textContent=c.fnote||(cc==="US"?"Die Zeiten sind auf 5 Minuten gerundet.":"");
  if(wasPlaying||(wallOn&&wallPlay()))toggle();
+ natMotion(c,F,my);
 }
 
 /* ============ DWD-Radar (RADOLAN RV) über Bright Sky: 1 km, 5 Minuten, 2 Stunden Radar-Vorhersage ============ */
@@ -2394,11 +2523,11 @@ async function trkBuild(F,toLL,pk,pr,my,src){
  if(!ex&&src==="dwd"){try{await loadSteer()}catch(e){}if(my!==trkSeq)return}
  const list=[];
  now.c.forEach(cell=>{
-  const tr=[{t:now.t,r:cell.r,c:cell.c}];let cur=cell;
+  const tr=[{t:now.t,r:cell.r,c:cell.c,max:cell.max,area:cell.area}];let cur=cell;
   for(let j=1;j<F.length;j++){
    const lim=7*Math.abs(F[j-1].t-F[j].t)/300+2;let best=null,bd=1e9;
    F[j].c.forEach(o=>{const dd=Math.hypot((o.c-cur.c)*pk,(o.r-cur.r)*pr);if(dd<lim&&dd<bd&&o.area>=cur.area*.2&&o.area<=cur.area*5){bd=dd;best=o}});
-   if(!best)break;tr.push({t:F[j].t,r:best.r,c:best.c});cur=best;
+   if(!best)break;tr.push({t:F[j].t,r:best.r,c:best.c,max:best.max,area:best.area});cur=best;
   }
   const ll=toLL(cell.r,cell.c),R=Math.max(2,Math.sqrt(cell.area*pk*pr/Math.PI));
   let ve=null,vn=null,est=false;
@@ -2412,7 +2541,16 @@ async function trkBuild(F,toLL,pk,pr,my,src){
   if(ve==null&&ex){ve=ex.e*60;vn=ex.n*60;est=true}
   const spd=ve!=null?Math.hypot(ve,vn):null;
   if(spd!=null&&spd>110){ve=vn=null}
-  list.push({la:ll[0],lo:ll[1],R,max:cell.max,area:cell.area*pk*pr,storm:cell.max>=30,ve,vn,spd:ve!=null?Math.hypot(ve,vn):null,est,n:tr.length,t0:now.t});
+  /* Trend: beim DWD-Radar die Zelle jetzt gegen vor etwa 15 Minuten, beim Nowcast von GeoSphere gegen in 15 bis 30 Minuten.
+     Stärker = Kern mindestens +25 % oder Fläche +40 %; schwächer = beides deutlich weniger. Hagel möglich bei sehr starkem Kern
+     (ab 60 mm/h) oder starkem, wachsendem Gewitter mit Blitzen. */
+  let trend=0;
+  const ref=tr.find(p=>Math.abs(Math.abs(p.t-now.t)-900)<=420)||tr.find(p=>Math.abs(p.t-now.t)>=600&&Math.abs(p.t-now.t)<=1800);
+  if(ref&&ref.max>0){const past=ref.t<now.t,a=past?ref:{max:cell.max,area:cell.area},b=past?{max:cell.max,area:cell.area}:ref,rm=b.max/a.max,ra=b.area/Math.max(1,a.area);
+   trend=rm>=1.25||ra>=1.4?1:rm<=.8&&ra<=.8?-1:0}
+  const kmx=111.32*Math.cos(ll[0]*Math.PI/180),blz=(()=>{try{return blzPts}catch(e){return[]}})().some(b=>Math.hypot((b.ll.lat-ll[0])*110.57,(b.ll.lng-ll[1])*kmx)<=R+10);
+  const storm=cell.max>=30||blz,hail=cell.max>=60||(storm&&blz&&cell.max>=45&&trend>=0);
+  list.push({la:ll[0],lo:ll[1],R,max:cell.max,area:cell.area*pk*pr,storm,blz,trend,hail,ve,vn,spd:ve!=null?Math.hypot(ve,vn):null,est,n:tr.length,t0:now.t});
  });
  trkList=list;
  trkDraw();
@@ -2427,7 +2565,7 @@ function trkDraw(){
   trkList.forEach(c=>{
    const col=c.storm?"#FFB300":"#7FE0FF",o={pane:"trk",interactive:false};
    L.circle([c.la,c.lo],Object.assign({radius:c.R*1000+800,color:col,weight:2.5,dashArray:"6 5",fill:true,fillColor:col,fillOpacity:.08},o)).addTo(trkL);
-   const lab=(c.storm?"Gewitter":"Starkregen")+(c.spd!=null&&c.spd>=3?" · "+Math.round(c.spd)+" km/h":c.spd!=null?" · fast stehend":"");
+   const lab=(c.storm?"Gewitter":"Starkregen")+(c.trend>0?" ↑":c.trend<0?" ↓":"")+(c.spd!=null&&c.spd>=3?" · "+Math.round(c.spd)+" km/h":c.spd!=null?" · fast stehend":"")+(c.hail?" · Hagel möglich":"");
    L.marker([c.la,c.lo],Object.assign({icon:L.divIcon({className:"trkc",html:'<span class="'+(c.storm?"st":"")+'">'+lab+"</span>",iconSize:[0,0]}),keyboard:false},o)).addTo(trkL);
    if(c.spd==null||c.spd<3)return;
    const P=[[c.la,c.lo]];for(let m=15;m<=60;m+=15)P.push(trkAt(c,m/60));
@@ -2462,11 +2600,11 @@ function trkAlarm(){
    const v2=c.ve*c.ve+c.vn*c.vn,t=(px*c.ve+py*c.vn)/v2;
    if(t>0&&t<=1.5+age){const dx=px-c.ve*t,dy=py-c.vn*t,dm=Math.hypot(dx,dy);if(dm<=R){const back=Math.sqrt(Math.max(0,R*R-dm*dm))/Math.sqrt(v2);min=Math.max(0,Math.round((t-back-age)*60/5)*5)}}
   }
-  if(min!=null&&min<=75&&(!hit||min<hit.min||(min===hit.min&&c.storm&&!hit.storm)))hit={min,storm:c.storm,spd:c.spd,dir:c.spd?(Math.atan2(c.ve,c.vn)*180/Math.PI+360)%360:null,est:c.est,max:c.max};
+  if(min!=null&&min<=75&&(!hit||min<hit.min||(min===hit.min&&c.storm&&!hit.storm)))hit={min,storm:c.storm,spd:c.spd,dir:c.spd?(Math.atan2(c.ve,c.vn)*180/Math.PI+360)%360:null,est:c.est,max:c.max,trend:c.trend,hail:c.hail};
  });
  trkHit=hit?Object.assign(hit,{at:Date.now()+hit.min*60000}):null;
  const n=trkList.length,ns=trkList.filter(c=>c.storm).length;
- let t=n?(ns?ns+(ns===1?" Gewitterzelle":" Gewitterzellen"):"")+(ns&&n>ns?" und ":"")+(n>ns?(n-ns)+(n-ns===1?" Starkregenzelle":" Starkregenzellen"):"")+" im Radar. Die Linie zeigt den Weg in der nächsten Stunde, die Punkte alle 15 Minuten.":"";
+ let t=n?(ns?ns+(ns===1?" Gewitterzelle":" Gewitterzellen"):"")+(ns&&n>ns?" und ":"")+(n>ns?(n-ns)+(n-ns===1?" Starkregenzelle":" Starkregenzellen"):"")+" im Radar. Die Linie zeigt den Weg in der nächsten Stunde, die Punkte alle 15 Minuten. ↑ wird stärker, ↓ schwächt sich ab (Vergleich mit vor 15 Minuten"+(trkSrc==="dwd"?"":", beim Nowcast mit in 15 bis 30 Minuten")+").":"";
  if(hit)t+=hit.min===0?" Eine Zelle ist gerade bei dir.":" Eine Zelle kommt in etwa "+hit.min+" Minuten zu dir"+(hit.dir!=null?", sie zieht nach "+(WDIR[compass(hit.dir)]||"")+".":".");
  if(trkList.some(c=>c.est))t+=" Gestrichelt: Richtung nur aus dem Höhenwind geschätzt.";
  if(n&&trkSrc!=="dwd")t+=" Richtung und Tempo laut Nowcast von GeoSphere Austria.";
@@ -2679,14 +2817,14 @@ async function loadSteer(){
  }catch(e){ex=null}
 }
 function exShift(k){
- const L0=layers[pastCount-1],c=L0&&L0.getContainer&&L0.getContainer();
- if(!c||!ex||!map)return;
+ const L0=layers[pastCount-1],v=mode==="nat"?natMv:ex;if(!L0||!v||!map)return;
+ const cs=[];if(L0.eachLayer)L0.eachLayer(x=>{if(x.getContainer)cs.push(x.getContainer())});else if(L0.getContainer)cs.push(L0.getContainer());
  const mpp=156543.03392*Math.cos(map.getCenter().lat*Math.PI/180)/Math.pow(2,map.getZoom());
- const min=k*10,dx=ex.e*min*1000/mpp,dy=-ex.n*min*1000/mpp;
- c.style.transform="translate("+dx.toFixed(1)+"px,"+dy.toFixed(1)+"px)";exLayer=L0;
+ const min=k*10,dx=v.e*min*1000/mpp,dy=-v.n*min*1000/mpp;
+ cs.forEach(c=>{if(c)c.style.transform="translate("+dx.toFixed(1)+"px,"+dy.toFixed(1)+"px)"});exLayer=L0;
 }
 function exReset(){
- if(exLayer){try{const c=exLayer.getContainer();if(c)c.style.transform=""}catch(e){}exLayer=null}
+ if(exLayer){try{if(exLayer.eachLayer)exLayer.eachLayer(x=>{const c=x.getContainer&&x.getContainer();if(c)c.style.transform=""});else{const c=exLayer.getContainer();if(c)c.style.transform=""}}catch(e){}exLayer=null}
 }
 function exNote(){
  if(!exOn()){return}
@@ -2767,6 +2905,7 @@ async function loadFc(){
 }
 function refreshFcFrames(){
  frames=frames.filter(f=>f.fc==null&&f.ex==null);
+ if(mode==="nat"&&natMv&&pastCount>0&&frames.length){const t0=frames[pastCount-1].time;for(let k=1;k<=6;k++)frames.push({time:t0+600*k,ex:k})}
  if(mode==="rv"&&frames.length){
   if(exOn()&&pastCount>0){const t0=frames[pastCount-1].time;for(let k=1;k<=9;k++)frames.push({time:t0+600*k,ex:k})}
   else if(fcData&&!rvNow){const tl=frames[frames.length-1].time;fcData.fr.forEach((f,k)=>{if(f.t>tl+60&&f.t*1000>Date.now()-10*60000)frames.push({time:f.t,fc:k})})}
@@ -3235,6 +3374,7 @@ function rVal(la,lo){
  if(f.dw!=null&&mode==="dwd"){v=dwVal(la,lo,f.dw);src="DWD-Radar"}
  else if(f.at!=null&&mode==="at"){v=atVal(la,lo,f.at);src="GeoSphere Austria"}
  else if(f.fc!=null){v=fcVal(la,lo,f.fc);src="Wettermodell"}
+ else if(mode==="nat"&&f.ex!=null&&natMv&&NATR[ccNow()]&&NATR[ccNow()].rc){const m=f.ex*10;v=natVal(la-natMv.n*m/110.57,lo-natMv.e*m/(111.32*Math.cos(la*Math.PI/180)),layers[pastCount-1]);src="Radar "+NATR[ccNow()].n+" (Bewegung weitergerechnet)"}
  else if(mode==="nat"&&NATR[ccNow()]&&NATR[ccNow()].rc){v=natVal(la,lo);src="Radar "+NATR[ccNow()].n}
  else return{none:mode==="nat"?"Das Radar des Landes ist ein fertiges Bild, daraus lassen sich keine Mengen ablesen.":
   "„Weltweit“ ist ein fertiges Radarbild, daraus lassen sich keine Mengen ablesen. Welche Farbe ungefähr wie viel bedeutet, steht in der Legende."+(dwCovered(la,lo)?" Genaue Werte zeigt „DWD 1 km“.":atCovered(la,lo)?" Genaue Werte zeigt „Österreich“.":"")};
@@ -3410,6 +3550,7 @@ $("nowtick").onclick=()=>{if(timer)toggle();show(Math.max(0,pastCount-1))};
 document.querySelectorAll("#mode button").forEach(b=>b.onclick=()=>setMode(b.dataset.m,true));
 document.querySelectorAll("#basemode button").forEach(b=>b.onclick=()=>setBase(b.dataset.b));
 $("cld").onclick=()=>{cldOn=!cldOn;try{localStorage.setItem("wetter-cld",cldOn?"1":"0")}catch(e){}setClouds()};
+$("fgl").onclick=()=>{fgOn=!fgOn;try{localStorage.setItem("wetter-fgl",fgOn?"1":"0")}catch(e){}setFogSat()};
 $("lbl").onclick=()=>{labOn=!labOn;try{localStorage.setItem("wetter-lbl",labOn?"1":"0")}catch(e){}setLabels()};
 $("ctr").onclick=()=>{if(map)map.setView([place.lat,place.lon],8)};
 function saveState(){try{localStorage.setItem("wetter-ort",JSON.stringify(place));localStorage.setItem("wetter-follow",follow?"1":"0")}catch(e){}}
@@ -3625,18 +3766,71 @@ function klX(m,hour,cloud,wind,leadH){
 const klUse=L=>!!(L&&Array.isArray(L.w)&&L.n>=48&&L.er!=null&&L.ec!=null&&L.ec<L.er);
 function klP(L,x){let p=0;for(let i=0;i<x.length&&i<L.w.length;i++)p+=L.w[i]*x[i];return Math.max(-6,Math.min(6,p))}
 const klMine=()=>!!(klData&&klFor===PK()&&!klData.none);
+/* ============ Gelerntes vom Worker (ab 1.6), lernt für immer weiter ============
+   Modellmix (Temperatur aus ICON, ECMWF, GFS und KI-Modell AIFS, gewichtet nach ihren Fehlern hier), Regenwahrscheinlichkeit
+   (wie oft es bei x % wirklich geregnet hat), Wind und Böen (Faktor), Hochnebel tagsüber (logistische Regression).
+   Jede Korrektur wirkt nur, wenn sie laut ehrlicher Messung (vor jedem Lernschritt) besser trifft als ohne. */
+const MXK={icon:"icon_seamless",ec:"ecmwf_ifs",gfs:"gfs_seamless",ai:"ecmwf_aifs025_single"},MXN={icon:"ICON",ec:"ECMWF",gfs:"GFS",ai:"KI-Modell"};
+const mlOf=()=>klMine()&&klData.ml?klData.ml:null;
+const mxUse=M=>!!(M&&M.n>=48&&M.e!=null&&M.r!=null&&M.e<M.r);
+const ppUse=Q=>!!(Q&&Q.n>=72&&Q.bc!=null&&Q.br!=null&&Q.bc<Q.br&&Array.isArray(Q.b));
+const wdUse=L=>!!(L&&L.n>=48&&L.ec!=null&&L.er!=null&&L.ec<L.er);
+const fgUse=Q=>!!(Q&&Q.n>=72&&Array.isArray(Q.w)&&Q.ll!=null&&Q.lb!=null&&Q.ll<Q.lb);
+function ppCal(Q,P){const i=Math.max(0,Math.min(10,Math.round(P/10))),n=Q.c?Q.c[i]:0,k=12;return n&&Q.b[i]!=null?(n*Q.b[i]*100+k*P)/(n+k):P}
+function fgX(cc,cl,rh,w,mon,hr){return[1,cc/100,(cl==null?cc:cl)/100,(rh-80)/20,Math.min(w||0,30)/30,mon>=9||mon<=1?1:0,hr<11?1:0,hr>=11&&hr<15?1:0,hr>=15?1:0]}
+function fgP(Q,x){let z=0;for(let i=0;i<x.length&&i<Q.w.length;i++)z+=Q.w[i]*x[i];return 1/(1+Math.exp(-z))}
+let mxH=null;
+async function mxLoad(){
+ const ml=mlOf();if(!ml||!ml.mx||!(mxUse(ml.mx.d1)||mxUse(ml.mx.d3)))return;
+ const k=PK();if(mxH&&mxH.k===k&&Date.now()-mxH.t<30*60000)return;
+ try{
+  const j=await getJ("https://api.open-meteo.com/v1/forecast?latitude="+(+place.lat).toFixed(3)+"&longitude="+(+place.lon).toFixed(3)+"&hourly=temperature_2m&models="+Object.values(MXK).join(",")+"&forecast_days=7&timezone=auto",20000);
+  if(PK()!==k)return;const H=j.hourly||{};
+  mxH={k,t:Date.now(),time:H.time||[],m:Object.fromEntries(Object.entries(MXK).map(([a,id])=>[a,H["temperature_2m_"+id]||null]))};
+  klRerender();
+ }catch(e){}
+}
+function mxAt(M,i){let sw=0,sv=0;for(const a of Object.keys(MXK)){const q=M[a],A=mxH.m[a],f=A&&A[i];if(!q||q.s==null||f==null)continue;const w=1/Math.max(.05,q.s);sw+=w;sv+=w*(f+q.b)}return sw?sv/sw:null}
+function mxShare(M){const w={};let s=0;Object.keys(MXK).forEach(a=>{const q=M[a];if(q&&q.s!=null){w[a]=1/Math.max(.05,q.s);s+=w[a]}});return Object.keys(w).sort((a,b)=>w[b]-w[a]).map(a=>MXN[a]+" "+Math.round(w[a]/s*100)+" %").join(", ")}
 /* ECMWF-Werte (stündlich und Höchst-/Tiefstwerte) korrigieren; die Rohwerte bleiben in j._klRaw */
 function klApplyJ(j){
  if(!j||!j.hourly||!j.hourly.temperature_2m)return;
  const H=j.hourly,D=j.daily;
- if(!j._klRaw)j._klRaw={T:H.temperature_2m.slice(),mx:D&&D.temperature_2m_max?D.temperature_2m_max.slice():null,mn:D&&D.temperature_2m_min?D.temperature_2m_min.slice():null};
+ const cp=a=>a?a.slice():null;
+ if(!j._klRaw)j._klRaw={T:H.temperature_2m.slice(),mx:D&&D.temperature_2m_max?D.temperature_2m_max.slice():null,mn:D&&D.temperature_2m_min?D.temperature_2m_min.slice():null,
+  PP:cp(H.precipitation_probability),PPD:D?cp(D.precipitation_probability_max):null,W:cp(H.wind_speed_10m),G:cp(H.wind_gusts_10m),WC:cp(H.weather_code),CC:cp(H.cloud_cover),
+  cW:j.current?j.current.wind_speed_10m:null,cG:j.current?j.current.wind_gusts_10m:null};
  const R=j._klRaw;H.temperature_2m=R.T.slice();if(R.mx)D.temperature_2m_max=R.mx.slice();if(R.mn)D.temperature_2m_min=R.mn.slice();
- j._kl=false;
- const L=klMine()?klData.ec:null;if(!klUse(L))return;
- const off=(+j.utc_offset_seconds||0)*1000,now=Date.now(),cor=new Array(H.time.length).fill(null);
- H.time.forEach((t,i)=>{const ms=Date.parse(t+":00Z")-off,lead=(ms-now)/3600000;if(lead<-1||R.T[i]==null)return;
-  const c=klP(L,klX("ec",+t.slice(11,13),H.cloud_cover?H.cloud_cover[i]:null,H.wind_speed_10m?H.wind_speed_10m[i]:null,Math.max(0,lead)));
-  cor[i]=c;H.temperature_2m[i]=Math.round((R.T[i]+c)*10)/10});
+ if(R.PP)H.precipitation_probability=R.PP.slice();if(R.PPD)D.precipitation_probability_max=R.PPD.slice();if(R.W)H.wind_speed_10m=R.W.slice();if(R.G)H.wind_gusts_10m=R.G.slice();
+ if(R.WC)H.weather_code=R.WC.slice();if(R.CC)H.cloud_cover=R.CC.slice();if(j.current){if(R.cW!=null)j.current.wind_speed_10m=R.cW;if(R.cG!=null)j.current.wind_gusts_10m=R.cG}
+ j._kl=false;j._ml={};
+ const ml=mlOf(),off=(+j.utc_offset_seconds||0)*1000,now=Date.now(),leadOf=t=>(Date.parse(t+":00Z")-off-now)/3600000;
+ if(ml){
+  /* Regenwahrscheinlichkeit */
+  const Q=ml.pp;if(ppUse(Q)){if(R.PP)H.precipitation_probability=R.PP.map(v=>v==null?v:Math.round(ppCal(Q,v)));if(R.PPD)D.precipitation_probability_max=R.PPD.map(v=>v==null?v:Math.round(ppCal(Q,v)));j._ml.pp=Q}
+  /* Wind und Böen */
+  const wd=ml.wd||{};
+  if(wdUse(wd.w)){const f=Math.exp(wd.w.l);if(R.W)H.wind_speed_10m=R.W.map(v=>v==null?v:Math.round(v*f*10)/10);if(j.current&&R.cW!=null)j.current.wind_speed_10m=Math.round(R.cW*f*10)/10;j._ml.w=f}
+  if(wdUse(wd.g)){const f=Math.exp(wd.g.l);if(R.G)H.wind_gusts_10m=R.G.map(v=>v==null?v:Math.round(v*f*10)/10);if(j.current&&R.cG!=null)j.current.wind_gusts_10m=Math.round(R.cG*f*10)/10;j._ml.g=f}
+  /* Hochnebel: tagsüber in den nächsten 48 Stunden; wo es wahrscheinlich bedeckt bleibt, obwohl das Modell Sonne zeigt */
+  const fg=ml.fg;
+  if(fgUse(fg)&&R.WC&&R.CC&&H.relative_humidity_2m){const hits=[];
+   H.time.forEach((t,i)=>{const ld=leadOf(t);if(ld<-1||ld>48||(H.is_day&&!H.is_day[i])||R.WC[i]==null||R.WC[i]>2||R.CC[i]==null||H.relative_humidity_2m[i]==null)return;
+    const p=fgP(fg,fgX(R.CC[i],H.cloud_cover_low?H.cloud_cover_low[i]:null,H.relative_humidity_2m[i],R.W?R.W[i]:null,+t.slice(5,7)-1,+t.slice(11,13)));
+    if(p>=.6){H.weather_code[i]=3;H.cloud_cover[i]=Math.max(R.CC[i],90);hits.push({i,t,p})}});
+   j._ml.fg={hits,n:fg.n}}
+ }
+ const M1=ml&&ml.mx&&mxUse(ml.mx.d1)?ml.mx.d1:null,M3=ml&&ml.mx&&mxUse(ml.mx.d3)?ml.mx.d3:null,mixOK=!!((M1||M3)&&mxH&&mxH.k===PK());
+ const L=klMine()?klData.ec:null,nl=klUse(L);
+ if(!nl&&!mixOK)return;
+ const cor=new Array(H.time.length).fill(null);let usedMix=false;
+ H.time.forEach((t,i)=>{const lead=leadOf(t);if(lead<-1||R.T[i]==null)return;
+  let c=null;
+  if(mixOK){const M=lead<36?(M1||M3):(M3||M1),k=mxH.time.indexOf(t);if(k>=0&&(!nl||M.e<=L.ec)){const b=mxAt(M,k);if(b!=null){c=b-R.T[i];usedMix=true}}}
+  if(c==null&&nl)c=klP(L,klX("ec",+t.slice(11,13),R.CC?R.CC[i]:null,R.W?R.W[i]:null,Math.max(0,lead)));
+  if(c==null)return;
+  c=Math.max(-8,Math.min(8,c));cor[i]=c;H.temperature_2m[i]=Math.round((R.T[i]+c)*10)/10});
+ if(usedMix)j._ml.mx={d1:M1,d3:M3};
  if(D&&D.time)D.time.forEach((day,d)=>{
   const avg=(h0,h1)=>{const v=[];H.time.forEach((t,i)=>{if(t.slice(0,10)===day&&+t.slice(11,13)>=h0&&+t.slice(11,13)<=h1&&cor[i]!=null)v.push(cor[i])});return v.length?v.reduce((a,b)=>a+b,0)/v.length:null};
   const a=avg(12,17),b=avg(3,8);
@@ -3666,8 +3860,17 @@ function klNote(){
   return"Lernende Korrektur für "+what+": gelernt aus "+L.n.toLocaleString("de-AT")+" Vergleichen, trifft aber gerade nicht besser ("+f(L.ec)+"° statt "+f(L.er)+"°) und bleibt deshalb aus.";
  };
  const kc=kcActive();
- h.textContent=txt(kc?klData.kc:klData.ec,kc?"Kachelmann":"ECMWF");h.hidden=false;
- d.textContent=txt(klData.ec,"ECMWF");d.hidden=false;
+ const J=lastJ&&lastJ._ml||{},ml=klData.ml||{},ex=[],lrn=[];
+ if(J.mx){const M=J.mx.d1||J.mx.d3;ex.push("Modellmix aktiv ("+mxShare(M)+"), im Mittel "+f(M.e)+"° statt "+f(M.r)+"° daneben")}
+ else if(ml.mx&&ml.mx.d1&&ml.mx.d1.n)lrn.push("Modellmix ("+ml.mx.d1.n+" Stunden)");
+ if(J.pp)ex.push("Regenwahrscheinlichkeit an deine Gegend angepasst (aus "+J.pp.n.toLocaleString("de-AT")+" Stunden)");else if(ml.pp&&ml.pp.n)lrn.push("Regenwahrscheinlichkeit ("+ml.pp.n+" Stunden)");
+ if(J.w||J.g)ex.push("Wind"+(J.g?" und Böen":"")+" angepasst ("+(J.w?"Wind ×"+f(J.w):"")+(J.w&&J.g?", ":"")+(J.g?"Böen ×"+f(J.g):"")+")");else if(ml.wd&&ml.wd.w&&ml.wd.w.n)lrn.push("Wind ("+ml.wd.w.n+" Stunden)");
+ if(J.fg){const hs=J.fg.hits;if(hs.length){const last=hs.filter(x=>x.t.slice(0,10)===hs[0].t.slice(0,10)).pop();ex.push("Hochnebel/bedeckt wahrscheinlich "+(hs[0].t.slice(0,10)===(lastJ.current&&lastJ.current.time||"").slice(0,10)?"heute":"am "+hs[0].t.slice(8,10)+"."+hs[0].t.slice(5,7)+".")+" bis etwa "+(+last.t.slice(11,13)+1)+" Uhr, obwohl das Modell Sonne zeigt (gelernt aus "+J.fg.n+" Stunden)")}else ex.push("Hochnebel-Erkennung aktiv (gelernt aus "+J.fg.n+" Stunden), gerade kein Hochnebel erwartet")}
+ else if(fgUse(ml.fg))ex.push("Hochnebel-Erkennung bereit (gelernt aus "+ml.fg.n+" Stunden)");
+ else if(ml.fg&&ml.fg.n)lrn.push("Hochnebel ("+ml.fg.n+" Stunden)");
+ const add=(ex.length?" Außerdem: "+ex.join("; ")+".":"")+(lrn.length?" Lernt noch: "+lrn.join(", ")+".":"");
+ h.textContent=txt(kc?klData.kc:klData.ec,kc?"Kachelmann":"ECMWF")+add;h.hidden=false;
+ d.textContent=txt(klData.ec,"ECMWF")+add;d.hidden=false;
 }
 function klRerender(){
  if(!lastJ)return;
@@ -3689,7 +3892,7 @@ async function klLoad(force){
   const r=await tfetch(W.base+"/kl/c?la="+la.toFixed(4)+"&lo="+lo.toFixed(4),{headers:H},20000);
   if(PK()!==k)return;
   klData=r.ok?await r.json():null;klFor=k;klAt=Date.now();
-  if(klData&&!klData.none)klSnap();
+  if(klData&&!klData.none){klSnap();mxLoad()}
  }catch(e){console.error(e)}
  finally{klBusy=false}
  if(PK()===k)klRerender();
@@ -4105,11 +4308,62 @@ async function loadObs(){
 /* ============ Luft und Pollen ============ */
 const AQ=[[20,"Gut","#2FA66A"],[40,"Ausreichend","#7BC043"],[60,"Mäßig","#E8B923"],[80,"Schlecht","#F08A24"],[100,"Sehr schlecht","#E5484D"],[1e9,"Extrem schlecht","#9B1C4B"]];
 const POL={birch_pollen:"Birke",alder_pollen:"Erle",grass_pollen:"Gräser",mugwort_pollen:"Beifuß",ragweed_pollen:"Ambrosia",olive_pollen:"Olive"};
+let airJ=null;
 async function loadAir(){
  const el=$("air"),q=seq("air");
  try{
   const j=await getJ("https://air-quality-api.open-meteo.com/v1/air-quality?latitude="+(+place.lat).toFixed(3)+"&longitude="+(+place.lon).toFixed(3)+"&current=european_aqi,pm2_5,pm10,ozone,nitrogen_dioxide&hourly="+Object.keys(POL).join(",")+"&forecast_days=2&timezone=auto");
   if(!q.ok())return;
+  airJ=j;renderAir(j);q.done();
+ }catch(e){if(q.ok()&&!q.keep())el.innerHTML='<p class="muted">Luft- und Pollendaten konnten nicht geladen werden.</p>'}
+}
+/* ============ Pollen-Tagebuch: lernt für immer, welche Pollen dich stören ============
+   Du trägst ein, wie es dir heute geht (0 bis 3). Gespeichert wird das mit den Pollenwerten des Tages, nur auf diesem Gerät.
+   Gelernt wird eine lineare Regression (Beschwerden ≈ Grundwert + Summe Einfluss je Pollenart × log(1 + Pollen)), mit
+   leichter Dämpfung (Ridge) und langsamem Vergessen (Halbwertszeit 2 Jahre): jeder neue Eintrag verbessert das Ergebnis. */
+const PTB_K="wetter-poltb",PTB_LV=["Keine","Leicht","Mittel","Stark"];
+function ptbLoad(){try{const a=JSON.parse(localStorage.getItem(PTB_K));return Array.isArray(a)?a:[]}catch(e){return[]}}
+function ptbSave(a){try{localStorage.setItem(PTB_K,JSON.stringify(a.slice(-2000)))}catch(e){}}
+function ptbFit(a){
+ const K=Object.keys(POL),n=K.length+1,A=[],b=new Array(n).fill(0),now=Date.now();
+ for(let i=0;i<n;i++)A.push(new Array(n).fill(0));
+ let m=0,ss=0,s1=0,sw=0;
+ for(const e of a){
+  const x=[1].concat(K.map(k=>Math.log1p(Math.max(0,+(e.p&&e.p[k])||0)))),w=Math.pow(.5,(now-Date.parse(e.d))/(730*86400000));
+  for(let i=0;i<n;i++){b[i]+=w*x[i]*e.s;for(let j=0;j<n;j++)A[i][j]+=w*x[i]*x[j]}
+  m++;sw+=w;s1+=w*e.s;ss+=w*e.s*e.s;
+ }
+ if(m<8||ss/sw-(s1/sw)**2<.05)return{n:m};
+ for(let i=1;i<n;i++)A[i][i]+=.5;
+ for(let c=0;c<n;c++){let r=c;for(let i=c+1;i<n;i++)if(Math.abs(A[i][c])>Math.abs(A[r][c]))r=i;[A[c],A[r]]=[A[r],A[c]];[b[c],b[r]]=[b[r],b[c]];
+  const d=A[c][c];if(Math.abs(d)<1e-9)return{n:m};for(let i=0;i<n;i++){if(i===c)continue;const f=A[i][c]/d;if(!f)continue;for(let j=c;j<n;j++)A[i][j]-=f*A[c][j];b[i]-=f*b[c]}}
+ const w=b.map((v,i)=>v/A[i][i]);
+ return{n:m,w,K,eff:K.map((k,i)=>[k,w[i+1]*Math.log1p(100)])};
+}
+function ptbHtml(H,s0,today){
+ const a=ptbLoad(),fit=ptbFit(a),e=a.find(x=>x.d===today),K=Object.keys(POL);
+ let h='<div class="ptb"><p class="ptb-h"><b>Pollen-Tagebuch</b> Wie geht es dir heute mit der Allergie?</p><div class="ptb-b">'+PTB_LV.map((l,i)=>'<button type="button" data-ps="'+i+'" aria-pressed="'+(e&&e.s===i?"true":"false")+'">'+l+"</button>").join("")+"</div>";
+ if(fit.w){
+  const bad=fit.eff.filter(x=>x[1]>=.6).sort((p,q)=>q[1]-p[1]),maybe=fit.eff.filter(x=>x[1]>=.3&&x[1]<.6);
+  const nx={};K.forEach(k=>{const v=(H[k]||[]).slice(s0,s0+24).filter(x=>x!=null);nx[k]=v.length?Math.max(...v):0});
+  let pr=fit.w[0];K.forEach((k,i)=>pr+=fit.w[i+1]*Math.log1p(nx[k]));pr=Math.max(0,Math.min(3,pr));
+  h+='<p class="small">'+(bad.length?"Dich stören vor allem: <b>"+bad.map(x=>POL[x[0]]).join(", ")+"</b>"+(maybe.length?", vielleicht auch "+maybe.map(x=>POL[x[0]]).join(", "):"")+".":"Bisher stört dich keine Pollenart deutlich.")+
+   " Für dich in den nächsten 24 Stunden: voraussichtlich <b>"+["kaum Beschwerden","leichte Beschwerden","mittlere Beschwerden","starke Beschwerden"][Math.round(pr)]+"</b>. Gelernt aus "+fit.n+" Einträgen, lernt mit jedem weiteren dazu.</p>";
+ }else h+='<p class="small">'+(fit.n?fit.n+(fit.n===1?" Eintrag":" Einträge")+". ":"")+"Ab 8 Einträgen an Tagen mit unterschiedlichem Pollenflug lernt die App, welche Pollen dich stören, und sagt dir deine Beschwerden voraus. Gespeichert nur auf diesem Gerät.</p>";
+ if(a.length)h+='<p class="small"><a href="#" id="ptb-x">Tagebuch löschen</a></p>';
+ return h+"</div>";
+}
+function ptbBad(){const f=ptbFit(ptbLoad());return f.w?new Set(f.eff.filter(x=>x[1]>=.6).map(x=>x[0])):new Set()}
+$("air").addEventListener("click",e=>{
+ const b=e.target.closest("button[data-ps]");
+ if(b&&airJ){const H=airJ.hourly||{},T=H.time||[],today=String((airJ.current&&airJ.current.time)||T[0]||"").slice(0,10);if(!today)return;
+  const p={};Object.keys(POL).forEach(k=>{const v=(H[k]||[]).filter((x,i)=>x!=null&&String(T[i]).slice(0,10)===today);p[k]=v.length?Math.round(Math.max(...v)*10)/10:0});
+  const a=ptbLoad().filter(x=>x.d!==today);a.push({d:today,s:+b.dataset.ps,p});a.sort((x,y)=>x.d<y.d?-1:1);ptbSave(a);renderAir(airJ);return}
+ if(e.target.id==="ptb-x"){e.preventDefault();try{localStorage.removeItem(PTB_K)}catch(x){}if(airJ)renderAir(airJ)}
+});
+function renderAir(j){
+ const el=$("air");
+ {
   const c=j.current||{},a=c.european_aqi;
   let h="";
   if(a!=null){
@@ -4122,10 +4376,11 @@ async function loadAir(){
   const rows=Object.keys(POL).map(k=>{const v=(H[k]||[]).slice(s0,s0+24).filter(x=>x!=null);return[k,v.length?Math.max(...v):null]}).filter(r=>r[1]!=null&&r[1]>=1);
   if(!any)h+='<p class="small">Pollendaten gibt es nur für Europa.</p>';
   else if(!rows.length)h+='<p class="small" style="margin-top:12px">Pollen: In den nächsten 24 Stunden ist kein nennenswerter Pollenflug zu erwarten.</p>';
-  else h+='<div class="pol">'+rows.map(([k,v])=>{const l=v<10?["gering","#7BC043"]:v<50?["mittel","#E8B923"]:v<200?["hoch","#F08A24"]:["sehr hoch","#E5484D"];return'<div class="pl"><span>'+POL[k]+'</span><i style="--w:'+Math.min(100,Math.max(6,v/200*100)).toFixed(0)+"%;--c:"+l[1]+'"></i><b>'+l[0]+"</b></div>"}).join("")+"</div>";
+  else{const bad=ptbBad();h+='<div class="pol">'+rows.map(([k,v])=>{const l=v<10?["gering","#7BC043"]:v<50?["mittel","#E8B923"]:v<200?["hoch","#F08A24"]:["sehr hoch","#E5484D"];return'<div class="pl"><span>'+POL[k]+(bad.has(k)?' <em class="pbad">stört dich</em>':"")+'</span><i style="--w:'+Math.min(100,Math.max(6,v/200*100)).toFixed(0)+"%;--c:"+l[1]+'"></i><b>'+l[0]+"</b></div>"}).join("")+"</div>"}
   h+='<p class="small">Modelldaten des europäischen Copernicus-Dienstes (CAMS) über Open-Meteo. Pollen: höchster Wert der nächsten 24 Stunden.</p>';
-  el.innerHTML=h;q.done();
- }catch(e){if(q.ok()&&!q.keep())el.innerHTML='<p class="muted">Luft- und Pollendaten konnten nicht geladen werden.</p>'}
+  if(any)h+=ptbHtml(H,s0,String(c.time||T[s0]||"").slice(0,10));
+  el.innerHTML=h;
+ }
 }
 
 /* ============ Rückblick ============
@@ -4791,7 +5046,7 @@ function alarmNow(){
  const wa=w?{k:"w|"+w.title+"|"+w.sub,h:w.title+" (Stufe "+(SEV[w.lvl-1]||SEV[0])[1]+")",s:w.sub,c:AL_C[Math.min(4,w.lvl)],i:AL_WARN}:null;
  if(w&&w.lvl>=3)return wa;
  /* Gewitter- oder Starkregenzelle aus dem Radar zieht auf den Ort zu */
- if(trkHit&&trkHit.min<=60&&Date.now()<trkHit.at+15*60000){const z=trkHit,m=Math.max(0,Math.round((z.at-Date.now())/300000)*5);return{k:"z|"+Math.round(z.at/1800000),h:(z.storm?"Gewitter":"Starkregen")+(m<=0?" ist bei dir":" in etwa "+m+" Minuten"),s:(z.storm?"Eine Gewitterzelle":"Eine Starkregenzelle")+(z.spd&&z.spd>=3?" zieht mit "+Math.round(z.spd)+" km/h"+(z.dir!=null?" nach "+(WDIR[compass(z.dir)]||""):""):"")+". Berechnet aus dem "+(trkSrc==="dwd"?"DWD-Radar":"Radar von GeoSphere Austria")+".",c:z.storm?"#6741D9":"#1C64D9",i:z.storm?AL_BOLT:AL_RAIN}}
+ if(trkHit&&trkHit.min<=60&&Date.now()<trkHit.at+15*60000){const z=trkHit,m=Math.max(0,Math.round((z.at-Date.now())/300000)*5);return{k:"z|"+Math.round(z.at/1800000),h:(z.storm?"Gewitter":"Starkregen")+(m<=0?" ist bei dir":" in etwa "+m+" Minuten"),s:(z.storm?"Eine Gewitterzelle":"Eine Starkregenzelle")+(z.spd&&z.spd>=3?" zieht mit "+Math.round(z.spd)+" km/h"+(z.dir!=null?" nach "+(WDIR[compass(z.dir)]||""):""):"")+"."+(z.trend>0?" Sie wird stärker.":z.trend<0?" Sie schwächt sich ab.":"")+(z.hail?" Hagel möglich.":"")+" Berechnet aus dem "+(trkSrc==="dwd"?"DWD-Radar":"Radar von GeoSphere Austria")+".",c:z.storm?"#6741D9":"#1C64D9",i:z.storm?AL_BOLT:AL_RAIN}}
  const j=lastJ,c=j&&j.current;
  if(c){
   const H=j.hourly||{time:[]},s0=H.time.findIndex(t=>t>=c.time.slice(0,13)+":00");
@@ -4926,6 +5181,38 @@ function setWarnLayer(){
 }
 $("wrn").onclick=()=>{wrnOn=!wrnOn;try{localStorage.setItem("wetter-wrn",wrnOn?"1":"0")}catch(e){}setWarnLayer()};
 
+/* ============ Ruhezeiten aus deinem Alltag (lernt für immer) ============
+   Jedes Öffnen der App (höchstens alle 30 Minuten) zählt für die Stunde; alte Zählungen verblassen langsam. Abends und nachts
+   (20 bis 8 Uhr) werden Stunden, in denen du die App fast nie öffnest, zu Ruhezeiten: dann keine Regen-Hinweise, amtliche
+   Warnungen kommen trotzdem. Erst nach 7 Tagen und 30 Mal Öffnen. Nur auf diesem Gerät gezählt; an den Worker gehen nur die Stunden. */
+function useLog(){
+ try{const o=JSON.parse(localStorage.getItem("wetter-use"))||{U:new Array(24).fill(0),n:0,f:Date.now(),l:0};
+  if(Date.now()-o.l<30*60000)return;for(let h=0;h<24;h++)o.U[h]*=.995;o.U[new Date().getHours()]+=1;o.n++;o.l=Date.now();localStorage.setItem("wetter-use",JSON.stringify(o))}catch(e){}
+}
+function quietHours(){
+ try{const o=JSON.parse(localStorage.getItem("wetter-use"));if(!o||o.n<30||Date.now()-o.f<7*86400000)return null;
+  const mx=Math.max(...o.U);return[20,21,22,23,0,1,2,3,4,5,6,7].filter(h=>o.U[h]<.12*mx)}catch(e){return null}
+}
+const qhUTC=q=>q.map(h=>{const d=new Date();d.setHours(h,0,0,0);return d.getUTCHours()});
+function qhText(q){
+ if(!q||!q.length)return"";
+ const order=[20,21,22,23,0,1,2,3,4,5,6,7],on=new Set(q),runs=[];let cur=null;
+ order.forEach(h=>{if(on.has(h)){if(!cur)cur=[h,h];else cur[1]=h}else if(cur){runs.push(cur);cur=null}});if(cur)runs.push(cur);
+ return runs.map(r=>r[0]+" bis "+((r[1]+1)%24)+" Uhr").join(" und ");
+}
+useLog();document.addEventListener("visibilitychange",()=>{if(!document.hidden)useLog()});
+/* gelernte Ruhezeiten einmal am Tag an den Worker geben, wenn sie sich geändert haben */
+async function pushSync(){
+ try{const pr=pushPrefs();if(!pr.name||pr.ql===false||!("serviceWorker" in navigator))return;
+  if(Date.now()-(+pr.qs||0)<86400000)return;
+  const q=quietHours(),u=q?qhUTC(q):[];if(JSON.stringify(u)===JSON.stringify(pr.qh||[])){pr.qs=Date.now();localStorage.setItem("wetter-push",JSON.stringify(pr));return}
+  const reg=await navigator.serviceWorker.ready,sub=await reg.pushManager.getSubscription();if(!sub)return;
+  await wapi("/push/sub",{sub:sub.toJSON(),lat:+pr.lat||+place.lat,lon:+pr.lon||+place.lon,name:pr.name,rain:pr.rain!==false,warn:pr.warn!==false,qh:u});
+  pr.qh=u;pr.qs=Date.now();localStorage.setItem("wetter-push",JSON.stringify(pr));
+ }catch(e){}
+}
+setTimeout(pushSync,15000);
+
 /* ============ Benachrichtigungen ============ */
 const isIOS=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
 const standalone=()=>matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
@@ -4952,9 +5239,13 @@ async function renderPush(){
  el.innerHTML='<div class="pushbox">'+(on?"<p>Aktiv für <b>"+esc(pr.name)+"</b>.</p>":"<p>Lass dich benachrichtigen, kurz bevor es regnet oder wenn eine amtliche Wetterwarnung kommt.</p>")+
   '<label><input type="checkbox" id="pu-rain"'+(rain?" checked":"")+'> Regen oder Schnee in den nächsten 45 Minuten</label>'+
   '<label><input type="checkbox" id="pu-warn"'+(warn?" checked":"")+'> Neue amtliche Wetterwarnungen</label>'+
+  '<label><input type="checkbox" id="pu-ql"'+(pr.ql!==false?" checked":"")+'> Ruhezeiten aus meinem Alltag lernen</label>'+
+  (pr.ql!==false?'<p class="small">'+(quietHours()&&quietHours().length?"Gelernt: zwischen "+qhText(quietHours())+" kommen keine Regen-Hinweise, amtliche Warnungen schon.":quietHours()?"Gelernt: du nutzt die App auch abends und nachts, deshalb keine Ruhezeiten.":"Die App lernt noch, wann du schläfst (ab 7 Tagen).")+"</p>":"")+
   '<div class="row">'+(on?'<button type="button" class="cbtn pri" id="pu-save">Für '+esc(place.name)+' verwenden</button><button type="button" class="cbtn" id="pu-test">Test senden</button><button type="button" class="cbtn" id="pu-off">Ausschalten</button>':'<button type="button" class="cbtn pri" id="pu-on">Für '+esc(place.name)+" einschalten</button>")+'</div><p class="small" id="pu-msg">Geprüft wird alle 10 Minuten. Grundlage für Regen ist die 15-Minuten-Vorhersage, nicht das Radar.</p></div>';
  const msg=t=>{$("pu-msg").textContent=t};
- const save=async sub=>{const r=$("pu-rain").checked,w=$("pu-warn").checked;await wapi("/push/sub",{sub:sub.toJSON(),lat:+place.lat,lon:+place.lon,name:place.name,rain:r,warn:w});try{localStorage.setItem("wetter-push",JSON.stringify({name:place.name,rain:r,warn:w}))}catch(e){}};
+ const save=async sub=>{const r=$("pu-rain").checked,w=$("pu-warn").checked,ql=$("pu-ql")?$("pu-ql").checked:true,q=ql?quietHours():null,qh=q?qhUTC(q):[];
+  await wapi("/push/sub",{sub:sub.toJSON(),lat:+place.lat,lon:+place.lon,name:place.name,rain:r,warn:w,qh});
+  try{localStorage.setItem("wetter-push",JSON.stringify({name:place.name,lat:+place.lat,lon:+place.lon,rain:r,warn:w,ql,qh,qs:Date.now()}))}catch(e){}};
  if($("pu-on"))$("pu-on").onclick=async()=>{
   try{
    const perm=await Notification.requestPermission();
@@ -4965,6 +5256,7 @@ async function renderPush(){
   }catch(e){msg("Das Einschalten hat nicht geklappt"+(e.status===503?": Im Worker fehlt noch die Einrichtung.":". Versuche es noch einmal."))}
  };
  if($("pu-save"))$("pu-save").onclick=async()=>{try{await save(pushSub);renderPush()}catch(e){msg("Speichern hat nicht geklappt.")}};
+ if($("pu-ql"))$("pu-ql").onchange=async()=>{if(pushSub&&pushPrefs().name){try{await save(pushSub);renderPush()}catch(e){msg("Speichern hat nicht geklappt.")}}};
  if($("pu-test"))$("pu-test").onclick=async()=>{try{await wapi("/push/test",{endpoint:pushSub.endpoint});msg("Test-Nachricht ist unterwegs.")}catch(e){msg("Die Test-Nachricht konnte nicht gesendet werden.")}};
  if($("pu-off"))$("pu-off").onclick=async()=>{try{await wapi("/push/unsub",{endpoint:pushSub.endpoint})}catch(e){}try{await pushSub.unsubscribe()}catch(e){}try{localStorage.removeItem("wetter-push")}catch(e){}pushSub=null;renderPush()};
 }

@@ -9,6 +9,8 @@
 // Für Benachrichtigungen zusätzlich:
 //   Bindung SUBS    (KV-Namespace, z. B. "wetter-push")
 //   Cron-Trigger    */10 * * * *   (alle 10 Minuten)
+// Für die KI (Übersetzen der Warnungen anderer Länder, Push-Texte in ganzen Sätzen), ab Version 1.6:
+//   Bindung AI      (Workers AI, Variablenname AI). Ohne sie läuft alles wie vorher, nur ohne KI.
 const enc = new TextEncoder();
 const MA_SLUGS = new Set(["austria", "belgium", "bosnia-herzegovina", "bulgaria", "croatia", "cyprus", "czechia", "denmark", "estonia", "finland", "france", "germany", "greece", "hungary", "iceland", "ireland", "israel", "italy", "latvia", "lithuania", "luxembourg", "malta", "moldova", "montenegro", "netherlands", "republic-of-north-macedonia", "norway", "poland", "portugal", "romania", "serbia", "slovakia", "slovenia", "spain", "sweden", "switzerland", "ukraine", "united-kingdom"]);
 const API = "https://api.kachelmannwetter.com/v02/";
@@ -209,24 +211,129 @@ async function klStations(la, lo) {
   }
   return st;
 }
-// Messwerte (°C) aller Stationen; Schlüssel k:id
+// Sonnenhöhe in Grad (für „tagsüber“ und die Strahlung bei klarem Himmel)
+function sunElev(la, lo, t) {
+  const d = t / 86400000 - 10957.5, g = (357.529 + 0.98560028 * d) * Math.PI / 180, q = 280.459 + 0.98564736 * d;
+  const L = (q + 1.915 * Math.sin(g) + 0.02 * Math.sin(2 * g)) * Math.PI / 180, e = (23.439 - 0.00000036 * d) * Math.PI / 180;
+  const ra = Math.atan2(Math.cos(e) * Math.sin(L), Math.cos(L)), dec = Math.asin(Math.sin(e) * Math.sin(L));
+  const gmst = (18.697374558 + 24.06570982441908 * d) % 24, ha = ((gmst * 15 + lo) * Math.PI / 180) - ra, f = la * Math.PI / 180;
+  return Math.asin(Math.sin(f) * Math.sin(dec) + Math.cos(f) * Math.cos(dec) * Math.cos(ha)) * 180 / Math.PI;
+}
+const WET = /(^|\s)[-+]?(VC)?(RA|SN|DZ|SH|GR|GS|PL|SG|UP|TS)/;
+// Messwerte aller Stationen; Schlüssel k:id → { T °C, W Wind km/h, G Böe km/h, R Niederschlag letzte Stunde mm, wet ja/nein, C Bewölkung % }
 async function klObs(places) {
-  const out = {}, all = places.flatMap((p) => p.st || []);
+  const out = {}, all = places.flatMap((p) => p.st || []), set = (k, o) => { out[k] = Object.assign(out[k] || {}, o); };
   const at = [...new Set(all.filter((s) => s.k === "at").map((s) => s.id))], mt = [...new Set(all.filter((s) => s.k === "mt").map((s) => s.id))];
   const de = [...new Set(all.filter((s) => s.k === "de").map((s) => s.id))].slice(0, 8), us = [...new Set(all.filter((s) => s.k === "us").map((s) => s.id))].slice(0, 6);
-  const jobs = [];
-  if (at.length) jobs.push(klJ("https://dataset.api.hub.geosphere.at/v1/station/current/tawes-v1-10min?parameters=TL&station_ids=" + at.join(",")).then((j) => {
-    const ts = (j.timestamps || []).map((t) => Date.parse(t));
-    (j.features || []).forEach((f) => { const p = f.properties || {}, d = p.parameters && p.parameters.TL && p.parameters.TL.data; if (!d) return;
-      for (let i = d.length - 1; i >= 0; i--) if (d[i] != null) { if (Date.now() - ts[i] < 45 * 60000) out["at:" + p.station] = +d[i]; break; } });
-  }).catch(() => {}));
+  const stOf = Object.fromEntries(all.map((s) => [s.k + ":" + s.id, s]));
+  const jobs = [], fresh = (t, m) => Date.now() - t < m * 60000;
+  if (at.length) {
+    jobs.push(klJ("https://dataset.api.hub.geosphere.at/v1/station/current/tawes-v1-10min?parameters=TL,FF,FFX,SO,GLOW&station_ids=" + at.join(",")).then((j) => {
+      const ts = (j.timestamps || []).map((t) => Date.parse(t));
+      (j.features || []).forEach((f) => {
+        const p = f.properties || {}, P = p.parameters || {}, last = (k) => { const d = P[k] && P[k].data; if (!d) return null; for (let i = d.length - 1; i >= 0; i--) if (d[i] != null) return fresh(ts[i], 45) ? +d[i] : null; return null; };
+        const key = "at:" + p.station, s = stOf[key], o = { T: last("TL") }, ff = last("FF"), fx = last("FFX"), so = last("SO"), gl = last("GLOW");
+        if (ff != null) o.W = ff * 3.6; if (fx != null) o.G = fx * 3.6;
+        if (s && so != null) {
+          const h = sunElev(s.la, s.lo, Date.now());
+          if (h >= 10) { const sh = Math.sin(h * Math.PI / 180), kt = gl != null ? gl / (1098 * sh * Math.exp(-0.057 / sh)) : null;
+            o.C = so >= 300 ? 15 : kt != null && kt < 0.3 ? 95 : kt != null && kt < 0.55 ? 75 : so > 0 ? 40 : null; }
+        }
+        set(key, o);
+      });
+    }).catch(() => {}));
+    const iso = (t) => new Date(t).toISOString().slice(0, 16);
+    jobs.push(klJ("https://dataset.api.hub.geosphere.at/v1/station/historical/tawes-v1-10min?parameters=RR&station_ids=" + at.join(",") + "&start=" + iso(Date.now() - 70 * 60000) + "&end=" + iso(Date.now())).then((j) => {
+      (j.features || []).forEach((f) => { const p = f.properties || {}, d = p.parameters && p.parameters.RR && p.parameters.RR.data; if (!d) return;
+        const v = d.slice(-6).filter((x) => x != null); if (v.length >= 4) { const R = v.reduce((a, b) => a + b, 0); set("at:" + p.station, { R, wet: R >= 0.1 }); } });
+    }).catch(() => {}));
+  }
   if (mt.length) jobs.push(klJ("https://aviationweather.gov/api/data/metar?format=json&ids=" + mt.join(",")).then((a) => {
-    (Array.isArray(a) ? a : []).forEach((x) => { if (x && typeof x.temp === "number" && Date.now() / 1000 - x.obsTime < 5400 && out["mt:" + x.icaoId] == null) out["mt:" + x.icaoId] = x.temp; });
+    (Array.isArray(a) ? a : []).forEach((x) => { if (!x || Date.now() / 1000 - x.obsTime >= 5400 || out["mt:" + x.icaoId]) return;
+      const o = {}; if (typeof x.temp === "number") o.T = x.temp; if (typeof x.wspd === "number") o.W = x.wspd * 1.852; if (typeof x.wgst === "number") o.G = x.wgst * 1.852;
+      o.wet = WET.test(String(x.wxString || "")); const c = metarCover(x); if (c != null) o.C = c; set("mt:" + x.icaoId, o); });
   }).catch(() => {}));
-  de.forEach((id) => jobs.push(klJ("https://api.brightsky.dev/current_weather?wmo_station_id=" + id).then((j) => { const w = j.weather; if (w && w.temperature != null && Date.now() - Date.parse(w.timestamp) < 90 * 60000) out["de:" + id] = +w.temperature; }).catch(() => {})));
-  us.forEach((id) => jobs.push(klJ("https://api.weather.gov/stations/" + id + "/observations/latest").then((j) => { const q = j.properties || {}, T = q.temperature && q.temperature.value; if (T != null && Date.now() - Date.parse(q.timestamp) < 90 * 60000) out["us:" + id] = +T; }).catch(() => {})));
+  de.forEach((id) => jobs.push(klJ("https://api.brightsky.dev/current_weather?wmo_station_id=" + id).then((j) => { const w = j.weather; if (!w || !fresh(Date.parse(w.timestamp), 90)) return;
+    const o = {}; if (w.temperature != null) o.T = +w.temperature; if (w.wind_speed_10 != null) o.W = +w.wind_speed_10; if (w.wind_gust_speed_10 != null) o.G = +w.wind_gust_speed_10;
+    if (w.precipitation_60 != null) { o.R = +w.precipitation_60; o.wet = o.R >= 0.1; } if (w.cloud_cover != null) o.C = +w.cloud_cover; set("de:" + id, o); }).catch(() => {})));
+  us.forEach((id) => jobs.push(klJ("https://api.weather.gov/stations/" + id + "/observations/latest").then((j) => { const q = j.properties || {}; if (!fresh(Date.parse(q.timestamp), 90)) return;
+    const v = (x) => (x && x.value != null ? +x.value : null), o = {}; if (v(q.temperature) != null) o.T = v(q.temperature);
+    if (v(q.windSpeed) != null) o.W = v(q.windSpeed); if (v(q.windGust) != null) o.G = v(q.windGust);
+    if (q.precipitationLastHour) { const R = v(q.precipitationLastHour); if (R != null) { o.R = R; o.wet = R >= 0.1; } }
+    const L = (q.cloudLayers || []).map((c) => MCV[c.amount]).filter((x) => x != null); if (L.length) o.C = Math.max(...L);
+    set("us:" + id, o); }).catch(() => {})));
   await Promise.all(jobs);
   return out;
+}
+/* ---------- Weitere lernende Teile (Version 1.6), alle lernen für immer und vergessen langsam ----------
+   mx  Modellmix Temperatur: Fehler von ICON, ECMWF, GFS und dem KI-Modell AIFS (Vorlauf 1 und 3 Tage); Gewicht = 1 / mittlerer
+       quadratischer Fehler nach Abzug der Schieflage. Fehler des Mixes wird vor jedem Lernschritt gemessen (ehrlich).
+   pp  Regenwahrscheinlichkeit: in 11 Stufen (0, 10 … 100 %), wie oft es danach wirklich geregnet hat (Messstationen).
+   wd  Wind und Böen: Faktor zwischen Vorhersage und Messung (gleitendes Mittel des Logarithmus).
+   fg  Hochnebel/bedeckt tagsüber: logistische Regression aus Bewölkung, tiefer Bewölkung, Luftfeuchte, Wind, Jahreszeit, Tageszeit.
+   Für pp, wd und fg merkt sich der Worker alle 6 Stunden die ECMWF-Vorhersage (36 Stunden) und vergleicht 12 bis 30 Stunden später. */
+const MX_M = { icon: "icon_seamless", ec: "ecmwf_ifs", gfs: "gfs_seamless", ai: "ecmwf_aifs025_single" };
+const ema = (o, k, v, a) => { o[k] = o[k] == null ? v : (1 - a) * o[k] + a * v; };
+function mxLearn(M, F, y) {
+  const ks = Object.keys(F).filter((m) => F[m] != null && isFinite(F[m]));
+  if (ks.length < 2 || !isFinite(y)) return;
+  let sw = 0, sv = 0;
+  ks.forEach((m) => { const q = M[m]; if (!q || q.s == null) return; const w = 1 / Math.max(0.05, q.s); sw += w; sv += w * (F[m] + q.b); });
+  if (sw && (M.n || 0) >= 1) ema(M, "e", Math.abs(y - sv / sw), 0.01);
+  if (F.ec != null) ema(M, "r", Math.abs(y - F.ec), 0.01);
+  ks.forEach((m) => { const q = M[m] || (M[m] = { b: 0, s: null, n: 0 }), err = y - F[m]; if (Math.abs(err) > 20) return;
+    const res = err - q.b; q.s = q.s == null ? res * res : 0.98 * q.s + 0.02 * res * res; q.b = 0.98 * q.b + 0.02 * err; q.n = (q.n || 0) + 1; });
+  M.n = (M.n || 0) + 1;
+}
+function ppCal(Q, P) { const i = Math.max(0, Math.min(10, Math.round(P / 10))), n = Q.c ? Q.c[i] : 0, k = 12; return n && Q.b[i] != null ? (n * Q.b[i] * 100 + k * P) / (n + k) : P; }
+function ppLearn(Q, P, wet) {
+  if (P == null || !isFinite(P)) return;
+  if (!Q.b) { Q.b = new Array(11).fill(null); Q.c = new Array(11).fill(0); }
+  const i = Math.max(0, Math.min(10, Math.round(P / 10))), y = wet ? 1 : 0, cal = ppCal(Q, P);
+  ema(Q, "br", (P / 100 - y) ** 2, 0.01); ema(Q, "bc", (cal / 100 - y) ** 2, 0.01);
+  Q.c[i] = Math.min(400, Q.c[i] + 1); Q.b[i] = Q.b[i] == null ? y : Q.b[i] + (y - Q.b[i]) / Q.c[i];
+  Q.n = (Q.n || 0) + 1;
+}
+function wdLearn(Q, key, f, o) {
+  if (f == null || o == null || f < 4 || !isFinite(o)) return;
+  const L = Q[key] || (Q[key] = { l: 0, n: 0 }), fac = Math.exp(L.l);
+  ema(L, "er", Math.abs(o - f), 0.01); ema(L, "ec", Math.abs(o - f * fac), 0.01);
+  L.l = 0.98 * L.l + 0.02 * Math.max(-1, Math.min(1, Math.log((o + 2) / (f + 2)))); L.n++;
+}
+// gleiche Merkmale in der App
+function fgX(cc, cl, rh, w, mon, hr) { return [1, cc / 100, (cl == null ? cc : cl) / 100, (rh - 80) / 20, Math.min(w || 0, 30) / 30, mon >= 9 || mon <= 1 ? 1 : 0, hr < 11 ? 1 : 0, hr >= 11 && hr < 15 ? 1 : 0, hr >= 15 ? 1 : 0]; }
+function fgLearn(Q, x, y, base) {
+  if (!Q.w || Q.w.length !== x.length) Q.w = new Array(x.length).fill(0);
+  let z = 0; for (let i = 0; i < x.length; i++) z += Q.w[i] * x[i];
+  const p = 1 / (1 + Math.exp(-z)), cl = (q) => Math.min(0.97, Math.max(0.03, q));
+  ema(Q, "ll", -(y ? Math.log(cl(p)) : Math.log(1 - cl(p))), 0.01); ema(Q, "lb", -(y ? Math.log(cl(base)) : Math.log(1 - cl(base))), 0.01);
+  for (let i = 0; i < x.length; i++) Q.w[i] += 0.05 * ((y - p) * x[i] - 0.0005 * Q.w[i]);
+  Q.n = (Q.n || 0) + 1;
+}
+const rnd = (o) => (typeof o === "number" ? Math.round(o * 1000) / 1000 : Array.isArray(o) ? o.map(rnd) : o && typeof o === "object" ? Object.fromEntries(Object.entries(o).map(([k, v]) => [k, rnd(v)])) : o);
+// ECMWF-Vorhersage (36 h) alle 6 Stunden merken
+async function snapAll(todo, hourMs) {
+  const need = todo.filter((p) => !p.sn || !p.sn.length || hourMs - p.sn[p.sn.length - 1].at >= 6 * 3600000 - 60000);
+  if (!need.length) return;
+  try {
+    const j = await klJ("https://api.open-meteo.com/v1/forecast?latitude=" + need.map((p) => p.la.toFixed(3)).join(",") + "&longitude=" + need.map((p) => p.lo.toFixed(3)).join(",") +
+      "&hourly=precipitation_probability,wind_speed_10m,wind_gusts_10m,cloud_cover,cloud_cover_low,relative_humidity_2m&models=ecmwf_ifs&forecast_days=3&timezone=GMT");
+    const A = Array.isArray(j) ? j : [j];
+    need.forEach((p, n) => {
+      const H = A[n] && A[n].hourly; if (!H || !H.time) return;
+      const i0 = H.time.findIndex((t) => Date.parse(t + ":00Z") >= hourMs); if (i0 < 0) return;
+      const g = (k) => (H[k] || []).slice(i0, i0 + 36).map((v) => (v == null ? null : Math.round(v * 10) / 10));
+      p.sn = (p.sn || []).filter((x) => hourMs - x.at <= 31 * 3600000);
+      p.sn.push({ at: hourMs, t0: Date.parse(H.time[i0] + ":00Z"), P: g("precipitation_probability"), W: g("wind_speed_10m"), G: g("wind_gusts_10m"), CC: g("cloud_cover"), CL: g("cloud_cover_low"), RH: g("relative_humidity_2m") });
+      p.sn = p.sn.slice(-6);
+    });
+  } catch (e) {}
+}
+function snapAt(p, hourMs) {
+  let best = null;
+  for (const x of p.sn || []) { const lead = (hourMs - x.at) / 3600000, k = Math.round((hourMs - x.t0) / 3600000);
+    if (lead >= 12 && lead <= 30 && k >= 0 && k < (x.P || []).length && (!best || Math.abs(lead - 24) < best.d)) best = { x, k, d: Math.abs(lead - 24) }; }
+  return best;
 }
 async function klRun(env) {
   if (!env.SUBS) return;
@@ -238,6 +345,13 @@ async function klRun(env) {
   const todo = places.filter((p) => p.last !== hourMs);
   if (!todo.length) return;
   const obs = await klObs(todo);
+  // Modellmix: Temperatur von vier Modellen, gerechnet 1 und 3 Tage vorher
+  let mxr = [];
+  try {
+    const j = await klJ("https://previous-runs-api.open-meteo.com/v1/forecast?latitude=" + todo.map((p) => p.la.toFixed(3)).join(",") + "&longitude=" + todo.map((p) => p.lo.toFixed(3)).join(",") +
+      "&hourly=temperature_2m_previous_day1,temperature_2m_previous_day3&models=" + Object.values(MX_M).join(",") + "&past_days=1&forecast_days=1&timezone=GMT");
+    mxr = Array.isArray(j) ? j : [j];
+  } catch (e) {}
   // Modell (Open-Meteo best_match) an Orten und Stationen, um aus den Stationen die Temperatur am Ort zu bestimmen
   const pts = [];
   todo.forEach((p) => { pts.push({ la: p.la, lo: p.lo, h: p.h }); p.st.forEach((s) => pts.push({ la: s.la, lo: s.lo, h: s.h })); });
@@ -256,18 +370,43 @@ async function klRun(env) {
       "&hourly=" + vars.join(",") + "&models=ecmwf_ifs&past_days=1&forecast_days=1&timezone=auto");
     pr = Array.isArray(j) ? j : [j];
   } catch (e) {}
+  await snapAll(todo, hourMs);
   let i0 = 0;
   for (let n = 0; n < todo.length; n++) {
     const p = todo[n], b0 = bm[i0];
     let num = 0, den = 0;
-    p.st.forEach((s, k) => { const o = obs[s.k + ":" + s.id], b = bm[i0 + 1 + k]; if (o == null || b == null) return;
+    p.st.forEach((s, k) => { const o = obs[s.k + ":" + s.id] && obs[s.k + ":" + s.id].T, b = bm[i0 + 1 + k]; if (o == null || b == null) return;
       const dh = p.h != null ? Math.abs(s.h - p.h) : 0, w = (1 / Math.pow(s.d + 5, 2)) * Math.exp(-Math.pow(dh / 250, 2)); num += w * (o - b); den += w; });
     i0 += 1 + p.st.length;
     p.last = hourMs;
-    if (!den || b0 == null) { await env.SUBS.put("kl:p:" + p.id, JSON.stringify(p)); continue; }
+    const off = pr[n] && +pr[n].utc_offset_seconds || 0, locT = new Date(hourMs + off * 1000);
+    p.ml = p.ml || {};
+    // Wind, Böen, Regen, Bewölkung am Ort aus den Stationen (gewichtet nach Entfernung)
+    const agg = (k, bin) => { let a = 0, w = 0; p.st.forEach((s) => { const o = obs[s.k + ":" + s.id]; if (!o || o[k] == null) return; const ww = 1 / Math.pow(s.d + 5, 2); a += ww * (bin ? (o[k] ? 1 : 0) : o[k]); w += ww; }); return w ? a / w : null; };
+    const oW = agg("W"), oG = agg("G"), oC = agg("C"), oWet = agg("wet", true);
+    const sp = snapAt(p, hourMs);
+    if (sp) {
+      const x = sp.x, k = sp.k;
+      if (oWet != null && x.P[k] != null) ppLearn(p.ml.pp || (p.ml.pp = {}), x.P[k], oWet >= 0.5);
+      const wd = p.ml.wd || (p.ml.wd = {});
+      if (oW != null) wdLearn(wd, "w", x.W[k], oW);
+      if (oG != null) wdLearn(wd, "g", x.G[k], oG);
+      if (oC != null && (oC >= 85 || oC <= 40) && x.CC[k] != null && x.RH[k] != null && sunElev(p.la, p.lo, hourMs) >= 10)
+        fgLearn(p.ml.fg || (p.ml.fg = {}), fgX(x.CC[k], x.CL[k], x.RH[k], x.W[k], locT.getUTCMonth(), locT.getUTCHours()), oC >= 85 ? 1 : 0, x.CC[k] / 100);
+    }
+    if (!den || b0 == null) { p.ml = rnd(p.ml); await env.SUBS.put("kl:p:" + p.id, JSON.stringify(p)); continue; }
     const truth = b0 + num / (den + 1 / 900);
     p.obs = { t: hourMs, T: klR(truth, 2) };
-    const H = pr[n] && pr[n].hourly, off = pr[n] && +pr[n].utc_offset_seconds || 0, hour = new Date(hourMs + off * 1000).getUTCHours();
+    // Modellmix lernen
+    const MH = mxr[n] && mxr[n].hourly;
+    if (MH && MH.time) {
+      const i = MH.time.findIndex((t) => Date.parse(t + ":00Z") === hourMs);
+      if (i >= 0) { const mx = p.ml.mx || (p.ml.mx = {});
+        [1, 3].forEach((d) => { const F = {}; Object.entries(MX_M).forEach(([m, id]) => { const a = MH["temperature_2m_previous_day" + d + "_" + id]; F[m] = a && a[i] != null ? +a[i] : null; });
+          mxLearn(mx["d" + d] || (mx["d" + d] = {}), F, truth); }); }
+    }
+    p.ml = rnd(p.ml);
+    const H = pr[n] && pr[n].hourly, hour = locT.getUTCHours();
     if (H && H.time) {
       const loc = new Date(hourMs + off * 1000).toISOString().slice(0, 13), i = H.time.findIndex((t) => t.slice(0, 13) === loc);
       if (i >= 0) {
@@ -297,14 +436,49 @@ async function klRun(env) {
 }
 const klId = (la, lo) => (Math.round(la * 100) + "_" + Math.round(lo * 100)).replace(/-/g, "m");
 
+/* ---------- KI (Cloudflare Workers AI, Bindung „AI“) ----------
+   Übersetzen: Meta M2M100 (reines Übersetzungsmodell). Push-Texte: ein kleines Sprachmodell formuliert die Nachricht aus den
+   festen Fakten; danach wird geprüft, dass keine Zahl dazukommt, der Ort drinsteht und die Länge passt. Sonst bleibt der feste Text.
+   Fehlt die Bindung oder klappt etwas nicht, läuft alles wie vorher. */
+const AI_CHAT = ["@cf/meta/llama-3.1-8b-instruct-fast", "@cf/meta/llama-3.1-8b-instruct", "@cf/google/gemma-3-12b-it"];
+const nums = (t) => String(t).match(/\d+(?:[.,]\d+)?/g) || [];
+async function aiText(env, facts, place, max) {
+  if (!env.AI) return null;
+  const msgs = [
+    { role: "system", content: "Du schreibst kurze Push-Nachrichten für eine Wetter-App auf Deutsch. Ein bis zwei Sätze, höchstens " + max + " Zeichen. Verwende nur die gegebenen Fakten, erfinde nichts, ändere keine Zahl und keine Uhrzeit. Kein Emoji, keine Anführungszeichen." },
+    { role: "user", content: facts },
+  ];
+  for (const m of AI_CHAT) {
+    try {
+      const r = await env.AI.run(m, { messages: msgs, max_tokens: 90, temperature: 0.3 });
+      let t = String((r && (r.response || (r.result && r.result.response))) || "").trim().replace(/^["„»“]+|["“«”]+$/g, "").replace(/\s+/g, " ");
+      if (t.length < 12 || t.length > max + 20 || /[<>{}*#]/.test(t)) continue;
+      const ok = new Set(nums(facts)); if (!nums(t).every((x) => ok.has(x))) continue;
+      if (place && !t.includes(place)) continue;
+      return t;
+    } catch (e) {}
+  }
+  return null;
+}
+async function aiTr(env, text, from) {
+  const key = "tr:" + b64u(await sha(from + "|" + text)).slice(0, 24);
+  const c = await env.SUBS.get(key); if (c) return c;
+  const r = await env.AI.run("@cf/meta/m2m100-1.2b", { text, source_lang: from, target_lang: "de" });
+  const t = String((r && (r.translated_text || (r.result && r.result.translated_text))) || "").trim();
+  if (!t) throw new Error("leer");
+  await env.SUBS.put(key, t, { expirationTtl: 30 * 86400 });
+  return t;
+}
+
 /* ---------- Prüfung alle 10 Minuten: Regen und Warnungen ---------- */
 const AT_TYPES = { 1: "Sturm", 2: "Regen", 3: "Schnee", 4: "Glatteis", 5: "Gewitter", 6: "Hitze", 7: "Kälte" };
 async function getJ(u) { const r = await fetch(u, { headers: { Accept: "application/json" } }); if (!r.ok) throw new Error(r.status); return r.json(); }
 async function rainSoon(lat, lon) {
-  const j = await getJ("https://api.open-meteo.com/v1/forecast?latitude=" + lat + "&longitude=" + lon + "&minutely_15=precipitation,snowfall&forecast_minutely_15=4&timezone=GMT");
+  const j = await getJ("https://api.open-meteo.com/v1/forecast?latitude=" + lat + "&longitude=" + lon + "&minutely_15=precipitation,snowfall&forecast_minutely_15=8&timezone=GMT");
   const m = j.minutely_15 || {}, P = m.precipitation || [], S = m.snowfall || [];
-  const i = P.findIndex((x) => x != null && x >= 0.1);
-  return { i, snow: i >= 0 && (S[i] || 0) * 0.7 >= P[i] * 0.5 };
+  const i = P.slice(0, 4).findIndex((x) => x != null && x >= 0.1);
+  let n = 0, mx = 0; if (i >= 0) for (let k = i; k < P.length && P[k] != null && P[k] >= 0.1; k++) { n++; mx = Math.max(mx, P[k]); }
+  return { i, snow: i >= 0 && (S[i] || 0) * 0.7 >= P[i] * 0.5, dur: n * 15, mx };
 }
 async function warnings(lat, lon) {
   const out = [];
@@ -343,7 +517,15 @@ async function runAlerts(env) {
         const r = await rainSoon(rec.lat, rec.lon);
         if (r.i >= 0 && !rec.st.rain) {
           const what = r.snow ? "Schnee" : "Regen";
-          msgs.push({ title: r.i === 0 ? (r.snow ? "Es beginnt zu schneien" : "Es beginnt zu regnen") : what + " in etwa " + r.i * 15 + " Minuten", body: (rec.name ? rec.name + ". " : "") + "Tippe für das Regenradar.", tag: "rain", url: SITE + "#sec-radar" });
+          // Ruhezeiten (von der App aus deinem Alltag gelernt): nachts keine Regen-Hinweise, Warnungen kommen trotzdem
+          const quiet = Array.isArray(rec.qh) && rec.qh.includes(new Date().getUTCHours());
+          if (!quiet) {
+            const title = r.i === 0 ? (r.snow ? "Es beginnt zu schneien" : "Es beginnt zu regnen") : what + " in etwa " + r.i * 15 + " Minuten";
+            const st = r.snow ? (r.mx < 0.5 ? "leicht" : r.mx < 2 ? "mäßig" : "stark") : (r.mx < 0.6 ? "leicht" : r.mx < 2.5 ? "mäßig" : "stark");
+            const facts = "Ort: " + (rec.name || "dein Ort") + ". " + (r.i === 0 ? "Der " + what + " beginnt jetzt." : "Der " + what + " beginnt in etwa " + r.i * 15 + " Minuten.") + " Stärke: " + st + "." + (r.dur >= 30 ? " Dauer: mindestens " + r.dur + " Minuten." : " Dauer: kurz.");
+            const ai = await aiText(env, facts, rec.name || "", 140);
+            msgs.push({ title, body: ai || (rec.name ? rec.name + ". " : "") + "Tippe für das Regenradar.", tag: "rain", url: SITE + "#sec-radar" });
+          }
           rec.st.rain = true; changed = true;
         } else if (r.i < 0 && rec.st.rain) { rec.st.rain = false; changed = true; }
       } catch (e) {}
@@ -353,7 +535,10 @@ async function runAlerts(env) {
       const seen = rec.st.w || [];
       // Ist ein Warndienst gerade nicht erreichbar, bekannte Warnungen behalten (sonst käme dieselbe Warnung später noch einmal)
       const ids = res.ok ? ws.map((w) => w.id) : Array.from(new Set([...seen, ...ws.map((w) => w.id)]));
-      for (const w of ws) if (!seen.includes(w.id)) msgs.push({ title: w.title, body: (rec.name ? rec.name + ": " : "") + w.body, tag: "warn-" + w.id, url: SITE + "#sec-warn" });
+      for (const w of ws) if (!seen.includes(w.id)) {
+        const ai = w.body ? await aiText(env, "Ort: " + (rec.name || "dein Ort") + ". Amtliche Warnung: " + w.title + ". " + w.body, rec.name || "", 170) : null;
+        msgs.push({ title: w.title, body: ai || (rec.name ? rec.name + ": " : "") + w.body, tag: "warn-" + w.id, url: SITE + "#sec-warn" });
+      }
       if (ids.join() !== seen.join()) { rec.st.w = ids; changed = true; }
     }
     let gone = false;
@@ -388,7 +573,7 @@ export default {
       return json({ error: "Der Worker ist noch nicht fertig eingerichtet (Variablen fehlen)." }, 500);
     const url = new URL(req.url);
 
-    if (url.pathname === "/") return json({ ok: true, name: "wetter-proxy", version: "1.5", renew: true, push: !!env.SUBS, guard: true, ma: true, mt: true, mtc: true, kl: !!env.SUBS });
+    if (url.pathname === "/") return json({ ok: true, name: "wetter-proxy", version: "1.6", ai: !!env.AI, ml: true, qh: true, renew: true, push: !!env.SUBS, guard: true, ma: true, mt: true, mtc: true, kl: !!env.SUBS });
 
     if (url.pathname === "/login" && req.method === "POST") {
       const ip = req.headers.get("CF-Connecting-IP") || "unbekannt";
@@ -468,7 +653,7 @@ export default {
         for (const k of list.keys) { const p = await env.SUBS.get(k.name, "json"); if (!p) continue; const d = klDist(la, lo, p.la, p.lo); if (d < bd) { bd = d; best = p; } }
         if (!best) return json({ ok: true, none: true });
         const pick = (L) => (L && L.w ? { w: L.w, n: L.n || 0, er: L.er, ec: L.ec } : null);
-        return json({ ok: true, v: 1, name: best.name, st: (best.st || []).length, ec: pick(best.ec), kc: pick(best.kc), obs: best.obs || null });
+        return json({ ok: true, v: 2, name: best.name, st: (best.st || []).length, ec: pick(best.ec), kc: pick(best.kc), obs: best.obs || null, ml: best.ml || null });
       }
       if (req.method !== "POST") return json({ error: "Nicht gefunden" }, 404);
       if (Number(req.headers.get("Content-Length") || 0) > 6000) return json({ error: "Zu groß" }, 413);
@@ -504,6 +689,19 @@ export default {
       return json({ error: "Nicht gefunden" }, 404);
     }
 
+    // KI-Übersetzung der Warnungen anderer Länder (gemerkt 30 Tage)
+    if (url.pathname === "/tr" && req.method === "POST") {
+      if (!(await checkToken(env, req))) return json({ error: "Nicht angemeldet" }, 401);
+      if (!env.AI || !env.SUBS) return json({ error: "ai-setup" }, 503);
+      if (Number(req.headers.get("Content-Length") || 0) > 8000) return json({ error: "Zu groß" }, 413);
+      let b = {};
+      try { b = await req.json(); } catch (e) {}
+      const from = String(b.from || "").toLowerCase().slice(0, 3), q = Array.isArray(b.q) ? b.q.slice(0, 6).map((x) => String(x || "").slice(0, 900)) : [];
+      if (!/^[a-z]{2,3}$/.test(from) || !q.length) return json({ error: "Ungültig" }, 400);
+      try { const t = []; for (const x of q) t.push(x.trim() ? await aiTr(env, x.trim(), from) : ""); return json({ ok: true, t }); }
+      catch (e) { return json({ error: "KI nicht erreichbar" }, 502); }
+    }
+
     if (url.pathname.startsWith("/push/")) {
       if (!(await checkToken(env, req))) return json({ error: "Nicht angemeldet" }, 401);
       if (!env.SUBS) return json({ error: "push-setup" }, 503);
@@ -520,7 +718,8 @@ export default {
         const lat = Number(b.lat), lon = Number(b.lon);
         if (!isFinite(lat) || !isFinite(lon)) return json({ error: "Ungültig" }, 400);
         const old = await env.SUBS.get(id, "json");
-        await env.SUBS.put(id, JSON.stringify({ sub: { endpoint: ep, keys: s.keys }, lat: +lat.toFixed(3), lon: +lon.toFixed(3), name: String(b.name || "").slice(0, 60), rain: !!b.rain, warn: !!b.warn, st: (old && old.st) || { rain: false, w: [] } }));
+        const qh = Array.isArray(b.qh) ? [...new Set(b.qh.map(Number).filter((h) => Number.isInteger(h) && h >= 0 && h < 24))].slice(0, 16) : [];
+        await env.SUBS.put(id, JSON.stringify({ sub: { endpoint: ep, keys: s.keys }, lat: +lat.toFixed(3), lon: +lon.toFixed(3), name: String(b.name || "").slice(0, 60), rain: !!b.rain, warn: !!b.warn, qh, st: (old && old.st) || { rain: false, w: [] } }));
         return json({ ok: true });
       }
       if (url.pathname === "/push/unsub") { await env.SUBS.delete(id); return json({ ok: true }); }

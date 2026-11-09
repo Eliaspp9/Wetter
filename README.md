@@ -3,6 +3,8 @@
 Persönliche Wetter-App im Stil von WetterOnline, als Webseite auf GitHub Pages:
 https://eliaspp9.github.io/Wetter/
 
+**Version 2.18** (mit Worker 1.6): Regen in 2 Stunden aus dem Radar; Länder-Radare mit Bewegungs-Vorhersage; Gewitter-Trend und Hagel-Hinweis; Pollen-Tagebuch; Nebel-Satellitenbild; lernender Modellmix, Regenwahrscheinlichkeit, Wind/Böen und Hochnebel im Worker; KI-Übersetzung und KI-Push-Texte (Workers AI); Ruhezeiten aus dem Alltag.
+
 **Version 2.17**: Regen oder Schnee im Radar an jeder Stelle (Feuchttemperatur aus dem Modellraster, mit Geländehöhe), statt einer Entscheidung für die ganze Karte.
 
 **Version 2.16**: Radare von USA, Finnland, Niederlande, Kanada und Japan in den Farben der App (Pixel ausgelesen und über die Farbskala des Dienstes in mm/h zurückgerechnet), mit Wert beim Antippen.
@@ -98,6 +100,25 @@ https://eliaspp9.github.io/Wetter/
 - **Wetter teilen:** erzeugt ein Bild mit Wetter, nächsten Stunden und 3 Tagen, zum Verschicken (z. B. WhatsApp) oder Speichern.
 - **Flüssig bis 120 Hz:** Das Wettersymbol oben besteht aus Ebenen, die nur verschoben, gedreht oder überblendet werden. Das macht die Grafikeinheit allein, ohne dass die Seite neu zeichnet. Keine Unschärfe-Effekte über bewegten Inhalten. Radarbilder werden vorab vorbereitet, Windlinien in jeder Bildwiederholung gezeichnet.
 - **App und Offline:** als App auf dem Home-Bildschirm installierbar, offline mit dem letzten Stand.
+
+## Lernen und KI (ab 2.18 / Worker 1.6)
+
+Alles lernt laufend weiter (gleitende Mittel und Online-Regression, die langsam vergessen) und wirkt nur, wenn es laut ehrlicher Messung vor jedem Lernschritt besser trifft als ohne.
+
+- **Regen in 2 Stunden aus dem Radar:** In Österreich GeoSphere-Nowcast (Mittel über den Ort und je 1 km rundherum), in Deutschland und den Grenzgebieten die DWD-Radar-Vorhersage (Mittel über etwa 3 × 3 km). Die Art (Regen/Schnee) vom Modell oder aus der Temperatur an der Stelle. Sonst wie bisher ICON.
+- **Länder-Radare (USA, Finnland, Niederlande, Kanada):** Bewegung aus den Radarbildern selbst (Kreuzkorrelation des neuesten Bildes mit dem von vor etwa 15 Minuten auf einem 6-Pixel-Raster), das neueste Bild wird 60 Minuten weitergeschoben.
+- **Gewitter-Trend:** Kern und Fläche jetzt gegen vor 15 Minuten (DWD) bzw. gegen den Nowcast in 15 bis 30 Minuten (GeoSphere): ↑ stärker (Kern +25 % oder Fläche +40 %), ↓ schwächer. Blitze im Umkreis machen eine Zelle zum Gewitter. Hagel möglich ab 60 mm/h oder bei starkem, nicht schwächer werdendem Gewitter mit Blitzen.
+- **Pollen-Tagebuch:** Beschwerden 0 bis 3 je Tag mit den Pollenwerten des Tages, nur auf dem Gerät. Ridge-Regression mit Vergessen (Halbwertszeit 2 Jahre); ab 8 Einträgen: welche Pollen stören, persönliche Vorhersage, Markierung „stört dich“.
+- **Nebel-Satellitenbild:** Knopf „Nebel“ auf der Karte, EUMETSAT MTG „Fog / Low Clouds RGB“.
+- **Worker 1.6 lernt je Ort (höchstens 6, die zuletzt geöffneten):**
+  - Modellmix Temperatur: ICON, ECMWF, GFS, KI-Modell AIFS mit 1 und 3 Tagen Vorlauf (Previous-Runs-API); Gewicht = 1 / quadratischer Fehler nach Abzug der Schieflage. Die App holt dann die vier Modelle und mischt (bis 36 h mit den 1-Tages-, danach mit den 3-Tages-Gewichten), wenn der Mix besser ist als ECMWF und als die bisherige Korrektur.
+  - Regenwahrscheinlichkeit: 11 Stufen, wie oft es danach wirklich geregnet hat (Stationen: GeoSphere RR der letzten Stunde, DWD precipitation_60, NOAA, METAR-Wetter), mit Schrumpfung zur Vorhersage.
+  - Wind und Böen: Faktor Messung/Vorhersage.
+  - Hochnebel tagsüber: logistische Regression aus Bewölkung, tiefer Bewölkung, Luftfeuchte, Wind, Jahreszeit, Tageszeit; Wahrheit aus Sonnenschein/Strahlung (GeoSphere), Bewölkung (DWD, METAR, NOAA). Wo die Wahrscheinlichkeit ab 60 % liegt und das Modell Sonne zeigt, zeigt die App bedeckt und einen Hinweis.
+  - Dafür merkt sich der Worker alle 6 Stunden die ECMWF-Vorhersage (36 h) und vergleicht 12 bis 30 Stunden später.
+- **KI (Workers AI, Bindung `AI`):** Übersetzen der Warnungen anderer Länder mit Meta M2M100 (30 Tage gemerkt, sonst wie bisher MyMemory). Push-Texte formuliert ein kleines Sprachmodell aus festen Fakten; der Text wird nur genommen, wenn keine neue Zahl dazukommt, der Ort drinsteht und die Länge passt.
+- **Ruhezeiten aus dem Alltag:** Die App zählt, zu welchen Stunden du sie öffnest (verblasst langsam). Zwischen 20 und 8 Uhr werden Stunden mit fast keiner Nutzung zu Ruhezeiten: keine Regen-Hinweise, Warnungen schon. Erst nach 7 Tagen und 30 Mal Öffnen; an den Worker gehen nur die Stunden.
+- **Geprüft und nicht umgesetzt:** Webcams (foto-webcam.eu erlaubt kein Kopieren oder Verarbeiten der Bilder ohne schriftliche Zustimmung, nur Links).
 
 ## Sicherheit
 
