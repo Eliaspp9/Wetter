@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-IOdI/BIPGXg7C6n/5P8+b7MY2sHmlmWPSgTTQofTr6w=' 'sha256-+CD5i0gDObdMiTFeSjBHM8SvIjSFGtFW+gQH/GdjeWc=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-fRfSHmYw2w9JMSpKmlkZqERgevHprRqSf5KyFA8jupI=' 'sha256-+CD5i0gDObdMiTFeSjBHM8SvIjSFGtFW+gQH/GdjeWc=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -14,9 +14,9 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/favicon-64.png">
-<meta name="app-build" content="43">
-<meta name="app-version" content="2.9">
-<meta name="app-notes" content="Version 2.9: Die Temperatur oben wird jetzt an den Messstationen in der Nähe ausgerichtet – in Österreich GeoSphere INCA mit den GeoSphere-Stationen, in Deutschland mit DWD-Stationen, in den USA mit NOAA-Stationen, sonst mit den Wettermeldungen der Flughäfen (dafür braucht der Worker ein Update). Getestet an 106 Stationen in Österreich: im Mittel 0,7° daneben statt 1,2°.">
+<meta name="app-build" content="44">
+<meta name="app-version" content="2.10">
+<meta name="app-notes" content="Version 2.10: Blitze auf dem Radar als kleine Blitzsymbole statt großer Kästen, sichtbar in jeder Zoomstufe; nah herangezoomt zeigt ein gelber Schleier die Blitzfläche. Standort: die Suche zeigt oben, dass sie läuft, und wenn er gesperrt ist, steht dort genau für dein Handy (iPhone, Android, als App am Home-Bildschirm), wie du ihn erlaubst.">
 <script>/* alte Adresse wetter2.html -> neue Startseite */
 try{if(top!==self)document.documentElement.style.display="none"}catch(e){document.documentElement.style.display="none"}
 window.__redir=/\/wetter2\.html$/i.test(location.pathname);
@@ -172,6 +172,17 @@ html[data-sky=cloud] .deco i,html[data-sky=cloud-night] .deco i,html[data-sky=ra
 .search input{width:100%;height:44px;border-radius:14px;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.18);color:#fff;padding:0 14px 0 42px;font-size:16px}
 .search input::placeholder{color:rgba(255,255,255,.82)}
 .iconbtn{width:44px;height:44px;flex:none;border-radius:14px;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.18);color:#fff;display:grid;place-items:center}
+/* Standortsuche: das Symbol dreht sich, Meldungen oben gut sichtbar (nicht mehr unten in der Seite) */
+@keyframes gspin{to{transform:rotate(360deg)}}
+#geo.busy svg{animation:gspin 1.1s linear infinite}
+.gpsmsg{position:fixed;left:12px;right:12px;top:calc(env(safe-area-inset-top,0px) + 12px);z-index:3500;max-width:480px;margin:0 auto;padding:12px 40px 12px 14px;border-radius:16px;background:var(--card);color:var(--ink);box-shadow:0 12px 40px rgba(0,0,0,.28);border-left:4px solid var(--accent);font-size:14px;line-height:1.45}
+.gpsmsg[hidden]{display:none}
+.gpsmsg.err{border-left-color:#E5484D}
+.gpsmsg b{display:block;margin-bottom:2px}
+.gpsmsg ol{margin:6px 0 2px;padding-left:20px}
+.gpsmsg li{margin:3px 0}
+.gpsmsg small{display:block;opacity:.6;margin-top:4px}
+.gpsmsg button{position:absolute;right:6px;top:6px;width:32px;height:32px;border:0;border-radius:10px;background:transparent;color:inherit;font-size:20px;line-height:1}
 .iconbtn svg{width:22px;height:22px}
 .res{position:absolute;left:0;right:0;top:52px;background:var(--card);color:var(--ink);border-radius:14px;list-style:none;margin:0;padding:6px;box-shadow:0 14px 44px rgba(0,0,0,.3);display:none;z-index:1000;text-align:left}
 .res li{padding:11px 12px;border-radius:9px;cursor:pointer}
@@ -803,6 +814,7 @@ html.locked body>*:not(#gate){display:none!important}
  </div>
 </header>
 
+<div class="gpsmsg" id="gpsmsg" role="alert" hidden><div id="gpsmsg-t"></div><button type="button" id="gpsmsg-x" aria-label="Meldung schließen">×</button></div>
 <div class="mini" id="mini" aria-hidden="true"><span class="mi" id="micon"></span><b id="mname"></b><span id="mtemp"></span></div>
 
 <main>
@@ -3000,30 +3012,80 @@ $("ctr").onclick=()=>{if(map)map.setView([place.lat,place.lon],8)};
 function saveState(){try{localStorage.setItem("wetter-ort",JSON.stringify(place));localStorage.setItem("wetter-follow",follow?"1":"0")}catch(e){}}
 const km=(a,b,c,d)=>Math.hypot((a-c)*111,(b-d)*111*Math.cos(a*Math.PI/180));
 let gpsOk=false;
+/* ============ Standort ============
+   Rückmeldung oben (das Symbol dreht sich, Fehler mit Anleitung für genau dieses Gerät), weil die alte Meldung am Handy
+   unterhalb des Kopfes stand und man sie nicht sah. Als App auf dem Home-Bildschirm gelten eigene Berechtigungen. */
+const isAndroid=/Android/i.test(navigator.userAgent);
+let gpsT=0;
+function gpsMsg(kind,title,steps,foot){
+ const box=$("gpsmsg"),t=$("gpsmsg-t");clearTimeout(gpsT);
+ if(!kind){box.hidden=true;return}
+ t.textContent="";const h=document.createElement("b");h.textContent=title;t.appendChild(h);
+ if(steps&&steps.length){const ol=document.createElement("ol");steps.forEach(x=>{const li=document.createElement("li");li.textContent=x;ol.appendChild(li)});t.appendChild(ol)}
+ if(foot){const f=document.createElement("small");f.textContent=foot;t.appendChild(f)}
+ box.className="gpsmsg"+(kind==="err"?" err":"");box.hidden=false;
+ if(kind==="ok")gpsT=setTimeout(()=>{box.hidden=true},2600);
+}
+$("gpsmsg-x").onclick=()=>gpsMsg(null);
+function gpsHelp(code,detail){
+ const app=(()=>{try{return standalone()}catch(e){return false}})(),info="Fehler "+(code||"?")+(detail?": "+detail:"");
+ if(code===1){
+  if(isIOS)return gpsMsg("err","Der Standort ist für "+(app?"die Wetter-App":"diese Seite")+" gesperrt. So erlaubst du ihn:",[
+   "Einstellungen → Datenschutz & Sicherheit → Ortungsdienste: ganz oben einschalten.",
+   "Im selben Menü weiter unten „Safari-Websites“ → „Beim Verwenden der App“ und „Genauer Standort“ einschalten. Das gilt auch für die App auf dem Home-Bildschirm.",
+   "Einstellungen → Apps → Safari → Standort (bei älterem iOS: Einstellungen → Safari → Standort): „Fragen“ oder „Erlauben“.",
+   app?"Die Wetter-App ganz schließen (vom unteren Rand nach oben wischen und die App wegschieben), neu öffnen und rechts oben auf das Standort-Symbol tippen.":"Die Seite neu laden und rechts oben auf das Standort-Symbol tippen."],info);
+  if(isAndroid&&app)return gpsMsg("err","Der Standort ist für die Wetter-App gesperrt. So erlaubst du ihn:",[
+   "Lange auf das Wetter-Symbol am Startbildschirm drücken → „App-Info“ (ⓘ) → Berechtigungen → Standort → „Nur während der Nutzung der App zulassen“, „Genauen Standort verwenden“ einschalten.",
+   "In Chrome: ⋮ → Einstellungen → Website-Einstellungen → Standort. Steht „eliaspp9.github.io“ unter „Blockiert“, antippen und „Zulassen“ wählen.",
+   "Die Wetter-App schließen, neu öffnen und rechts oben auf das Standort-Symbol tippen."],info);
+  if(isAndroid)return gpsMsg("err","Der Standort ist für diese Seite gesperrt. So erlaubst du ihn:",[
+   "Links neben der Adresse auf das Symbol tippen → Berechtigungen → Standort → „Zulassen“.",
+   "Ist der Standort am Handy aus: von oben wischen und „Standort“ einschalten.",
+   "Die Seite neu laden und rechts oben auf das Standort-Symbol tippen."],info);
+  return gpsMsg("err","Der Standort ist für diese Seite gesperrt.",["Im Browser links in der Adressleiste auf das Symbol klicken und den Standort für eliaspp9.github.io erlauben.","Die Seite neu laden und rechts oben auf das Standort-Symbol tippen."],info);
+ }
+ if(code===3)return gpsMsg("err","Die Standortsuche hat zu lange gedauert.",["Kurz ins Freie gehen oder WLAN einschalten (hilft dem Handy beim Orten).","Dann noch einmal rechts oben auf das Standort-Symbol tippen – oder oben einen Ort suchen."],info);
+ return gpsMsg("err","Das Handy findet gerade keinen Standort.",[
+  isIOS?"Einstellungen → Datenschutz & Sicherheit → Ortungsdienste einschalten.":isAndroid?"Von oben wischen und „Standort“ einschalten.":"Prüfen, ob der Standort am Gerät eingeschaltet ist.",
+  "Noch einmal rechts oben auf das Standort-Symbol tippen – oder oben einen Ort suchen."],info);
+}
 function useGPS(manual,quiet){
- if(!navigator.geolocation){if(manual)showErr("Standortabfrage wird von diesem Browser nicht unterstützt.");return}
+ if(!navigator.geolocation){if(manual)gpsMsg("err","Dieser Browser kann keinen Standort abfragen.",["Oben einen Ort suchen."]);return}
+ const btn=$("geo");if(manual){btn.classList.add("busy");gpsMsg("busy","Standort wird gesucht …")}
+ const done=()=>btn.classList.remove("busy");
  const ok=async p=>{
   const lat=p.coords.latitude,lon=p.coords.longitude;
   gpsOk=true;
-  if(!manual&&!follow)return;
+  if(!manual&&!follow){done();return}
   if(manual)showErr("");
-  if(!manual&&place.gps&&km(place.lat,place.lon,lat,lon)<1.5){if(!quiet)loadWeather();return}
+  if(!manual&&place.gps&&km(place.lat,place.lon,lat,lon)<1.5){done();if(!quiet)loadWeather();return}
   const np={name:"Mein Standort",lat,lon,gps:true};
   try{const r=await getJ("https://api.bigdatacloud.net/data/reverse-geocode-client?latitude="+lat+"&longitude="+lon+"&localityLanguage=de");np.name=r.locality||r.city||np.name}catch(e){}
+  done();
   if(!follow)return;
+  if(manual)gpsMsg("ok","Standort: "+np.name);
   place=np;saveState();loadWeather();
  };
  const fail=(err,second)=>{
   const c=err&&err.code;
   /* Zeitüberschreitung oder kein Signal: noch einmal ohne GPS-Genauigkeit (WLAN/Mobilfunk) versuchen */
   if(!second&&c!==1){navigator.geolocation.getCurrentPosition(ok,e=>fail(e,true),{enableHighAccuracy:false,timeout:20000,maximumAge:900000});return}
-  if(!manual)return;
-  const info=" (Fehler "+(c||"?")+(err&&err.message?": "+err.message:"")+")";
-  if(c===1)showErr((isIOS?"Der Standort wurde abgelehnt. Am iPhone gibt es zwei Schalter: 1. Einstellungen, Datenschutz & Sicherheit, Ortungsdienste, Safari-Websites: „Beim Verwenden der App“. 2. Einstellungen, Apps, Safari, Standort: „Fragen“ oder „Erlauben“. Danach die Wetter-App ganz schließen, neu öffnen und auf das Standort-Symbol tippen.":"Der Standort wurde abgelehnt. Erlaube ihn in den Browser-Einstellungen für diese Seite.")+info);
-  else if(c===3)showErr("Der Standort hat zu lange gedauert. Geh kurz ins Freie oder schalte WLAN ein und tippe noch einmal auf das Standort-Symbol."+info);
-  else showErr("Der Standort ist gerade nicht verfügbar. Prüfe, ob die Ortungsdienste eingeschaltet sind, oder suche oben einen Ort."+info);
+  done();
+  if(!manual){
+   /* beim Start gesperrt: einmal pro Sitzung zeigen, wie man ihn erlaubt */
+   if(c===1){let shown=false;try{shown=sessionStorage.getItem("wetter-gpshint")==="1";sessionStorage.setItem("wetter-gpshint","1")}catch(e){}if(!shown)gpsHelp(1,err&&err.message)}
+   return;
+  }
+  gpsHelp(c,err&&err.message);
  };
  navigator.geolocation.getCurrentPosition(ok,e=>fail(e,false),{enableHighAccuracy:true,timeout:12000,maximumAge:120000});
+}
+/* Beim Start: ist der Standort sicher gesperrt, gar nicht erst fragen, sondern einmal die Anleitung zeigen */
+async function gpsStart(){
+ try{if(navigator.permissions&&navigator.permissions.query){const st=await navigator.permissions.query({name:"geolocation"});
+  if(st&&st.state==="denied"){let shown=false;try{shown=sessionStorage.getItem("wetter-gpshint")==="1";sessionStorage.setItem("wetter-gpshint","1")}catch(e){}if(!shown)gpsHelp(1);return}}}catch(e){}
+ useGPS(false);
 }
 
 /* ============ Kachelmann-Prognose (über den eigenen Worker) ============ */
@@ -4151,24 +4213,95 @@ function beep(){
  }catch(e){}
 }
 
-/* ============ Blitze: Wettersatellit MTG von EUMETSAT (Lightning Imager) ============ */
-let blzLayer=null,blzOn=true,blzV=0;
+/* ============ Blitze: Wettersatellit MTG von EUMETSAT (Lightning Imager) ============
+   EUMETSAT zeichnet die Blitzflächen nur bis Zoomstufe 7; näher heran liefert der Dienst leere Bilder (geprüft am 9.11.2026),
+   deshalb verschwanden die Blitze beim Hineinzoomen. Jetzt holt die App das Bild selbst in grober Auflösung (höchstens
+   etwa 2,4 km pro Bildpunkt, so liefert der Dienst immer), sucht darin die Blitzflächen (rund 5 km groß) und zeichnet an
+   jede ein kleines Blitzsymbol – in jeder Zoomstufe gleich groß. Liegen Symbole zu dicht, bleibt das stärkere stehen. */
+let blzOn=true,blzPts=[],blzBox=null,blzAt=0,blzBusy=false,blzCv=null,blzSeq=0,blzFail=0,blzAttr=false;
 try{blzOn=localStorage.getItem("wetter-blz")!=="0"}catch(e){}
+const BLZ_ATT="Blitze: © EUMETSAT (MTG Lightning Imager)";
+const BLZ_PATH=(()=>{try{return new Path2D("M13.4 1.8 4.6 13.6h5.9l-1.4 8.6 9.3-12.6h-6.1l1.1-7.8z")}catch(e){return null}})();
+function blzCanvas(){
+ if(!map.getPane("blz")){const p=map.createPane("blz");p.style.zIndex=360;p.style.pointerEvents="none"}
+ if(!blzCv){blzCv=document.createElement("canvas");blzCv.className="blzcv";blzCv.style.position="absolute";blzCv.style.pointerEvents="none";map.getPane("blz").appendChild(blzCv);
+  map.on("zoomstart",()=>{if(blzCv)blzCv.style.visibility="hidden"});
+  map.on("zoomend moveend resize",()=>{blzDraw();clearTimeout(blzCv._t);blzCv._t=setTimeout(()=>blzLoad(false),500)});
+ }
+ return blzCv;
+}
+function blzDraw(){
+ if(!map||!blzCv)return;
+ const sz=map.getSize(),d=Math.min(2,window.devicePixelRatio||1),cv=blzCv;
+ L.DomUtil.setPosition(cv,map.containerPointToLayerPoint([0,0]));
+ if(cv.width!==Math.round(sz.x*d)||cv.height!==Math.round(sz.y*d)){cv.width=Math.round(sz.x*d);cv.height=Math.round(sz.y*d);cv.style.width=sz.x+"px";cv.style.height=sz.y+"px"}
+ const c=cv.getContext("2d");c.setTransform(d,0,0,d,0,0);c.clearRect(0,0,sz.x,sz.y);
+ cv.style.visibility=blzOn?"visible":"hidden";
+ if(!blzOn||!blzPts.length||!BLZ_PATH)return;
+ const vis=p=>{const q=map.latLngToContainerPoint(p.ll);return q.x>-60&&q.y>-60&&q.x<sz.x+60&&q.y<sz.y+60?q:null};
+ /* Nah herangezoomt: die Blitzfläche als weicher gelber Schleier (statt harter Kästen) */
+ const mpp=40075016.7*Math.cos(map.getCenter().lat*Math.PI/180)/(256*Math.pow(2,map.getZoom())),rc=3400/mpp;
+ if(rc>=7){
+  const o=document.createElement("canvas");o.width=cv.width;o.height=cv.height;const g=o.getContext("2d");g.setTransform(d,0,0,d,0,0);g.fillStyle="#FFD43B";
+  blzPts.forEach(b=>b.cells.forEach(p=>{const q=vis(p);if(!q)return;g.beginPath();g.arc(q.x,q.y,rc,0,Math.PI*2);g.fill()}));
+  c.save();c.setTransform(1,0,0,1,0,0);c.globalAlpha=.2;c.filter="blur(6px)";c.drawImage(o,0,0);c.restore();
+ }
+ /* Symbole: zuerst eines je Gewitterzelle (stärkste zuerst), dann in großen Zellen weitere mit Abstand */
+ const placed=[],far=(q,m)=>!placed.some(o=>Math.abs(o.x-q.x)<m&&Math.abs(o.y-q.y)<m);
+ const bolt=(q,s)=>{const k=(s*20)/24;c.save();c.translate(q.x-12*k,q.y-12*k);c.scale(k,k);
+  c.shadowColor="rgba(255,190,0,.75)";c.shadowBlur=7;c.fillStyle="#FFD43B";c.fill(BLZ_PATH);
+  c.shadowColor="transparent";c.lineWidth=1.6/k;c.lineJoin="round";c.strokeStyle="rgba(70,40,0,.9)";c.stroke(BLZ_PATH);c.restore()};
+ blzPts.forEach(b=>{const q=vis(b);if(q&&q.x>=-10&&q.y>=-10&&q.x<=sz.x+10&&q.y<=sz.y+10&&far(q,18)){placed.push(q);bolt(q,b.n>=6?1:b.n>=3?.88:.78)}});
+ blzPts.forEach(b=>b.cells.forEach(p=>{const q=vis(p);if(q&&q.x>=-10&&q.y>=-10&&q.x<=sz.x+10&&q.y<=sz.y+10&&far(q,72)){placed.push(q);bolt(q,.82)}}));
+}
+async function blzLoad(force){
+ if(!map||!blzOn||blzBusy)return;
+ const C=L.CRS.EPSG3857,z=map.getZoom(),bb=map.getBounds();
+ const sw=C.project(bb.getSouthWest()),ne=C.project(bb.getNorthEast());
+ /* schon geladen, frisch (unter 1 Minute) und das Bild deckt die Karte ab: nichts zu tun */
+ if(!force&&blzBox&&Date.now()-blzAt<60000&&sw.x>=blzBox[0]&&sw.y>=blzBox[1]&&ne.x<=blzBox[2]&&ne.y<=blzBox[3])return;
+ if(!force&&Date.now()-blzFail<60000)return;
+ const W0=ne.x-sw.x,H0=ne.y-sw.y,x0=sw.x-W0*.4,y0=sw.y-H0*.4,x1=ne.x+W0*.4,y1=ne.y+H0*.4;
+ let res=Math.max(2446,156543.03/Math.pow(2,z)),w=(x1-x0)/res,h=(y1-y0)/res;
+ const f=Math.max(w,h)/1200;if(f>1){w/=f;h/=f;res*=f}
+ w=Math.max(16,Math.round(w));h=Math.max(16,Math.round(h));
+ blzBusy=true;const my=++blzSeq;
+ try{
+  const url="https://view.eumetsat.int/geoserver/wms?service=WMS&version=1.3.0&request=GetMap&layers=mtg_fd:li_afa&styles=&crs=EPSG:3857&bbox="+[x0,y0,x1,y1].map(v=>v.toFixed(0)).join(",")+"&width="+w+"&height="+h+"&format=image/png&transparent=true&v="+Math.floor(Date.now()/60000);
+  const img=await new Promise((ok,no)=>{const i=new Image();i.crossOrigin="anonymous";const t=setTimeout(()=>no(new Error("zeit")),25000);i.onload=()=>{clearTimeout(t);ok(i)};i.onerror=()=>{clearTimeout(t);no(new Error("bild"))};i.src=url});
+  if(my!==blzSeq||!blzOn)return;
+  const cv=document.createElement("canvas");cv.width=w;cv.height=h;const c=cv.getContext("2d");c.drawImage(img,0,0);
+  const D=c.getImageData(0,0,w,h).data;
+  /* zusammenhängende Blitzflächen = eine Gewitterzelle: Mittelpunkt, Größe und Teilstücke von etwa 6 km */
+  const M=new Uint8Array(w*h);for(let i=0;i<w*h;i++)if(D[i*4+3]>=40)M[i]=1;
+  const cell=Math.max(1,Math.round(6000/res)),toLL=(x,y)=>C.unproject(L.point(x0+(x+.5)*(x1-x0)/w,y1-(y+.5)*(y1-y0)/h)),pts=[],st=[];
+  for(let i0=0;i0<w*h;i0++){
+   if(M[i0]!==1)continue;
+   M[i0]=2;st.push(i0);let n=0,sx=0,sy=0;const cells=new Map();
+   while(st.length){const i=st.pop(),x=i%w,y=(i/w)|0;n++;sx+=x;sy+=y;
+    const k=((x/cell)|0)+","+((y/cell)|0),o=cells.get(k);if(o){o.n++;o.x+=x;o.y+=y}else cells.set(k,{n:1,x,y});
+    for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){const xx=x+dx,yy=y+dy;if(xx<0||yy<0||xx>=w||yy>=h)continue;const j=yy*w+xx;if(M[j]===1){M[j]=2;st.push(j)}}}
+   const cs=[];cells.forEach(o=>cs.push({ll:toLL(o.x/o.n,o.y/o.n)}));
+   pts.push({ll:toLL(sx/n,sy/n),n:n*Math.pow(res/2446,2),cells:cs});
+  }
+  pts.sort((p,q)=>q.n-p.n);
+  blzPts=pts;blzBox=[x0,y0,x1,y1];blzAt=Date.now();blzFail=0;
+  $("bnote").textContent="Blitze: Wettersatellit MTG von EUMETSAT, Blitze der letzten Minuten, auf etwa 5 km genau. Gilt für Europa und Afrika.";
+  blzDraw();
+ }catch(e){blzFail=Date.now();if(my===blzSeq&&!blzPts.length)$("bnote").textContent="Die Blitzdaten vom Satelliten sind gerade nicht verfügbar."}
+ finally{if(my===blzSeq)blzBusy=false}
+}
 function setBlitz(){
  if(!map)return;
  $("blz").classList.toggle("on",blzOn);$("blz").setAttribute("aria-pressed",blzOn?"true":"false");
  try{
-  if(!blzOn){if(blzLayer){map.removeLayer(blzLayer);blzLayer=null}$("bnote").textContent="";return}
-  const v=Math.floor(Date.now()/60000);
-  if(!blzLayer){
-   if(!map.getPane("blz")){const p=map.createPane("blz");p.style.zIndex=360;p.style.pointerEvents="none"}
-   let ok=0,bad=0;blzV=v;
-   const l=blzLayer=L.tileLayer.wms("https://view.eumetsat.int/geoserver/wms",{layers:"mtg_fd:li_afa",format:"image/png",transparent:true,opacity:.95,pane:"blz",attribution:"Blitze: © EUMETSAT (MTG Lightning Imager)",v}).addTo(map);
-   l.on("tileload",()=>{ok++});
-   l.on("tileerror",()=>{bad++;if(!ok&&bad===4&&blzLayer===l)$("bnote").textContent="Die Blitzdaten vom Satelliten sind gerade nicht verfügbar."});
-  }else if(v!==blzV&&blzLayer.setParams){blzV=v;blzLayer.setParams({v})}
-  $("bnote").textContent="Blitze: Wettersatellit MTG von EUMETSAT, Gebiete mit Blitzen in den letzten Minuten. Gilt für Europa und Afrika.";
- }catch(e){blzLayer=null}
+  blzCanvas();
+  const ac=map.attributionControl;
+  if(!blzOn){blzPts=[];blzBox=null;blzDraw();if(ac&&blzAttr){ac.removeAttribution(BLZ_ATT);blzAttr=false}$("bnote").textContent="";return}
+  if(ac&&!blzAttr){ac.addAttribution(BLZ_ATT);blzAttr=true}
+  if(!blzPts.length)$("bnote").textContent="Blitze: Wettersatellit MTG von EUMETSAT, Blitze der letzten Minuten, auf etwa 5 km genau. Gilt für Europa und Afrika.";
+  blzDraw();blzLoad(Date.now()-blzAt>=60000);
+ }catch(e){console.error(e)}
 }
 $("blz").onclick=()=>{blzOn=!blzOn;try{localStorage.setItem("wetter-blz",blzOn?"1":"0")}catch(e){}setBlitz()};
 
@@ -4331,7 +4464,7 @@ try{
 }catch(e){}
 $("lock").textContent="Karte bewegen: "+(map&&map.dragging.enabled()?"an":"aus");
 $("lock").onclick=()=>{if(!map)return;const on=map.dragging.enabled();on?map.dragging.disable():map.dragging.enable();$("lock").textContent="Karte bewegen: "+(on?"aus":"an")};
-if(follow)useGPS(false);
+if(follow)gpsStart();
 
 /* ============ Wetter teilen ============
    Erzeugt ein Bild (1080 × 1350) mit dem, was oben angezeigt wird: Ort, Temperatur, Wetter, die nächsten Stunden und
