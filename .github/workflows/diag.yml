@@ -1,0 +1,11 @@
+name: diag-tmp
+on:
+  push:
+    branches: [diag-tmp]
+jobs:
+  d:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 -u diag.py
