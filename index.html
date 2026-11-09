@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-ERAtJi9HVPZRW2f2H9gt8yICf9BVakLxJyY1T4PhXNk=' 'sha256-+CD5i0gDObdMiTFeSjBHM8SvIjSFGtFW+gQH/GdjeWc=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-IOdI/BIPGXg7C6n/5P8+b7MY2sHmlmWPSgTTQofTr6w=' 'sha256-+CD5i0gDObdMiTFeSjBHM8SvIjSFGtFW+gQH/GdjeWc=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -14,9 +14,9 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/favicon-64.png">
-<meta name="app-build" content="42">
-<meta name="app-version" content="2.8.1">
-<meta name="app-notes" content="Version 2.8.1: Die Kachel unter dem Kopf heißt jetzt so, wie das Wetter in den nächsten 2 Stunden wird: Sonne, Sonne und Wolken, Klarer Himmel, Ein paar Wolken, Wolken, Nebel, Regen, Schnee, Schneeregen oder Gewitter – mit passendem Symbol.">
+<meta name="app-build" content="43">
+<meta name="app-version" content="2.9">
+<meta name="app-notes" content="Version 2.9: Die Temperatur oben wird jetzt an den Messstationen in der Nähe ausgerichtet – in Österreich GeoSphere INCA mit den GeoSphere-Stationen, in Deutschland mit DWD-Stationen, in den USA mit NOAA-Stationen, sonst mit den Wettermeldungen der Flughäfen (dafür braucht der Worker ein Update). Getestet an 106 Stationen in Österreich: im Mittel 0,7° daneben statt 1,2°.">
 <script>/* alte Adresse wetter2.html -> neue Startseite */
 try{if(top!==self)document.documentElement.style.display="none"}catch(e){document.documentElement.style.display="none"}
 window.__redir=/\/wetter2\.html$/i.test(location.pathname);
@@ -1166,7 +1166,7 @@ async function loadWeather(auto){
  }
  try{moveMap()}catch(e){console.error(e)}
  /* jede Minute: Warnungen und Kachelmann (hat eigenen Zwischenspeicher); die anderen, sobald es Neues geben kann */
- loadWarnings();loadKc();loadKcDaily();loadGs();renderFavs();
+ loadWarnings();loadKc();loadKcDaily();loadTn();renderFavs();
  const dN=due("nc",300000),dO=due("obs",120000),dI=due("ice",900000);
  if(!auto||dN)loadNowcast();
  if(!auto||dO)loadObs();
@@ -1196,7 +1196,7 @@ function renderAll(j,at){
  $("desc").textContent=DESC[c.weather_code]||"Unbekannt";
  $("range").innerHTML=rangeHtml(j.daily.temperature_2m_max[0],j.daily.temperature_2m_min[0],"Höchstens","Tiefstens");
  $("hsrc").textContent=j.src==="ecmwf"?"Werte: Wettermodell ECMWF IFS, 9 km (über Open-Meteo)":"Werte: Wettermodelle über Open-Meteo";
- [()=>renderHours(j,c),()=>renderDays(j),()=>renderFacts(j,c),kcApplyHeader,heroStats,gsApply,heroSay,heroScene].forEach(f=>{try{f()}catch(e){console.error(e)}});
+ [()=>renderHours(j,c),()=>renderDays(j),()=>renderFacts(j,c),kcApplyHeader,heroStats,tnApply,heroSay,heroScene].forEach(f=>{try{f()}catch(e){console.error(e)}});
 }
 /* Höchst- und Tiefstwert mit Pfeilen; Gefühlt, Wind und Regen als kleine Werte-Leiste */
 const UPA='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg>';
@@ -1209,9 +1209,9 @@ function heroStats(){
  const j=lastJ,el=$("hstats");if(!j||!j.current||!el)return;
  const c=j.current,H=j.hourly||{time:[]};
  let T=c.temperature_2m;const x=kcActive()?kcAt(Date.now()):null;if(x&&x.T!=null)T=x.T;
- /* in Österreich: Temperatur und Wind von GeoSphere; „Gefühlt“ behält den Unterschied, den das Wettermodell rechnet */
- const g=gsNow();let W=c.wind_speed_10m,WD=c.wind_direction_10m;
- if(g){T=g.T;if(g.W!=null){W=g.W;if(g.D!=null)WD=g.D}}
+ /* Temperatur jetzt an den Messstationen ausgerichtet; „Gefühlt“ behält den Unterschied, den das Wettermodell rechnet */
+ const g=tnNow();const W=c.wind_speed_10m,WD=c.wind_direction_10m;
+ if(g)T=g.T;
  const feels=c.apparent_temperature!=null&&c.temperature_2m!=null?T+(c.apparent_temperature-c.temperature_2m):null;
  const s0=H.time.findIndex(t=>t>=c.time.slice(0,13)+":00");
  let pp=null;if(H.precipitation_probability&&s0>=0)for(let k=0;k<3;k++){const v=H.precipitation_probability[s0+k];if(v!=null)pp=Math.max(pp==null?0:pp,v)}
@@ -3130,55 +3130,120 @@ function kcApplyHeader(){
  const rest=kcDaily.h1.filter(r=>r.T!=null&&r.d.getTime()>=now-30*60000&&new Date(r.d.getTime()+off).toISOString().slice(0,10)===today).map(r=>r.T);
  if(rest.length>=2)$("range").innerHTML=rangeHtml(Math.max(...rest),Math.min(...rest),"Heute noch bis","Tiefstens");
  $("hsrc").textContent="Werte: KachelmannWetter (Super HD)";
+ {const hb=document.querySelector("#hours .hc.now b");if(hb)hb.textContent=deg(x.T)}
  heroStats();
  try{heroScene()}catch(e){console.error(e)}
- gsApply();
+ tnApply();
 }
-/* ============ Österreich: Temperatur und Wind „jetzt“ von GeoSphere Austria (INCA-Nowcast, 1 km) ============
-   INCA verbindet die Messstationen mit Gelände und Wettermodell und rechnet alle 15 Minuten für jeden Quadratkilometer
-   Österreichs. Für „jetzt“ wird zwischen den Viertelstunden-Werten gemittelt. Außerhalb Österreichs bleibt alles wie bisher. */
-const GS_PT="https://dataset.api.hub.geosphere.at/v1/timeseries/forecast/nowcast-v1-15min-1km?parameters=t2m,ff,dd&output_format=geojson&lat_lon=";
-let gsPt=null,gsBusy=false,gsFail=0,gsSeq=0;
-function gsNow(){
- const g=gsPt;if(!g||g.k!==PK())return null;
- const now=Date.now()/1000,t=g.t;
- /* zu alt (z. B. lange ohne Verbindung): lieber wieder das Wettermodell */
- if(!t.length||now-g.ref>2*3600||now>t[t.length-1]+900)return null;
- let i=0;while(i+1<t.length&&t[i+1]<=now)i++;
- const f=i+1<t.length&&now>t[i]?(now-t[i])/(t[i+1]-t[i]):0;
- const v=a=>{if(!a||a[i]==null)return null;const b=a[i+1];return b!=null&&f>0?a[i]+(b-a[i])*f:a[i]};
- const T=v(g.T);if(T==null||!isFinite(T))return null;
- const ff=v(g.FF),dd=g.DD&&g.DD[f>.5&&g.DD[i+1]!=null?i+1:i];
- return{T,W:ff!=null?ff*3.6:null,D:dd!=null?dd:null,ref:g.ref};
-}
-function gsApply(){
- const g=gsNow();if(!g||!lastJ)return;
+/* ============ Temperatur jetzt: so genau wie möglich ============
+   Grundwert: in Österreich GeoSphere INCA (1 km), sonst das beste Regionalmodell von Open-Meteo (best_match).
+   Dann wird er an den Messstationen der Umgebung ausgerichtet: Für jede Station (bis 8, höchstens 50 km weit) zählt,
+   um wie viel der Grundwert dort gerade danebenliegt; nahe Stationen in ähnlicher Höhe zählen mehr, und wenige oder ferne
+   Stationen verschieben weniger. Stationen: Österreich GeoSphere (TAWES), Deutschland DWD (über Bright Sky),
+   USA NOAA/NWS, sonst Flughafen-Wettermeldungen (METAR, über den Worker).
+   Geprüft am 9.11.2026 an 106 Stationen in Österreich unter 700 m, jede Station aus den anderen geschätzt:
+   INCA allein lag im Mittel 1,2° daneben, Open-Meteo 1,2°, ECMWF 1,8°, INCA mit Stationen 0,7°. */
+let tnRes=null,tnBusy=false,tnFail=0,tnSeq=0;
+const tnMem={};
+function tnNow(){const g=tnRes;return g&&g.k===PK()&&Date.now()-g.at<30*60000?g:null}
+function tnApply(){
+ const g=tnNow();if(!g||!lastJ)return;
  $("temp").textContent=String(Math.round(g.T)).replace("-","−");$("mtemp").textContent=deg(g.T);
  /* „Jetzt“ in den nächsten 24 Stunden zeigt denselben Wert wie oben */
  const hb=document.querySelector("#hours .hc.now b");if(hb)hb.textContent=deg(g.T);
- const h=$("hsrc");if(h&&h.textContent.indexOf("GeoSphere")<0)h.textContent+=" · Temperatur und Wind jetzt: GeoSphere Austria (INCA, 1 km)";
+ const h=$("hsrc");if(h&&h.textContent.indexOf("Temperatur jetzt")<0)h.textContent+=" · Temperatur jetzt: "+g.txt;
  heroStats();
 }
-async function loadGs(){
+/* Stationen mit Messwert: {n:Name, la, lo, h:Höhe m, T:°C, t:Zeit ms} */
+async function tnAT(la,lo){
+ const st=(await gsStations()).map(x=>({id:x[0],n:x[1],la:x[2],lo:x[3],h:x[4],d:km(la,lo,x[2],x[3])})).filter(x=>x.d<=50&&x.h!=null).sort((p,q)=>p.d-q.d).slice(0,8);
+ if(!st.length)return[];
+ const j=await getJ("https://dataset.api.hub.geosphere.at/v1/station/current/tawes-v1-10min?parameters=TL&station_ids="+st.map(x=>x.id).join(","),20000);
+ const ts=(j.timestamps||[]).map(x=>Date.parse(x)),out=[];
+ (j.features||[]).forEach(f=>{const p=f.properties||{},x=st.find(y=>String(y.id)===String(p.station)),d=p.parameters&&p.parameters.TL&&p.parameters.TL.data;
+  if(!x||!d)return;for(let i=d.length-1;i>=0;i--)if(d[i]!=null&&isFinite(ts[i])){out.push(Object.assign({},x,{T:+d[i],t:ts[i]}));break}});
+ return out;
+}
+async function tnDE(la,lo){
+ const k="de"+la.toFixed(2)+","+lo.toFixed(2);
+ if(!tnMem[k]){const j=await getJ("https://api.brightsky.dev/sources?lat="+la+"&lon="+lo+"&max_dist=50000",15000);
+  /* nur Stationen, die gerade melden (viele Einträge sind alt), jede nur einmal */
+  const seen=new Set();tnMem[k]=(j.sources||[]).filter(x=>(x.observation_type==="synop"||x.observation_type==="current")&&x.lat!=null&&x.height!=null&&x.last_record&&Date.now()-Date.parse(x.last_record)<3*3600000)
+   .sort((p,q)=>p.distance-q.distance).filter(x=>{const n=x.wmo_station_id||x.dwd_station_id||String(x.station_name||x.id).toLowerCase();if(seen.has(n))return false;seen.add(n);return true}).slice(0,5)}
+ const r=await Promise.allSettled(tnMem[k].map(x=>getJ("https://api.brightsky.dev/current_weather?"+(x.wmo_station_id&&/^[A-Z0-9]{4,6}$/.test(x.wmo_station_id)?"wmo_station_id="+x.wmo_station_id:"lat="+x.lat+"&lon="+x.lon+"&max_dist=2000"),15000)));
+ const out=[];
+ r.forEach(v=>{if(v.status!=="fulfilled")return;const w=v.value.weather,so=(v.value.sources||[])[0];if(!w||w.temperature==null||!so)return;
+  if(out.some(o=>o.n===so.station_name))return;out.push({n:so.station_name,la:+so.lat,lo:+so.lon,h:+so.height,T:+w.temperature,t:Date.parse(w.timestamp),d:km(la,lo,+so.lat,+so.lon)})});
+ return out;
+}
+async function tnUS(la,lo){
+ const k="us"+la.toFixed(2)+","+lo.toFixed(2);
+ if(!tnMem[k]){const p=await getJ("https://api.weather.gov/points/"+la.toFixed(4)+","+lo.toFixed(4),15000),u=p&&p.properties&&p.properties.observationStations;
+  if(!u||!/^https:\/\/api\.weather\.gov\//.test(u))return[];
+  const s=await getJ(u,15000);
+  tnMem[k]=(s.features||[]).map(f=>{const c=(f.geometry||{}).coordinates||[],q=f.properties||{};return{id:q.stationIdentifier,n:q.name,la:+c[1],lo:+c[0],h:q.elevation&&q.elevation.value!=null?+q.elevation.value:null}})
+   .filter(x=>x.id&&/^[A-Z0-9]{3,6}$/.test(x.id)&&isFinite(x.la)&&x.h!=null).map(x=>Object.assign(x,{d:km(la,lo,x.la,x.lo)})).filter(x=>x.d<=50).sort((p,q)=>p.d-q.d).slice(0,4)}
+ const r=await Promise.allSettled(tnMem[k].map(x=>getJ("https://api.weather.gov/stations/"+x.id+"/observations/latest",15000)));
+ const out=[];
+ r.forEach((v,i)=>{if(v.status!=="fulfilled")return;const q=v.value.properties||{},T=q.temperature&&q.temperature.value;if(T==null)return;out.push(Object.assign({},tnMem[k][i],{T:+T,t:Date.parse(q.timestamp)}))});
+ return out;
+}
+async function tnMT(la,lo){
+ const W=window.__worker,tok=W&&W.token();if(!tok)return[];
+ const r=await tfetch(W.base+"/mt/"+la.toFixed(1)+","+lo.toFixed(1),{headers:{Authorization:"Bearer "+tok}},20000);
+ if(!r.ok)return[];
+ const j=await r.json(),best={};
+ (j.st||[]).forEach(x=>{if(typeof x.T!=="number"||typeof x.la!=="number"||x.h==null)return;const t=(+x.t)*1000;if(!best[x.id]||best[x.id].t<t)best[x.id]={n:x.n||x.id,la:x.la,lo:x.lo,h:+x.h,T:x.T,t,d:km(la,lo,x.la,x.lo)}});
+ return Object.values(best).filter(x=>x.d<=50).sort((p,q)=>p.d-q.d).slice(0,6);
+}
+/* INCA an mehreren Punkten; Wert zur gewünschten Zeit (zwischen den Viertelstunden gemittelt) */
+async function tnInca(pts){
+ const j=await getJ("https://dataset.api.hub.geosphere.at/v1/timeseries/forecast/nowcast-v1-15min-1km?parameters=t2m&output_format=geojson&"+pts.map(p=>"lat_lon="+p.la.toFixed(4)+","+p.lo.toFixed(4)).join("&"),25000);
+ const ts=(j.timestamps||[]).map(x=>Date.parse(x));
+ return(j.features||[]).map((f,i)=>{const d=f.properties&&f.properties.parameters&&f.properties.parameters.t2m&&f.properties.parameters.t2m.data;if(!d)return null;
+  const t=pts[i].t||Date.now();let k=0;while(k+1<ts.length&&ts[k+1]<=t)k++;
+  const fr=k+1<ts.length&&t>ts[k]?(t-ts[k])/(ts[k+1]-ts[k]):0,a=d[k],b=d[k+1];
+  if(a==null)return null;return b!=null&&fr>0?a+(b-a)*fr:a});
+}
+async function tnModel(pts){
+ const j=await getJ("https://api.open-meteo.com/v1/forecast?latitude="+pts.map(p=>p.la.toFixed(4)).join(",")+"&longitude="+pts.map(p=>p.lo.toFixed(4)).join(",")+(pts.every(p=>p.h!=null&&isFinite(p.h))?"&elevation="+pts.map(p=>Math.round(p.h)).join(","):"")+"&current=temperature_2m&models=best_match&timezone=GMT",20000);
+ return(Array.isArray(j)?j:[j]).map(x=>x&&x.current&&x.current.temperature_2m!=null?+x.current.temperature_2m:null);
+}
+async function loadTn(force){
  const k=PK(),now=Date.now(),la=+place.lat,lo=+place.lon;
- if(!atCovered(la,lo)||gsBusy)return;
- if(gsPt&&gsPt.k===k&&now<gsPt.next)return;
- if(now-gsFail<90000)return;
- let cc="";try{cc=((await placeCC())||{}).cc||""}catch(e){cc=ccNow()}
- if(cc!=="AT"||PK()!==k)return;
- gsBusy=true;const my=++gsSeq;
+ if(tnBusy||!lastJ)return;
+ if(!force&&tnRes&&tnRes.k===k&&now-tnRes.at<10*60000)return;
+ if(now-tnFail<2*60000&&!(tnRes&&tnRes.k!==k))return;
+ tnBusy=true;const my=++tnSeq;
  try{
-  const j=await getJ(GS_PT+la.toFixed(4)+","+lo.toFixed(4),25000);
-  if(my!==gsSeq||PK()!==k)return;
-  const P=j&&j.features&&j.features[0]&&j.features[0].properties&&j.features[0].properties.parameters;
-  if(!P||!P.t2m||!Array.isArray(P.t2m.data))throw new Error("leer");
-  const t=(j.timestamps||[]).map(x=>Date.parse(x)/1000),rf=Date.parse(j.reference_time)/1000;
-  const g={k,t,T:P.t2m.data,FF:P.ff&&P.ff.data,DD:P.dd&&P.dd.data,ref:isFinite(rf)?rf:t[0]-900};
-  /* der nächste Lauf kommt 15 Minuten später; erst dann wieder fragen, höchstens alle 4 Minuten */
-  g.next=Math.max(now+4*60000,(g.ref+15*60+AT_LAG)*1000);
-  gsPt=g;gsFail=0;gsApply();
- }catch(e){console.error(e);gsFail=Date.now()}
- finally{if(my===gsSeq)gsBusy=false}
+  let cc="";try{cc=((await placeCC())||{}).cc||""}catch(e){cc=ccNow()}
+  if(PK()!==k)return;
+  const he=lastJ.elevation!=null&&isFinite(+lastJ.elevation)?+lastJ.elevation:null;
+  let st=[],net="";
+  const add=async(fn,label)=>{if(st.length>=3)return;try{const r=await fn(la,lo);if(r&&r.length){st=st.concat(r.filter(x=>!st.some(y=>km(x.la,x.lo,y.la,y.lo)<1)));net=net||label}}catch(e){console.error(e)}};
+  if(inBox2([46.3,49.1,9.5,17.2]))await add(tnAT,"GeoSphere");
+  if(cc==="DE"||(!cc&&inBox2([47.2,55.1,5.8,15.1]))||(st.length<3&&inBox2([47.2,55.1,5.8,15.1])))await add(tnDE,"DWD");
+  if(cc==="US")await add(tnUS,"NOAA");
+  if(st.length<2)await add(tnMT,"METAR");
+  /* nur frische Messungen (höchstens 45 Minuten alt) */
+  st=st.filter(x=>isFinite(x.T)&&isFinite(x.t)&&now-x.t<=45*60000&&now-x.t>-10*60000&&x.d<=50).sort((p,q)=>p.d-q.d).slice(0,8);
+  const pl={la,lo,h:he,t:now};
+  let base,bs,src;
+  if(cc==="AT"){
+   try{const v=await tnInca([pl].concat(st));if(v[0]!=null){base=v[0];bs=v.slice(1);src="GeoSphere INCA"}}catch(e){console.error(e)}
+  }
+  if(base==null){const v=await tnModel([pl].concat(st));base=v[0];bs=v.slice(1);src="Open-Meteo"}
+  if(my!==tnSeq||PK()!==k||base==null)return;
+  /* Abweichung des Grundwerts an den Stationen, gewichtet nach Entfernung und Höhenunterschied */
+  let num=0,den=0,n=0;
+  st.forEach((x,i)=>{if(bs[i]==null)return;const dh=he!=null?Math.abs(x.h-he):0,w=1/Math.pow(x.d+5,2)*Math.exp(-Math.pow(dh/250,2));num+=w*(x.T-bs[i]);den+=w;n++});
+  const bias=den?Math.max(-6,Math.min(6,num/(den+1/900))):0;
+  const NET={GeoSphere:src.indexOf("GeoSphere")===0?"Messstation":"GeoSphere-Station",DWD:"DWD-Station",NOAA:"NOAA-Station",METAR:"Flughafen-Messung"},nw=NET[net]||"Messstation";
+  const txt=n?src+", an "+n+" "+nw+(n===1?"":"en")+" angepasst":src+" (keine Messstation in der Nähe)";
+  if(!n&&kcActive()){tnRes=null;return}
+  tnRes={k,T:base+bias,txt,at:Date.now(),n,bias};tnFail=0;tnApply();
+ }catch(e){console.error(e);tnFail=Date.now()}
+ finally{if(my===tnSeq)tnBusy=false}
 }
 let kcdSeq=0;
 async function loadKcDaily(){
@@ -3326,11 +3391,11 @@ $("favs").addEventListener("click",e=>{
 /* ============ Messwerte der nächsten Station ============ */
 const inBox2=b=>+place.lat>=b[0]&&+place.lat<=b[1]&&+place.lon>=b[2]&&+place.lon<=b[3];
 async function gsStations(){
- try{const o=JSON.parse(localStorage.getItem("wetter-gsst"));if(o&&Date.now()-o.t<7*86400000)return o.s}catch(e){}
+ try{const o=JSON.parse(localStorage.getItem("wetter-gsst2"));if(o&&Date.now()-o.t<7*86400000)return o.s}catch(e){}
  const m=await getJ("https://dataset.api.hub.geosphere.at/v1/station/current/tawes-v1-10min/metadata");
- const s=(m.stations||[]).filter(x=>x.is_active!==false&&x.lat!=null&&x.lon!=null).map(x=>[String(x.id),x.name,+x.lat,+x.lon]);
+ const s=(m.stations||[]).filter(x=>x.is_active!==false&&x.lat!=null&&x.lon!=null).map(x=>[String(x.id),x.name,+x.lat,+x.lon,x.altitude!=null?+x.altitude:null]);
  if(!s.length)throw new Error("stations");
- try{localStorage.setItem("wetter-gsst",JSON.stringify({t:Date.now(),s}))}catch(e){}
+ try{localStorage.removeItem("wetter-gsst");localStorage.setItem("wetter-gsst2",JSON.stringify({t:Date.now(),s}))}catch(e){}
  return s;
 }
 async function obsAT(){

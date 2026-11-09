@@ -220,7 +220,7 @@ export default {
       return json({ error: "Der Worker ist noch nicht fertig eingerichtet (Variablen fehlen)." }, 500);
     const url = new URL(req.url);
 
-    if (url.pathname === "/") return json({ ok: true, name: "wetter-proxy", version: "1.2", renew: true, push: !!env.SUBS, guard: true, ma: true });
+    if (url.pathname === "/") return json({ ok: true, name: "wetter-proxy", version: "1.3", renew: true, push: !!env.SUBS, guard: true, ma: true, mt: true });
 
     if (url.pathname === "/login" && req.method === "POST") {
       const ip = req.headers.get("CF-Connecting-IP") || "unbekannt";
@@ -263,6 +263,28 @@ export default {
       if (!MA_SLUGS.has(slug)) return json({ error: "Unbekanntes Land" }, 400);
       const r = await fetch("https://feeds.meteoalarm.org/api/v1/warnings/feeds-" + slug, { headers: { Accept: "application/json" }, cf: { cacheTtl: 600, cacheEverything: true } });
       return new Response(r.body, { status: r.ok ? 200 : 502, headers: { ...h, "Content-Type": "application/json; charset=utf-8", "Cache-Control": "private, max-age=300" } });
+    }
+
+    // Wettermeldungen der Flughäfen (METAR) rund um einen Ort, damit die App die Temperatur oben an echten Messungen
+    // ausrichten kann, wo es keine andere frei abrufbare Station gibt (aviationweather.gov erlaubt keinen Abruf aus dem Browser)
+    if (url.pathname.startsWith("/mt/") && req.method === "GET") {
+      if (!(await checkToken(env, req))) return json({ error: "Nicht angemeldet" }, 401);
+      const m = url.pathname.slice(4).match(/^(-?\d{1,2}(?:\.\d{1,4})?),(-?\d{1,3}(?:\.\d{1,4})?)$/);
+      if (!m) return json({ error: "Ungültig" }, 400);
+      const la = Math.round(+m[1] * 10) / 10, lo = Math.round(+m[2] * 10) / 10;
+      if (Math.abs(la) > 85 || Math.abs(lo) > 180) return json({ error: "Ungültig" }, 400);
+      const dla = 0.6, dlo = Math.min(3, 0.6 / Math.max(0.2, Math.cos((la * Math.PI) / 180)));
+      const bb = [la - dla, lo - dlo, la + dla, lo + dlo].map((x) => x.toFixed(2)).join(",");
+      let a = [];
+      try {
+        const r = await fetch("https://aviationweather.gov/api/data/metar?format=json&hours=2&bbox=" + bb, { headers: { Accept: "application/json", "User-Agent": "wetter-proxy" }, cf: { cacheTtl: 300, cacheEverything: true } });
+        if (r.ok && r.status !== 204) a = await r.json();
+      } catch (e) {}
+      const st = (Array.isArray(a) ? a : [])
+        .filter((x) => x && typeof x.temp === "number" && typeof x.lat === "number" && typeof x.lon === "number")
+        .map((x) => ({ id: String(x.icaoId || "").slice(0, 8), n: String(x.name || "").slice(0, 60), la: x.lat, lo: x.lon, h: typeof x.elev === "number" ? x.elev : null, t: x.obsTime, T: x.temp }))
+        .slice(0, 120);
+      return new Response(JSON.stringify({ st }), { status: 200, headers: { ...h, "Cache-Control": "private, max-age=240" } });
     }
 
     if (url.pathname.startsWith("/push/")) {

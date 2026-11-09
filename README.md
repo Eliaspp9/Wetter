@@ -3,6 +3,8 @@
 Persönliche Wetter-App im Stil von WetterOnline, als Webseite auf GitHub Pages:
 https://eliaspp9.github.io/Wetter/
 
+**Version 2.9**: Temperatur oben an Messstationen ausgerichtet (AT GeoSphere, DE DWD, USA NOAA, sonst Flughäfen über den Worker 1.3).
+
 **Version 2.8.1**: Titel der 2-Stunden-Kachel richtet sich nach dem Wetter (Sonne, Wolken, Regen, Schnee …).
 
 **Version 2.8**: Eigenes Radar für Niederlande, Tschechien, Kanada und Japan (zusätzlich zu USA und Finnland); liegt der Ort dort, startet das Radar gleich damit.
@@ -16,7 +18,8 @@ https://eliaspp9.github.io/Wetter/
 **Aufbau (von oben nach unten):** Kopf mit Wetter jetzt, „Keine Warnungen“ bzw. der wichtigsten Warnung und dem Messwert der nächsten Station → Warnungen (nur wenn es welche gibt) → Regen in den nächsten 2 Stunden → Gemessen → Regenradar → Nächste 24 Stunden (Kacheln oder Tabelle) → Glätte (nur bei Bedarf) → 7 Tage → Trend bis 14 Tage → Details mit Sonne und Mond → Luft und Pollen → Berge → „Für Wetter-Fans“ (eingeklappt: Modellvergleich, KI-Korrektur, Rückblick; geladen wird erst beim Öffnen) → Benachrichtigungen. Unten in der Leiste: Wetter, Radar, Stunden, 7 Tage, Mehr.
 
 - **Bewegter Himmel oben:** Wolken ziehen in Windrichtung (bei mehr Wind schneller), dazu je nach Wetter Sonnenstrahlen, Mondlicht mit Sternen und Sternschnuppe, Nebelschwaden, Regen schräg im Wind (bei Starkregen dichter), Schnee in drei Ebenen und Blitze bei Gewitter. Alles läuft auf der Grafikeinheit, steht still, wenn der Kopf nicht sichtbar ist oder ruhige Bewegung eingestellt ist.
-- **Wetter jetzt:** aktuelle Werte von KachelmannWetter (Super HD) oder vom ECMWF-Modell IFS (9 km, über Open-Meteo). In Österreich kommen Temperatur und Wind oben von GeoSphere Austria: INCA-Nowcast mit 1 km, alle 15 Minuten aus Messstationen, Gelände und Wettermodell gerechnet, für „jetzt“ zwischen den Viertelstunden gemittelt. Oben steht, woher die Werte kommen.
+- **Wetter jetzt:** aktuelle Werte von KachelmannWetter (Super HD) oder vom ECMWF-Modell IFS (9 km, über Open-Meteo). Oben steht, woher die Werte kommen.
+- **Temperatur oben:** an echten Messungen ausgerichtet. Grundwert ist in Österreich GeoSphere INCA (1 km), sonst das beste Regionalmodell von Open-Meteo. Dann rechnet die App aus, um wie viel dieser Grundwert an den Messstationen der Umgebung gerade danebenliegt (bis 8 Stationen, höchstens 50 km; nahe Stationen in ähnlicher Höhe zählen mehr), und verschiebt ihn entsprechend. Stationen: Österreich GeoSphere (TAWES), Deutschland DWD (über Bright Sky), USA NOAA/NWS, sonst Flughafen-Wettermeldungen (METAR über den Worker, ab Worker-Version 1.3). Geprüft am 9.11.2026 an 106 Stationen in Österreich unter 700 m (jede Station aus den anderen geschätzt): INCA allein im Mittel 1,2° daneben, Open-Meteo 1,2°, ECMWF 1,8°, INCA mit Stationen 0,7°. Ohne Station in der Nähe bleibt bei Kachelmann dessen Wert, sonst das Regionalmodell.
 - **Wettermodell ECMWF:** Vorhersage, 7 Tage, 14-Tage-Trend, Temperatur- und Windkarte, Bergwetter und die KI-Korrektur rechnen mit ECMWF IFS. Was ECMWF nicht liefert, kommt vom Standardmodell von Open-Meteo: UV-Index, Regen in den nächsten 2 Stunden (15-Minuten-Werte), Niederschlagsart sowie Nullgrad- und Schneefallgrenze (ICON des DWD).
 - **Regenradar:**
   - DWD 1 km mit 2 Stunden Radar-Vorhersage.
