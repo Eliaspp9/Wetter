@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-DdoF9ZBEDRtnsVCCLs5djQxIfCGr6hCq4gC71fuIwO8=' 'sha256-+CD5i0gDObdMiTFeSjBHM8SvIjSFGtFW+gQH/GdjeWc=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-FJ5B/KjZIJN5U/qGZjYjGYRL9jTM7rSliIYQUerIkMw=' 'sha256-+CD5i0gDObdMiTFeSjBHM8SvIjSFGtFW+gQH/GdjeWc=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -14,9 +14,9 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/favicon-64.png">
-<meta name="app-build" content="49">
-<meta name="app-version" content="2.14.1">
-<meta name="app-notes" content="Version 2.14.1: Die Hilfe beim Standort am iPhone nennt jetzt den entscheidenden Schalter für die App vom Home-Bildschirm: Einstellungen → Datenschutz & Sicherheit → Ortungsdienste → Systemdienste → „In-App-Browsing“ einschalten, danach das Symbol neu anlegen.">
+<meta name="app-build" content="51">
+<meta name="app-version" content="2.15">
+<meta name="app-notes" content="Version 2.15: Neues Standort-Symbol (Pfeil wie in Karten-Apps, gefüllt = dein Standort). Regenradar: Starkregen ab 12 mm/h in Gelb, Orange und Rot, die Legende geht bis 50 mm/h; starker Schneefall ab 7 cm/h in Rosa, Legende bis 15 cm/h. Der Wert beim Antippen des Radars verschwindet nach 4 Sekunden von selbst.">
 <script>/* alte Adresse wetter2.html -> neue Startseite */
 try{if(top!==self)document.documentElement.style.display="none"}catch(e){document.documentElement.style.display="none"}
 window.__redir=/\/wetter2\.html$/i.test(location.pathname);
@@ -173,8 +173,10 @@ html[data-sky=cloud] .deco i,html[data-sky=cloud-night] .deco i,html[data-sky=ra
 .search input::placeholder{color:rgba(255,255,255,.82)}
 .iconbtn{width:44px;height:44px;flex:none;border-radius:14px;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.18);color:#fff;display:grid;place-items:center}
 /* Standortsuche: das Symbol dreht sich, Meldungen oben gut sichtbar (nicht mehr unten in der Seite) */
-@keyframes gspin{to{transform:rotate(360deg)}}
-#geo.busy svg{animation:gspin 1.1s linear infinite}
+/* Standort-Pfeil wie in Karten-Apps: hohl = anderer Ort, gefüllt = dein Standort wird verwendet */
+body.follow #geo svg,.favs button.on svg{fill:currentColor}
+@keyframes gpulse{50%{transform:scale(.78);opacity:.55}}
+#geo.busy svg{animation:gpulse .9s ease-in-out infinite}
 .gpsmsg{position:fixed;left:12px;right:12px;top:calc(env(safe-area-inset-top,0px) + 12px);z-index:3500;max-width:480px;margin:0 auto;padding:12px 40px 12px 14px;border-radius:16px;background:var(--card);color:var(--ink);box-shadow:0 12px 40px rgba(0,0,0,.28);border-left:4px solid var(--accent);font-size:14px;line-height:1.45}
 .gpsmsg[hidden]{display:none}
 .gpsmsg.err{border-left-color:#E5484D}
@@ -822,13 +824,13 @@ html.locked body>*:not(#gate){display:none!important}
   </div>
   <button class="iconbtn" id="wallbtn" type="button" aria-label="Wandanzeige" title="Wandanzeige"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="12.5" rx="2"/><path d="M9 21h6M12 17v4"/></svg></button>
   <button class="iconbtn" id="share" type="button" aria-label="Wetter teilen" title="Wetter teilen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5v11M7.8 7.7 12 3.5l4.2 4.2"/><path d="M8.5 10.5H7a2 2 0 0 0-2 2V19a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6.5a2 2 0 0 0-2-2h-1.5"/></svg></button>
-  <button class="iconbtn" id="geo" type="button" aria-label="Mein Standort verwenden">
-   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+  <button class="iconbtn" id="geo" type="button" aria-label="Mein Standort verwenden" title="Mein Standort">
+   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M20.6 3.4 3.7 10.4c-.7.3-.6 1.2.1 1.4l6.7 2 2 6.7c.2.7 1.1.8 1.4.1z"/></svg>
   </button>
  </div>
  <div class="hero-body">
   <p class="wclock" id="wclock" aria-hidden="true"></p>
-  <p class="place"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span id="pname">Wien</span><button class="favbtn" id="fav" type="button" aria-pressed="false" aria-label="Als Lieblingsort speichern"></button></p>
+  <p class="place"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M20.6 3.4 3.7 10.4c-.7.3-.6 1.2.1 1.4l6.7 2 2 6.7c.2.7 1.1.8 1.4.1z"/></svg><span id="pname">Wien</span><button class="favbtn" id="fav" type="button" aria-pressed="false" aria-label="Als Lieblingsort speichern"></button></p>
   <p class="when" id="when"></p>
   <div class="nowrow"><div class="hicon" id="hicon"></div><span class="temp" id="temp">–</span><span class="deg">°</span></div>
   <p class="cond" id="desc">Wird geladen …</p>
@@ -2485,8 +2487,9 @@ function exNote(){
 /* ============ Prognose aus dem Wettermodell (Ausweichlösung, ca. 2 Stunden) ============ */
 let fcData=null,fcOv=null,fcMk=null,fcTimer=0,fcLast=0,fcBusy=false;
 const STORM_ICO='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 4 14h6l-1 8 9-12h-6z" fill="#1B1B1B"/></svg>';
-const RAINC=[[.1,[178,214,255]],[.5,[110,170,255]],[1.5,[50,120,240]],[3,[25,85,210]],[6,[15,55,170]],[12,[10,30,120]]];
-const SNOWC=[[.1,[226,205,255]],[.5,[196,160,255]],[1.5,[160,110,240]],[4,[125,70,210]],[10,[90,40,170]]];
+/* ab 12 mm/h harter Wechsel auf Gelb, Orange, Rot (Starkregen soll sofort auffallen); Schnee ab 10 mm Wasser (7 cm/h) auf Rosa */
+const RAINC=[[.1,[178,214,255]],[.5,[110,170,255]],[1.5,[50,120,240]],[3,[25,85,210]],[6,[15,55,170]],[12,[10,30,120]],[12.001,[255,210,40]],[25,[250,130,20]],[50,[215,30,45]]];
+const SNOWC=[[.1,[226,205,255]],[.5,[196,160,255]],[1.5,[160,110,240]],[4,[125,70,210]],[10,[90,40,170]],[10.001,[255,150,215]],[15,[235,80,170]],[22,[175,20,115]]];
 function ramp(st,v){
  if(v<=st[0][0])return st[0][1];
  for(let i=1;i<st.length;i++)if(v<=st[i][0]){const a=st[i-1],b=st[i],f=(v-a[0])/(b[0]-a[0]);return a[1].map((c,k)=>c+(b[1][k]-c)*f)}
@@ -2967,11 +2970,13 @@ function lgRow(lab,grad,ticks,unit){
  return'<div class="lgr"><b>'+lab+'</b><div class="lgf"><i style="background:'+grad+'"></i><div class="lgt">'+ticks.map(t=>{const x=Math.max(0,Math.min(100,t[0]));return'<em style="left:'+x.toFixed(1)+'%;transform:translateX('+(x<6?"-12px":x>94?"calc(-100% + 12px)":"-50%")+')">'+t[1]+"</em>"}).join("")+'</div></div><small class="lgx">'+unit+"</small></div>";
 }
 /* Stelle eines Wertes auf dem Balken: die Farbstufen liegen in gleichen Abständen */
-function lgPos(st,v){if(v<=st[0][0])return 0;for(let i=1;i<st.length;i++)if(v<=st[i][0])return(i-1+(v-st[i-1][0])/(st[i][0]-st[i-1][0]))/(st.length-1)*100;return 100}
-function lgGrad(st){return"linear-gradient(90deg,"+st.map((x,i)=>"rgba("+x[1].map(Math.round).join(",")+","+Math.max(.5,Math.min(1,.35+x[0]*.6)*.92).toFixed(2)+") "+(i/(st.length-1)*100).toFixed(1)+"%").join(",")+")"}
+/* Platz jeder Farbstufe auf dem Balken: gleiche Abstände; zwei fast gleiche Werte (harter Farbwechsel) teilen sich den Platz */
+function lgSlots(st){const p=[0];for(let i=1;i<st.length;i++)p.push(p[i-1]+(st[i][0]-st[i-1][0]<.01?0:1));const n=p[p.length-1]||1;return p.map(x=>x/n*100)}
+function lgPos(st,v){const P=lgSlots(st);if(v<=st[0][0])return 0;for(let i=1;i<st.length;i++)if(v<=st[i][0])return P[i-1]+(P[i]-P[i-1])*(v-st[i-1][0])/(st[i][0]-st[i-1][0]);return 100}
+function lgGrad(st){const P=lgSlots(st);return"linear-gradient(90deg,"+st.map((x,i)=>"rgba("+x[1].map(Math.round).join(",")+","+Math.max(.5,Math.min(1,.35+x[0]*.6)*.92).toFixed(2)+") "+P[i].toFixed(1)+"%").join(",")+")"}
 function legOwn(){
- return lgRow("Regen",lgGrad(RAINC),[[.1,"0,1"],[.5,"0,5"],[1.5,"1,5"],[3,"3"],[6,"6"],[12,"12"]].map(t=>[lgPos(RAINC,t[0]),t[1]]),"mm/h")+
-  lgRow("Schnee",lgGrad(SNOWC),[[.1,"0,1"],[.5,"0,5"],[1,"1"],[3,"3"],[7,"7"]].map(t=>[lgPos(SNOWC,t[0]/.7),t[1]]),"cm/h");
+ return lgRow("Regen",lgGrad(RAINC),[[.1,"0,1"],[.5,"0,5"],[1.5,"1,5"],[3,"3"],[6,"6"],[12,"12"],[25,"25"],[50,"50"]].map(t=>[lgPos(RAINC,t[0]),t[1]]),"mm/h")+
+  lgRow("Schnee",lgGrad(SNOWC),[[.1,"0,1"],[.5,"0,5"],[1,"1"],[3,"3"],[7,"7"],[10,"10"],[15,"15"]].map(t=>[lgPos(SNOWC,t[0]/.7),t[1]]),"cm/h");
 }
 function legUB(){
  const P=d=>(d-10)/50*100,zr=R=>23.01+16*Math.log10(R),zs=c=>33.01+20*Math.log10(c/.7);
@@ -3026,8 +3031,8 @@ function rVal(la,lo){
  if(v)v.src=src;
  return v;
 }
-const RWORD=r=>r<2.5?"leichter Regen":r<10?"mäßiger Regen":r<25?"starker Regen":"heftiger Starkregen";
-const SWORD=c=>c<.5?"leichter Schneefall":c<1.5?"mäßiger Schneefall":"starker Schneefall";
+const RWORD=r=>r<2.5?"leichter Regen":r<10?"mäßiger Regen":r<25?"starker Regen":r<50?"heftiger Starkregen":"extremer Starkregen";
+const SWORD=c=>c<.5?"leichter Schneefall":c<1.5?"mäßiger Schneefall":c<5?"starker Schneefall":"extremer Schneefall";
 /* pop: ausführlich für das Fenster beim Antippen; sonst kurz für die Anzeige neben der Maus (nur, wenn dort etwas fällt) */
 function rHtml(v,pop){
  if(!v||v.wait)return null;
@@ -3040,12 +3045,14 @@ function rHtml(v,pop){
  if(v.snow){const c=v.cm!=null?v.cm:v.r*.7;return"<b>"+lt(c)+" cm/h</b>"+(pop?"<br>"+SWORD(c)+"<br><small>als Wasser etwa "+lt(v.r)+" mm/h</small>"+foot:" · "+SWORD(c))}
  return"<b>"+lt(v.r)+" mm/h</b>"+(pop?"<br>"+RWORD(v.r)+foot:" · "+RWORD(v.r));
 }
-let rPop=null,rPopLL=null,rTip=null,rTipE=null,rTipRaf=0,rTipOn=false,ptrMouse=false,rTipHold=null;
+let rPop=null,rPopLL=null,rPopT=0,rTip=null,rTipE=null,rTipRaf=0,rTipOn=false,ptrMouse=false,rTipHold=null;
 function rClick(e){
  if(lay!=="rain"||!map||!e||!e.latlng)return;
  const h=rHtml(rVal(e.latlng.lat,e.latlng.lng),true);if(!h)return;
  rTipHide();rTipHold=e.containerPoint||null;
  try{rPopLL=e.latlng;rPop=L.popup({closeButton:false,autoPanPadding:[14,14],maxWidth:260,className:"fpop"}).setLatLng(e.latlng).setContent(h).openOn(map)}catch(x){}
+ /* verschwindet nach 4 Sekunden von selbst (die längeren Erklärungen ohne Werte nach 7 Sekunden) */
+ clearTimeout(rPopT);const pp=rPop;rPopT=setTimeout(()=>{try{if(pp&&map.hasLayer(pp))map.closePopup(pp)}catch(x){}},/Keine Werte/.test(h)?7000:4000);
 }
 function rTipHide(){rTipOn=false;if(rTip)rTip.style.display="none"}
 function rTipShow(e){
@@ -3760,7 +3767,7 @@ $("kc").addEventListener("click",e=>{
 
 /* ============ Lieblingsorte ============ */
 const STAR='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2l2.6 5.5 6 .8-4.4 4.1 1.1 5.9L12 16.6l-5.3 2.9 1.1-5.9-4.4-4.1 6-.8z"/></svg>';
-const LOC_S='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>';
+const LOC_S='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><path d="M20.6 3.4 3.7 10.4c-.7.3-.6 1.2.1 1.4l6.7 2 2 6.7c.2.7 1.1.8 1.4.1z"/></svg>';
 let favs=[];try{favs=JSON.parse(localStorage.getItem("wetter-favs"))||[]}catch(e){}
 if(!Array.isArray(favs))favs=[];
 /* früher höchstens 8 (der älteste fiel still heraus), jetzt 30, und nichts verschwindet mehr von selbst */
