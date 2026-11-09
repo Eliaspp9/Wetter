@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-Hx5nSpOBDngpmV7NkoRmKguFIZ+SdHr9zlGFDIcZksA=' 'sha256-+CD5i0gDObdMiTFeSjBHM8SvIjSFGtFW+gQH/GdjeWc=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-rf5OwCTZ6Y5S7mR88RdhTMPbDtXqZJFChUtHSquS6Lo=' 'sha256-+CD5i0gDObdMiTFeSjBHM8SvIjSFGtFW+gQH/GdjeWc=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -14,9 +14,9 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/favicon-64.png">
-<meta name="app-build" content="47">
-<meta name="app-version" content="2.13">
-<meta name="app-notes" content="Version 2.13: Die Legende unter dem Regenradar zeigt jetzt, welche Farbe wie viel bedeutet (Regen in mm pro Stunde, Schnee in cm pro Stunde). Tippst du beim Radar auf den Regen (oder fährst mit der Maus darüber), siehst du die Menge an dieser Stelle, bei DWD 1 km und Österreich. Bei 7 Tage zeigt ein roter Strich das KI-Modell AIFS zum Vergleich, die Werte stehen beim Aufklappen eines Tages.">
+<meta name="app-build" content="48">
+<meta name="app-version" content="2.14">
+<meta name="app-notes" content="Version 2.14: Der Stern zum Speichern eines Lieblingsorts war bei gesuchten Orten unsichtbar, jetzt ist er immer da. Bis zu 30 Lieblingsorte (früher 8, der älteste fiel still heraus), speichern auch direkt in der Suche mit dem Stern, und mit „Bearbeiten“ umbenennen, sortieren und entfernen. Standort: die App fragt beim Start immer, weil iOS 26 bei Apps vom Home-Bildschirm fälschlich „gesperrt“ meldet.">
 <script>/* alte Adresse wetter2.html -> neue Startseite */
 try{if(top!==self)document.documentElement.style.display="none"}catch(e){document.documentElement.style.display="none"}
 window.__redir=/\/wetter2\.html$/i.test(location.pathname);
@@ -189,8 +189,9 @@ html[data-sky=cloud] .deco i,html[data-sky=cloud-night] .deco i,html[data-sky=ra
 .res li:hover,.res li:focus{background:var(--tile);outline:none}
 .hero-body{position:relative;max-width:1180px;margin:0 auto;padding:16px 16px 0;text-align:center}
 .place{display:inline-flex;align-items:center;gap:6px;font-size:22px;font-weight:600;letter-spacing:-.015em;text-shadow:0 1px 12px rgba(0,0,0,.12)}
-.place svg{width:17px;height:17px;display:none;flex:none}
-.follow .place svg{display:block}
+/* nur das Ortungs-Symbol vor dem Namen hängt vom Standort ab; der Stern daneben ist immer zu sehen */
+.place>svg{width:17px;height:17px;display:none;flex:none}
+.follow .place>svg{display:block}
 .when{font-size:13px;opacity:.85;margin-top:1px}
 .nowrow{display:flex;align-items:center;justify-content:center;gap:2px;margin-top:4px}
 .hicon{--cloud:#fff;--cloud2:#DCE6F2;--moon:#EEF2FF;position:relative;width:108px;height:108px;flex:none;margin-right:-2px}
@@ -314,7 +315,7 @@ html.wall .s-fans{display:none!important}
 html.wall,html.wall body{height:100%;overflow:hidden}
 html.wall body{display:grid;grid-template-columns:minmax(300px,35%) minmax(0,1fr);grid-template-rows:auto auto minmax(0,1fr);gap:12px;padding:12px;padding-bottom:12px}
 html.wall main,html.wall .grid{display:contents}
-html.wall .tabs,html.wall .mini,html.wall .foot,html.wall .bar,html.wall .favs,html.wall .favbtn,html.wall #fs,html.wall .s-radar .rnote,html.wall .s-hours .harr,html.wall .dch,html.wall .dd{display:none!important}
+html.wall .tabs,html.wall .mini,html.wall .foot,html.wall .bar,html.wall .favs,html.wall .favedit,html.wall .favbtn,html.wall #fs,html.wall .s-radar .rnote,html.wall .s-hours .harr,html.wall .dch,html.wall .dd{display:none!important}
 html.wall .grid>section{display:none}
 html.wall .hero{grid-area:1/1/2/2;border-radius:20px;padding:4px 0 14px;margin:0}
 html.wall .hero-body{padding:10px 14px 0}
@@ -420,9 +421,30 @@ html.wall .upd{bottom:14px}
 
 /* Lieblingsorte */
 .favbtn{width:34px;height:34px;border:0;background:transparent;color:#fff;display:inline-grid;place-items:center;border-radius:10px;margin-left:2px;vertical-align:middle}
-.favbtn svg{width:21px;height:21px}
+.favbtn svg{width:21px;height:21px;display:block}
 .favbtn[aria-pressed=true] svg{fill:#FFD54A;stroke:#FFD54A}
-.favs{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-top:14px}
+.favs{position:relative;display:flex;flex-wrap:nowrap;gap:6px;margin:14px -4px 0;padding:2px 4px 4px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+.favs::-webkit-scrollbar{display:none}
+/* passt alles hinein, steht die Reihe in der Mitte; sonst lässt sie sich seitlich wischen */
+.favs>:first-child{margin-left:auto}.favs>:last-child{margin-right:auto}
+.favs.ov{-webkit-mask-image:linear-gradient(90deg,transparent,#000 14px,#000 calc(100% - 14px),transparent);mask-image:linear-gradient(90deg,transparent,#000 14px,#000 calc(100% - 14px),transparent)}
+@media (min-width:700px){.favs{flex-wrap:wrap;justify-content:center;overflow:visible;margin:14px 0 0;padding:0}.favs>:first-child,.favs>:last-child{margin:0}.favs.ov{-webkit-mask-image:none;mask-image:none}}
+.favs button{flex:none;white-space:nowrap}
+.favs button.fe{border-style:dashed}
+.favedit{max-width:520px;margin:10px auto 0;padding:8px;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.14);border-radius:16px;text-align:left}
+.favedit ol{list-style:none;margin:0;padding:0}
+.favedit li{display:flex;align-items:center;gap:6px;padding:3px 0}
+.favedit input{flex:1;min-width:0;height:38px;border-radius:10px;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.18);color:#fff;padding:0 10px;font-size:16px}
+.favedit li button{flex:none;width:38px;height:38px;border:0;border-radius:10px;background:rgba(255,255,255,.15);color:#fff;display:grid;place-items:center}
+.favedit li button svg{width:18px;height:18px}
+.favedit li button:disabled{opacity:.3}
+.favedit p{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:8px 2px 2px;font-size:12.5px;line-height:1.35;color:rgba(255,255,255,.88)}
+.favedit .fok{flex:none;border:0;border-radius:999px;background:#fff;color:rgb(var(--a));font-weight:600;font-size:14px;padding:8px 18px}
+.res li{display:flex;align-items:center;gap:6px}
+.res li>span{flex:1;min-width:0}
+.res .rfav{flex:none;width:36px;height:36px;margin:-8px -6px -8px 0;border:0;background:transparent;color:var(--muted);border-radius:10px;display:grid;place-items:center}
+.res .rfav svg{width:20px;height:20px}
+.res .rfav[aria-pressed=true] svg{fill:#F5B400;stroke:#F5B400}
 .favs:empty{display:none}
 .favs button{border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.15);color:#fff;border-radius:999px;padding:5px 12px;font-size:13px;font-weight:500;display:inline-flex;align-items:center;gap:5px;min-height:32px}
 .favs button svg{width:14px;height:14px}
@@ -818,6 +840,7 @@ html.locked body>*:not(#gate){display:none!important}
   <div class="wchips" id="wchips"></div>
   <div class="wbar" id="wbar"><button type="button" id="wsound">Ton bei Alarm: aus</button><button type="button" id="wnight">Nachtanzeige: an</button><button type="button" id="wexit">Wandanzeige beenden</button></div>
   <div class="favs" id="favs"></div>
+  <div class="favedit" id="favedit" hidden></div>
  </div>
 </header>
 
@@ -3118,6 +3141,7 @@ $("q").addEventListener("keydown",e=>{
  else if(e.key==="Escape")$("res").style.display="none";
 });
 $("res").addEventListener("keydown",e=>{
+ if(e.target.closest(".rfav"))return;
  const li=e.target.closest("li[data-i]");if(!li)return;
  if(e.key==="Enter"||e.key===" "){e.preventDefault();li.click()}
  else if(e.key==="ArrowDown"&&li.nextElementSibling){e.preventDefault();li.nextElementSibling.focus()}
@@ -3141,9 +3165,15 @@ $("q").addEventListener("input",e=>{
     }catch(x){}
    }
    if(my!==sq)return;
-   $("res").innerHTML=r.length?r.map((x,i)=>'<li tabindex="0" data-i="'+i+'">'+esc(x.name)+(x.admin1?", "+esc(x.admin1):"")+(x.country?" ("+esc(x.country)+")":"")+"</li>").join(""):"<li>Kein Ort gefunden</li>";
+   $("res").innerHTML=r.length?r.map((x,i)=>{const on=favFind(x.latitude,x.longitude)>=0;return'<li tabindex="0" data-i="'+i+'"><span>'+esc(x.name)+(x.admin1?", "+esc(x.admin1):"")+(x.country?" ("+esc(x.country)+")":"")+'</span><button type="button" class="rfav" data-s="'+i+'" aria-pressed="'+on+'" aria-label="'+esc(x.name)+(on?" aus den Lieblingsorten entfernen":" als Lieblingsort speichern")+'">'+STAR+"</button></li>"}).join(""):"<li>Kein Ort gefunden</li>";
    $("res").style.display="block";
-   $("res").onclick=ev=>{const li=ev.target.closest("li[data-i]");if(!li)return;const x=r[li.dataset.i];
+   $("res").onclick=ev=>{
+    /* Stern in der Trefferliste: speichern oder entfernen, ohne den Ort zu wechseln */
+    const sb=ev.target.closest(".rfav");
+    if(sb){const x=r[+sb.dataset.s];if(!x)return;const k=favFind(x.latitude,x.longitude);
+     if(k>=0){favs.splice(k,1);saveFavs()}else if(!favAdd(x.name,x.latitude,x.longitude))return;
+     const on=favFind(x.latitude,x.longitude)>=0;sb.setAttribute("aria-pressed",on);sb.setAttribute("aria-label",x.name+(on?" aus den Lieblingsorten entfernen":" als Lieblingsort speichern"));renderFavs();renderFavEdit();return}
+    const li=ev.target.closest("li[data-i]");if(!li)return;const x=r[li.dataset.i];
     place={name:x.name,lat:x.latitude,lon:x.longitude};$("res").style.display="none";$("q").value="";follow=false;saveState();loadWeather();window.scrollTo({top:0,behavior:"smooth"})};
   }catch(e){}
  },300);
@@ -3177,8 +3207,15 @@ function gpsMsg(kind,title,steps,foot){
 }
 $("gpsmsg-x").onclick=()=>gpsMsg(null);
 function gpsHelp(code,detail){
- const app=(()=>{try{return standalone()}catch(e){return false}})(),info="Fehler "+(code||"?")+(detail?": "+detail:"");
+ const app=(()=>{try{return standalone()}catch(e){return false}})(),iv=(/OS (\d+)[_.](\d+)/.exec(navigator.userAgent)||[]),
+  info="Fehler "+(code||"?")+" ("+(app?"App vom Home-Bildschirm":"Browser")+(isIOS&&iv[1]?", iOS "+iv[1]+"."+iv[2]:"")+")"+(detail?": "+detail:"");
  if(code===1){
+  /* iOS 26: Apps vom Home-Bildschirm bekommen den Standort manchmal nicht, obwohl alles erlaubt ist (Fehler von Apple,
+     gemeldet im Apple-Entwicklerforum, Thread 804381). In Safari selbst klappt es. */
+  if(isIOS&&app)return gpsMsg("err","Das iPhone gibt der Wetter-App vom Home-Bildschirm keinen Standort.",[
+   "Prüfen: Einstellungen → Datenschutz & Sicherheit → Ortungsdienste ist an, und weiter unten bei „Safari-Websites“ steht „Beim Verwenden der App“ mit „Genauer Standort“.",
+   "Ist das schon so eingestellt, ist es ein bekannter Fehler von iOS 26 bei Apps vom Home-Bildschirm. Dann hilft: das Wetter-Symbol vom Home-Bildschirm löschen, die Seite in Safari öffnen, Teilen → „Zum Home-Bildschirm“ und dort „Als Web-App öffnen“ ausschalten. Das Symbol öffnet die Seite dann in Safari, und dort klappt der Standort.",
+   "Oder ohne Standort: deinen Ort oben suchen und mit dem Stern neben dem Namen speichern. Dann reicht ein Tippen auf den Knopf darunter."],info);
   if(isIOS)return gpsMsg("err","Der Standort ist für "+(app?"die Wetter-App":"diese Seite")+" gesperrt. So erlaubst du ihn:",[
    "Einstellungen → Datenschutz & Sicherheit → Ortungsdienste: ganz oben einschalten.",
    "Im selben Menü weiter unten „Safari-Websites“ → „Beim Verwenden der App“ und „Genauer Standort“ einschalten. Das gilt auch für die App auf dem Home-Bildschirm.",
@@ -3223,7 +3260,7 @@ function useGPS(manual,quiet){
   done();
   if(!manual){
    /* beim Start gesperrt: einmal pro Sitzung zeigen, wie man ihn erlaubt */
-   if(c===1){let shown=false;try{shown=sessionStorage.getItem("wetter-gpshint")==="1";sessionStorage.setItem("wetter-gpshint","1")}catch(e){}if(!shown)gpsHelp(1,err&&err.message)}
+   if(c===1){let last=0;try{last=+localStorage.getItem("wetter-gpshint2")||0}catch(e){}if(Date.now()-last>20*3600000){try{localStorage.setItem("wetter-gpshint2",String(Date.now()))}catch(e){}gpsHelp(1,err&&err.message)}}
    return;
   }
   gpsHelp(c,err&&err.message);
@@ -3231,11 +3268,9 @@ function useGPS(manual,quiet){
  navigator.geolocation.getCurrentPosition(ok,e=>fail(e,false),{enableHighAccuracy:true,timeout:12000,maximumAge:120000});
 }
 /* Beim Start: ist der Standort sicher gesperrt, gar nicht erst fragen, sondern einmal die Anleitung zeigen */
-async function gpsStart(){
- try{if(navigator.permissions&&navigator.permissions.query){const st=await navigator.permissions.query({name:"geolocation"});
-  if(st&&st.state==="denied"){let shown=false;try{shown=sessionStorage.getItem("wetter-gpshint")==="1";sessionStorage.setItem("wetter-gpshint","1")}catch(e){}if(!shown)gpsHelp(1);return}}}catch(e){}
- useGPS(false);
-}
+/* Beim Start einfach fragen. Die Abfrage, ob der Standort gesperrt ist (Permissions-API), meldet in iOS 26 bei Apps vom
+   Home-Bildschirm „gesperrt“, obwohl der Standort klappt; früher hat die App deshalb gar nicht erst gefragt. */
+function gpsStart(){useGPS(false)}
 
 /* ============ Kachelmann-Prognose (über den eigenen Worker) ============ */
 /* Orte, die bei Kachelmann als API-Standorte hinterlegt sind: {name:"Wien",lat:48.2085,lon:16.3721}. Solange die Liste leer ist, wird der gewählte Ort direkt angefragt. */
@@ -3724,21 +3759,75 @@ $("kc").addEventListener("click",e=>{
 const STAR='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2l2.6 5.5 6 .8-4.4 4.1 1.1 5.9L12 16.6l-5.3 2.9 1.1-5.9-4.4-4.1 6-.8z"/></svg>';
 const LOC_S='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>';
 let favs=[];try{favs=JSON.parse(localStorage.getItem("wetter-favs"))||[]}catch(e){}
+if(!Array.isArray(favs))favs=[];
+/* früher höchstens 8 (der älteste fiel still heraus), jetzt 30, und nichts verschwindet mehr von selbst */
+const FAV_MAX=30;
+let favEdit=false,favOnK="";
 const saveFavs=()=>{try{localStorage.setItem("wetter-favs",JSON.stringify(favs))}catch(e){}};
-const favIdx=()=>favs.findIndex(f=>km(f.lat,f.lon,+place.lat,+place.lon)<1);
+const favFind=(la,lo)=>favs.findIndex(f=>km(f.lat,f.lon,+la,+lo)<1);
+const favIdx=()=>favFind(place.lat,place.lon);
+function favAdd(name,la,lo){
+ if(favFind(la,lo)>=0)return true;
+ if(favs.length>=FAV_MAX){gpsMsg("err","Schon "+FAV_MAX+" Lieblingsorte gespeichert",["Tippe bei den Lieblingsorten auf „Bearbeiten“ und entferne einen, den du nicht mehr brauchst."]);return false}
+ favs.push({name:String(name||"Ort").slice(0,40),lat:+(+la).toFixed(4),lon:+(+lo).toFixed(4)});saveFavs();return true;
+}
+const PEN='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg>';
+const CH_UP='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg>';
+const CH_DN='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
+const XX='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
 function renderFavs(){
- const i=favIdx();
+ const i=favIdx(),el=$("favs");
  $("fav").setAttribute("aria-pressed",i>=0?"true":"false");
  $("fav").setAttribute("aria-label",i>=0?"Aus den Lieblingsorten entfernen":"Als Lieblingsort speichern");
- $("favs").innerHTML=favs.length?'<button type="button" data-g="1" class="'+(follow?"on":"")+'">'+LOC_S+"Standort</button>"+favs.map((f,k)=>'<button type="button" data-f="'+k+'" class="'+(!follow&&k===i?"on":"")+'">'+esc(f.name)+"</button>").join(""):"";
+ if(!favs.length)favEdit=false;
+ el.innerHTML=favs.length?'<button type="button" data-g="1" class="'+(follow?"on":"")+'">'+LOC_S+"Standort</button>"+favs.map((f,k)=>'<button type="button" data-f="'+k+'" class="'+(!follow&&k===i?"on":"")+'">'+esc(f.name)+"</button>").join("")+
+  '<button type="button" data-e="1" class="fe" aria-expanded="'+(favEdit?"true":"false")+'">'+PEN+(favEdit?"Fertig":"Bearbeiten")+"</button>":"";
+ el.classList.toggle("ov",el.scrollWidth>el.clientWidth+2);
+ /* den gewählten Ort in die Mitte der Reihe holen, aber nur wenn er wechselt (sonst springt die Reihe beim Wischen zurück) */
+ const on=el.querySelector("button.on"),k=on?on.textContent+"|"+favs.length:"";
+ if(on&&k!==favOnK&&el.scrollWidth>el.clientWidth)el.scrollLeft=Math.max(0,on.offsetLeft-(el.clientWidth-on.offsetWidth)/2);
+ favOnK=k;
 }
+/* Bearbeiten: umbenennen, Reihenfolge ändern, entfernen */
+function renderFavEdit(focusSel){
+ const el=$("favedit");
+ if(!favEdit||!favs.length){el.hidden=true;el.innerHTML="";return}
+ el.hidden=false;
+ el.innerHTML='<ol>'+favs.map((f,k)=>'<li data-k="'+k+'"><input type="text" value="'+esc(f.name)+'" maxlength="40" enterkeyhint="done" autocomplete="off" aria-label="Name des Lieblingsorts '+(k+1)+'">'+
+  '<button type="button" data-a="up" aria-label="'+esc(f.name)+' nach oben"'+(k===0?" disabled":"")+">"+CH_UP+"</button>"+
+  '<button type="button" data-a="dn" aria-label="'+esc(f.name)+' nach unten"'+(k===favs.length-1?" disabled":"")+">"+CH_DN+"</button>"+
+  '<button type="button" data-a="rm" aria-label="'+esc(f.name)+' entfernen">'+XX+"</button></li>").join("")+
+  '</ol><p><span>'+favs.length+" von "+FAV_MAX+" Plätzen. Neue Orte: oben suchen und auf den Stern tippen.</span><button type=\"button\" class=\"fok\" data-a=\"ok\">Fertig</button></p>";
+ if(focusSel){const b=el.querySelector(focusSel);if(b&&!b.disabled)b.focus();else{const x=el.querySelector("li button:not(:disabled)");if(x)x.focus()}}
+}
+$("favedit").addEventListener("click",e=>{
+ const b=e.target.closest("button[data-a]");if(!b)return;
+ const a=b.dataset.a;
+ if(a==="ok"){favEdit=false;renderFavs();renderFavEdit();return}
+ const li=b.closest("li[data-k]");if(!li)return;
+ const k=+li.dataset.k;let to=k;
+ if(a==="up"&&k>0){[favs[k-1],favs[k]]=[favs[k],favs[k-1]];to=k-1}
+ else if(a==="dn"&&k<favs.length-1){[favs[k+1],favs[k]]=[favs[k],favs[k+1]];to=k+1}
+ else if(a==="rm"){favs.splice(k,1);to=Math.min(k,favs.length-1)}
+ saveFavs();renderFavs();renderFavEdit('li[data-k="'+to+'"] button[data-a="'+a+'"]');
+});
+$("favedit").addEventListener("change",e=>{
+ const inp=e.target.closest("input"),li=inp&&inp.closest("li[data-k]");if(!li)return;
+ const f=favs[+li.dataset.k],v=inp.value.trim().slice(0,40);if(!f)return;
+ if(!v){inp.value=f.name;return}
+ f.name=v;saveFavs();renderFavs();
+ /* gerade gezeigter Ort umbenannt: Name oben gleich mitändern */
+ if(!follow&&km(f.lat,f.lon,+place.lat,+place.lon)<1){place.name=v;saveState();$("pname").textContent=v}
+});
+$("favedit").addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.matches("input"))e.target.blur()});
 $("fav").innerHTML=STAR;
-$("fav").onclick=()=>{const i=favIdx();if(i>=0)favs.splice(i,1);else{favs.push({name:place.name,lat:+(+place.lat).toFixed(4),lon:+(+place.lon).toFixed(4)});if(favs.length>8)favs.shift()}saveFavs();renderFavs()};
+$("fav").onclick=()=>{const i=favIdx();if(i>=0)favs.splice(i,1),saveFavs();else favAdd(place.name,place.lat,place.lon);renderFavs();renderFavEdit();klLoad(true)};
 $("favs").addEventListener("click",e=>{
  const b=e.target.closest("button");if(!b)return;
- if(b.dataset.g){follow=true;saveState();useGPS(true);return}
+ if(b.dataset.e){favEdit=!favEdit;renderFavs();renderFavEdit(favEdit?"li input":null);return}
+ if(b.dataset.g){follow=true;saveState();renderFavs();useGPS(true);return}
  const f=favs[+b.dataset.f];if(!f)return;
- place={name:f.name,lat:f.lat,lon:f.lon};follow=false;saveState();loadWeather();
+ place={name:f.name,lat:f.lat,lon:f.lon};follow=false;saveState();renderFavs();loadWeather();
 });
 
 /* ============ Messwerte der nächsten Station ============ */
