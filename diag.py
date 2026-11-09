@@ -6,21 +6,9 @@ def j(u, t=60): return json.loads(get(u, t)[1])
 G = "https://dataset.api.hub.geosphere.at/v1/"
 now = datetime.datetime.now(datetime.timezone.utc); print("NOW", now.isoformat())
 def km(a, b, c, d): return math.hypot((a - c) * 111.2, (b - d) * 111.2 * math.cos(math.radians(a)))
-# ---- CORS checks
-for lab, u in [("METAR", "https://aviationweather.gov/api/data/metar?bbox=47.5,12.5,48.8,14.8&format=json"),
-               ("CH-CSV", "https://data.geo.admin.ch/ch.meteoschweiz.messwerte-aktuell/VQHA80.csv"),
-               ("CH-geojson", "https://data.geo.admin.ch/ch.meteoschweiz.messwerte-lufttemperatur-10min/ch.meteoschweiz.messwerte-lufttemperatur-10min_de.json"),
-               ("BS-sources", "https://api.brightsky.dev/sources?lat=48.57&lon=13.43&max_dist=40000"),
-               ("BS-cw-id", "https://api.brightsky.dev/current_weather?dwd_station_id=03029"),
-               ("NWS", "https://api.weather.gov/stations/KNYC/observations/latest")]:
-    try:
-        r, b = get(u, 30)
-        print("%-10s %s ACAO=%s type=%s %dB" % (lab, r.status, r.headers.get("access-control-allow-origin"), r.headers.get("content-type"), len(b)))
-        print("    ", b[:420].decode("utf-8", "replace").replace("\n", " | "))
-    except Exception as e: print(lab, "ERR", e)
 # ---- Leave-one-out for Upper Austria stations
 sm = [s for s in j(G + "station/current/tawes-v1-10min/metadata")["stations"] if s.get("is_active", True)]
-reg = [s for s in sm if 47.6 <= s["lat"] <= 48.8 and 12.8 <= s["lon"] <= 15.0 and s.get("altitude") is not None]
+reg = [s for s in sm if 47.0 <= s["lat"] <= 49.0 and 12.5 <= s["lon"] <= 16.5 and s.get("altitude") is not None]
 ids = ",".join(str(s["id"]) for s in reg)
 o = j(G + "station/current/tawes-v1-10min?parameters=TL&station_ids=" + ids)
 obs = {str(f["properties"]["station"]): f["properties"]["parameters"]["TL"]["data"][-1] for f in o["features"]}
@@ -47,26 +35,23 @@ def inca(P):
     return out
 try: IN = inca(pts)
 except Exception as e: IN = [None] * len(pts); print("INCA err", e)
-def predict(i, base):
-    s = reg[i]; num = den = 0
+def predict(i, base, D=3, HS=300, R=40, W0=0, N=99):
+    s = reg[i]; num = den = 0; c = []
     for k, t in enumerate(reg):
         if k == i or base[k] is None: continue
         d = km(s["lat"], s["lon"], t["lat"], t["lon"])
-        if d > 40: continue
-        dh = abs(s["altitude"] - t["altitude"])
-        w = 1 / (d + 3) ** 2 * math.exp(-(dh / 300) ** 2)
+        if d > R: continue
+        c.append((d, k))
+    for d, k in sorted(c)[:N]:
+        t = reg[k]; dh = abs(s["altitude"] - t["altitude"])
+        w = 1 / (d + D) ** 2 * math.exp(-(dh / HS) ** 2)
         num += w * (obs[str(t["id"])] - base[k]); den += w
-    return base[i] + (num / den if den else 0)
-def nearest(i):
-    s = reg[i]; best = min((km(s["lat"], s["lon"], t["lat"], t["lon"]), k) for k, t in enumerate(reg) if k != i)
-    return obs[str(reg[best[1]]["id"])]
-E = {"raw best_match": [], "raw ecmwf": [], "raw INCA": [], "nearest station": [], "best_match+bias": [], "ecmwf+bias": [], "INCA+bias": []}
-for i, s in enumerate(reg):
-    t = obs[str(s["id"])]
-    if M["best_match"][i] is None: continue
-    E["raw best_match"].append(M["best_match"][i] - t); E["raw ecmwf"].append(M["ecmwf_ifs"][i] - t)
-    if IN[i] is not None: E["raw INCA"].append(IN[i] - t); E["INCA+bias"].append(predict(i, IN) - t)
-    E["nearest station"].append(nearest(i) - t)
-    E["best_match+bias"].append(predict(i, M["best_match"]) - t); E["ecmwf+bias"].append(predict(i, M["ecmwf_ifs"]) - t)
-for k, v in E.items():
-    if v: print("%-18s n=%d MAE=%.2f bias=%+.2f max=%.1f" % (k, len(v), S.mean(abs(x) for x in v), S.mean(v), max(abs(x) for x in v)))
+    return base[i] + (num / (den + W0) if den else 0)
+low = [i for i, s in enumerate(reg) if s["altitude"] < 700]
+print("lowland n", len(low))
+for nm, base in [("INCA", IN), ("best", M["best_match"]), ("ecmwf", M["ecmwf_ifs"])]:
+    if base[0] is None: continue
+    print(nm, "raw lowMAE=%.2f allMAE=%.2f" % (S.mean(abs(base[i] - obs[str(reg[i]["id"])]) for i in low), S.mean(abs(base[i] - obs[str(reg[i]["id"])]) for i in range(len(reg)))))
+    for D, HS, R, W0, N in [(3, 300, 40, 0, 99), (5, 250, 50, 0, 8), (5, 250, 50, 1/900, 8), (5, 150, 50, 1/900, 8), (10, 250, 60, 0, 8), (5, 400, 50, 0, 6), (2, 250, 40, 0, 4)]:
+        el = [predict(i, base, D, HS, R, W0, N) - obs[str(reg[i]["id"])] for i in range(len(reg))]
+        print("  D=%s HS=%s R=%s W0=%.4f N=%s  lowMAE=%.2f allMAE=%.2f max=%.1f" % (D, HS, R, W0, N, S.mean(abs(el[i]) for i in low), S.mean(abs(x) for x in el), max(abs(x) for x in el)))
