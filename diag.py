@@ -1,19 +1,16 @@
-import urllib.request, json
+import urllib.request, re
 def get(u):
-    r = urllib.request.Request(u, headers={"User-Agent": "diag"})
+    r = urllib.request.Request(u, headers={"User-Agent": "diag", "Origin": "https://eliaspp9.github.io"})
     try:
-        with urllib.request.urlopen(r, timeout=40) as x: return x.status, x.read()
-    except urllib.error.HTTPError as e: return e.code, e.read()
-B="https://previous-runs-api.open-meteo.com/v1/forecast?latitude=48.27&longitude=13.47&past_days=1&forecast_days=1&timezone=auto"
-for nm,u in [
- ("ecvars", B+"&hourly=cloud_cover_low_previous_day1,relative_humidity_2m_previous_day1,wind_gusts_10m_previous_day1,cloud_cover_previous_day1,wind_speed_10m_previous_day1&models=ecmwf_ifs"),
- ("pp_bm", B+"&hourly=precipitation_probability_previous_day1&models=best_match"),
- ("pp_ec", B+"&hourly=precipitation_probability_previous_day1,precipitation_previous_day1&models=ecmwf_ifs"),
- ("pp_icon", B+"&hourly=precipitation_probability_previous_day1&models=icon_seamless"),
- ("fc_pp", "https://api.open-meteo.com/v1/forecast?latitude=48.27&longitude=13.47&forecast_days=1&hourly=precipitation_probability&models=ecmwf_ifs,best_match"),
-]:
-    s,b=get(u)
-    try:
-        j=json.loads(b); x=j[0] if isinstance(j,list) else j; H=x.get("hourly",{})
-        print(nm,s,{k:(len([a for a in H[k] if a is not None]),[a for a in H[k] if a is not None][:4]) for k in H if k!="time"} if H else x)
-    except Exception as e: print(nm,s,b[:300])
+        with urllib.request.urlopen(r, timeout=60) as x: return x.status, dict(x.headers), x.read()
+    except urllib.error.HTTPError as e: return e.code, dict(e.headers), e.read()
+    except Exception as e: return -1, {}, str(e).encode()
+for nm,u in [("eumetsat","https://view.eumetsat.int/geoserver/wms?service=WMS&version=1.3.0&request=GetCapabilities"),
+             ("dwd","https://maps.dwd.de/geoserver/dwd/wms?service=WMS&version=1.3.0&request=GetCapabilities")]:
+    s,h,b=get(u); t=b.decode("utf8","replace")
+    names=re.findall(r"<Layer[^>]*>\s*<Name>([^<]+)</Name>\s*<Title>([^<]*)</Title>",t)
+    hits=[(n,ti) for n,ti in names if re.search(r"fog|nebel|stratus|low.?cloud|ctype|cloud.?type|night",n+ti,re.I)]
+    print(nm,s,"ACAO",{k.lower():v for k,v in h.items()}.get("access-control-allow-origin"),"layers",len(names))
+    for x in hits[:40]: print("   ",x)
+for u in ["https://www.foto-webcam.eu/","https://www.foto-webcam.eu/webcam/include/list.php","https://www.foto-webcam.eu/impressum"]:
+    s,h,b=get(u); t=b.decode("utf8","replace"); i=t.lower().find("nutzung"); print("WC",s,u,len(t), re.sub(r"\s+"," ",re.sub(r"<[^>]+>"," ",t[max(0,i-300):i+900]))[:900] if i>=0 else "")
