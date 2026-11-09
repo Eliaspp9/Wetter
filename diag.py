@@ -1,6 +1,11 @@
 import urllib.request, json, time, datetime, math
 H = {"User-Agent": "Mozilla/5.0 (wetter-diag)"}
-def j(u, t=60): return json.loads(urllib.request.urlopen(urllib.request.Request(u, headers=H), timeout=t).read())
+def j(u, t=60):
+    for k in range(3):
+        try: return json.loads(urllib.request.urlopen(urllib.request.Request(u, headers=H), timeout=t).read())
+        except Exception as e:
+            if k == 2: raise
+            time.sleep(3)
 def km(a, b, c, d): return math.hypot((a - c) * 111, (b - d) * 111 * math.cos(a * math.pi / 180))
 G = "https://dataset.api.hub.geosphere.at/v1/"
 now = datetime.datetime.now(datetime.timezone.utc); nowt = now.timestamp()
@@ -18,7 +23,7 @@ def om(pts):
     r = j(u); r = r if isinstance(r, list) else [r]; return [x["current"]["temperature_2m"] for x in r]
 # --- Österreich: Nöstlbach, Utzenaich
 sm = j(G + "station/current/tawes-v1-10min/metadata")["stations"]
-for name, la, lo in [("Nöstlbach", 48.1666, 14.2461), ("Utzenaich", 48.2762, 13.4609)]:
+for name, la, lo in [("Utzenaich", 48.2762, 13.4609)]:
     pe = j("https://api.open-meteo.com/v1/forecast?latitude=%s&longitude=%s&current=temperature_2m" % (la, lo))
     he = pe.get("elevation")
     st = sorted([{"id": s["id"], "n": s["name"], "la": s["lat"], "lo": s["lon"], "h": s["altitude"], "d": km(la, lo, s["lat"], s["lon"])} for s in sm if s.get("altitude") is not None and s.get("is_active", True)], key=lambda x: x["d"])
