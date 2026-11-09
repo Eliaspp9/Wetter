@@ -3,6 +3,8 @@
 Persönliche Wetter-App im Stil von WetterOnline, als Webseite auf GitHub Pages:
 https://eliaspp9.github.io/Wetter/
 
+**Version 2.11**: Himmel oben (Sonne, Wolken, Nebel) aus Messungen in der Nähe; Worker 1.4 liefert dafür auch die Bewölkung der Flughäfen.
+
 **Version 2.10**: Blitze als eigene Symbole in jeder Zoomstufe (EUMETSAT liefert die Blitzflächen nur bis Zoom 7), Standortsuche mit sichtbarer Rückmeldung und Anleitung je Gerät.
 
 **Version 2.9**: Temperatur oben an Messstationen ausgerichtet (AT GeoSphere, DE DWD, USA NOAA, sonst Flughäfen über den Worker 1.3).
@@ -22,6 +24,7 @@ https://eliaspp9.github.io/Wetter/
 - **Bewegter Himmel oben:** Wolken ziehen in Windrichtung (bei mehr Wind schneller), dazu je nach Wetter Sonnenstrahlen, Mondlicht mit Sternen und Sternschnuppe, Nebelschwaden, Regen schräg im Wind (bei Starkregen dichter), Schnee in drei Ebenen und Blitze bei Gewitter. Alles läuft auf der Grafikeinheit, steht still, wenn der Kopf nicht sichtbar ist oder ruhige Bewegung eingestellt ist.
 - **Wetter jetzt:** aktuelle Werte von KachelmannWetter (Super HD) oder vom ECMWF-Modell IFS (9 km, über Open-Meteo). Oben steht, woher die Werte kommen.
 - **Temperatur oben:** an echten Messungen ausgerichtet. Grundwert ist in Österreich GeoSphere INCA (1 km), sonst das beste Regionalmodell von Open-Meteo. Dann rechnet die App aus, um wie viel dieser Grundwert an den Messstationen der Umgebung gerade danebenliegt (bis 8 Stationen, höchstens 50 km; nahe Stationen in ähnlicher Höhe zählen mehr), und verschiebt ihn entsprechend. Stationen: Österreich GeoSphere (TAWES), Deutschland DWD (über Bright Sky), USA NOAA/NWS, sonst Flughafen-Wettermeldungen (METAR über den Worker, ab Worker-Version 1.3). Geprüft am 9.11.2026 an 106 Stationen in Österreich unter 700 m (jede Station aus den anderen geschätzt): INCA allein im Mittel 1,2° daneben, Open-Meteo 1,2°, ECMWF 1,8°, INCA mit Stationen 0,7°. Ohne Station in der Nähe bleibt bei Kachelmann dessen Wert, sonst das Regionalmodell.
+- **Himmel oben (Sonne, Wolken, Nebel):** ebenfalls aus Messungen bis 35 km: GeoSphere-Stationen tagsüber über Sonnenscheindauer (SO) und Globalstrahlung (GLOW, im Verhältnis zur Strahlung bei klarem Himmel), DWD- und NOAA-Stationen und Flughäfen (METAR, ab Worker 1.4) über die gemeldete Bewölkung. Regen, Schnee und Gewitter kommen weiter aus der Vorhersage. Ohne Messung in der Nähe zählt Kachelmann bzw. das Regionalmodell. Am 9.11.2026 mittags (Hochnebel um Linz) trafen an 22 Stationen ECMWF 59 %, das ECMWF-KI-Modell 55 %, der Mittelwert aller Modelle 55 % und best_match (ICON-D2) 77 %.
 - **Wettermodell ECMWF:** Vorhersage, 7 Tage, 14-Tage-Trend, Temperatur- und Windkarte, Bergwetter und die KI-Korrektur rechnen mit ECMWF IFS. Was ECMWF nicht liefert, kommt vom Standardmodell von Open-Meteo: UV-Index, Regen in den nächsten 2 Stunden (15-Minuten-Werte), Niederschlagsart sowie Nullgrad- und Schneefallgrenze (ICON des DWD).
 - **Regenradar:**
   - DWD 1 km mit 2 Stunden Radar-Vorhersage.

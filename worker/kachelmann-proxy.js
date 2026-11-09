@@ -11,6 +11,13 @@
 const enc = new TextEncoder();
 const MA_SLUGS = new Set(["austria", "belgium", "bosnia-herzegovina", "bulgaria", "croatia", "cyprus", "czechia", "denmark", "estonia", "finland", "france", "germany", "greece", "hungary", "iceland", "ireland", "israel", "italy", "latvia", "lithuania", "luxembourg", "malta", "moldova", "montenegro", "netherlands", "republic-of-north-macedonia", "norway", "poland", "portugal", "romania", "serbia", "slovakia", "slovenia", "spain", "sweden", "switzerland", "ukraine", "united-kingdom"]);
 const API = "https://api.kachelmannwetter.com/v02/";
+// Bewölkung einer Flughafen-Meldung in Prozent (höchste Schicht zählt); null, wenn nichts gemeldet ist
+const MCV = { SKC: 0, CLR: 0, NCD: 0, NSC: 0, CAVOK: 0, FEW: 20, SCT: 45, BKN: 75, OVC: 100, OVX: 100, VV: 100 };
+function metarCover(x) {
+  const c = (Array.isArray(x.clouds) ? x.clouds : []).map((l) => MCV[l && l.cover]).filter((v) => v != null);
+  if (c.length) return Math.max(...c);
+  return /\bCAVOK\b|\bSKC\b|\bCLR\b|\bNCD\b|\bNSC\b/.test(String(x.rawOb || "")) ? 0 : null;
+}
 const SITE = "https://eliaspp9.github.io/Wetter/";
 const b64u = (buf) => btoa(String.fromCharCode(...new Uint8Array(buf))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 const unb64u = (s) => Uint8Array.from(atob(s.replace(/-/g, "+").replace(/_/g, "/") + "===".slice((s.length + 3) % 4)), (c) => c.charCodeAt(0));
@@ -220,7 +227,7 @@ export default {
       return json({ error: "Der Worker ist noch nicht fertig eingerichtet (Variablen fehlen)." }, 500);
     const url = new URL(req.url);
 
-    if (url.pathname === "/") return json({ ok: true, name: "wetter-proxy", version: "1.3", renew: true, push: !!env.SUBS, guard: true, ma: true, mt: true });
+    if (url.pathname === "/") return json({ ok: true, name: "wetter-proxy", version: "1.4", renew: true, push: !!env.SUBS, guard: true, ma: true, mt: true, mtc: true });
 
     if (url.pathname === "/login" && req.method === "POST") {
       const ip = req.headers.get("CF-Connecting-IP") || "unbekannt";
@@ -282,7 +289,7 @@ export default {
       } catch (e) {}
       const st = (Array.isArray(a) ? a : [])
         .filter((x) => x && typeof x.temp === "number" && typeof x.lat === "number" && typeof x.lon === "number")
-        .map((x) => ({ id: String(x.icaoId || "").slice(0, 8), n: String(x.name || "").slice(0, 60), la: x.lat, lo: x.lon, h: typeof x.elev === "number" ? x.elev : null, t: x.obsTime, T: x.temp }))
+        .map((x) => ({ id: String(x.icaoId || "").slice(0, 8), n: String(x.name || "").slice(0, 60), la: x.lat, lo: x.lon, h: typeof x.elev === "number" ? x.elev : null, t: x.obsTime, T: x.temp, c: metarCover(x), wx: String(x.wxString || "").slice(0, 20) }))
         .slice(0, 120);
       return new Response(JSON.stringify({ st }), { status: 200, headers: { ...h, "Cache-Control": "private, max-age=240" } });
     }
