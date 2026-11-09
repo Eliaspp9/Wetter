@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-kUpcG0A6YTT9eK3lDOcod0lzy3VcFly32PO1ZZjg8MU=' 'sha256-+CD5i0gDObdMiTFeSjBHM8SvIjSFGtFW+gQH/GdjeWc=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-O7AYO5fdlaH5YGlJjATbYdlvS/ci/wGRK0rIAbFezAk=' 'sha256-+CD5i0gDObdMiTFeSjBHM8SvIjSFGtFW+gQH/GdjeWc=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://s3.amazonaws.com https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -14,9 +14,9 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/favicon-64.png">
-<meta name="app-build" content="52">
-<meta name="app-version" content="2.16">
-<meta name="app-notes" content="Version 2.16: Die Radare von USA, Finnland, Niederlande, Kanada und Japan erscheinen jetzt in den Farben der App, passend zur Legende, und zeigen beim Antippen die Menge in mm/h (Schnee in cm/h). Tschechien und Weltweit bleiben in den Originalfarben, weil deren Server das Auslesen sperren.">
+<meta name="app-build" content="53">
+<meta name="app-version" content="2.17">
+<meta name="app-notes" content="Version 2.17: Regen oder Schnee entscheidet das Radar jetzt an jeder Stelle selbst, nach der Temperatur und Luftfeuchte dort und der Höhe des Geländes. In den Bergen kann es also lila (Schnee, cm/h) sein und im Tal blau (Regen, mm/h). Beim Antippen steht auch die Temperatur an der Stelle.">
 <script>/* alte Adresse wetter2.html -> neue Startseite */
 try{if(top!==self)document.documentElement.style.display="none"}catch(e){document.documentElement.style.display="none"}
 window.__redir=/\/wetter2\.html$/i.test(location.pathname);
@@ -1970,22 +1970,23 @@ function rcInit(){
 }
 const radSnow=()=>!!(lastJ&&lastJ.current&&lastJ.current.temperature_2m<=0.5);
 /* Kachel lesen und in unseren Farben neu malen; geht das Auslesen nicht, bleibt das Original stehen */
-function rcPaint(cv,img,rc){
+function rcPaint(cv,img,rc,co){
  const x=cv.getContext("2d",{willReadFrequently:true});x.drawImage(img,0,0,256,256);
  let d;try{d=x.getImageData(0,0,256,256)}catch(e){cv._orig=1;return}
- const p=d.data,V=new Float32Array(65536),snow=rc.snow!=null?rc.snow:radSnow(),pal=snow?SNOWC:RAINC,cc=new Map();
+ const p=d.data,V=new Float32Array(65536),snow0=rc.snow!=null?rc.snow:radSnow(),sm=rc.snow==null?snowTile(co):null,cc=new Map();
  for(let i=0,j=0;i<65536;i++,j+=4){
   V[i]=NaN;
   if(p[j+3]<90){p[j+3]=0;continue}
+  const snow=sm?sm[((i>>10)<<6)+((i&255)>>2)]===1:snow0;
   let v=rc.inv(p[j],p[j+1],p[j+2]);
   if(rc.mm&&v===v)v=rc.mm(v,snow);
   if(!(v>=rc.min)){p[j+3]=0;continue}
   V[i]=v;
-  const q=Math.round(v*20);let c=cc.get(q);
-  if(!c){const a=ramp(pal,v);c=[a[0],a[1],a[2],Math.round(Math.min(1,.35+v*.6)*.92*255)];cc.set(q,c)}
+  const q=Math.round(v*20)*2+(snow?1:0);let c=cc.get(q);
+  if(!c){const a=ramp(snow?SNOWC:RAINC,v);c=[a[0],a[1],a[2],Math.round(Math.min(1,.35+v*.6)*.92*255)];cc.set(q,c)}
   p[j]=c[0];p[j+1]=c[1];p[j+2]=c[2];p[j+3]=c[3];
  }
- x.putImageData(d,0,0);cv._v=V;cv._snow=snow;cv._cls=!!rc.cls;
+ x.putImageData(d,0,0);cv._v=V;cv._snow=snow0;cv._sm=sm;cv._cls=!!rc.cls;
 }
 let RcTile=null,RcWms=null;
 function rcLayer(kind,url,opt,rcKey){
@@ -1993,7 +1994,7 @@ function rcLayer(kind,url,opt,rcKey){
   const ct=function(coords,done){
    const c=document.createElement("canvas");c.width=c.height=256;c.complete=false;
    const im=new Image(),rc=rcInit()[this.options.rcKey];im.crossOrigin="anonymous";
-   im.onload=()=>{try{rcPaint(c,im,rc)}catch(e){console.error(e)}c.complete=true;done(null,c)};
+   im.onload=()=>{try{rcPaint(c,im,rc,coords)}catch(e){console.error(e)}c.complete=true;done(null,c)};
    im.onerror=()=>{c.complete=true;done(new Error("Radarkachel"),c)};
    im.src=this.getTileUrl(coords);return c};
   RcTile=L.TileLayer.extend({createTile:ct});RcWms=L.TileLayer.WMS.extend({createTile:ct});
@@ -2012,11 +2013,115 @@ function natVal(la,lo){
   if(!el){res=res||{wait:1};continue}
   if(el._orig)return{none:"Dieses Radarbild ließ sich nicht auslesen."};
   if(!el._v){res=res||{wait:1};continue}
-  const v=el._v[Math.floor(p.y-y*256)*256+Math.floor(p.x-x*256)];
-  if(v>=.05)return{r:v,snow:el._snow,cls:el._cls?JMA_CLS.find(c=>Math.abs(c[1]-v)<.01):null};
-  if(!res||res.wait)res={r:0,snow:el._snow};
+  const ix=Math.floor(p.x-x*256),iy=Math.floor(p.y-y*256),v=el._v[iy*256+ix],sn=el._sm?el._sm[(iy>>2)*64+(ix>>2)]===1:el._snow;
+  if(v>=.05)return{r:v,snow:sn,t:tempAt(la,lo),cls:el._cls?JMA_CLS.find(c=>Math.abs(c[1]-v)<.01):null};
+  if(!res||res.wait)res={r:0,snow:sn,t:tempAt(la,lo)};
  }
  return res||{out:"Für diese Stelle ist das Radarbild noch nicht geladen."};
+}
+/* ============ Regen oder Schnee an jeder Stelle ============
+   Früher entschied die Temperatur am eigenen Ort für die ganze Karte. Jetzt: Temperatur und Luftfeuchte vom Wettermodell
+   (Open-Meteo, aktuelle Werte, 11 × 9 Punkte über den Kartenausschnitt) → Feuchttemperatur (Formel nach Stull 2011; sie sagt
+   besser als die Temperatur, ob Schnee bis zum Boden kommt) → auf Meereshöhe umgerechnet (0,55 °C je 100 m). An jeder Stelle
+   mit ihrer Höhe aus dem Geländemodell wieder zurück (AWS Terrain Tiles „Terrarium“, Zoom 8, etwa 400 m; nur geladen, wenn
+   im Ausschnitt Regen und Schnee je nach Höhe beides möglich ist). Feuchttemperatur bis 1 °C = Schnee.
+   Ohne diese Daten gilt weiter die Temperatur am Ort für die ganze Karte. */
+const SN_LAPSE=.0055,SN_TW=1,T_LAPSE=.0065,DEM_Z=8;
+let sf=null,sfBusy=false,sfVer=0,demVer=0,snRT=0,sfFail=0;
+const demT=new Map();
+function wetBulb(T,RH){RH=Math.max(1,Math.min(100,RH));return T*Math.atan(.151977*Math.sqrt(RH+8.313659))+Math.atan(T+RH)-Math.atan(RH-1.676331)+.00391838*Math.pow(RH,1.5)*Math.atan(.023101*RH)-4.686035}
+function sfAt(A,la,lo){
+ const s=sf,X=Math.max(0,Math.min(s.C-1.0001,(lo-s.box[1])/(s.box[3]-s.box[1])*(s.C-1))),Y=Math.max(0,Math.min(s.R-1.0001,(la-s.box[0])/(s.box[2]-s.box[0])*(s.R-1)));
+ const x0=X|0,y0=Y|0,tx=X-x0,ty=Y-y0,i=y0*s.C+x0;
+ return(A[i]*(1-tx)+A[i+1]*tx)*(1-ty)+(A[i+s.C]*(1-tx)+A[i+s.C+1]*tx)*ty;
+}
+function demAt(la,lo){
+ if(!demT.size)return NaN;
+ const n=1<<DEM_Z,x=(lo+180)/360*n,y=(1-Math.log(Math.tan(Math.PI/4+la*Math.PI/360))/Math.PI)/2*n,tx=Math.floor(x),ty=Math.floor(y),t=demT.get(tx+":"+ty);
+ return t?t[Math.min(255,Math.floor((y-ty)*256))*256+Math.min(255,Math.floor((x-tx)*256))]:NaN;
+}
+const elevAt=(la,lo)=>{let z=demAt(la,lo);if(!(z>-200))z=sfAt(sf.z,la,lo);return Math.max(0,z)};
+/* true = Schnee, false = Regen, null = keine Daten (dann gilt der Ort) */
+function snowAt(la,lo){if(!sf)return null;return sfAt(sf.w0,la,lo)-SN_LAPSE*elevAt(la,lo)<=SN_TW}
+function tempAt(la,lo){if(!sf)return null;return sfAt(sf.t0,la,lo)-T_LAPSE*elevAt(la,lo)}
+const snVer=()=>sfVer+"|"+demVer;
+async function sfLoad(force){
+ if(!map||sfBusy||(!force&&Date.now()-sfFail<300000))return;
+ const b=map.getBounds(),r2=x=>Math.round(x*2)/2;
+ let S=Math.max(-75,r2(b.getSouth()-.75)),N=Math.min(80,r2(b.getNorth()+.75)),W=r2(b.getWest()-1),E=r2(b.getEast()+1);
+ if(N-S>24){const m=r2((N+S)/2);S=m-12;N=m+12}
+ if(E-W>36){const m=r2((E+W)/2);W=m-18;E=m+18}
+ const slot=Math.floor(Date.now()/900000);
+ if(!force&&sf&&sf.slot===slot&&S>=sf.box[0]&&N<=sf.box[2]&&W>=sf.box[1]&&E<=sf.box[3]){demNeed();return}
+ sfBusy=true;
+ try{
+  const C=11,R=9,la=[],lo=[];
+  for(let r=0;r<R;r++)for(let c=0;c<C;c++){la.push((S+(N-S)*r/(R-1)).toFixed(3));lo.push((W+(E-W)*c/(C-1)).toFixed(3))}
+  const j=await getJ("https://api.open-meteo.com/v1/forecast?latitude="+la.join(",")+"&longitude="+lo.join(",")+"&current=temperature_2m,relative_humidity_2m&timezone=UTC",20000);
+  const A=Array.isArray(j)?j:[j];if(A.length!==C*R)throw new Error("Raster");
+  const w0=new Float32Array(C*R),t0=new Float32Array(C*R),z=new Float32Array(C*R);let sw=0,st=0,n=0;
+  A.forEach((x,i)=>{const T=x.current&&x.current.temperature_2m,H=x.current&&x.current.relative_humidity_2m,e=Math.max(0,+x.elevation||0);z[i]=e;
+   if(T==null||H==null){w0[i]=t0[i]=NaN;return}
+   w0[i]=wetBulb(+T,+H)+SN_LAPSE*e;t0[i]=+T+T_LAPSE*e;sw+=w0[i];st+=t0[i];n++});
+  if(!n)throw new Error("leer");
+  for(let i=0;i<C*R;i++)if(w0[i]!==w0[i]){w0[i]=sw/n;t0[i]=st/n}
+  sf={slot,box:[S,W,N,E],C,R,w0,t0,z};sfVer++;
+  demNeed();snowRefresh();sfFail=0;
+ }catch(e){sfFail=Date.now();console.warn("Regen/Schnee-Raster:",e&&e.message)}finally{sfBusy=false}
+}
+/* Geländemodell nur, wenn es darauf ankommt: irgendwo im Ausschnitt regnet es im Flachland, schneit es aber auf 3000 m */
+function demNeed(){
+ if(!sf||!map)return;
+ let lo=1e9,hi=-1e9;for(let i=0;i<sf.w0.length;i++){lo=Math.min(lo,sf.w0[i]);hi=Math.max(hi,sf.w0[i])}
+ if(hi<=SN_TW||lo-SN_LAPSE*3000>SN_TW)return;
+ const b=map.getBounds().pad(.25),n=1<<DEM_Z,tx=lo2=>Math.floor((lo2+180)/360*n),ty=la=>Math.floor((1-Math.log(Math.tan(Math.PI/4+la*Math.PI/360))/Math.PI)/2*n);
+ const x0=tx(b.getWest()),x1=tx(b.getEast()),y0=ty(Math.min(84,b.getNorth())),y1=ty(Math.max(-84,b.getSouth()));
+ if((x1-x0+1)*(y1-y0+1)>24)return;
+ for(let x=x0;x<=x1;x++)for(let y=y0;y<=y1;y++){
+  const k=((x%n)+n)%n+":"+y;if(demT.has(k))continue;
+  demT.set(k,null);
+  const im=new Image();im.crossOrigin="anonymous";
+  im.onload=()=>{try{const c=document.createElement("canvas");c.width=c.height=256;const g=c.getContext("2d",{willReadFrequently:true});g.drawImage(im,0,0);
+   const p=g.getImageData(0,0,256,256).data,a=new Int16Array(65536);
+   for(let i=0,j=0;i<65536;i++,j+=4)a[i]=Math.max(-500,Math.min(9000,Math.round(p[j]*256+p[j+1]+p[j+2]/256-32768)));
+   demT.set(k,a);demVer++;snowRefresh()}catch(e){demT.delete(k)}};
+  im.onerror=()=>demT.delete(k);
+  im.src="https://s3.amazonaws.com/elevation-tiles-prod/terrarium/"+DEM_Z+"/"+(((x%n)+n)%n)+"/"+y+".png";
+ }
+ if(demT.size>80){for(const k of demT.keys()){demT.delete(k);if(demT.size<=60)break}}
+}
+/* neue Daten: Radarbilder mit den neuen Grenzen neu malen (gesammelt, höchstens alle halbe Sekunde) */
+function snowRefresh(){
+ clearTimeout(snRT);snRT=setTimeout(()=>{
+  const d=dwData,f=frames[idx];
+  if(d&&d.smK!==snVer()&&mode==="dwd"){const old=d.img;d.img=[];d.busy={};d.sm=null;setTimeout(()=>old.forEach(u=>{if(u&&u.startsWith("blob:"))URL.revokeObjectURL(u)}),5000);if(f&&f.dw!=null)showDw(f.dw)}
+  if(mode==="at"&&atData&&f&&f.at!=null)atShow(f.at);
+  if(mode==="nat"&&NATR[ccNow()]&&NATR[ccNow()].rc){snTile.clear();layers.forEach(l=>{if(l.eachLayer)l.eachLayer(x=>x.redraw&&x.redraw());else if(l.redraw)l.redraw()})}
+  rLive();
+ },500);
+}
+/* Maske für das DWD-Bild (ein Wert je Bildpunkt; das Bild ist in Web-Mercator) */
+function dwMask(d){
+ if(!sf)return null;const k=snVer();if(d.sm&&d.smK===k)return d.sm;
+ const g=d.geo,la0=g.bounds[0][0],lo0=g.bounds[0][1],la1=g.bounds[1][0],lo1=g.bounds[1][1],my=la=>Math.log(Math.tan(Math.PI/4+la*Math.PI/360)),m0=my(la0),m1=my(la1),m=new Uint8Array(g.Wc*g.Hc);
+ for(let py=0;py<g.Hc;py++){const la=(2*Math.atan(Math.exp(m1-(py+.5)/g.Hc*(m1-m0)))-Math.PI/2)*180/Math.PI;
+  for(let px=0;px<g.Wc;px++){const o=py*g.Wc+px;if(g.idxMap[o]<0)continue;m[o]=snowAt(la,lo0+(px+.5)/g.Wc*(lo1-lo0))?1:0}}
+ d.sm=m;d.smK=k;return m;
+}
+/* Maske für die 1-km-Punkte von GeoSphere */
+function atMask(d){
+ if(!sf)return null;const k=snVer();if(d.sm&&d.smK===k)return d.sm;
+ const m=new Uint8Array(d.n);for(let i=0;i<d.n;i++)if(d.la[i]===d.la[i])m[i]=snowAt(d.la[i],d.lo[i])?1:0;
+ d.sm=m;d.smK=k;return m;
+}
+/* Maske je Radar-Kachel der Länder: 64 × 64 Felder zu 4 Bildpunkten, für alle Zeitpunkte gleich */
+const snTile=new Map();
+function snowTile(c){
+ if(!sf||!c)return null;const k=c.z+"/"+c.x+"/"+c.y+"|"+snVer();let m=snTile.get(k);if(m)return m;
+ m=new Uint8Array(4096);const n=256*Math.pow(2,c.z);
+ for(let by=0;by<64;by++){const gy=c.y*256+by*4+2,la=Math.atan(Math.sinh(Math.PI-2*Math.PI*gy/n))*180/Math.PI;
+  for(let bx=0;bx<64;bx++)m[by*64+bx]=snowAt(la,(c.x*256+bx*4+2)/n*360-180)?1:0}
+ snTile.set(k,m);if(snTile.size>600)snTile.delete(snTile.keys().next().value);return m;
 }
 const NATR={
  US:{n:"USA",att:"Radar: NOAA NEXRAD über Iowa Environmental Mesonet",note:"Radar der USA: Radarverbund des US-Wetterdienstes (NOAA NEXRAD), alle 5 Minuten, die letzten 50 Minuten. Bereitgestellt vom Iowa Environmental Mesonet. In den Farben der App: aus der Stärke des Radarechos in mm pro Stunde umgerechnet (ungefähr). Tippe auf den Regen (oder fahr mit der Maus darüber), dann siehst du die Menge an dieser Stelle.",rc:1,
@@ -2204,13 +2309,13 @@ async function dwPrep(k){
   const v=d.vals[k]||(d.vals[k]=await u16(d.R[k].precipitation_5,d.packed));
   if(dwData!==d)return null;
   const g=d.geo,cv=document.createElement("canvas");cv.width=g.Wc;cv.height=g.Hc;
-  const ctx=cv.getContext("2d"),im=ctx.createImageData(g.Wc,g.Hc),px=im.data,pal=d.snow?SNOWC:RAINC;
+  const ctx=cv.getContext("2d"),im=ctx.createImageData(g.Wc,g.Hc),px=im.data,pal0=d.snow?SNOWC:RAINC,sm=dwMask(d);
   for(let o=0;o<g.idxMap.length;o++){
    const i=g.idxMap[o];if(i<0)continue;
    const p=o*4;
    if(!g.cov[o]){px[p]=110;px[p+1]=120;px[p+2]=135;px[p+3]=70;continue}
    const raw=v[i];if(raw<1||raw>=60000)continue;
-   const r=raw*.12,c=ramp(pal,r);
+   const r=raw*.12,c=ramp(sm?(sm[o]?SNOWC:RAINC):pal0,r);
    px[p]=c[0];px[p+1]=c[1];px[p+2]=c[2];px[p+3]=Math.round(255*Math.min(1,.35+r*.6)*.92);
   }
   ctx.putImageData(im,0,0);
@@ -2512,11 +2617,11 @@ function atShow(k){
  }
  atCv.style.visibility="";
  im0Clear();
- const c=atCv.getContext("2d"),im=atImg&&atImg.width===W&&atImg.height===H?atImg:(atImg=c.createImageData(W,H)),px=im.data,P=atProj,V=d.V[k]||d.V[0],pal=d.snow?SNOWC:RAINC,h=P.s/2;
+ const c=atCv.getContext("2d"),im=atImg&&atImg.width===W&&atImg.height===H?atImg:(atImg=c.createImageData(W,H)),px=im.data,P=atProj,V=d.V[k]||d.V[0],pal0=d.snow?SNOWC:RAINC,sm=atMask(d),h=P.s/2;
  for(let i=0;i<d.n;i++){
   const v=V[i];if(v<.025)continue;
   const X=P.x[i],Y=P.y[i];if(X<-h||Y<-h||X>W+h||Y>H+h)continue;
-  const r=v*4,col=ramp(pal,r),a=Math.round(255*Math.min(1,.35+r*.6)*.92);
+  const r=v*4,col=ramp(sm?(sm[i]?SNOWC:RAINC):pal0,r),a=Math.round(255*Math.min(1,.35+r*.6)*.92);
   const x0=Math.max(0,Math.round(X-h)),x1=Math.min(W,Math.round(X+h)),y0=Math.max(0,Math.round(Y-h)),y1=Math.min(H,Math.round(Y+h));
   for(let yy=y0;yy<y1;yy++){let o=(yy*W+x0)*4;for(let xx=x0;xx<x1;xx++,o+=4){px[o]=col[0];px[o+1]=col[1];px[o+2]=col[2];px[o+3]=a}}
  }
@@ -2734,12 +2839,12 @@ function setMode(m,user){
  if(m==="dwd"){
   hideFc();exReset();layers.forEach(l=>{try{map.removeLayer(l)}catch(e){}l._wOn=0});atHide();
   frames=[];pastCount=0;idx=0;$("sl").max=0;$("ts").textContent="";$("fresh").textContent="";$("fnote").textContent="";placeTick();
-  $("mnote").textContent="Radar des Deutschen Wetterdienstes (RADOLAN) mit 1 km Auflösung, alle 5 Minuten. Nach „Jetzt“ folgt die Radar-Vorhersage des DWD für 2 Stunden. Grau getönte Flächen liegen außerhalb der DWD-Radare. Tippe auf den Regen (oder fahr mit der Maus darüber), dann siehst du die Menge an dieser Stelle.";
+  $("mnote").textContent="Radar des Deutschen Wetterdienstes (RADOLAN) mit 1 km Auflösung, alle 5 Minuten. Nach „Jetzt“ folgt die Radar-Vorhersage des DWD für 2 Stunden. Grau getönte Flächen liegen außerhalb der DWD-Radare. Ob Regen (blau) oder Schnee (lila), entscheidet die Temperatur an jeder Stelle, mit ihrer Höhe. Tippe auf den Regen (oder fahr mit der Maus darüber), dann siehst du die Menge an dieser Stelle.";
   dwKey="";loadDwd();
  }else if(m==="at"){
   hideFc();exReset();layers.forEach(l=>{try{map.removeLayer(l)}catch(e){}l._wOn=0});hideDw();clearTrk();atHide();
   frames=[];pastCount=0;idx=0;$("sl").max=0;$("ts").textContent="";$("fresh").textContent="";$("fnote").textContent="";placeTick();
-  $("mnote").textContent="Radar von GeoSphere Austria (INCA): Niederschlag aus den österreichischen Radaren und Messstationen, mit 1 km Auflösung, alle 15 Minuten neu. Nach „Jetzt“ folgt die Vorhersage von GeoSphere für 3 Stunden. Beim weiten Herauszoomen wird nur der Bereich um die Kartenmitte geladen. Tippe auf den Regen (oder fahr mit der Maus darüber), dann siehst du die Menge an dieser Stelle.";
+  $("mnote").textContent="Radar von GeoSphere Austria (INCA): Niederschlag aus den österreichischen Radaren und Messstationen, mit 1 km Auflösung, alle 15 Minuten neu. Nach „Jetzt“ folgt die Vorhersage von GeoSphere für 3 Stunden. Beim weiten Herauszoomen wird nur der Bereich um die Kartenmitte geladen. Ob Regen (blau) oder Schnee (lila), entscheidet die Temperatur an jeder Stelle, mit ihrer Höhe. Tippe auf den Regen (oder fahr mit der Maus darüber), dann siehst du die Menge an dieser Stelle.";
   /* schon geladene Daten sofort zeigen und nur bei Bedarf neu laden */
   if(lay==="rain"&&atData&&Date.now()-atData.at<20*60000){atUse(atData);loadAt(false)}else{atNext=0;loadAt(true)}
  }else if(m==="nat"){
@@ -3106,7 +3211,7 @@ function dwVal(la,lo,k){
  if(!dwCovered(la,lo))return{out:"Hier reichen die Radare des DWD nicht hin (grau getönt)."};
  const raw=v[Math.round(w*(g.H-1))*g.W+Math.round(u*(g.W-1))];
  if(raw>=60000)return{out:"Für diese Stelle gibt es gerade keine Messung."};
- return{r:raw<1?0:raw*.12,snow:d.snow};
+ const sa=snowAt(la,lo);return{r:raw<1?0:raw*.12,snow:sa==null?d.snow:sa,t:tempAt(la,lo)};
 }
 function atVal(la,lo,k){
  const d=atData;if(!d)return null;
@@ -3114,7 +3219,7 @@ function atVal(la,lo,k){
  for(let i=0;i<d.n;i++){const dy=d.la[i]-la;if(dy>.02||dy<-.02)continue;const dx=(d.lo[i]-lo)*c,q=dy*dy+dx*dx;if(q<b){b=q;bi=i}}
  if(bi<0||b>1.2e-4){const bb=d.bb,inb=la>=bb[0]&&la<=bb[2]&&lo>=bb[1]&&lo<=bb[3];return{out:inb?"Bis hierher reicht das Radar „Österreich“ nicht.":"Dieser Bereich ist noch nicht geladen. Schieb die Karte dorthin, dann lädt das Radar ihn nach."}}
  const v=V[bi];if(!(v>=0))return{out:"Für diese Stelle gibt es gerade keine Messung."};
- return{r:v<.025?0:v*4,snow:d.snow};
+ const sa=snowAt(la,lo);return{r:v<.025?0:v*4,snow:sa==null?d.snow:sa,t:tempAt(la,lo)};
 }
 function fcVal(la,lo,k){
  const d=fcData,f=d&&d.fr[k];if(!f||!f.P||!map)return null;
@@ -3150,8 +3255,9 @@ function rHtml(v,pop){
  /* Japan: nur Stufen */
  if(v.cls){const k=v.snow?.7:1,u=v.snow?" cm/h":" mm/h",rg=v.cls[3]?f1(v.cls[2]*k)+" bis "+f1(v.cls[3]*k)+u:"über "+f1(v.cls[2]*k)+u,w=v.snow?SWORD(v.r*.7):RWORD(v.r);
   return"<b>"+rg+"</b>"+(pop?"<br>"+w+foot:" · "+w)}
- if(v.snow){const c=v.cm!=null?v.cm:v.r*.7;return"<b>"+lt(c)+" cm/h</b>"+(pop?"<br>"+SWORD(c)+"<br><small>als Wasser etwa "+lt(v.r)+" mm/h</small>"+foot:" · "+SWORD(c))}
- return"<b>"+lt(v.r)+" mm/h</b>"+(pop?"<br>"+RWORD(v.r)+foot:" · "+RWORD(v.r));
+ const tt=v.t!=null&&v.t===v.t&&v.t<5?"<br><small>Temperatur dort etwa "+deg(v.t)+"</small>":"";
+ if(v.snow){const c=v.cm!=null?v.cm:v.r*.7;return"<b>"+lt(c)+" cm/h</b>"+(pop?"<br>"+SWORD(c)+"<br><small>als Wasser etwa "+lt(v.r)+" mm/h</small>"+tt+foot:" · "+SWORD(c))}
+ return"<b>"+lt(v.r)+" mm/h</b>"+(pop?"<br>"+RWORD(v.r)+tt+foot:" · "+RWORD(v.r));
 }
 let rPop=null,rPopLL=null,rPopT=0,rTip=null,rTipE=null,rTipRaf=0,rTipOn=false,ptrMouse=false,rTipHold=null;
 function rClick(e){
@@ -3184,6 +3290,9 @@ function rInit(){
  map.on("click",rClick);
  map.on("mousemove",e=>{rTipE=e;if(!rTipRaf)rTipRaf=requestAnimationFrame(()=>{rTipRaf=0;rTipShow(rTipE)})});
  map.on("mouseout zoomstart",()=>{rTipE=null;rTipHide()});
+ map.on("moveend",()=>{if(lay==="rain")sfLoad()});
+ setInterval(()=>{if(lay==="rain"&&!document.hidden)sfLoad()},60000);
+ setTimeout(()=>{if(lay==="rain")sfLoad()},1500);
  const el=map.getContainer();
  if(window.PointerEvent){el.addEventListener("pointermove",e=>{ptrMouse=e.pointerType==="mouse"},{passive:true});el.addEventListener("pointerdown",e=>{ptrMouse=e.pointerType==="mouse";if(!ptrMouse)rTipHide()},{passive:true})}
 }

@@ -3,6 +3,8 @@
 Persönliche Wetter-App im Stil von WetterOnline, als Webseite auf GitHub Pages:
 https://eliaspp9.github.io/Wetter/
 
+**Version 2.17**: Regen oder Schnee im Radar an jeder Stelle (Feuchttemperatur aus dem Modellraster, mit Geländehöhe), statt einer Entscheidung für die ganze Karte.
+
 **Version 2.16**: Radare von USA, Finnland, Niederlande, Kanada und Japan in den Farben der App (Pixel ausgelesen und über die Farbskala des Dienstes in mm/h zurückgerechnet), mit Wert beim Antippen.
 
 **Version 2.15**: Standort-Symbol als Pfeil wie in Karten-Apps (gefüllt, wenn der Standort verwendet wird); Regenradar ab 12 mm/h Gelb/Orange/Rot (Legende bis 50 mm/h), Schnee ab 7 cm/h Rosa (bis 15 cm/h); Wert beim Antippen verschwindet nach 4 Sekunden.
@@ -44,6 +46,7 @@ https://eliaspp9.github.io/Wetter/
 - **Regenradar:**
   - DWD 1 km mit 2 Stunden Radar-Vorhersage.
   - **Legende mit Mengen:** Regen in mm pro Stunde (0,1 bis 12 in Blau, ab 12 harter Wechsel auf Gelb, Orange bis 25, Rot ab 50), Schnee in cm pro Stunde (0,1 bis 7 in Lila, darüber Rosa bis 15) (aus 1 mm Wasser werden etwa 0,7 cm, wie bei Open-Meteo). Bei „Weltweit“ passt sich die Legende an die Farben von LibreWXR/RainViewer an („Universal Blue“, nach Radarecho in dBZ, umgerechnet mit Z = 200·R^1,6 für Regen und Z = 2000·R² für Schnee, also ungefähr). Beim Radar eines Landes steht dort nur, dass die Farben vom Wetterdienst kommen.
+  - **Regen oder Schnee an jeder Stelle** (DWD 1 km, Österreich, Radare der Länder): Temperatur und Luftfeuchte vom Wettermodell (Open-Meteo, aktuelle Werte, 11 × 9 Punkte über den Kartenausschnitt, alle 15 Minuten) → Feuchttemperatur (Stull 2011) → auf Meereshöhe (0,55 °C je 100 m) → an jeder Stelle mit ihrer Höhe zurück. Höhe aus dem Geländemodell AWS Terrain Tiles (Terrarium, Zoom 8, etwa 400 m), nur geladen, wenn im Ausschnitt je nach Höhe beides möglich ist und höchstens 24 Kacheln nötig sind; sonst die Höhe der Modellpunkte. Feuchttemperatur bis 1 °C = Schnee. Ohne Raster gilt wie früher die Temperatur am Ort für die ganze Karte. Kanada liefert Schnee selbst, die Modellprognose nimmt den Schneefall des Modells, „Weltweit“ färbt selbst. Bei Inversionen (kalte Täler, milde Berge) kann die Höhenrechnung danebenliegen.
   - **Menge an einer Stelle:** Antippen (oder mit der Maus darüberfahren) zeigt bei DWD 1 km, „Österreich“ und der Prognose aus dem Wettermodell die Menge dort, z. B. „2,4 mm/h · leichter Regen“ oder „0,8 cm/h · mäßiger Schneefall“ (Stufen: Regen bis 2,5 / 10 / 25 / 50 mm/h, Schnee bis 0,5 / 1,5 / 5 cm/h). Beim Abspielen läuft der Wert mit; das Fenster schließt nach 4 Sekunden. Die Bilder von „Weltweit“ und den Radaren der Länder lassen sich im Browser nicht auslesen (die Server erlauben das nicht, geprüft am 9.11.2026), dort gibt es nur die Legende.
   - „Weltweit“: in Europa das OPERA-Radar über LibreWXR, Ersatz RainViewer.
   - Radar des Landes: USA (NOAA NEXRAD über Iowa Environmental Mesonet, 5 Min.), Finnland (FMI, 5 Min.), Niederlande (KNMI, 5 Min.), Tschechien (ČHMÚ, 5 Min.), Kanada (Environment and Climate Change Canada, Regen und Schnee, 6 Min.) und Japan (JMA, 5 Min., mit 1 Stunde Vorhersage). Der Knopf erscheint nur, wenn der Ort dort liegt, und das Radar startet dann gleich damit (außer „Weltweit“ wurde selbst gewählt).
