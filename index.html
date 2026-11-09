@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-FJ5B/KjZIJN5U/qGZjYjGYRL9jTM7rSliIYQUerIkMw=' 'sha256-+CD5i0gDObdMiTFeSjBHM8SvIjSFGtFW+gQH/GdjeWc=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-kUpcG0A6YTT9eK3lDOcod0lzy3VcFly32PO1ZZjg8MU=' 'sha256-+CD5i0gDObdMiTFeSjBHM8SvIjSFGtFW+gQH/GdjeWc=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -14,9 +14,9 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/favicon-64.png">
-<meta name="app-build" content="51">
-<meta name="app-version" content="2.15">
-<meta name="app-notes" content="Version 2.15: Neues Standort-Symbol (Pfeil wie in Karten-Apps, gefüllt = dein Standort). Regenradar: Starkregen ab 12 mm/h in Gelb, Orange und Rot, die Legende geht bis 50 mm/h; starker Schneefall ab 7 cm/h in Rosa, Legende bis 15 cm/h. Der Wert beim Antippen des Radars verschwindet nach 4 Sekunden von selbst.">
+<meta name="app-build" content="52">
+<meta name="app-version" content="2.16">
+<meta name="app-notes" content="Version 2.16: Die Radare von USA, Finnland, Niederlande, Kanada und Japan erscheinen jetzt in den Farben der App, passend zur Legende, und zeigen beim Antippen die Menge in mm/h (Schnee in cm/h). Tschechien und Weltweit bleiben in den Originalfarben, weil deren Server das Auslesen sperren.">
 <script>/* alte Adresse wetter2.html -> neue Startseite */
 try{if(top!==self)document.documentElement.style.display="none"}catch(e){document.documentElement.style.display="none"}
 window.__redir=/\/wetter2\.html$/i.test(location.pathname);
@@ -1914,23 +1914,127 @@ async function loadRadar(){
    Ungarn, Italien (nur Rohdaten oder fremde Projektion), Großbritannien, Frankreich, Spanien (nur mit Schlüssel).
    Für ganz Europa gibt es zusätzlich das gemeinsame Radarbild unter „Weltweit“ (EUMETNET OPERA). */
 const isoZ=t=>new Date(t*1000).toISOString().replace(".000",""),GEOMET="https://geo.weather.gc.ca/geomet";
+/* ============ Radar der Länder in den Farben der App ============
+   USA, Finnland, Niederlande, Kanada und Japan erlauben, ihre Radarbilder im Browser auszulesen (CORS, geprüft am 9.11.2026).
+   Jede Kachel wird gelesen, jede Farbe über die Farbskala des Wetterdienstes in mm/h zurückgerechnet und in unseren Farben neu
+   gemalt; die Werte bleiben an der Kachel für das Antippen. Farbskalen: IEM NEXRAD n0q (256 Farben, Stufe = (dBZ+32)·2),
+   FMI suomi_rr (SLD, Verlauf), KNMI precip-blue-transparent und MSC GeoMet RADAR_1KM_RRAI/RSNO (aus der Legende abgetastet,
+   gegen echte Kacheln geprüft: alle Bildpunkte passen), JMA hrpns (8 Klassen). Tschechien (ČHMÚ) sperrt das Auslesen. */
+const IEM_HEX="85718f85728f86738d87758b87768b887789897987897a878a7b858b7d848b7e848c7f828d81808d82808e837e8f847c8f857c90877b918879918979928b77938d759691539894579b975b9d9a60a09d64a3a068a5a36da8a671aaa976adac7ab0af7eb2b283b7b88cbabb90bdbe94bfc199c2c49dc4c7a2c7caa6cacdaaccd0afd2d4b4cfd2b4c9ccb4c6c9b4c3c7b4c0c4b4bdc1b4b9beb4b6bbb4b3b9b4b0b6b4adb3b4aab0b4a4abb4a0a8b49da5b49aa2b497a0b4949db4919ab4949bb59098b48c95b38892b2808cb07c89af7886ae7483ac7080ab6c7daa6779a96376a85f73a75b70a6576da44f67a24b64a14761a0435e9f415b9e4361a24568a6486faa4a76ae4d7db24f84b6518bbb5699c3599fc75ba6cb5eadcf60b4d462bbd865c2dc67c9e06ad0e46fd6e868d6d759d6b352d6a24bd69043d67e3cd66d35d65b11d51811d11710cd1710c81610c4160fbc150fb7140eb3140eaf130eab130da6120da2120d9e110c99110c95100c91100b880f0b840e0a800e0a7c0d0a770d09730c096f0c096b0b08660b08620a095e09327308467d085b88076f9207849d0698a806adb205c1bd05d6c704ead204ffe200ffd800ffd300ffce00ffc900ffc400ffc000ffbb00ffb600ffb100ffac00ffa700ffa200ff9900ff9400ff8f00ff8a00ff8500ff8000ff0000f80000f10000ea0000e30000d50000cd0000c60000bf0000b80000b10000aa0000a300009b00009400008d00007f0000780000710000fffffffff5ffffeaffffdfffffd4ffffc9ffffbeffffb3ffff9dffff92ffff75fffc6bfdf960faf656f7f34bf4f040f1ed36efea2bece720e9e10be3b200ffac00fca400f79b00f49300ef8800ea8300e87900e27200dd6900db05ecf005ebf005eaf005dde005dce005dbe005cdd005ccd004bdc004bcc004bbc004aeb004adb0049ea0049da0049ca0038e90038d90038c90037e80037d80036f70036e70036d70025f60025e60024f50024e50024d50023f40023e40023d40013030012f30012020011f20011e203a67b53a66b53a65b53a64b53a63b53a62b5";
+const RC_SRC={KNMI:{"p": "1:cdf2ff,80:89c9ff,116:65acff,159:0191ff,276:0135fe,313:2534e1,358:3834bd", "t": "0:0.1,36:0.2,83:0.5,119:1,155:2,203:5,239:10,275:20,323:50,358:100", "log": 1},GR:{"p": "2:8fbff0,3:98cbfe,28:0098fe,54:00fe66,80:00cb00,132:006600,158:fefe00,263:fe0000,289:fe0298,315:9833cb,341:660098,367:33004d", "t": "0:0.1,29:1,57:2,85:4,113:8,142:12,170:16,198:24,226:32,254:50,283:64,311:100,339:125,367:200", "log": 0},GS:{"p": "2:8fbff0,3:98cbfe,28:0098fe,54:00fe66,80:00cb00,132:006600,158:fefe00,263:fe0000,289:fe0298,315:9833cb,341:660098,367:33004d", "t": "0:0.1,29:0.2,57:0.3,85:0.5,113:0.75,142:1,170:1.5,198:2,226:3,254:4,283:5,311:7.5,339:10,367:20", "log": 0}};
+const FMI_P=[[.07,108,235,243],[.14,88,199,151],[.34,64,152,87],[.86,241,243,90],[2.16,223,196,10],[3.98,235,149,26],[10,232,86,22],[25.13,206,2,2],[63.13,131,10,70]];
+/* JMA: Klasse (Farbe) → [Mittelwert, von, bis] in mm/h */
+const JMA_CLS=[[0xf2f2ff,.5,0,1],[0xa0d2ff,2.5,1,5],[0x218cff,7,5,10],[0x0041ff,14,10,20],[0xfaf500,25,20,30],[0xff9900,40,30,50],[0xff2800,65,50,80],[0xb40068,90,80,0]];
+const rcPts=s=>s.split(",").map(x=>{const a=x.split(":"),h=a[1];return[+a[0],parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)]});
+const rcTk=s=>s.split(",").map(x=>x.split(":").map(Number));
+function rcPosV(T,lg,p){
+ if(!T)return p;
+ if(p<=T[0][0])return T[0][1];
+ for(let i=1;i<T.length;i++)if(p<=T[i][0]){const a=T[i-1],b=T[i],f=(p-a[0])/(b[0]-a[0]);return lg?Math.exp(Math.log(a[1])+(Math.log(b[1])-Math.log(a[1]))*f):a[1]+(b[1]-a[1])*f}
+ return T[T.length-1][1];
+}
+/* Farbe → Wert: nächster Punkt auf dem Farbverlauf des Dienstes; weiter weg als tol = kein Niederschlag */
+function rcInv(P,T,lg,tol){
+ const cache=new Map(),t2=tol*tol;
+ return(r,g,b)=>{
+  const k=(r<<16)|(g<<8)|b;let v=cache.get(k);if(v!==undefined)return v;
+  let best=1e9,bp=0;
+  for(let i=0;i<P.length-1;i++){const a=P[i],c=P[i+1],dr=c[1]-a[1],dg=c[2]-a[2],db=c[3]-a[3],L=dr*dr+dg*dg+db*db;
+   let t=L?((r-a[1])*dr+(g-a[2])*dg+(b-a[3])*db)/L:0;t=t<0?0:t>1?1:t;
+   const er=a[1]+dr*t-r,eg=a[2]+dg*t-g,eb=a[3]+db*t-b,d=er*er+eg*eg+eb*eb;if(d<best){best=d;bp=a[0]+(c[0]-a[0])*t}}
+  v=best<=t2?rcPosV(T,lg,bp):NaN;cache.set(k,v);return v};
+}
+/* exakte Farbe → Wert, sonst nächste Farbe der Liste (bis tol) */
+function rcExact(list,tol){
+ const m=new Map(),t2=tol*tol;list.forEach(e=>{if(!m.has(e[0]))m.set(e[0],e[1])});
+ return(r,g,b)=>{
+  const k=(r<<16)|(g<<8)|b;let v=m.get(k);if(v!==undefined)return v;
+  let best=1e9;v=NaN;
+  for(const e of list){const d=((e[0]>>16)-r)**2+(((e[0]>>8)&255)-g)**2+((e[0]&255)-b)**2;if(d<best){best=d;v=e[1]}}
+  if(best>t2)v=NaN;m.set(k,v);return v};
+}
+const zRain=z=>Math.pow(Math.pow(10,z/10)/200,.625),zSnow=z=>Math.sqrt(Math.pow(10,z/10)/2000);
+let RC=null;
+function rcInit(){
+ if(RC)return RC;
+ const iem=[];for(let i=0;i<255;i++)iem.push([parseInt(IEM_HEX.substr(i*6,6),16),(i+1)*.5-32]);
+ RC={
+  US:{inv:rcExact(iem,10),mm:(z,s)=>z<10?NaN:s?zSnow(z):zRain(z),min:.1},
+  FI:{inv:rcInv(FMI_P,null,0,24),min:.05},
+  NL:{inv:rcInv(rcPts(RC_SRC.KNMI.p),rcTk(RC_SRC.KNMI.t),1,24),min:.05},
+  CAr:{inv:rcInv(rcPts(RC_SRC.GR.p),rcTk(RC_SRC.GR.t),0,24),snow:false,min:.05},
+  CAs:{inv:rcInv(rcPts(RC_SRC.GS.p),rcTk(RC_SRC.GS.t),0,24),snow:true,mm:c=>c/.7,min:.05},
+  JP:{inv:rcExact(JMA_CLS.map(c=>[c[0],c[1]]),8),min:.05,cls:1}
+ };
+ return RC;
+}
+const radSnow=()=>!!(lastJ&&lastJ.current&&lastJ.current.temperature_2m<=0.5);
+/* Kachel lesen und in unseren Farben neu malen; geht das Auslesen nicht, bleibt das Original stehen */
+function rcPaint(cv,img,rc){
+ const x=cv.getContext("2d",{willReadFrequently:true});x.drawImage(img,0,0,256,256);
+ let d;try{d=x.getImageData(0,0,256,256)}catch(e){cv._orig=1;return}
+ const p=d.data,V=new Float32Array(65536),snow=rc.snow!=null?rc.snow:radSnow(),pal=snow?SNOWC:RAINC,cc=new Map();
+ for(let i=0,j=0;i<65536;i++,j+=4){
+  V[i]=NaN;
+  if(p[j+3]<90){p[j+3]=0;continue}
+  let v=rc.inv(p[j],p[j+1],p[j+2]);
+  if(rc.mm&&v===v)v=rc.mm(v,snow);
+  if(!(v>=rc.min)){p[j+3]=0;continue}
+  V[i]=v;
+  const q=Math.round(v*20);let c=cc.get(q);
+  if(!c){const a=ramp(pal,v);c=[a[0],a[1],a[2],Math.round(Math.min(1,.35+v*.6)*.92*255)];cc.set(q,c)}
+  p[j]=c[0];p[j+1]=c[1];p[j+2]=c[2];p[j+3]=c[3];
+ }
+ x.putImageData(d,0,0);cv._v=V;cv._snow=snow;cv._cls=!!rc.cls;
+}
+let RcTile=null,RcWms=null;
+function rcLayer(kind,url,opt,rcKey){
+ if(!RcTile){
+  const ct=function(coords,done){
+   const c=document.createElement("canvas");c.width=c.height=256;c.complete=false;
+   const im=new Image(),rc=rcInit()[this.options.rcKey];im.crossOrigin="anonymous";
+   im.onload=()=>{try{rcPaint(c,im,rc)}catch(e){console.error(e)}c.complete=true;done(null,c)};
+   im.onerror=()=>{c.complete=true;done(new Error("Radarkachel"),c)};
+   im.src=this.getTileUrl(coords);return c};
+  RcTile=L.TileLayer.extend({createTile:ct});RcWms=L.TileLayer.WMS.extend({createTile:ct});
+ }
+ opt.rcKey=rcKey;
+ return kind==="wms"?new RcWms(url,opt):new RcTile(url,opt);
+}
+/* Wert an einer Stelle aus der gerade gezeigten Ebene (bei Kanada aus Regen- und Schnee-Ebene) */
+function natVal(la,lo){
+ const l=layers[idx];if(!l||!map)return null;
+ const subs=[];if(l.eachLayer)l.eachLayer(x=>subs.push(x));else subs.push(l);
+ let res=null;
+ for(const t of subs){
+  const z=t._tileZoom;if(z==null||!t._tiles)continue;
+  const p=map.project([la,lo],z),x=Math.floor(p.x/256),y=Math.floor(p.y/256),tl=t._tiles[x+":"+y+":"+z],el=tl&&tl.el;
+  if(!el){res=res||{wait:1};continue}
+  if(el._orig)return{none:"Dieses Radarbild ließ sich nicht auslesen."};
+  if(!el._v){res=res||{wait:1};continue}
+  const v=el._v[Math.floor(p.y-y*256)*256+Math.floor(p.x-x*256)];
+  if(v>=.05)return{r:v,snow:el._snow,cls:el._cls?JMA_CLS.find(c=>Math.abs(c[1]-v)<.01):null};
+  if(!res||res.wait)res={r:0,snow:el._snow};
+ }
+ return res||{out:"Für diese Stelle ist das Radarbild noch nicht geladen."};
+}
 const NATR={
- US:{n:"USA",att:"Radar: NOAA NEXRAD über Iowa Environmental Mesonet",note:"Radar der USA: Radarverbund des US-Wetterdienstes (NOAA NEXRAD), alle 5 Minuten, die letzten 50 Minuten. Bereitgestellt vom Iowa Environmental Mesonet.",
+ US:{n:"USA",att:"Radar: NOAA NEXRAD über Iowa Environmental Mesonet",note:"Radar der USA: Radarverbund des US-Wetterdienstes (NOAA NEXRAD), alle 5 Minuten, die letzten 50 Minuten. Bereitgestellt vom Iowa Environmental Mesonet. In den Farben der App: aus der Stärke des Radarechos in mm pro Stunde umgerechnet (ungefähr). Tippe auf den Regen (oder fahr mit der Maus darüber), dann siehst du die Menge an dieser Stelle.",rc:1,
   frames(){const t0=Math.floor(Date.now()/300000)*300-300;return[50,45,40,35,30,25,20,15,10,5,0].map(m=>({time:t0-m*60,m}))},
-  layer(f){return L.tileLayer("https://mesonet.agron.iastate.edu/cache/tile.py/1.0.0/nexrad-n0q-900913"+(f.m?"-m"+String(f.m).padStart(2,"0")+"m":"")+"/{z}/{x}/{y}.png",{opacity:0,maxNativeZoom:10,maxZoom:19,zIndex:5,className:"rdr",attribution:this.att})}},
- FI:{n:"Finnland",att:"Radar: Ilmatieteen laitos (FMI), CC BY 4.0",note:"Radar von Finnland: Radarverbund des Finnischen Meteorologischen Instituts (FMI), Regenmenge pro Stunde, alle 5 Minuten, die letzte Stunde.",
+  layer(f){return rcLayer("tile","https://mesonet.agron.iastate.edu/cache/tile.py/1.0.0/nexrad-n0q-900913"+(f.m?"-m"+String(f.m).padStart(2,"0")+"m":"")+"/{z}/{x}/{y}.png",{opacity:0,maxNativeZoom:10,maxZoom:19,zIndex:5,className:"rdr",attribution:this.att},"US")}},
+ FI:{n:"Finnland",att:"Radar: Ilmatieteen laitos (FMI), CC BY 4.0",note:"Radar von Finnland: Radarverbund des Finnischen Meteorologischen Instituts (FMI), Regenmenge pro Stunde, alle 5 Minuten, die letzte Stunde. In den Farben der App (aus der Farbskala des FMI umgerechnet). Tippe auf den Regen (oder fahr mit der Maus darüber), dann siehst du die Menge an dieser Stelle.",rc:1,
   frames(){const t0=Math.floor((Date.now()-7*60000)/300000)*300;return Array.from({length:12},(_,k)=>({time:t0-(11-k)*300}))},
-  layer(f){return L.tileLayer.wms("https://openwms.fmi.fi/geoserver/Radar/wms",{layers:"Radar:suomi_rr_eureffin",format:"image/png",transparent:true,version:"1.3.0",time:isoZ(f.time),opacity:0,maxZoom:19,zIndex:5,className:"rdr",attribution:this.att})}},
- NL:{n:"Niederlande",att:"Radar: KNMI, CC BY 4.0",note:"Radar der Niederlande: Radarverbund des Königlich Niederländischen Meteorologischen Instituts (KNMI), Niederschlag, 1 km, alle 5 Minuten, die letzte Stunde.",
+  layer(f){return rcLayer("wms","https://openwms.fmi.fi/geoserver/Radar/wms",{layers:"Radar:suomi_rr_eureffin",format:"image/png",transparent:true,version:"1.3.0",time:isoZ(f.time),opacity:0,maxZoom:19,zIndex:5,className:"rdr",attribution:this.att},"FI")}},
+ NL:{n:"Niederlande",att:"Radar: KNMI, CC BY 4.0",note:"Radar der Niederlande: Radarverbund des Königlich Niederländischen Meteorologischen Instituts (KNMI), Niederschlag, 1 km, alle 5 Minuten, die letzte Stunde. In den Farben der App (aus der Farbskala des KNMI umgerechnet). Tippe auf den Regen (oder fahr mit der Maus darüber), dann siehst du die Menge an dieser Stelle.",rc:1,
   frames(){const t0=Math.floor((Date.now()-6*60000)/300000)*300;return Array.from({length:12},(_,k)=>({time:t0-(11-k)*300}))},
-  layer(f){return L.tileLayer.wms("https://geoservices.knmi.nl/adagucserver?dataset=RADAR",{layers:"RAD_NL25_PCP_CM",styles:"precip-blue-transparent/nearest",format:"image/png",transparent:true,version:"1.3.0",time:isoZ(f.time),opacity:0,maxZoom:19,zIndex:5,className:"rdr",attribution:this.att})}},
+  layer(f){return rcLayer("wms","https://geoservices.knmi.nl/adagucserver?dataset=RADAR",{layers:"RAD_NL25_PCP_CM",styles:"precip-blue-transparent/nearest",format:"image/png",transparent:true,version:"1.3.0",time:isoZ(f.time),opacity:0,maxZoom:19,zIndex:5,className:"rdr",attribution:this.att},"NL")}},
  CZ:{n:"Tschechien",att:"Radar: ČHMÚ (opendata.chmi.cz)",fnote:"Das Radarbild von ČHMÚ deckt Tschechien und die Grenzgebiete ab.",
   note:"Radar von Tschechien: Radarverbund des Tschechischen Hydrometeorologischen Instituts (ČHMÚ), stärkstes Echo in der Säule, 1 km, alle 5 Minuten, die letzte Stunde.",
   frames(){const t0=Math.floor((Date.now()-4*60000)/300000)*300;return Array.from({length:12},(_,k)=>({time:t0-(11-k)*300}))},
   /* fertiges Bild in Web-Mercator mit festen Ecken (laut ČHMÚ: 11,267–20,770° O, 48,047–52,167° N) */
   layer(f){const d=new Date(f.time*1000),p=n=>String(n).padStart(2,"0"),st=d.getUTCFullYear()+p(d.getUTCMonth()+1)+p(d.getUTCDate())+"."+p(d.getUTCHours())+p(d.getUTCMinutes());
    return L.imageOverlay("https://opendata.chmi.cz/meteorology/weather/radar/composite/maxz/png/pacz2gmaps3.z_max3d."+st+".0.png",[[48.047,11.267],[52.167,20.770]],{pane:"tilePane",zIndex:5,opacity:0,className:"rdr",interactive:false,attribution:this.att})}},
- CA:{n:"Kanada",att:"Radar: Environment and Climate Change Canada (MSC GeoMet)",note:"Radar von Kanada: Radarverbund von Environment and Climate Change Canada, Regen und Schnee, 1 km, alle 6 Minuten, die letzte Stunde.",
+ CA:{n:"Kanada",att:"Radar: Environment and Climate Change Canada (MSC GeoMet)",note:"Radar von Kanada: Radarverbund von Environment and Climate Change Canada, Regen und Schnee, 1 km, alle 6 Minuten, die letzte Stunde. In den Farben der App (aus den Farbskalen von ECCC umgerechnet, Schnee in cm pro Stunde wie bei ECCC). Tippe auf den Regen (oder fahr mit der Maus darüber), dann siehst du die Menge an dieser Stelle.",rc:1,
   async frames(){
    let end=0;
    try{const r=await tfetch(GEOMET+"?service=WMS&version=1.3.0&request=GetCapabilities&layer=RADAR_1KM_RRAI",undefined,12000),x=await r.text(),m=x.match(/<Dimension name="time"[^>]*>[^<\/]*\/(\d{4}-\d\d-\d\dT\d\d:\d\d:\d\dZ)\/PT6M/);if(m)end=Date.parse(m[1])/1000}catch(e){}
@@ -1938,9 +2042,9 @@ const NATR={
    return Array.from({length:11},(_,k)=>({time:end-(10-k)*360}))},
   /* Regen und Schnee sind zwei Ebenen; zusammen in einer Gruppe, die sich wie eine Ebene ein- und ausblenden lässt */
   layer(f){const o={format:"image/png",transparent:true,version:"1.3.0",time:isoZ(f.time),opacity:0,maxZoom:19,zIndex:5,className:"rdr",attribution:this.att},
-   g=L.layerGroup([L.tileLayer.wms(GEOMET,Object.assign({layers:"RADAR_1KM_RRAI"},o)),L.tileLayer.wms(GEOMET,Object.assign({layers:"RADAR_1KM_RSNO"},o))]);
+   g=L.layerGroup([rcLayer("wms",GEOMET,Object.assign({layers:"RADAR_1KM_RRAI"},o),"CAr"),rcLayer("wms",GEOMET,Object.assign({layers:"RADAR_1KM_RSNO"},o),"CAs")]);
    g.setOpacity=function(v){this.eachLayer(l=>l.setOpacity(v));return this};return g}},
- JP:{n:"Japan",att:"Radar: Japan Meteorological Agency (JMA)",note:"Radar von Japan: Niederschlags-Nowcast des japanischen Wetterdienstes (JMA), alle 5 Minuten, die letzte Stunde. Nach „Jetzt“ folgt die Vorhersage des JMA für eine Stunde.",
+ JP:{n:"Japan",att:"Radar: Japan Meteorological Agency (JMA)",note:"Radar von Japan: Niederschlags-Nowcast des japanischen Wetterdienstes (JMA), alle 5 Minuten, die letzte Stunde. Nach „Jetzt“ folgt die Vorhersage des JMA für eine Stunde. In den Farben der App; das JMA liefert Stufen (zum Beispiel 1 bis 5 mm/h), daher zeigt das Antippen die Stufe. Tippe auf den Regen (oder fahr mit der Maus darüber), dann siehst du die Menge an dieser Stelle.",rc:1,
   async frames(){
    const B="https://www.jma.go.jp/bosai/jmatile/data/nowc/",[a,b]=await Promise.all([getJ(B+"targetTimes_N1.json",12000),getJ(B+"targetTimes_N2.json",12000).catch(()=>[])]);
    const ok=x=>x&&/^\d{14}$/.test(x.basetime)&&/^\d{14}$/.test(x.validtime)&&(x.elements||[]).indexOf("hrpns")>=0;
@@ -1950,7 +2054,7 @@ const NATR={
    if(!past.length)throw new Error("leer");
    const t1=past[past.length-1].time,bl=(Array.isArray(b)?b:[]).filter(ok),nb=bl.reduce((m,x)=>x.basetime>m?x.basetime:m,"");
    return past.concat(bl.filter(x=>x.basetime===nb).map(fr).filter(x=>x.time>t1).sort((p,q)=>p.time-q.time))},
-  layer(f){return L.tileLayer("https://www.jma.go.jp/bosai/jmatile/data/nowc/"+f.b+"/none/"+f.v+"/surf/hrpns/{z}/{x}/{y}.png",{opacity:0,minNativeZoom:4,maxNativeZoom:10,maxZoom:19,zIndex:5,className:"rdr",attribution:this.att})}}
+  layer(f){return rcLayer("tile","https://www.jma.go.jp/bosai/jmatile/data/nowc/"+f.b+"/none/"+f.v+"/surf/hrpns/{z}/{x}/{y}.png",{opacity:0,minNativeZoom:4,maxNativeZoom:10,maxZoom:19,zIndex:5,className:"rdr",attribution:this.att},"JP")}}
 };
 let natAuto="";
 let natFor="",natLast=0;
@@ -2986,7 +3090,7 @@ function legUB(){
    [[.1,"0,1"],[.5,"0,5"],[1,"1"],[2,"2"],[5,"5"]].map(t=>[P(zs(t[0])),t[1]]),"cm/h");
 }
 let legK="";
-function legKind(){if(mode==="nat")return"nat|"+ccNow();if(mode==="rv"){const f=frames[idx];return f&&f.fc!=null?"own":"ub"}return"own"}
+function legKind(){if(mode==="nat"){const c=NATR[ccNow()];return c&&c.rc?"own":"nat|"+ccNow()}if(mode==="rv"){const f=frames[idx];return f&&f.fc!=null?"own":"ub"}return"own"}
 function legRain(force){
  if(lay!=="rain")return;
  const k=legKind();if(k===legK&&!force)return;legK=k;
@@ -3026,6 +3130,7 @@ function rVal(la,lo){
  if(f.dw!=null&&mode==="dwd"){v=dwVal(la,lo,f.dw);src="DWD-Radar"}
  else if(f.at!=null&&mode==="at"){v=atVal(la,lo,f.at);src="GeoSphere Austria"}
  else if(f.fc!=null){v=fcVal(la,lo,f.fc);src="Wettermodell"}
+ else if(mode==="nat"&&NATR[ccNow()]&&NATR[ccNow()].rc){v=natVal(la,lo);src="Radar "+NATR[ccNow()].n}
  else return{none:mode==="nat"?"Das Radar des Landes ist ein fertiges Bild, daraus lassen sich keine Mengen ablesen.":
   "„Weltweit“ ist ein fertiges Radarbild, daraus lassen sich keine Mengen ablesen. Welche Farbe ungefähr wie viel bedeutet, steht in der Legende."+(dwCovered(la,lo)?" Genaue Werte zeigt „DWD 1 km“.":atCovered(la,lo)?" Genaue Werte zeigt „Österreich“.":"")};
  if(v)v.src=src;
@@ -3042,6 +3147,9 @@ function rHtml(v,pop){
  const foot="<br><small>"+(f?new Date(f.time*1000).toLocaleTimeString("de-AT",{hour:"2-digit",minute:"2-digit"})+" Uhr · ":"")+v.src+(fut?", Vorhersage":"")+"</small>";
  if(!(v.r>=.05))return pop?"<b>Kein Niederschlag</b>"+foot:null;
  const lt=x=>x<.1?"unter 0,1":f1(x);
+ /* Japan: nur Stufen */
+ if(v.cls){const k=v.snow?.7:1,u=v.snow?" cm/h":" mm/h",rg=v.cls[3]?f1(v.cls[2]*k)+" bis "+f1(v.cls[3]*k)+u:"über "+f1(v.cls[2]*k)+u,w=v.snow?SWORD(v.r*.7):RWORD(v.r);
+  return"<b>"+rg+"</b>"+(pop?"<br>"+w+foot:" · "+w)}
  if(v.snow){const c=v.cm!=null?v.cm:v.r*.7;return"<b>"+lt(c)+" cm/h</b>"+(pop?"<br>"+SWORD(c)+"<br><small>als Wasser etwa "+lt(v.r)+" mm/h</small>"+foot:" · "+SWORD(c))}
  return"<b>"+lt(v.r)+" mm/h</b>"+(pop?"<br>"+RWORD(v.r)+foot:" · "+RWORD(v.r));
 }
