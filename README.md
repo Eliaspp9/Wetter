@@ -129,6 +129,8 @@ Alles lernt laufend weiter (gleitende Mittel und Online-Regression, die langsam 
 
 ## Cloudflare-Worker (`worker/kachelmann-proxy.js`)
 
+**Automatisch veröffentlichen (ab 1.6):** Liegt im Repository das Secret `CLOUDFLARE_API_TOKEN` (Cloudflare-Vorlage „Edit Cloudflare Workers“), veröffentlicht die GitHub-Action „Worker veröffentlichen“ den Worker bei jeder Änderung an `worker/kachelmann-proxy.js`. Sie liest dazu die bestehenden Einstellungen (Konto, KV-Bindung SUBS, Zeitplan) über die Cloudflare-API, ergänzt die Bindung AI und ruft `wrangler deploy` mit `keep_vars` auf; Secrets (Passwort, Kachelmann-Schlüssel) bleiben unberührt. Ohne Secret passiert nichts.
+
 Der Worker hält den Kachelmann-Schlüssel geheim, prüft die Anmeldung, verlängert sie (`/renew`) und verschickt Benachrichtigungen.
 
 | Einstellung | Art | Inhalt |
