@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-rf5OwCTZ6Y5S7mR88RdhTMPbDtXqZJFChUtHSquS6Lo=' 'sha256-+CD5i0gDObdMiTFeSjBHM8SvIjSFGtFW+gQH/GdjeWc=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-DdoF9ZBEDRtnsVCCLs5djQxIfCGr6hCq4gC71fuIwO8=' 'sha256-+CD5i0gDObdMiTFeSjBHM8SvIjSFGtFW+gQH/GdjeWc=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -14,9 +14,9 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/favicon-64.png">
-<meta name="app-build" content="48">
-<meta name="app-version" content="2.14">
-<meta name="app-notes" content="Version 2.14: Der Stern zum Speichern eines Lieblingsorts war bei gesuchten Orten unsichtbar, jetzt ist er immer da. Bis zu 30 Lieblingsorte (früher 8, der älteste fiel still heraus), speichern auch direkt in der Suche mit dem Stern, und mit „Bearbeiten“ umbenennen, sortieren und entfernen. Standort: die App fragt beim Start immer, weil iOS 26 bei Apps vom Home-Bildschirm fälschlich „gesperrt“ meldet.">
+<meta name="app-build" content="49">
+<meta name="app-version" content="2.14.1">
+<meta name="app-notes" content="Version 2.14.1: Die Hilfe beim Standort am iPhone nennt jetzt den entscheidenden Schalter für die App vom Home-Bildschirm: Einstellungen → Datenschutz & Sicherheit → Ortungsdienste → Systemdienste → „In-App-Browsing“ einschalten, danach das Symbol neu anlegen.">
 <script>/* alte Adresse wetter2.html -> neue Startseite */
 try{if(top!==self)document.documentElement.style.display="none"}catch(e){document.documentElement.style.display="none"}
 window.__redir=/\/wetter2\.html$/i.test(location.pathname);
@@ -3210,11 +3210,14 @@ function gpsHelp(code,detail){
  const app=(()=>{try{return standalone()}catch(e){return false}})(),iv=(/OS (\d+)[_.](\d+)/.exec(navigator.userAgent)||[]),
   info="Fehler "+(code||"?")+" ("+(app?"App vom Home-Bildschirm":"Browser")+(isIOS&&iv[1]?", iOS "+iv[1]+"."+iv[2]:"")+")"+(detail?": "+detail:"");
  if(code===1){
-  /* iOS 26: Apps vom Home-Bildschirm bekommen den Standort manchmal nicht, obwohl alles erlaubt ist (Fehler von Apple,
-     gemeldet im Apple-Entwicklerforum, Thread 804381). In Safari selbst klappt es. */
+  /* iOS 26/27: Apps vom Home-Bildschirm bekommen den Standort nur, wenn unter Ortungsdienste → Systemdienste
+     „In-App-Browsing“ an ist (am 9.11.2026 auf einem iPhone mit iOS 27.2 bestätigt; Safari-Websites allein reicht nicht).
+     Notlösung: Symbol ohne „Als Web-App öffnen“ anlegen, dann öffnet es Safari. */
   if(isIOS&&app)return gpsMsg("err","Das iPhone gibt der Wetter-App vom Home-Bildschirm keinen Standort.",[
-   "Prüfen: Einstellungen → Datenschutz & Sicherheit → Ortungsdienste ist an, und weiter unten bei „Safari-Websites“ steht „Beim Verwenden der App“ mit „Genauer Standort“.",
-   "Ist das schon so eingestellt, ist es ein bekannter Fehler von iOS 26 bei Apps vom Home-Bildschirm. Dann hilft: das Wetter-Symbol vom Home-Bildschirm löschen, die Seite in Safari öffnen, Teilen → „Zum Home-Bildschirm“ und dort „Als Web-App öffnen“ ausschalten. Das Symbol öffnet die Seite dann in Safari, und dort klappt der Standort.",
+   "Einstellungen → Datenschutz & Sicherheit → Ortungsdienste: ganz oben einschalten, weiter unten bei „Safari-Websites“ „Beim Verwenden der App“ und „Genauer Standort“.",
+   "Wichtig für Apps vom Home-Bildschirm: im selben Menü ganz unten „Systemdienste“ → „In-App-Browsing“ einschalten.",
+   "Dann das Wetter-Symbol vom Home-Bildschirm löschen, die Seite in Safari öffnen, Teilen → „Zum Home-Bildschirm“ (mit „Als Web-App öffnen“), die App öffnen und rechts oben auf das Standort-Symbol tippen.",
+   "Klappt es immer noch nicht: das Symbol noch einmal anlegen und dabei „Als Web-App öffnen“ ausschalten. Es öffnet die Seite dann in Safari, dort klappt der Standort.",
    "Oder ohne Standort: deinen Ort oben suchen und mit dem Stern neben dem Namen speichern. Dann reicht ein Tippen auf den Knopf darunter."],info);
   if(isIOS)return gpsMsg("err","Der Standort ist für "+(app?"die Wetter-App":"diese Seite")+" gesperrt. So erlaubst du ihn:",[
    "Einstellungen → Datenschutz & Sicherheit → Ortungsdienste: ganz oben einschalten.",
