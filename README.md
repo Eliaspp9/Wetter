@@ -3,6 +3,8 @@
 Persönliche Wetter-App im Stil von WetterOnline, als Webseite auf GitHub Pages:
 https://eliaspp9.github.io/Wetter/
 
+**Version 2.13**: Legende des Regenradars mit Mengen (Regen in mm/h, Schnee in cm/h), Menge an der Stelle beim Antippen oder Darüberfahren; KI-Modell AIFS auch bei „7 Tage“.
+
 **Version 2.12**: Lernende Korrektur der 24-Stunden- und 7-Tage-Temperaturen (Worker 1.5 lernt stündlich und dauerhaft).
 
 **Version 2.11**: Himmel oben (Sonne, Wolken, Nebel) aus Messungen in der Nähe; Worker 1.4 liefert dafür auch die Bewölkung der Flughäfen.
@@ -31,6 +33,8 @@ https://eliaspp9.github.io/Wetter/
 - **Wettermodell ECMWF:** Vorhersage, 7 Tage, 14-Tage-Trend, Temperatur- und Windkarte, Bergwetter und die KI-Korrektur rechnen mit ECMWF IFS. Was ECMWF nicht liefert, kommt vom Standardmodell von Open-Meteo: UV-Index, Regen in den nächsten 2 Stunden (15-Minuten-Werte), Niederschlagsart sowie Nullgrad- und Schneefallgrenze (ICON des DWD).
 - **Regenradar:**
   - DWD 1 km mit 2 Stunden Radar-Vorhersage.
+  - **Legende mit Mengen:** Regen in mm pro Stunde (0,1 bis 12), Schnee in cm pro Stunde (aus 1 mm Wasser werden etwa 0,7 cm, wie bei Open-Meteo). Bei „Weltweit“ passt sich die Legende an die Farben von LibreWXR/RainViewer an („Universal Blue“, nach Radarecho in dBZ, umgerechnet mit Z = 200·R^1,6 für Regen und Z = 2000·R² für Schnee, also ungefähr). Beim Radar eines Landes steht dort nur, dass die Farben vom Wetterdienst kommen.
+  - **Menge an einer Stelle:** Antippen (oder mit der Maus darüberfahren) zeigt bei DWD 1 km, „Österreich“ und der Prognose aus dem Wettermodell die Menge dort, z. B. „2,4 mm/h · leichter Regen“ oder „0,8 cm/h · mäßiger Schneefall“ (Stufen: Regen bis 2,5 / 10 / 25 mm/h, Schnee bis 0,5 / 1,5 cm/h). Beim Abspielen läuft der Wert mit. Die Bilder von „Weltweit“ und den Radaren der Länder lassen sich im Browser nicht auslesen (die Server erlauben das nicht, geprüft am 9.11.2026), dort gibt es nur die Legende.
   - „Weltweit“: in Europa das OPERA-Radar über LibreWXR, Ersatz RainViewer.
   - Radar des Landes: USA (NOAA NEXRAD über Iowa Environmental Mesonet, 5 Min.), Finnland (FMI, 5 Min.), Niederlande (KNMI, 5 Min.), Tschechien (ČHMÚ, 5 Min.), Kanada (Environment and Climate Change Canada, Regen und Schnee, 6 Min.) und Japan (JMA, 5 Min., mit 1 Stunde Vorhersage). Der Knopf erscheint nur, wenn der Ort dort liegt, und das Radar startet dann gleich damit (außer „Weltweit“ wurde selbst gewählt).
   - Geprüft und nicht nutzbar (Stand November 2026): Belgien (RMI sperrt Kartenabrufe), Schweiz, Schweden, Norwegen, Dänemark, Ungarn, Italien (nur Rohdaten oder andere Kartenprojektion), Großbritannien, Frankreich, Spanien (nur mit Schlüssel). Dort und überall sonst gibt es „Weltweit“, in Europa mit dem gemeinsamen Radarbild aller Wetterdienste (EUMETNET OPERA).
@@ -45,7 +49,7 @@ https://eliaspp9.github.io/Wetter/
   - Die nächsten 2 Stunden: der Titel zeigt, was kommt (Regen, Schnee, Schneeregen, Gewitter) oder sonst, wie der Himmel gerade ist (Sonne, Sonne und Wolken, Klarer Himmel, Ein paar Wolken, Wolken, Nebel), jeweils mit passendem Symbol.
   - Nächste 24 Stunden.
   - 7 Tage zum Aufklappen und Trend bis 14 Tage: überall vom ECMWF-Modell. Kachelmann gibt es an deinen Kachelmann-Standorten für das Wetter jetzt und die nächsten 24 Stunden.
-  - Beim Trend das KI-Modell AIFS zum Vergleich.
+  - Bei „7 Tage“ und beim Trend das KI-Modell AIFS des EZMW zum Vergleich (roter Strich unter dem Temperaturbalken, Werte beim Aufklappen eines Tages). Eine Abfrage für beide, eine Stunde gemerkt.
 - **Modellvergleich:**
   - Eine gemeinsame Linie aus ICON-D2, ICON-EU, ECMWF, GFS, KI-Modell und Kachelmann.
   - Die Modelle werden nach ihren Treffern der letzten 14 Tage gewichtet (Vergleich mit der nächsten Messstation).
