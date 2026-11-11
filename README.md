@@ -3,6 +3,8 @@
 Persönliche Wetter-App im Stil von WetterOnline, als Webseite auf GitHub Pages:
 https://eliaspp9.github.io/Wetter/
 
+**Version 2.19.1**: Radar Österreich: Stücke, die GeoSphere beim Veröffentlichen eines neuen Laufs noch vom alten Lauf liefert, werden nach Uhrzeit eingefügt statt verworfen (vorher fehlte dann ein Teil der Karte, z. B. alles südlich einer geraden Kante); nach 2 Minuten neu geholt. Niesel ab 0,03 mm/h zart sichtbar (GeoSphere liefert ab 0,01 mm je Viertelstunde). Ränder rund statt treppig (bikubische Glättung im WebGL-Bild). Hinweis unter der Karte, solange Teile laden oder fehlen. Zwei Abfragen gleichzeitig statt drei.
+
 **Version 2.19**: Regenradar flüssig: Zwischenbilder mit der Bewegung des Regens (DWD 1 km und Österreich per WebGL, Weltweit und Länder überblendet und mitgeschoben), so viele Bilder pro Sekunde wie das Gerät zeigt (60 oder 120). Radar Österreich lädt den ganzen sichtbaren Ausschnitt in Stücken statt nur eines Kastens um die Kartenmitte. Behoben: Radar Österreich blieb stehen, wenn eine Antwort mitten im Laden abriss (das Zeitlimit galt nur bis zu den ersten Bytes).
 
 **Version 2.18** (mit Worker 1.6): Regen in 2 Stunden aus dem Radar; Länder-Radare mit Bewegungs-Vorhersage; Gewitter-Trend und Hagel-Hinweis; Pollen-Tagebuch; Nebel-Satellitenbild; lernender Modellmix, Regenwahrscheinlichkeit, Wind/Böen und Hochnebel im Worker; KI-Übersetzung und KI-Push-Texte (Workers AI); Ruhezeiten aus dem Alltag.
