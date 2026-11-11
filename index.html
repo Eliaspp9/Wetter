@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-1MfN3ggOEIkHgxLB+NJbGRGLRdvwirsMJNixnjdsa4U=' 'sha256-+CD5i0gDObdMiTFeSjBHM8SvIjSFGtFW+gQH/GdjeWc=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://s3.amazonaws.com https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-lCHYWFjwRfu7fJMvMRnbFakBpGlRYUwvdWWLroh3Cko=' 'sha256-lvKpcV+EsU0KHXdF7yZhwxs4LQa60i0sSA8Pl56jziM=' 'sha256-4CoWjqLPtE4OpZFJbF4O6PPrVb8Fm75djoUa/2ooruo=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src 'self'; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://s3.amazonaws.com https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -14,20 +14,82 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/favicon-64.png">
-<meta name="app-build" content="56">
-<meta name="app-version" content="2.19.1">
-<meta name="app-notes" content="Version 2.19.1: Radar Österreich: Kein Teil der Karte fehlt mehr, wenn GeoSphere gerade einen neuen Lauf veröffentlicht. Leichter Niesel wird jetzt zart gezeigt, die Ränder der Regengebiete sind rund statt treppig. Solange noch Teile laden, steht das unter der Karte.">
+<meta name="app-build" content="57">
+<meta name="app-version" content="1.0">
+<meta name="app-notes" content="Version 1.0 (Build 1): Alles durchgesehen, Fehler behoben und schneller gemacht. Die App startet viel schneller: Das Wetter steht beim Öffnen fast sofort da, weil der letzte Stand gleich gezeigt wird und alle Daten gleichzeitig geholt werden. Das Regenradar Österreich holt neue Daten jetzt gleich, wenn du die App aus dem Hintergrund zurückholst. Die Regen-Vorschau für die nächsten 2 Stunden war eine Viertelstunde zu spät und stimmt jetzt. Benachrichtigungen kommen zuverlässiger, die Schrift lädt ohne Google, dazu viele Kleinigkeiten.">
 <script>/* alte Adresse wetter2.html -> neue Startseite */
 try{if(top!==self)document.documentElement.style.display="none"}catch(e){document.documentElement.style.display="none"}
 window.__redir=/\/wetter2\.html$/i.test(location.pathname);
 if(window.__redir)location.replace(location.pathname.replace(/wetter2\.html$/i,"")+location.search+location.hash);
 </script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<script>/* Schnellstart, noch bevor der Rest der Seite gelesen ist:
+   1. Die Abfragen losschicken, die beim letzten Start für denselben Ort nötig waren (Liste „wetter-pre“, von der App geführt:
+      Adresse, mit Anmeldung?, eigener Zwischenspeicher und dessen Haltbarkeit, etwas später?). Die App bekommt dann genau
+      diese Antworten und muss nicht mehr darauf warten. Nach 30 Sekunden wird alles getrennt, was noch offen ist.
+   2. Die Kartenbibliothek laden: mit Prüfsumme (SRI) von unpkg, bei Fehler dieselbe Datei von cdnjs (ebenfalls geprüft). */
+(function(){
+ if(window.__redir)return;
+ try{
+  var S=localStorage,tok=S.getItem("wetter-token")||sessionStorage.getItem("wetter-token"),P=JSON.parse(S.getItem("wetter-pre")||"null"),o=JSON.parse(S.getItem("wetter-ort")||"null");
+  if(tok&&P&&P.u&&o&&P.k===(+o.lat).toFixed(3)+","+(+o.lon).toFixed(3)){
+   var now=Date.now(),pre=window.__pre={},ac=typeof AbortController!=="undefined"?new AbortController():null;
+   if(ac)setTimeout(function(){ac.abort()},30000);
+   P.u.forEach(function(e){
+    try{
+     /* Antwort liegt noch frisch im eigenen Zwischenspeicher der App (Kachelmann): nicht abfragen */
+     if(e[2]){var c=S.getItem(e[2]),m=c&&/^\{"t":(\d+),"s":(\d+)/.exec(c);if(m&&now-m[1]<(m[2]==="200"?e[3]:180000))return}
+     var it=pre[e[0]]={t:now,p:null},go=function(){
+      if(pre[e[0]]!==it||it.p)return;          /* die App hat inzwischen selbst gefragt */
+      var q={};if(ac)q.signal=ac.signal;if(e[1])q.headers={Authorization:"Bearer "+tok};
+      it.t=Date.now();it.p=fetch(e[0],q);it.p.catch(function(){});
+     };
+     /* das Wichtigste sofort, der Rest eine Viertelsekunde später */
+     if(e[4])setTimeout(go,250);else go();
+    }catch(x){}
+   });
+  }
+ }catch(e){}
+ var LIB=[
+  {js:"https://unpkg.com/leaflet@1.9.4/dist/leaflet.js",jsi:"sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=",css:"https://unpkg.com/leaflet@1.9.4/dist/leaflet.css",cssi:"sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="},
+  {js:"https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js",jsi:"sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=",css:"https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css",cssi:"sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="}
+ ];
+ function addCss(i){
+  var l=document.createElement("link");l.rel="stylesheet";l.href=LIB[i].css;l.integrity=LIB[i].cssi;l.crossOrigin="anonymous";
+  l.onerror=function(){if(i+1<LIB.length)addCss(i+1)};
+  document.head.appendChild(l);
+ }
+ /* window.__lib wird erfüllt, sobald die Karte geladen ist (false: von keinem der beiden Server zu bekommen) */
+ window.__lib=new Promise(function(done){
+  (function addJs(i){
+   var s=document.createElement("script");s.src=LIB[i].js;s.integrity=LIB[i].jsi;s.crossOrigin="anonymous";
+   s.onload=function(){done(true)};
+   s.onerror=function(){if(i+1<LIB.length)addJs(i+1);else done(false)};
+   document.head.appendChild(s);
+  })(0);
+ });
+ addCss(0);
+})();
+</script>
 <link rel="preconnect" href="https://api.open-meteo.com" crossorigin>
-<link rel="preconnect" href="https://api.brightsky.dev" crossorigin>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+<link rel="preconnect" href="https://wetter-proxy.elias-ziegler.workers.dev" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="fonts/poppins-400-latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="fonts/poppins-500-latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="fonts/poppins-600-latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="fonts/poppins-300-latin.woff2" crossorigin>
 <style>
+/* Schrift Poppins (Indian Type Foundry, SIL Open Font License, siehe fonts/OFL.txt) liegt bei der App selbst statt bei Google:
+   keine fremde Stilvorlage mehr, die den ersten Bildaufbau aufhält, und kein Abruf bei Google. Je Schnitt zwei Dateien wie bei
+   Google Fonts: lateinische Grundzeichen und, nur wenn ein Ortsname sie braucht, die erweiterten (č, ł, ő …). */
+@font-face{font-family:Poppins;font-style:normal;font-weight:300;font-display:swap;src:url(fonts/poppins-300-ext.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:Poppins;font-style:normal;font-weight:300;font-display:swap;src:url(fonts/poppins-300-latin.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:Poppins;font-style:normal;font-weight:400;font-display:swap;src:url(fonts/poppins-400-ext.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:Poppins;font-style:normal;font-weight:400;font-display:swap;src:url(fonts/poppins-400-latin.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:Poppins;font-style:normal;font-weight:500;font-display:swap;src:url(fonts/poppins-500-ext.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:Poppins;font-style:normal;font-weight:500;font-display:swap;src:url(fonts/poppins-500-latin.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:Poppins;font-style:normal;font-weight:600;font-display:swap;src:url(fonts/poppins-600-ext.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:Poppins;font-style:normal;font-weight:600;font-display:swap;src:url(fonts/poppins-600-latin.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:Poppins;font-style:normal;font-weight:700;font-display:swap;src:url(fonts/poppins-700-ext.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:Poppins;font-style:normal;font-weight:700;font-display:swap;src:url(fonts/poppins-700-latin.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
 :root{
  --a:11,84,178;--b:38,132,226;
  --bg:#E7ECF2;--card:#FFFFFF;--tile:#F1F4F8;--ink:#13202E;--muted:#5F6D7D;--line:#E1E7EE;
@@ -359,7 +421,7 @@ html.wall .wdim{display:block;position:fixed;inset:0;background:#000;opacity:0;p
 html.wall.night .wdim{opacity:.55}
 html.wall .wbar{display:flex;justify-content:center;flex-wrap:wrap;gap:6px;margin-top:10px;opacity:.75}
 .wbar button{border:0;border-radius:10px;padding:5px 10px;font-size:12px;font-weight:600;background:rgba(255,255,255,.18);color:#fff}
-html.wall .upd{bottom:14px}
+html.wall .upd{bottom:14px;z-index:3420}
 @media (orientation:portrait){
  html.wall body{grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr) auto auto}
  html.wall .hero{grid-area:1/1/2/2}
@@ -1023,20 +1085,95 @@ const root=document.documentElement;
 const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const deg=n=>String(Math.round(n)).replace("-","−")+"°";
 const fmt=n=>String(Math.round(n*10)/10).replace(".",",");
+/* Uhrzeit und Wochentag werden sehr oft gebraucht: die Formatierer nur einmal anlegen (jeder Aufruf von toLocale…String legt sonst einen neuen an) */
+const F_HM=new Intl.DateTimeFormat("de-AT",{hour:"2-digit",minute:"2-digit"}),F_WD=new Intl.DateTimeFormat("de-AT",{weekday:"short"});
+const hm=d=>F_HM.format(d),wdShort=d=>F_WD.format(d).replace(".","");
 const compass=d=>["N","NO","O","SO","S","SW","W","NW"][Math.round(d/45)%8];
 const DESC={0:"Klar",1:"Überwiegend klar",2:"Wolkig",3:"Bedeckt",45:"Nebel",48:"Reifnebel",51:"Leichter Nieselregen",53:"Nieselregen",55:"Starker Nieselregen",56:"Gefrierender Nieselregen",57:"Gefrierender Nieselregen",61:"Leichter Regen",63:"Regen",65:"Starker Regen",66:"Gefrierender Regen",67:"Gefrierender Regen",71:"Leichter Schneefall",73:"Schneefall",75:"Starker Schneefall",77:"Schneegriesel",80:"Leichte Schauer",81:"Schauer",82:"Heftige Schauer",85:"Schneeschauer",86:"Starke Schneeschauer",95:"Gewitter",96:"Gewitter mit Hagel",99:"Schweres Gewitter"};
-/* Abruf mit Zeitlimit, damit eine hängende Verbindung die Seite nicht blockiert */
-function tfetch(u,o,ms){
- if(typeof AbortController==="undefined")return fetch(u,o);
- const c=new AbortController(),t=setTimeout(()=>c.abort(),ms||25000);
- return fetch(u,Object.assign({},o||{},{signal:c.signal})).then(r=>{clearTimeout(t);return r},e=>{clearTimeout(t);throw e});
+/* Vorab-Abrufe (siehe „Schnellstart“ ganz oben in der Seite): Fragt die App eine Adresse an, die oben schon losgeschickt wurde,
+   bekommt sie diese Antwort. Welche Adressen beim nächsten Start vorab geholt werden, merkt sich die App in den ersten
+   6 Sekunden nach dem Laden eines Orts selbst (preNote), gespeichert in „wetter-pre“. Nicht vorab: alles mit Uhrzeit in der
+   Adresse (wäre beim nächsten Mal eine andere), große Radardaten, Suche. */
+const PRE_NO=/[?&](date|last_date|start|end|c|u|q|name)=|grid\/forecast|brightsky\.dev\/radar|previous-runs|photon\.komoot|geocoding-api|mymemory|\/metadata|snowgrid|GetCapabilities|bigdatacloud/;
+/* zuerst, was oben in der App steht (Wetter jetzt, Kachelmann, Warnungen, Regen-Vorschau, Messwerte); der Rest eine Viertelsekunde später */
+const PRE_FIRST=/forecast_days=7&current=|\/k\/forecast\/|\/kl\/c\?|warnungen\.zamg|brightsky\.dev\/(alerts|current_weather)|\/ma\/|minutely_15=precipitation|timeseries\/forecast\/nowcast|station\/current\/tawes|\/mt\/|current=temperature_2m,cloud_cover|api\.weather\.gov|weather-maps\.json/;
+let preRec=null;
+function preNote(u,auth,ck,ttl){
+ const R=preRec;
+ if(!R||Date.now()>R.until||R.u.length>=40||u.indexOf("https://")!==0||PRE_NO.test(u)||R.u.some(x=>x[0]===u))return;
+ R.u.push([u,auth?1:0,ck||0,ttl||0]);
 }
-/* JSON holen. Das Zeitlimit gilt bis die ganze Antwort gelesen ist (vorher endete es, sobald die ersten Bytes da waren;
-   riss eine große Antwort danach ab, wartete die App für immer). */
+function preStart(){
+ const R=preRec={k:PK(),until:Date.now()+6000,u:[]};
+ setTimeout(()=>{
+  if(preRec!==R)return;
+  try{
+   /* Abfragen mit eigenem Zwischenspeicher (Kachelmann, 30 Minuten) bleiben in der Liste, auch wenn sie diesmal nicht nötig waren */
+   const old=JSON.parse(localStorage.getItem("wetter-pre")||"null");
+   if(old&&old.k===R.k&&Array.isArray(old.u))old.u.forEach(x=>{if(x&&x[2]&&!R.u.some(y=>y[0]===x[0]))R.u.push([x[0],x[1],x[2],x[3]])});
+   const a=R.u.filter(x=>PRE_FIRST.test(x[0])),b=R.u.filter(x=>!PRE_FIRST.test(x[0])).map(x=>[x[0],x[1],x[2],x[3],1]);
+   localStorage.setItem("wetter-pre",JSON.stringify({k:R.k,u:a.concat(b).slice(0,24)}));
+  }catch(e){}
+ },6500);
+}
+/* Wann die App zuletzt aus dem Hintergrund zurückgekommen ist (nach mindestens 30 Sekunden Pause) */
+let resumeAt=0,hiddenAt=0;
+document.addEventListener("visibilitychange",()=>{if(document.hidden)hiddenAt=Date.now();else{if(hiddenAt&&Date.now()-hiddenAt>30000)resumeAt=Date.now();hiddenAt=0}},true);
+/* Abruf mit Wiederholung. Kommt die App aus dem Hintergrund zurück, hat das Handy die Verbindung oft noch nicht wieder aufgebaut:
+   Abfragen scheitern dann sofort oder bleiben ohne Antwort hängen. Früher galt das als Fehler, und der nächste Versuch kam erst
+   eine Minute später (das Radar blieb solange beim alten Stand stehen). Jetzt:
+   - Netzfehler in den ersten 8 Sekunden: nach 0,7 und nach 2,5 Sekunden noch einmal versuchen (nicht ohne Netz: da soll die
+     Meldung sofort kommen)
+   - in den ersten 5 Sekunden nach dem Zurückkommen: kommt 6 Sekunden lang keine Antwort, abbrechen und neu anfragen */
+function fetchR(u,o){
+ const t0=Date.now(),s=o&&o.signal,wait=ms=>new Promise(r=>setTimeout(r,ms));
+ const go=n=>{
+  let c=null,to=0,hedged=false,opt=o;
+  if(n===0&&resumeAt&&Date.now()-resumeAt<5000&&typeof AbortController!=="undefined"){
+   c=new AbortController();opt=Object.assign({},o||{},{signal:c.signal});
+   if(s){if(s.aborted)c.abort();else s.addEventListener("abort",()=>c.abort())}
+   to=setTimeout(()=>{hedged=true;c.abort()},6000);
+  }
+  return fetch(u,opt).then(r=>{clearTimeout(to);return r},e=>{
+   clearTimeout(to);
+   if(hedged&&!(s&&s.aborted))return go(n+1);
+   if(n>=2||(s&&s.aborted)||(e&&e.name==="AbortError")||navigator.onLine===false||Date.now()-t0>8000)throw e;
+   return wait(n?2500:700).then(()=>{if(s&&s.aborted)throw e;return go(n+1)});
+  });
+ };
+ return go(0);
+}
+/* Abruf: zuerst die vorab geholte Antwort (höchstens 20 Sekunden alt), sonst das Netz */
+function net(u,o){
+ if(!(o&&o.method&&o.method!=="GET")){
+  preNote(u,!!(o&&o.headers&&o.headers.Authorization));
+  const P=window.__pre,e=P&&P[u];
+  if(e){
+   delete P[u];
+   if(e.p&&Date.now()-e.t<20000){
+    const p=e.p.catch(()=>fetchR(u,o)),s=o&&o.signal;
+    /* das Zeitlimit des Aufrufers gilt auch hier */
+    return s?Promise.race([p,new Promise((_,no)=>{const f=()=>no(new DOMException("Zeitüberschreitung","AbortError"));if(s.aborted)f();else s.addEventListener("abort",f)})]):p;
+   }
+  }
+  return fetchR(u,o);
+ }
+ return fetch(u,o);
+}
+/* Abruf mit Zeitlimit, damit eine hängende Verbindung die Seite nicht blockiert. Das Limit gilt, bis auch der Inhalt gelesen
+   ist: nach Ablauf wird die Verbindung getrennt (früher endete es mit den ersten Bytes; riss die Antwort danach ab, wartete
+   die App für immer, zum Beispiel auf Kachelmann). */
+function tfetch(u,o,ms){
+ if(typeof AbortController==="undefined")return net(u,o);
+ const c=new AbortController();
+ setTimeout(()=>c.abort(),ms||25000);
+ return net(u,Object.assign({},o||{},{signal:c.signal}));
+}
+/* JSON holen, mit Zeitlimit bis die ganze Antwort gelesen ist */
 async function getJ(u,ms){
  const c=typeof AbortController!=="undefined"?new AbortController():null;let to=0;
  const lim=new Promise((_,no)=>{to=setTimeout(()=>{try{if(c)c.abort()}catch(e){}const e=new Error("Zeitüberschreitung");e.name="AbortError";no(e)},ms||25000)});
- try{return await Promise.race([fetch(u,c?{signal:c.signal}:undefined).then(r=>{if(!r.ok)throw new Error(r.status);return r.json()}),lim])}
+ try{return await Promise.race([net(u,c?{signal:c.signal}:undefined).then(r=>{if(!r.ok)throw new Error(r.status);return r.json()}),lim])}
  finally{clearTimeout(to)}
 }
 /* Reihenfolge der Abrufe: alte Antworten (z. B. vom vorherigen Ort) werden verworfen.
@@ -1166,9 +1303,9 @@ function tcol(t){
 
 /* ============ Zustand ============ */
 let place={name:"Wien",lat:48.2082,lon:16.3738},follow=true;
-let lastJ=null,kcDaily={},openDays=new Set();
+let lastJ=null,lastJK="",kcDaily={},openDays=new Set();
 let warnList=[],warnOk=false,alarmKey="",iceState=null,wallOn=false,skill=null;
-let map,marker,mode="rv",frames=[],layers=[],idx=0,timer=null,host="",pastCount=0,dwd;
+let map,marker,mode="rv",frames=[],layers=[],idx=0,timer=null,host="",pastCount=0;
 
 /* ============ Wetter laden und anzeigen ============ */
 /* auto=true: automatische Aktualisierung am selben Ort. Schnelle Daten alle 5 Minuten, aufwendige (Modelle, Trend, Rückblick, Luft, Niederschlagsart) alle 30 Minuten. */
@@ -1195,11 +1332,21 @@ function omSlot(j){
  try{const c=j.current,off=(+j.utc_offset_seconds||0)*1000,iv=(+c.interval||900)*1000,sl=Date.parse(c.time+":00Z")-off;if(isFinite(sl))return Math.max(Date.now()+60000,Math.min(Date.now()+15*60000,sl+iv+30000))}catch(e){}
  return Date.now()+5*60000;
 }
+let wFail=0;
 async function loadWeather(auto){
  const my=++wSeq;
- if(!auto){showErr("");ncState=null}
+ if(!auto){showErr("");ncState=null;preStart()}
  $("pname").textContent=place.name;
  document.body.classList.toggle("follow",follow);
+ /* Sofortanzeige beim Start: der letzte Stand für diesen Ort (höchstens 2 Stunden alt) steht da, bevor das Netz antwortet.
+    Die frischen Daten ersetzen ihn gleich darauf; oben steht solange die Uhrzeit des alten Stands. */
+ if(!auto&&!lastJ){
+  try{const o=JSON.parse(localStorage.getItem("wetter-last"));
+   if(o&&o.j&&o.j.current&&o.j.hourly&&o.j.daily&&o.k===(+place.lat).toFixed(2)+","+(+place.lon).toFixed(2)&&Date.now()-o.t<7200000&&Date.now()>=o.t)renderAll(o.j,o.t)}catch(e){console.error(e)}
+ }
+ /* Kachelmann gleichzeitig mit dem Wettermodell anfragen statt danach (die Antwort liegt dann schon im Zwischenspeicher).
+    Steht schon etwas für diesen Ort da (Sofortanzeige), wird Kachelmann auch gleich eingesetzt. */
+ if(!auto){try{kcWarm();if(lastJ&&lastJK===PK()){loadKcDaily();loadKc()}}catch(e){console.error(e)}}
  if(auto&&lastJ&&Date.now()<omNext){try{renderAll(lastJ,Date.now())}catch(e){console.error(e)}}
  else try{
   const base="https://api.open-meteo.com/v1/forecast?latitude="+place.lat+"&longitude="+place.lon+"&timezone=auto&forecast_days=7";
@@ -1216,6 +1363,7 @@ async function loadWeather(auto){
   }
   if(my!==wSeq)return;
   if(auto)showErr("");
+  wFail=0;
   renderAll(j,Date.now());omNext=omSlot(j);
   try{localStorage.setItem("wetter-last",JSON.stringify({k:(+place.lat).toFixed(2)+","+(+place.lon).toFixed(2),t:Date.now(),j}))}catch(x){}
  }catch(e){
@@ -1224,6 +1372,8 @@ async function loadWeather(auto){
   let used=false;
   try{const o=JSON.parse(localStorage.getItem("wetter-last"));if(o&&o.j&&o.k===(+place.lat).toFixed(2)+","+(+place.lon).toFixed(2)){renderAll(o.j,o.t);used=true;showErr("Keine Verbindung. Du siehst den Stand von "+new Date(o.t).toLocaleString("de-AT",{weekday:"short",hour:"2-digit",minute:"2-digit"})+" Uhr.")}}catch(x){}
   if(!used){showErr("Wetterdaten konnten nicht geladen werden. Prüfe die Internetverbindung.");if(!lastJ)$("desc").textContent="Keine Verbindung"}
+  /* von selbst noch einmal versuchen: nach 8 und nach 20 Sekunden, danach wie gewohnt jede Minute */
+  if(wFail<2){const w=wFail?20000:8000;wFail++;setTimeout(()=>{if(!document.hidden&&my===wSeq)loadWeather(true)},w)}
  }
  try{moveMap()}catch(e){console.error(e)}
  /* jede Minute: Warnungen und Kachelmann (hat eigenen Zwischenspeicher); die anderen, sobald es Neues geben kann */
@@ -1243,7 +1393,7 @@ function dayPart(j,c){
 }
 function renderAll(j,at){
  try{klApplyJ(j)}catch(e){console.error(e)}
- lastJ=j;
+ lastJ=j;lastJK=PK();
  const c=j.current,day=c.is_day==null?1:c.is_day,k=kind(c.weather_code,!!day);
  let sk=skyKey(k,!!day);
  if(["clear-day","clear-night","cloud","cloud-night"].includes(sk)){const dp=dayPart(j,c);if(dp)sk=dp}
@@ -1334,15 +1484,8 @@ function heroSay(){
  const ht=$("h-now");if(ht){ht.textContent=(NOWT[tk]||"Wetter")+" in den nächsten 2\u00a0Stunden";ht.className="k-"+tk}
  checkAlarm();
 }
-function smooth(p){
- let d="M"+p[0][0].toFixed(1)+" "+p[0][1].toFixed(1);
- for(let i=0;i<p.length-1;i++){
-  const p0=p[i-1]||p[i],p1=p[i],p2=p[i+1],p3=p[i+2]||p2;
-  d+="C"+(p1[0]+(p2[0]-p0[0])/6).toFixed(1)+" "+(p1[1]+(p2[1]-p0[1])/6).toFixed(1)+","+(p2[0]-(p3[0]-p1[0])/6).toFixed(1)+" "+(p2[1]-(p3[1]-p1[1])/6).toFixed(1)+","+p2[0].toFixed(1)+" "+p2[1].toFixed(1);
- }
- return d;
-}
 const DROP_S='<svg viewBox="0 0 10 13" aria-hidden="true"><path d="M5 0C6.8 3 9 5.3 9 8a4 4 0 0 1-8 0c0-2.7 2.2-5 4-8z" fill="currentColor"/></svg>';
+let hoursHtml="",hoursNow="";
 function renderHours(j,c){
  const H=j.hourly,t0=H.time.findIndex(t=>t>=c.time.slice(0,13)+":00"),s=t0<0?0:t0,n=Math.min(25,H.time.length-s);
  if(n<2){$("hours").innerHTML="";return}
@@ -1362,15 +1505,17 @@ function renderHours(j,c){
  }
  /* gleicher Ort: Scrollposition der Stundenleiste beim Aktualisieren behalten */
  const hb=$("hours"),hk=place.lat+","+place.lon,old=hb.querySelector(".hstrip"),keep=old&&hb.dataset.k===hk?old.scrollLeft:0;
- hb.innerHTML='<div class="hstrip">'+h+"</div>"+(ka?'<p class="small">Werte von KachelmannWetter.</p>':"");
+ const html='<div class="hstrip">'+h+"</div>"+(ka?'<p class="small">Werte von KachelmannWetter.</p>':"");
+ /* Hat sich nichts geändert (beim Start wird mehrmals hintereinander gezeichnet, danach jede Minute), bleibt die Leiste stehen.
+    Nur „Jetzt“ bekommt wieder den Wert aus der Vorhersage; Kachelmann und die Messstationen setzen ihren gleich danach neu. */
+ if(old&&hb.dataset.k===hk&&hoursHtml===html){const b=old.querySelector(".hc.now b");if(b&&hoursNow)b.textContent=hoursNow;return}
+ hoursHtml=html;hoursNow=(/<b>([^<]*)<\/b>/.exec(html)||[])[1]||"";
+ hb.innerHTML=html;
  hb.dataset.k=hk;
  if(keep){const s2=hb.querySelector(".hstrip");if(s2)s2.scrollLeft=keep}
 }
 const CHEV='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
 function isSnowDay(i){const v=dayVals(i);return!!(v&&v.snow)}
-function dayMm(i){
- const v=dayVals(i);return v?v.mm:null;
-}
 /* Tageswerte: immer vom Wettermodell (ECMWF). Kachelmann zeigt die App nur für jetzt und die nächsten 24 Stunden. */
 function dayVals(i){
  const j=lastJ;if(!j)return null;
@@ -1432,9 +1577,9 @@ function dayDetail(i){
   const g=a=>a&&a[k]!=null?+a[k]:null;
   return{T:g(H.temperature_2m),P:g(H.precipitation),W:g(H.wind_speed_10m),G:g(H.wind_gusts_10m),code:H.weather_code?H.weather_code[k]:null,day:H.is_day?H.is_day[k]:(h>=7&&h<=18?1:0)};
  };
- let slots=[0,3,6,9,12,15,18,21].map(h=>({h,k:null})),src="om";
- if(kd&&kd.kind==="1h"){src="k1";slots=slots.map(s=>({h:s.h,k:kd.rows.find(x=>hr(x.d)===s.h)||null}))}
- else if(kd&&kd.kind==="6h"){src="k6";slots=kd.rows.map(x=>({h:hr(x.d),k:x}))}
+ let slots=[0,3,6,9,12,15,18,21].map(h=>({h,k:null}));
+ if(kd&&kd.kind==="1h")slots=slots.map(s=>({h:s.h,k:kd.rows.find(x=>hr(x.d)===s.h)||null}));
+ else if(kd&&kd.kind==="6h")slots=kd.rows.map(x=>({h:hr(x.d),k:x}));
  if(i===0){const ch=hr(new Date());slots=slots.filter(s=>s.h>=ch-2)}
  const wu=kd&&kd.m&&kd.m.wu||"km/h",pu=kd&&kd.m&&kd.m.pu||"mm";
  const body=slots.map(s=>{
@@ -1641,8 +1786,12 @@ async function trWarn(list){
   }catch(e){w.note="Original auf "+ln+": Die Übersetzung ist gerade nicht erreichbar."}
  }));
 }
+let maMemo=null;
 async function warnMA(cc,geo){
  const W=window.__worker,tok=W&&W.token();if(!tok)throw new Error("login");
+ /* Die Meldungen eines Landes sind oft mehrere MB groß; Warnungen werden jede Minute geprüft. Deshalb das Ergebnis 5 Minuten merken. */
+ const mk=cc+"|"+PK();
+ if(maMemo&&maMemo.k===mk&&Date.now()-maMemo.t<300000)return maMemo.out;
  const lc=cc.toLowerCase();
  const [r,reg]=await Promise.all([tfetch(W.base+"/ma/"+MA_SLUG[cc],{headers:{Authorization:"Bearer "+tok}},30000),MA_REG.has(lc)?getJ("warn/"+lc+".json").catch(()=>null):Promise.resolve(null)]);
  if(r.status===404)throw new Error("ma-update");
@@ -1676,6 +1825,7 @@ async function warnMA(cc,geo){
    body:pick.description||pick.headline||"",instr:pick.instruction||"",src:"MeteoAlarm",t0,t1,lang:String(pick.language||"en").slice(0,2).toLowerCase()});
  }
  await trWarn(out);
+ maMemo={k:mk,t:Date.now(),out};
  return out;
 }
 async function warnUS(){
@@ -1694,15 +1844,17 @@ async function loadWarnings(){
  /* Der deutsche Warndienst kennt nur Orte in Deutschland: hat er für diesen Ort „nicht gefunden“ gemeldet, eine Stunde lang nicht mehr fragen */
  if(inBox([47.2,55.1,5.8,15.1])&&!(deNone[pk]&&Date.now()-deNone[pk]<3600000))jobs.push(warnDE);
  if(inBox([46.3,49.1,9.5,17.2]))jobs.push(warnAT);
+ /* die Warndienste für Deutschland und Österreich gleich anfragen, nicht erst, wenn das Land des Orts feststeht */
+ const runs=jobs.map(f=>f());runs.forEach(p=>p.catch(()=>{}));
  /* in anderen Ländern: MeteoAlarm bzw. National Weather Service */
  let geo=null;try{geo=await placeCC()}catch(e){}
  try{natUpdate()}catch(e){}
  if(!q.ok())return;
  const cc=geo&&geo.cc;
- if(cc&&MA_SLUG[cc])jobs.push(()=>warnMA(cc,geo));else if(cc==="US")jobs.push(warnUS);
+ if(cc&&MA_SLUG[cc]){jobs.push(warnMA);runs.push(warnMA(cc,geo))}else if(cc==="US"){jobs.push(warnUS);runs.push(warnUS())}
  $("sec-warn").hidden=false;
  if(!jobs.length){warnList=[];warnOk=false;checkAlarm();wallChips();box.innerHTML='<p class="muted">'+(cc?"Für "+esc(landName(cc))+" gibt es in der App noch keine Warnungen.":"Für diesen Ort ist kein Warndienst angebunden.")+' <a href="https://meteoalarm.org/de" target="_blank" rel="noopener noreferrer">MeteoAlarm Europa</a></p>';q.done();return}
- const res=await Promise.allSettled(jobs.map(f=>f()));
+ const res=await Promise.allSettled(runs);
  if(!q.ok())return;
  const list=[];let failed=0;
  let why="";
@@ -1793,11 +1945,14 @@ function renderNowcast(j,c){
  const box=$("nc"),m=j.minutely_15;
  const none=()=>{box.innerHTML='<p class="muted">Für diesen Ort gibt es keine 15-Minuten-Vorhersage.</p>';ncState=null;heroSay()};
  if(!m||!m.precipitation||!m.time||!c)return none();
+ /* Open-Meteo, GeoSphere und DWD zählen rückwärts: der Wert zur Zeit t gilt für die Viertelstunde davor. Der erste Balken
+    ist deshalb die laufende Viertelstunde (Wert der nächsten Zeit), beschriftet mit ihrem Beginn. Bis Build 56 stand jeder
+    Wert eine Viertelstunde zu spät („Regen ab 10:30“, obwohl er laut Vorhersage um 10:15 beginnt). */
  let i=m.time.findIndex(t=>t>=c.time);if(i<0)i=0;
- const v=m.precipitation.slice(i,i+8);
+ const v=m.precipitation.slice(i+1,i+9);
  if(v.length<4||v.every(x=>x==null))return none();
  const wet=x=>x!=null&&x>=0.1,t=k=>m.time[i+k].slice(11,16);
- const ty=k=>m.rain&&m.snowfall?ptype(v[k],m.rain[i+k],m.snowfall[i+k]):(wet(v[k])?"rain":null);
+ const ty=k=>m.rain&&m.snowfall?ptype(v[k],m.rain[i+1+k],m.snowfall[i+1+k]):(wet(v[k])?"rain":null);
  const first=v.findIndex(wet);
  let msg;
  if(wet(v[0])){const e=v.findIndex(x=>!wet(x)),n=NOW[ty(0)]||NOW.rain;msg=e<0?n+", voraussichtlich noch mindestens 2 Stunden.":n+", trocken ab ca. "+t(e)+" Uhr."}
@@ -1808,7 +1963,7 @@ function renderNowcast(j,c){
  if(!wet(v[0])&&first<0){box.innerHTML='<p class="sr">'+msg+"</p>"+(j._ncSrc?'<p class="nc-src">Laut Radar: '+esc(j._ncSrc)+".</p>":"");heroSay();return}
  const rgb=a=>"rgb("+a.map(Math.round).join(",")+")";
  const col=k=>{const x=v[k];if(!wet(x))return"var(--line)";const q=ty(k)||"rain",rc=rgb(ramp(RAINC,x)),sc=rgb(ramp(SNOWC,x));return q==="snow"?sc:q==="mix"?"linear-gradient(180deg,"+rc+","+sc+")":rc};
- box.innerHTML='<p class="sr">'+msg+'</p><div class="nc-bars">'+v.map((x,k)=>'<div title="'+t(k)+" Uhr: "+(NAME[ty(k)]||"trocken")+" "+(+x||0)+' mm"><i style="height:'+Math.max(wet(x)?12:3,Math.min(100,(x||0)/1.5*100))+"%;background:"+col(k)+'"></i></div>').join("")+'</div><div class="nc-t"><span>'+t(0)+"</span><span>"+t(Math.min(4,v.length-1))+"</span><span>"+t(v.length-1)+"</span></div>"+
+ box.innerHTML='<p class="sr">'+msg+'</p><div class="nc-bars">'+v.map((x,k)=>'<div title="'+t(k)+" Uhr: "+(NAME[ty(k)]||"trocken")+" "+String(Math.round((+x||0)*100)/100).replace(".",",")+' mm"><i style="height:'+Math.max(wet(x)?12:3,Math.min(100,(x||0)/1.5*100))+"%;background:"+col(k)+'"></i></div>').join("")+'</div><div class="nc-t"><span>'+t(0)+"</span><span>"+t(Math.min(4,v.length-1))+"</span><span>"+t(v.length-1)+"</span></div>"+
   (anySnow?'<div class="nc-key"><span><i style="background:var(--rain)"></i>Regen</span><span><i style="background:var(--snow)"></i>Schnee</span><span><i style="background:linear-gradient(90deg,var(--rain),var(--snow))"></i>Schneeregen</span></div>':"")+
   '<p class="nc-src">'+(j._ncSrc?"Aus dem Radar: "+esc(j._ncSrc)+".":"Aus dem Wettermodell ICON des DWD.")+"</p>";
  heroSay();
@@ -1839,7 +1994,7 @@ async function loadPtypes(){
 }
 
 /* ============ Karten: Satellit, Radar ============ */
-let hero,base,baseKind="sat",autoDone=false,satIdx=0,heroLayer,mmKey="",ptDummy,lab=null,labOn=true;
+let hero,base,baseKind="sat",satIdx=0,mmKey="",lab=null,labOn=true;
 try{labOn=localStorage.getItem("wetter-lbl")!=="0"}catch(e){}
 const reduced=matchMedia("(prefers-reduced-motion: reduce)").matches;
 const ESRI="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}";
@@ -2358,7 +2513,7 @@ function dwGeometry(g,n){
  if(!Array.isArray(pts)||pts.length<4)throw new Error("geo");
  const P=pts.slice(0,4).map(c=>({ll:[+c[1],+c[0]],xy:stereo(+c[1],+c[0])}));
  const by=f=>P.slice().sort((a,b)=>f(a)-f(b));
- const TL=by(p=>p.xy[0]-p.xy[1])[0],BR=by(p=>p.xy[0]-p.xy[1])[3],BL=by(p=>p.xy[0]+p.xy[1])[0],TR=by(p=>p.xy[0]+p.xy[1])[3];
+ const TL=by(p=>p.xy[0]-p.xy[1])[0],BL=by(p=>p.xy[0]+p.xy[1])[0],TR=by(p=>p.xy[0]+p.xy[1])[3];
  const wkm=Math.hypot(TR.xy[0]-TL.xy[0],TR.xy[1]-TL.xy[1]),hkm=Math.hypot(BL.xy[0]-TL.xy[0],BL.xy[1]-TL.xy[1]);
  let W=Math.round(Math.sqrt(n*wkm/(hkm||1))),H=Math.round(n/W);
  for(let d=-3;d<=3&&W*H!==n;d++){const w=W+d;if(w>0&&n%w===0){W=w;H=n/w}}
@@ -2610,8 +2765,11 @@ async function atLatest(){
  try{
   const j=await getJ(GS_META+"?t="+Math.floor(Date.now()/60000),20000),r=Date.parse(j&&j.last_forecast_reftime);
   if(isFinite(r)){atMetaR=r/1000;return r/1000}
- }catch(e){}
- /* klappt die Abfrage nicht, eine halbe Stunde lang nach der Uhr gehen */
+ }catch(e){
+  /* kein Netz (etwa gleich nach dem Zurückkommen aus dem Hintergrund): in einer Minute wieder fragen */
+  if(e&&e.name==="TypeError"){atMetaBad=Date.now()+60000;return null}
+ }
+ /* antwortet der Dienst nicht richtig, eine halbe Stunde lang nach der Uhr gehen */
  atMetaBad=Date.now()+30*60000;return null;
 }
 /* Bild, das jetzt gilt: das letzte, das nicht in der Zukunft liegt */
@@ -2710,7 +2868,7 @@ function atHooks(){
  if(atHook||!map)return;atHook=true;
  map.on("moveend",()=>{if(mode!=="at"||lay!=="rain")return;clearTimeout(atMoveT);atMoveT=setTimeout(()=>loadAt(false),700)});
 }
-const hmT=t=>new Date(t*1000).toLocaleTimeString("de-AT",{hour:"2-digit",minute:"2-digit"});
+const hmT=t=>hm(new Date(t*1000));
 /* GeoSphere selbst liefert nichts Neues (der neueste Lauf ist älter als 50 Minuten, sonst sind es 17 bis 36) */
 function atStaleNote(){
  const r=Math.max(atMetaR||0,atData?atData.ref:0);
@@ -2736,11 +2894,14 @@ async function loadAt(force){
  /* neuer Lauf: noch nichts da, oder ein Stück kam schon von einem neueren Lauf (höchstens einmal pro Minute neu anfangen) */
  let fresh=!d||(atNewer>d.ref+60&&now-atFreshT>60000);
  if(d&&!fresh&&now>=atNext&&!atChkBusy){
+  /* alter Stand und lange nicht nachgesehen (die App war im Hintergrund): gleich sagen, dass gesucht wird */
+  const back=now/1000-d.ref>45*60&&now-atChkT>5*60000;
   atChkBusy=true;atChkT=now;atNext=now+AT_POLL;
+  if(back)$("fnote").textContent="Neue Radardaten von GeoSphere werden gesucht …";
   let r=null;try{r=await atLatest()}finally{atChkBusy=false}
   if(!map||mode!=="at"||lay!=="rain"||atData!==d)return;
   if(r!=null?r>d.ref+60:Date.now()>=(d.ref+15*60+AT_LAG+5*60)*1000)fresh=true;
-  atStaleNote();
+  if(!atStaleNote()&&back&&!fresh)$("fnote").textContent="Vorhersage von GeoSphere Austria bis "+hmT(d.t[d.t.length-1])+" Uhr.";
   if(atBusy){atWant=true;return}
  }
  const need=fresh?[bb]:atMissing(d,bb);
@@ -2749,6 +2910,11 @@ async function loadAt(force){
  const my=++atSeq,pieces=atPieces(need,map.getCenter()),total=pieces.length;
  let run=fresh?null:d,ok=0,bad=0,soft=0,slow=false,lim=false,newer=0;
  if(!d){$("fnote").textContent=atFail?"GeoSphere antwortet gerade sehr langsam, neuer Versuch läuft … Bis dahin zeigen „DWD 1 km“ und „Weltweit“ den Regen.":"Radar von GeoSphere Austria wird geladen … das kann bis zu einer halben Minute dauern.";if(!frames.length)$("ts").textContent="Lädt …"}
+ /* alter Stand ist zu sehen, der neue wird geholt: das auch sagen (sonst sieht es aus, als täte sich nichts) */
+ else if(fresh)$("fnote").textContent="Neue Radardaten von GeoSphere werden geladen …";
+ /* Ist der gezeigte Stand schon älter als 45 Minuten (etwa weil die App im Hintergrund war), wird der neue gleich mit dem
+    ersten Teil gezeigt und der Rest ergänzt; sonst bleibt der alte stehen, bis der neue ganz da ist */
+ const early=!!d&&Date.now()/1000-d.ref>45*60;
  /* sichtbarer Lauf, aber noch nicht alles da: sagen, dass der Rest kommt (sonst sieht eine Kante wie ein Fehler aus) */
  const prog=()=>{if(run&&run===atData&&ok+bad<total)$("fnote").textContent="Radar lädt den Rest des Ausschnitts … ("+(ok+bad)+" von "+total+" Teilen)"};
  const one=async()=>{
@@ -2764,7 +2930,7 @@ async function loadAt(force){
     if(ref!=null&&ref>run.ref+60&&ref>newer)newer=ref;
     atFill(run,j,p,old);ok++;if(old)soft++;
     /* Noch nichts zu sehen: jedes Stück gleich zeigen. Sonst bleibt der alte Lauf, bis der neue ganz da ist. */
-    if(!atData){atData=run;atUse(run)}else if(run===atData)rgRedraw();
+    if(!atData||(early&&run!==atData&&run.ref>atData.ref+60)){atData=run;atUse(run)}else if(run===atData)rgRedraw();
     prog();
    }catch(e){
     if(my!==atSeq)return;
@@ -2799,7 +2965,11 @@ async function loadAt(force){
   $("fnote").textContent=atData?(slow?"GeoSphere antwortet gerade sehr langsam. Du siehst den letzten Stand, es wird gleich wieder versucht.":"GeoSphere antwortet gerade nicht. Du siehst den letzten Stand, es wird gleich wieder versucht."):
    (slow?"GeoSphere Austria antwortet gerade sehr langsam.":"Das Radar von GeoSphere Austria ist gerade nicht erreichbar.")+" Es wird in einer Minute wieder versucht. Bis dahin zeigen „DWD 1 km“ und „Weltweit“ den Regen.";
   if(!frames.length)$("ts").textContent="";
-  atNext=Date.now()+60000;atFail++;atPause=Date.now()+(lim?120000:30000);
+  /* neuer Versuch von selbst: nach 4, 10 und 25 Sekunden, danach jede Minute (früher erst mit der nächsten Minute, und nur
+     wenn 20 Sekunden lang niemand den Bildschirm berührt hat) */
+  const w=lim?120000:[4000,10000,25000,60000][Math.min(3,atFail)];
+  atFail++;atNext=Date.now()+w;atPause=Date.now()+w-300;
+  setTimeout(()=>{if(mode==="at"&&!document.hidden)loadAt(false)},w+200);
  }
  if(newer&&atData&&newer>atData.ref+60){atNext=0;setTimeout(()=>{if(mode==="at")loadAt(false)},Math.max(800,60000-(Date.now()-atFreshT)))}
  else if(atWant&&mode==="at"){atWant=false;setTimeout(()=>loadAt(false),0)}
@@ -2977,7 +3147,8 @@ function rgSetDs(ds){
  if(gl){rg.tex.forEach(x=>gl.deleteTexture(x.t));rg.ftex.forEach(x=>gl.deleteTexture(x.t))}
  rg.tex=new Map();rg.ftex=new Map();rg.fd=new Map();rg.img=new Map();rg.statK="";rg.ds=ds;
  rg.fq=gl&&ds.nf>1?{ds,list:[...Array(ds.nf-1).keys()]}:null;
- rgFlowKick();
+ /* die Bewegung erst ausrechnen, wenn sie gebraucht wird (Abspielen, Schieber) oder nach 3 Sekunden Ruhe: der Start bleibt frei */
+ clearTimeout(rg.fqT);rg.fqT=setTimeout(rgFlowKick,3000);
 }
 function rgShow(ds,k,t){
  if(!map||!ds||!rgEnsure())return;
@@ -3018,9 +3189,13 @@ function rgFlowTex(ds,k){
  if(!e||e.v!==d.v){const gl=rg.gl,t=rgTexNew(gl,gl.RGBA,d.f.gw,d.f.gh,d.f.data,e&&e.t);e={t,v:d.v,f:d.f};rg.ftex.set(k,e)}
  return e;
 }
-function rgFlowKick(){if(!rg||rg.fBusy||!rg.fq||!rg.fq.list.length)return;rg.fBusy=true;setTimeout(rgFlowStep,25)}
+/* immer nur eine Berechnung gleichzeitig; danach die nächste */
+function rgFlowKick(){
+ if(!rg||rg.fBusy||!rg.fq||!rg.fq.list.length)return;
+ rg.fBusy=true;
+ setTimeout(()=>rgFlowStep().catch(()=>{}).then(()=>{rg.fBusy=false;rgFlowKick()}),20);
+}
 async function rgFlowStep(){
- rg.fBusy=false;
  const q=rg.fq;if(!q||q.ds!==rg.ds||!q.list.length)return;
  const ds=q.ds,cur=rg.cur&&rg.cur.ds===ds?rg.cur.k:0,n=ds.nf;
  let bi=0,bd=1e9;q.list.forEach((k,i)=>{const d=(k-cur+n)%n;if(d<bd){bd=d;bi=i}});
@@ -3030,22 +3205,26 @@ async function rgFlowStep(){
   if(!A&&ds.prep)A=await ds.prep(k);if(!B&&ds.prep)B=await ds.prep(k+1);
   if(rg.ds===ds&&A&&B){
    const v=ds.ver?ds.ver():0,hrs=Math.max(1/60,Math.abs(ds.t[k+1]-ds.t[k])/3600);
-   rg.fd.set(k,{f:rgFlowCalc(A,B,ds.W,ds.H,Math.ceil(110*hrs/ds.km)),v});
-   if(rg.cur&&rg.cur.ds===ds&&rg.cur.k===k&&rg.cur.t>0)rgDraw();
+   const f=await rgFlowCalc(A,B,ds.W,ds.H,Math.ceil(110*hrs/ds.km),()=>rg.ds===ds);
+   if(f&&rg.ds===ds){rg.fd.set(k,{f,v});if(rg.cur&&rg.cur.ds===ds&&rg.cur.k===k&&rg.cur.t>0)rgDraw()}
   }
  }catch(e){}
- rgFlowKick();
 }
 /* Blockvergleich: grobes Raster (Mittel über s×s Zellen), Blöcke zu 4×4, Suche im Umkreis der größten möglichen Bewegung
    (110 km/h). Leichte Vorliebe für kleine Bewegungen, Zwischenwerte über eine Parabel, Ausreißer gegen den Median der
-   Nachbarn, Lücken (kein Regen im Block) aus den Nachbarn, zum Schluss geglättet. Ergebnis in Zellen, kodiert 128 ± 4·dx. */
-function rgFlowCalc(A,B,W,H,maxC){
+   Nachbarn, Lücken (kein Regen im Block) aus den Nachbarn, zum Schluss geglättet. Ergebnis in Zellen, kodiert 128 ± 4·dx.
+   Gerechnet wird in Scheiben von höchstens 6 Millisekunden, dazwischen kommt die Seite an die Reihe (kein Ruckeln beim
+   Scrollen); alive() sagt, ob das Ergebnis noch gebraucht wird. */
+async function rgFlowCalc(A,B,W,H,maxC,alive){
  const s=W*H>200000?4:3,dw=Math.ceil(W/s),dh=Math.ceil(H/s),a=new Float32Array(dw*dh),b=new Float32Array(dw*dh);
  for(let y=0;y<H;y++){const r=((y/s)|0)*dw;for(let x=0;x<W;x++){const o=y*W+x,i=r+((x/s)|0),p=A[o],q=B[o];if(p>1)a[i]+=p;if(q>1)b[i]+=q}}
  const nn=1/(s*s);for(let i=0;i<a.length;i++){a[i]*=nn;b[i]*=nn}
  const bs=4,gw=Math.ceil(dw/bs),gh=Math.ceil(dh/bs),R=Math.max(1,Math.min(9,Math.ceil(maxC/s))),cw=2*R+1;
  const fx=new Float32Array(gw*gh),fy=new Float32Array(gw*gh),ok=new Uint8Array(gw*gh),cost=new Float32Array(cw*cw);
- for(let gy=0;gy<gh;gy++)for(let gx=0;gx<gw;gx++){
+ let tS=performance.now();
+ for(let gy=0;gy<gh;gy++){
+ if(performance.now()-tS>6){await new Promise(r=>setTimeout(r,0));if(alive&&!alive())return null;tS=performance.now()}
+ for(let gx=0;gx<gw;gx++){
   const x0=gx*bs,y0=gy*bs,x1=Math.min(dw,x0+bs),y1=Math.min(dh,y0+bs),nc=(x1-x0)*(y1-y0);
   let sa=0;for(let y=y0;y<y1;y++)for(let x=x0;x<x1;x++)sa+=a[y*dw+x];
   if(sa<4*nc)continue;
@@ -3060,7 +3239,7 @@ function rgFlowCalc(A,B,W,H,maxC){
   if(bx>-R&&bx<R){const l=C(bx-1,by),m=C(bx,by),r=C(bx+1,by),dn=l-2*m+r;if(dn>1e-6)sx=Math.max(-.5,Math.min(.5,(l-r)/(2*dn)))}
   if(by>-R&&by<R){const u=C(bx,by-1),m=C(bx,by),d2=C(bx,by+1),dn=u-2*m+d2;if(dn>1e-6)sy=Math.max(-.5,Math.min(.5,(u-d2)/(2*dn)))}
   const o=gy*gw+gx;fx[o]=(bx+sx)*s;fy[o]=(by+sy)*s;ok[o]=1;
- }
+ }}
  const med=v=>{v.sort((p,q)=>p-q);return v[v.length>>1]};
  /* Ausreißer */
  const ox=fx.slice(),oy=fy.slice();
@@ -4080,6 +4259,7 @@ function kcFetch(path){
  if(!tok)return Promise.reject(new Error("login"));
  const pr=(async()=>{
   try{
+   preNote(W.base+"/k/"+path,1,"wetter-kc|"+path,KC_TTL);
    const r=await tfetch(W.base+"/k/"+path,{headers:{Authorization:"Bearer "+tok}},30000);
    const txt=await r.text();
    if(r.status===401&&/Nicht angemeldet/.test(txt)){W.logout();throw new Error("login")}
@@ -4090,6 +4270,11 @@ function kcFetch(path){
  })();
  kcInflight[path]=pr;
  return pr;
+}
+function kcWarm(){
+ const t=window.__worker&&window.__worker.token()?kcTarget():null;if(!t)return;
+ const b="forecast/"+t.o.lat+"/"+t.o.lon+"/advanced/";
+ kcFetch(b+"1h").catch(()=>{});kcFetch(b+"6h").catch(()=>{});
 }
 function kcTarget(){
  if(KC_ORTE.length){
@@ -4382,6 +4567,13 @@ async function tnUS(la,lo){
 }
 async function tnMT(la,lo){
  const W=window.__worker,tok=W&&W.token();if(!tok)return[];
+ /* wird beim Laden zweimal gebraucht (Temperatur und Himmel): eine Minute merken, auch die laufende Abfrage */
+ const mk="mt"+la.toFixed(1)+","+lo.toFixed(1),mm=tnMem[mk];
+ if(mm&&Date.now()-mm.t<60000)return mm.p;
+ const p=tnMT0(W,tok,la,lo);tnMem[mk]={t:Date.now(),p};p.catch(()=>{if(tnMem[mk]&&tnMem[mk].p===p)delete tnMem[mk]});
+ return p;
+}
+async function tnMT0(W,tok,la,lo){
  const r=await tfetch(W.base+"/mt/"+la.toFixed(1)+","+lo.toFixed(1),{headers:{Authorization:"Bearer "+tok}},20000);
  if(!r.ok)return[];
  const j=await r.json(),best={};
@@ -4529,7 +4721,7 @@ function renderKc(t,res){
  if(!rows.length){el.innerHTML=head+'<p class="muted">Die Antwort von Kachelmann enthält keine Stundenwerte.</p>'+raw();return}
  const PR=kcParse(j,"1h"),kT=PR.kT,kP=PR.kP,kW=PR.kW;
  const now=Date.now();
- const lab=d=>d?(d.getHours()===0?d.toLocaleDateString("de-AT",{weekday:"short"}).replace(".","")+" ":"")+d.toLocaleTimeString("de-AT",{hour:"2-digit",minute:"2-digit"}):"";
+ const lab=d=>d?(d.getHours()===0?wdShort(d)+" ":"")+hm(d):"";
  const L=PR.all.map(x=>Object.assign({lab:lab(x.d)},x))
   .filter(x=>x.d&&x.d.getTime()>=now-45*60000).slice(0,24);
  if(!L.length||(kT==null&&kP==null)){el.innerHTML=head+'<p class="muted">Die Antwort von Kachelmann konnte nicht gelesen werden.</p>'+raw();return}
@@ -4592,7 +4784,7 @@ let favs=[];try{favs=JSON.parse(localStorage.getItem("wetter-favs"))||[]}catch(e
 if(!Array.isArray(favs))favs=[];
 /* früher höchstens 8 (der älteste fiel still heraus), jetzt 30, und nichts verschwindet mehr von selbst */
 const FAV_MAX=30;
-let favEdit=false,favOnK="";
+let favEdit=false,favOnK="",favRaf=0;
 const saveFavs=()=>{try{localStorage.setItem("wetter-favs",JSON.stringify(favs))}catch(e){}};
 const favFind=(la,lo)=>favs.findIndex(f=>km(f.lat,f.lon,+la,+lo)<1);
 const favIdx=()=>favFind(place.lat,place.lon);
@@ -4612,11 +4804,16 @@ function renderFavs(){
  if(!favs.length)favEdit=false;
  el.innerHTML=favs.length?'<button type="button" data-g="1" class="'+(follow?"on":"")+'">'+LOC_S+"Standort</button>"+favs.map((f,k)=>'<button type="button" data-f="'+k+'" class="'+(!follow&&k===i?"on":"")+'">'+esc(f.name)+"</button>").join("")+
   '<button type="button" data-e="1" class="fe" aria-expanded="'+(favEdit?"true":"false")+'">'+PEN+(favEdit?"Fertig":"Bearbeiten")+"</button>":"";
- el.classList.toggle("ov",el.scrollWidth>el.clientWidth+2);
- /* den gewählten Ort in die Mitte der Reihe holen, aber nur wenn er wechselt (sonst springt die Reihe beim Wischen zurück) */
- const on=el.querySelector("button.on"),k=on?on.textContent+"|"+favs.length:"";
- if(on&&k!==favOnK&&el.scrollWidth>el.clientWidth)el.scrollLeft=Math.max(0,on.offsetLeft-(el.clientWidth-on.offsetWidth)/2);
+ /* den gewählten Ort in die Mitte der Reihe holen, aber nur wenn er wechselt (sonst springt die Reihe beim Wischen zurück).
+    Gemessen wird erst beim nächsten Bildaufbau. */
+ const on=el.querySelector("button.on"),k=on?on.textContent+"|"+favs.length:"",move=on&&k!==favOnK;
  favOnK=k;
+ cancelAnimationFrame(favRaf);
+ favRaf=requestAnimationFrame(()=>{
+  el.classList.toggle("ov",el.scrollWidth>el.clientWidth+2);
+  const o2=el.querySelector("button.on");
+  if(move&&o2&&el.scrollWidth>el.clientWidth)el.scrollLeft=Math.max(0,o2.offsetLeft-(el.clientWidth-o2.offsetWidth)/2);
+ });
 }
 /* Bearbeiten: umbenennen, Reihenfolge ändern, entfernen */
 function renderFavEdit(focusSel){
@@ -5369,7 +5566,7 @@ function renderKi(){
  if(ki.none){el.innerHTML='<p class="small">Für die KI-Korrektur braucht es eine Wetterstation im Umkreis von 25 km, deren Messwerte frei verfügbar sind. Für diesen Ort gibt es keine.</p>';sec.hidden=false;return}
  if(ki.few){el.innerHTML='<p class="small">Für die KI-Korrektur gibt es noch zu wenige Vergleichswerte ('+Math.round((ki.n||0)/24)+" Tage). Sie braucht mindestens 10 Tage.</p>";sec.hidden=false;return}
  if(ki.err){el.innerHTML='<p class="small">Die KI-Korrektur konnte gerade nicht berechnet werden. Es wird später wieder versucht.</p>';sec.hidden=false;return}
- const sg=v=>(v>0?"+":"−")+fmt(Math.abs(v))+"°",better=Math.round((1-ki.eKi/ki.eRaw)*100);
+ const better=Math.round((1-ki.eKi/ki.eRaw)*100);
  let h='<p class="kis">Die KI hat aus '+ki.days+" Tagen gelernt, wie das Wettermodell bei dir danebenliegt. Vergleich mit der Messstation "+esc(ki.st)+(ki.dist!=null?" ("+Math.round(ki.dist)+" km entfernt)":"")+".</p>";
  const mx=Math.max(ki.eRaw,ki.eKi),kcq=skill&&skill.m&&skill.m.kc;
  const bar=(nm,v,c,tag)=>'<div class="sk" style="--c:'+c+'"><span>'+nm+(tag||"")+'</span><div class="skb"><i style="width:'+Math.max(5,v/mx*100).toFixed(0)+'%"></i></div><em>'+fmt(v)+"°</em></div>";
@@ -5633,11 +5830,13 @@ async function renderPush(){
  let reg=null;try{reg=await Promise.race([navigator.serviceWorker.ready,new Promise(r=>setTimeout(()=>r(null),4000))])}catch(e){}
  if(!reg){el.innerHTML='<p class="muted">Benachrichtigungen sind gerade nicht verfügbar.</p>';return}
  try{pushSub=await reg.pushManager.getSubscription()}catch(e){pushSub=null}
- if(!pushKey){try{pushKey=(await wapi("/push/key")).key}catch(e){if(e.status===503){el.innerHTML='<p class="muted">Im Cloudflare-Worker fehlt noch die Einrichtung für Benachrichtigungen (Speicher und Zeitplan). Die Anleitung dazu bekommst du im Chat.</p>';return}}}
+ /* der öffentliche Schlüssel des Workers ändert sich nicht: einmal holen und merken (früher bei jedem Start abgefragt) */
+ if(!pushKey){try{pushKey=localStorage.getItem("wetter-pkey")||null}catch(e){}}
+ if(!pushKey){try{pushKey=(await wapi("/push/key")).key;if(pushKey)localStorage.setItem("wetter-pkey",pushKey)}catch(e){if(e.status===503){el.innerHTML='<p class="muted">Im Cloudflare-Worker fehlt noch die Einrichtung für Benachrichtigungen (Speicher und Zeitplan). Die Anleitung dazu bekommst du im Chat.</p>';return}}}
  const pr=pushPrefs(),rain=pr.rain!==false,warn=pr.warn!==false;
  const on=!!pushSub&&!!pr.name;
  el.innerHTML='<div class="pushbox">'+(on?"<p>Aktiv für <b>"+esc(pr.name)+"</b>.</p>":"<p>Lass dich benachrichtigen, kurz bevor es regnet oder wenn eine amtliche Wetterwarnung kommt.</p>")+
-  '<label><input type="checkbox" id="pu-rain"'+(rain?" checked":"")+'> Regen oder Schnee in den nächsten 45 Minuten</label>'+
+  '<label><input type="checkbox" id="pu-rain"'+(rain?" checked":"")+'> Regen oder Schnee in der nächsten Stunde</label>'+
   '<label><input type="checkbox" id="pu-warn"'+(warn?" checked":"")+'> Neue amtliche Wetterwarnungen</label>'+
   '<label><input type="checkbox" id="pu-ql"'+(pr.ql!==false?" checked":"")+'> Ruhezeiten aus meinem Alltag lernen</label>'+
   (pr.ql!==false?'<p class="small">'+(quietHours()&&quietHours().length?"Gelernt: zwischen "+qhText(quietHours())+" kommen keine Regen-Hinweise, amtliche Warnungen schon.":quietHours()?"Gelernt: du nutzt die App auch abends und nachts, deshalb keine Ruhezeiten.":"Die App lernt noch, wann du schläfst (ab 7 Tagen).")+"</p>":"")+
@@ -5650,7 +5849,8 @@ async function renderPush(){
   try{
    const perm=await Notification.requestPermission();
    if(perm!=="granted"){msg("Benachrichtigungen sind nicht erlaubt. Du kannst das in den Einstellungen deines Handys ändern.");return}
-   if(!pushKey)pushKey=(await wapi("/push/key")).key;
+   /* beim Einschalten immer frisch vom Worker */
+   pushKey=(await wapi("/push/key")).key;try{localStorage.setItem("wetter-pkey",pushKey)}catch(e){}
    const sub=pushSub||await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:b64uToU8(pushKey)});
    await save(sub);pushSub=sub;renderPush();
   }catch(e){msg("Das Einschalten hat nicht geklappt"+(e.status===503?": Im Worker fehlt noch die Einrichtung.":". Versuche es noch einmal."))}
@@ -5661,7 +5861,7 @@ async function renderPush(){
  if($("pu-off"))$("pu-off").onclick=async()=>{try{await wapi("/push/unsub",{endpoint:pushSub.endpoint})}catch(e){}try{await pushSub.unsubscribe()}catch(e){}try{localStorage.removeItem("wetter-push")}catch(e){}pushSub=null;renderPush()};
 }
 let mcT=0;addEventListener("resize",()=>{clearTimeout(mcT);mcT=setTimeout(()=>{if(mcData)renderModels()},250)});
-try{if("serviceWorker" in navigator&&location.protocol==="https:")navigator.serviceWorker.register("sw.js").catch(()=>{})}catch(e){}
+try{if("serviceWorker" in navigator&&(location.protocol==="https:"||location.hostname==="localhost"))navigator.serviceWorker.register("sw.js").catch(()=>{})}catch(e){}
 
 /* ============ Stundenleiste am PC: Pfeile, Mausrad, Ziehen ============ */
 (function(){
@@ -5670,7 +5870,8 @@ try{if("serviceWorker" in navigator&&location.protocol==="https:")navigator.serv
  function go(dir){const s=strip();if(!s)return;s.scrollBy({left:dir*Math.max(140,s.clientWidth*.8),behavior:reduced?"auto":"smooth"})}
  $("hprev").onclick=()=>go(-1);$("hnext").onclick=()=>go(1);
  box.addEventListener("scroll",upd,true);
- new MutationObserver(()=>setTimeout(upd,0)).observe(box,{childList:true});
+ let uq=0;
+ new MutationObserver(()=>{if(!uq)uq=requestAnimationFrame(()=>{uq=0;upd()})}).observe(box,{childList:true});
  addEventListener("resize",upd);
  box.addEventListener("wheel",e=>{
   const s=strip();if(!s||Math.abs(e.deltaX)>Math.abs(e.deltaY))return;
@@ -5879,9 +6080,11 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("shr").hidden)cl
 
 /* ============ Updates ============ */
 const meta=n=>{const m=document.querySelector('meta[name="'+n+'"]');return m?m.content:""};
-const BUILD=+meta("app-build")||0;
+/* app-build zählt seit jeher einfach hoch; daran erkennen auch ältere Geräte ein Update (sie vergleichen diese Zahl).
+   Angezeigt wird der Build seit Version 1.0: Build 1 ist app-build 57. */
+const BUILD=+meta("app-build")||0,BUILD0=56,verText=b=>meta("app-version")+" (Build "+(b-BUILD0)+")";
 let remote=null,lastChk=0;
-$("ver").textContent=meta("app-version")?meta("app-version")+" (Build "+BUILD+")":BUILD;
+$("ver").textContent=verText(BUILD);
 /* Anmeldung: bis wann sie gilt und ob sie sich von selbst verlängert */
 function loginInfo(){
  const el=$("login-info"),W=window.__worker,ex=W&&W.exp?W.exp():0;
@@ -5901,11 +6104,10 @@ function showUpd(mode,notes){
 async function checkUpdate(manual){
  lastChk=Date.now();
  try{
-  const r=await fetch(location.pathname+"?c="+Date.now(),{cache:"no-store"});
+  /* kleine Datei mit Build und Neuerungen (früher wurde dafür jedes Mal die ganze Seite geladen, etwa 130 kB) */
+  const r=await fetch("version.json?c="+Date.now(),{cache:"no-store"});
   if(!r.ok)throw new Error(r.status);
-  const t=await r.text();
-  const b=+((/name="app-build" content="(\d+)"/.exec(t)||[])[1])||0;
-  const n=((/name="app-notes" content="([^"]*)"/.exec(t)||[])[1])||"";
+  const j=await r.json(),b=+j.b||0,n=String(j.n||"");
   if(b>BUILD){
    remote={b,n};
    let later=null;try{later=sessionStorage.getItem("wetter-later")}catch(e){}
@@ -5949,7 +6151,8 @@ function tokenLeft(){try{const W=window.__worker;return W&&W.exp?W.exp()-Date.no
 function autoRefresh(force){
  if(document.hidden)return;
  const now=Date.now();
- if(!force&&(now-lastAuto<AUTO_MS||now-lastAct<20000))return;
+ /* nicht mitten in einer Bedienung auffrischen (20 Sekunden Ruhe abwarten), aber spätestens nach 3 Minuten */
+ if(!force&&(now-lastAuto<AUTO_MS||(now-lastAct<20000&&now-lastAuto<180000)))return;
  lastAuto=now;
  loadWeather(true);refreshRadar();
  if(follow&&gpsOk)useGPS(false,true);
@@ -5967,9 +6170,12 @@ function autoApply(){
 /* Einmal pro Nacht (3 Uhr) neu laden, damit ein dauernd offenes Gerät frisch bleibt */
 async function nightly(){
  if(document.hidden||new Date().getHours()!==3||Date.now()-openedAt<6*3600000||Date.now()-lastAct<600000||tokenLeft()<2*86400000)return;
- try{const r=await fetch(location.pathname+"?c="+Date.now(),{cache:"no-store"});if(r.ok)location.reload()}catch(e){}
+ try{const r=await fetch("version.json?c="+Date.now(),{cache:"no-store"});if(r.ok)location.replace(location.pathname+"?u=n"+Date.now())}catch(e){}
 }
 setInterval(()=>{autoRefresh(false);autoApply();nightly()},15000);
+/* Netz wieder da (Tunnel, Flugmodus aus) oder Seite aus dem Zwischenspeicher des Browsers zurück: gleich auffrischen */
+addEventListener("online",()=>{omNext=0;atPause=0;setTimeout(()=>autoRefresh(true),400)});
+addEventListener("pageshow",e=>{if(e.persisted&&Date.now()-lastAuto>60000)autoRefresh(true)});
 
 /* ============ Zum Aktualisieren nach unten ziehen ============
    Nur in der App auf dem Home-Bildschirm: dort gibt es keinen Knopf zum Neuladen. */
@@ -6155,13 +6361,12 @@ document.addEventListener("visibilitychange",()=>{
  }
  function clear(){["localStorage","sessionStorage"].forEach(function(s){try{window[s].removeItem("wetter-token");window[s].removeItem("wetter-auth")}catch(e){}})}
  /* Anmeldung von selbst verlängern, solange die Seite benutzt wird (der Worker braucht dafür /renew) */
- var rchk=false;
  function tell(){try{window.dispatchEvent(new Event("wetter-login"))}catch(e){}}
  function renew(){
-  /* nachsehen, ob der Worker das Verlängern kann (neuer Worker-Code): beim Start und dann alle 12 Stunden */
-  var lc=0;try{lc=+localStorage.getItem("wetter-renew-chk")||0}catch(e){}
-  if(!rchk||Date.now()-lc>12*3600000){
-   rchk=true;try{localStorage.setItem("wetter-renew-chk",String(Date.now()))}catch(e){}
+  /* nachsehen, ob der Worker das Verlängern kann: alle 12 Stunden (früher zusätzlich bei jedem Start) */
+  var lc=0,ro=null;try{lc=+localStorage.getItem("wetter-renew-chk")||0;ro=localStorage.getItem("wetter-renew-ok")}catch(e){}
+  if(ro==null||Date.now()-lc>12*3600000){
+   try{localStorage.setItem("wetter-renew-chk",String(Date.now()))}catch(e){}
    fetch(API+"/",{cache:"no-store"}).then(function(r){return r.json()}).then(function(j){try{localStorage.setItem("wetter-renew-ok",j&&j.renew?"1":"0")}catch(e){}tell()}).catch(function(){});
   }
   var t=token(),p=t&&payload(t);if(!p||p.exp-Date.now()>25*86400000)return;
@@ -6176,28 +6381,11 @@ document.addEventListener("visibilitychange",()=>{
   }).catch(function(){});
  }
  window.__worker={base:API,token:token,exp:function(){var t=token(),p=t&&payload(t);return p?p.exp:0},renew:renew,logout:function(){clear();location.reload()}};
- /* Kartenbibliothek: mit Prüfsumme (SRI) von unpkg, bei Fehler dieselbe Datei von cdnjs (ebenfalls geprüft) */
- var LIB=[
-  {js:"https://unpkg.com/leaflet@1.9.4/dist/leaflet.js",jsi:"sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=",css:"https://unpkg.com/leaflet@1.9.4/dist/leaflet.css",cssi:"sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="},
-  {js:"https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js",jsi:"sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=",css:"https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css",cssi:"sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="}
- ];
- function addCss(i){
-  var l=document.createElement("link");l.rel="stylesheet";l.href=LIB[i].css;
-  if(LIB[i].cssi){l.integrity=LIB[i].cssi;l.crossOrigin="anonymous"}
-  l.onerror=function(){if(i+1<LIB.length)addCss(i+1)};
-  document.head.appendChild(l);
- }
- function addJs(i,done){
-  var s=document.createElement("script");s.src=LIB[i].js;
-  if(LIB[i].jsi){s.integrity=LIB[i].jsi;s.crossOrigin="anonymous"}
-  s.onload=function(){done()};
-  s.onerror=function(){if(i+1<LIB.length)addJs(i+1,done);else done()};
-  document.head.appendChild(s);
- }
+ /* Start, sobald die Kartenbibliothek da ist (sie wird schon ganz oben in der Seite angefordert) */
  function start(){
   if(started||window.__redir)return;started=true;
   html.classList.remove("locked");gate.hidden=true;
-  addCss(0);addJs(0,function(){__startApp()});
+  (window.__lib||Promise.resolve()).then(function(){__startApp()});
  }
  if(token()){start();setTimeout(renew,5000);return}
  clear();

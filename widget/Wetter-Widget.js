@@ -21,7 +21,7 @@ if (!ort) {
 }
 
 const url = "https://api.open-meteo.com/v1/forecast?latitude=" + ort.lat.toFixed(3) + "&longitude=" + ort.lon.toFixed(3) +
-  "&current=temperature_2m,weather_code,is_day&minutely_15=precipitation,snowfall&forecast_minutely_15=8" +
+  "&current=temperature_2m,weather_code,is_day&minutely_15=precipitation,snowfall&forecast_minutely_15=9" +
   "&daily=temperature_2m_max,temperature_2m_min&forecast_days=1&timezone=auto";
 
 const w = new ListWidget();
@@ -68,7 +68,9 @@ try {
   hl.textColor = new Color("#FFFFFF", 0.85);
   w.addSpacer();
 
-  const m = j.minutely_15, P = m.precipitation || [], S = m.snowfall || [];
+  // Open-Meteo zählt rückwärts: der Wert zur Zeit t gilt für die Viertelstunde davor. Der erste Wert ist also schon vorbei,
+  // der zweite ist die laufende Viertelstunde; ein Wert an der Stelle i beginnt zur Zeit i − 1.
+  const m = j.minutely_15, P = (m.precipitation || []).slice(1), S = (m.snowfall || []).slice(1);
   const i = P.findIndex((x) => x != null && x >= 0.1);
   let txt;
   if (i === 0) txt = (S[0] || 0) * 0.7 >= P[0] * 0.5 ? "Es schneit" : "Es regnet";

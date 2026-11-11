@@ -3,6 +3,8 @@
 Persönliche Wetter-App im Stil von WetterOnline, als Webseite auf GitHub Pages:
 https://eliaspp9.github.io/Wetter/
 
+**Version 1.0 (Build 1)** (mit Worker 1.0, Build 1): Alles durchgesehen, Fehler behoben, Start viel schneller. Einzelheiten unter „Schneller Start“, „Fehler, die mit 1.0 behoben wurden“ und beim Worker. Ab jetzt heißt die Version „1.0 (Build n)“; die Zählung davor (2.x) ist abgeschlossen.
+
 **Version 2.19.1**: Radar Österreich: Stücke, die GeoSphere beim Veröffentlichen eines neuen Laufs noch vom alten Lauf liefert, werden nach Uhrzeit eingefügt statt verworfen (vorher fehlte dann ein Teil der Karte, z. B. alles südlich einer geraden Kante); nach 2 Minuten neu geholt. Niesel ab 0,03 mm/h zart sichtbar (GeoSphere liefert ab 0,01 mm je Viertelstunde). Ränder rund statt treppig (bikubische Glättung im WebGL-Bild). Hinweis unter der Karte, solange Teile laden oder fehlen. Zwei Abfragen gleichzeitig statt drei.
 
 **Version 2.19**: Regenradar flüssig: Zwischenbilder mit der Bewegung des Regens (DWD 1 km und Österreich per WebGL, Weltweit und Länder überblendet und mitgeschoben), so viele Bilder pro Sekunde wie das Gerät zeigt (60 oder 120). Radar Österreich lädt den ganzen sichtbaren Ausschnitt in Stücken statt nur eines Kastens um die Kartenmitte. Behoben: Radar Österreich blieb stehen, wenn eine Antwort mitten im Laden abriss (das Zeitlimit galt nur bis zu den ersten Bytes).
@@ -104,7 +106,27 @@ https://eliaspp9.github.io/Wetter/
   - In der App auf dem Home-Bildschirm: zum Aktualisieren nach unten ziehen.
 - **Wetter teilen:** erzeugt ein Bild mit Wetter, nächsten Stunden und 3 Tagen, zum Verschicken (z. B. WhatsApp) oder Speichern.
 - **Flüssig bis 120 Hz:** Das Wettersymbol oben besteht aus Ebenen, die nur verschoben, gedreht oder überblendet werden. Das macht die Grafikeinheit allein, ohne dass die Seite neu zeichnet. Keine Unschärfe-Effekte über bewegten Inhalten. Radarbilder werden vorab vorbereitet, Windlinien in jeder Bildwiederholung gezeichnet.
-- **App und Offline:** als App auf dem Home-Bildschirm installierbar, offline mit dem letzten Stand.
+- **App und Offline:** als App auf dem Home-Bildschirm installierbar, startet aus dem Speicher (auch ohne Netz) und zeigt dann den letzten Stand.
+
+## Schneller Start (ab 1.0)
+
+Gemessen mit nachgestellter Netz-Verzögerung am zweiten Start (Ort Utzenaich, Radar Österreich): Wetter oben nach etwa 0,4 statt 1,1 Sekunden, Warnungen nach 0,9 statt 2,1 Sekunden, die an Messstationen ausgerichtete Temperatur nach 0,9 statt 3,4 Sekunden.
+
+- **Seite aus dem Speicher:** Der Service Worker (`sw.js`) liefert die Startseite sofort aus dem Speicher und sieht 2,5 Sekunden später im Hintergrund nach, ob es eine neuere gibt (gilt ab dem nächsten Start). Aufrufe mit `?u=…` (Update anwenden) gehen immer ins Netz, und zwar mit diesem Zusatz in der Adresse, weil der Zwischenspeicher von GitHub unter der einfachen Adresse kurz nach einem Update noch die alte Seite liefern kann; aus demselben Grund ersetzt eine ältere Seite im Speicher nie eine neuere (verglichen wird `app-build`). Hat sich nichts geändert (gleiche Kennung vom Server), wird nichts neu gespeichert. `version.json` und `sw.js` werden nie gespeichert. Schriften, Symbole und Leaflet (feste Versionen) kommen zuerst aus dem Speicher (`wetter-lib-1`), die Startseite liegt in `wetter-app-1`.
+- **Abrufe vorab („aufzeichnen und wiederholen“):** Die App merkt sich, welche Adressen sie in den ersten 6 Sekunden eines Starts abgerufen hat (`localStorage["wetter-pre"]`, höchstens 24, je Ort). Beim nächsten Start schickt ein kleines Skript ganz oben im `<head>` genau diese Abrufe los, noch bevor der Rest der Seite gelesen ist; die App übernimmt die Antworten (`net()`), statt selbst neu zu fragen. Wichtiges zuerst (Vorhersage, Kachelmann, Warnungen, Messwerte), der Rest 250 ms später und nur, wenn die App ihn nicht schon selbst geholt hat. Was im eigenen Zwischenspeicher noch frisch ist, wird nicht geholt. Nicht vorab: Adressen mit Datum oder Suchtext, das große Radar Österreich, Suche.
+- **Letzter Stand sofort:** Ist die letzte Vorhersage für denselben Ort höchstens 2 Stunden alt (`localStorage["wetter-last"]`), wird sie sofort gezeigt und dann durch die frische ersetzt.
+- **Alles gleichzeitig:** Kachelmann, Warnungen (Deutschland/Österreich, ohne erst auf das Land zu warten) und Messwerte starten zusammen mit der Vorhersage statt danach. Leaflet lädt schon im `<head>`.
+- **Schrift ohne Google:** Poppins liegt im Ordner `fonts/` (lateinisch und erweitert, 300 bis 700, SIL Open Font License); die vier wichtigsten Dateien werden vorab geladen. Keine Verbindung mehr zu Google Fonts.
+- **Update-Suche klein:** `version.json` (etwa 600 Bytes: Build, Version, Neuerungen) statt jedes Mal der ganzen Seite (etwa 130 kB gepackt). Ältere Geräte lesen weiter `app-build` aus der Seite.
+- **Weniger Arbeit beim Start:** Die Bewegung des Regens fürs flüssige Radar wird in kleinen Stücken (höchstens 6 ms) und erst nach 3 Sekunden Ruhe oder beim Abspielen berechnet. Stundenkacheln werden nur neu gebaut, wenn sich etwas geändert hat. Der Worker wird nicht mehr bei jedem Start gefragt, ob er die Anmeldung verlängern kann (höchstens alle 12 Stunden), der Schlüssel für Benachrichtigungen wird gemerkt.
+- **Wackelige Verbindung:** Schlägt ein Abruf sofort fehl (typisch direkt nach dem Zurückholen der App), wird er nach 0,7 und 2,5 Sekunden wiederholt. In den ersten 5 Sekunden nach dem Zurückholen wird ein Abruf, der nach 6 Sekunden noch keine Antwort hat, abgebrochen und neu gestellt. Zeitlimits gelten bis zum Ende der Antwort, nicht nur bis zu den ersten Bytes. Nach einem misslungenen Laden versucht es die App nach 8 und 20 Sekunden von selbst wieder.
+
+## Fehler, die mit 1.0 behoben wurden
+
+- **Radar Österreich blieb nach dem Hintergrund stehen** („Stand vor 100 Minuten“): Die ersten Abrufe nach dem Zurückholen scheiterten oder hingen, die App wertete das als Ausfall von GeoSphere und versuchte es erst nach einer Minute wieder, und auch nur, wenn 20 Sekunden lang nichts angetippt wurde. Jetzt: sofortiger neuer Versuch (siehe oben), eigene Wiederholung nach 4, 10, 25 und 60 Sekunden, das Antippen bremst nach 3 Minuten ohne Aktualisierung nicht mehr, und ist der gezeigte Lauf älter als 45 Minuten, erscheint der neue schon mit dem ersten geladenen Stück. Solange geladen wird, steht das unter der Karte. Nachgestellt (100 Minuten im Hintergrund): vorher 64 bzw. 23 Sekunden bis zum neuen Bild, jetzt 8.
+- **Regen in den nächsten 2 Stunden eine Viertelstunde zu spät:** Die 15-Minuten-Werte von Open-Meteo, GeoSphere und DWD sind Summen des Zeitraums *vor* dem Zeitstempel. App, Benachrichtigungen (Worker) und Widget haben den Wert dem Zeitraum danach zugeordnet. Jetzt stimmt „Regen ab ca. …“.
+- **Benachrichtigungen:** Ein hängender Wetterdienst konnte den ganzen Durchlauf aufhalten (jetzt Zeitlimits, je Abo eigene Fehlerbehandlung, drei gleichzeitig). Der Zustand wird vor dem Senden gespeichert (kein doppeltes Senden nach einem Abbruch). Zwischen zwei Regen-Hinweisen liegen mindestens 90 Minuten.
+- **Kleinigkeiten:** Update-Fenster war in der Wandanzeige von der Fehlermeldung verdeckt; Mengen in der Regen-Vorschau mit Komma; ungenutzter Code entfernt; doppelte Lern-Orte im Worker (zwei Einträge für fast dieselbe Stelle) entstehen nicht mehr.
 
 ## Lernen und KI (ab 2.18 / Worker 1.6)
 
@@ -127,16 +149,26 @@ Alles lernt laufend weiter (gleitende Mittel und Online-Regression, die langsam 
 
 ## Sicherheit
 
-- **Seite:** nur über HTTPS. Strenge Sicherheitsregel (CSP): Skripte laufen nur, wenn ihre Prüfsumme stimmt; von außen nur genau die Kartenbibliothek Leaflet 1.9.4 (ebenfalls mit Prüfsumme). Keine Formulare an fremde Seiten, keine Einbettung in fremde Seiten. Texte von Wetterdiensten werden vor der Anzeige entschärft.
+- **Seite:** nur über HTTPS. Strenge Sicherheitsregel (CSP): Skripte laufen nur, wenn ihre Prüfsumme stimmt; von außen nur genau die Kartenbibliothek Leaflet 1.9.4 (ebenfalls mit Prüfsumme). Schriften nur von der eigenen Seite (seit 1.0 keine Verbindung mehr zu Google Fonts). Keine Formulare an fremde Seiten, keine Einbettung in fremde Seiten. Texte von Wetterdiensten werden vor der Anzeige entschärft.
 - **Geheimnisse:** Kachelmann-Schlüssel und Passwort liegen nur bei Cloudflare (Secrets), nie im Code.
-- **Anmeldung:** über den Worker. Signierte Tokens (30 Tage), Vergleich ohne Zeitunterschiede. Pro IP-Adresse höchstens 5 Fehlversuche in 15 Minuten, insgesamt höchstens 30, dann 15 Minuten Sperre. Ein neues Passwort meldet alle Geräte ab.
+- **Anmeldung:** über den Worker. Signierte Tokens (30 Tage), Vergleich ohne Zeitunterschiede. Pro IP-Adresse höchstens 5 Fehlversuche in 15 Minuten, von allen zusammen höchstens 30, dann 15 Minuten Sperre für neue Anmeldungen; nach 100 Fehlversuchen an einem Tag 6 Stunden Sperre. Angemeldete Geräte merken davon nichts. Seit Worker 1.0: Jeder Versuch zählt schon, bevor das Passwort geprüft ist (viele gleichzeitige Versuche kommen so nicht über die Grenze), die Zahl für alle steht im Speicher (`rl:g`, übersteht einen Neustart des Workers) und kostet durch die Tagesgrenze höchstens etwa 100 Schreibvorgänge am Tag (vorher zwei je Fehlversuch ohne Grenze: damit ließ sich das Tageslimit des Speichers von außen aufbrauchen). Ein neues Passwort meldet alle Geräte ab.
 - **Zu tun für den Besitzer:** Zwei-Faktor-Anmeldung bei GitHub und Cloudflare einschalten. Ein Passwort verwenden, das nirgends sonst benutzt wird.
 
 ## Cloudflare-Worker (`worker/kachelmann-proxy.js`)
 
 **Automatisch veröffentlichen (ab 1.6):** Liegt im Repository das Secret `CLOUDFLARE_API_TOKEN` (Cloudflare-Vorlage „Edit Cloudflare Workers“), veröffentlicht die GitHub-Action „Worker veröffentlichen“ den Worker bei jeder Änderung an `worker/kachelmann-proxy.js`. Sie liest dazu die bestehenden Einstellungen (Konto, KV-Bindung SUBS, Zeitplan) über die Cloudflare-API, ergänzt die Bindung AI und ruft `wrangler deploy` mit `keep_vars` auf; Secrets (Passwort, Kachelmann-Schlüssel) bleiben unberührt. Ohne Secret passiert nichts.
 
-Der Worker hält den Kachelmann-Schlüssel geheim, prüft die Anmeldung, verlängert sie (`/renew`) und verschickt Benachrichtigungen.
+Der Worker hält den Kachelmann-Schlüssel geheim, prüft die Anmeldung, verlängert sie (`/renew`) und verschickt Benachrichtigungen. Die Startadresse zeigt `"version":"1.0","build":1`.
+
+**Veröffentlichen über den Cloudflare-Connector (so wird es derzeit gemacht):** Claude lädt den Code über den verbundenen Cloudflare-Zugang hoch (der Zugangsschlüssel bleibt bei Cloudflare bzw. beim Besitzer). Dabei gilt `keep_bindings: ["plain_text","secret_text"]`: Passwort, Kachelmann-Schlüssel und die Texte bleiben unberührt; KV `SUBS`, `AI` und der Zeitplan werden wieder mitgegeben. Vor dem Hochladen wird die Prüfsumme (SHA-256) mit der Datei im Repository verglichen.
+
+**Worker 1.0 (Build 1), Änderungen gegenüber 1.6:**
+- Alle Abrufe nach außen mit Zeitlimit (`tf`, `jf`); `/k/` und `/ma/` antworten bei einem hängenden Dienst mit 504 statt gar nicht.
+- Alle Wege in einer Funktion mit Fehlerbehandlung: ein unerwarteter Fehler gibt eine lesbare Antwort (500, mit CORS) statt eines Abbruchs.
+- Benachrichtigungen (`runAlerts`): je Abo eigene Fehlerbehandlung, drei gleichzeitig, gleiche Orte werden nur einmal abgefragt, Zustand vor dem Senden gespeichert, ein zweiter Versuch beim Senden, abgelaufene Abos (404/410) werden gelöscht, mindestens 90 Minuten zwischen zwei Regen-Hinweisen, 15-Minuten-Werte richtig zugeordnet.
+- Lernen: `/kl/c` liest den Ort direkt (ein Lesevorgang statt alle), `/kl/p` verwendet einen Ort in 2 km Umkreis weiter statt einen zweiten anzulegen, jeder Ort lernt für sich (ein Fehler bei einem Ort hält die anderen nicht auf). Die Lernergebnisse sind gleich wie mit 1.6 (im Test Byte für Byte).
+- Anmeldung: Schutz gegen Passwort-Raten neu gebaut (siehe Sicherheit): Versuche werden vorab gezählt, Tagesgrenze, viel weniger Schreibvorgänge; zu große Anfragen werden abgewiesen.
+- `/tr` (Übersetzen) arbeitet die Texte gleichzeitig ab.
 
 | Einstellung | Art | Inhalt |
 |---|---|---|
@@ -145,11 +177,15 @@ Der Worker hält den Kachelmann-Schlüssel geheim, prüft die Anmeldung, verlän
 | `LOGIN_PASS` | Secret | Passwort |
 | `KACHELMANN_KEY` | Secret | API-Schlüssel von Kachelmann |
 | `KEY_HEADER` | Text, optional | Standard `X-API-Key` |
-| `SUBS` | KV-Bindung | für Benachrichtigungen, z. B. Namespace `wetter-push` |
-| Cron-Trigger | Zeitplan | `*/10 * * * *` für Benachrichtigungen |
+| `SUBS` | KV-Bindung | für Benachrichtigungen und das Lernen, Namespace `wetter-push` |
+| `AI` | Workers-AI-Bindung | Übersetzen und Push-Texte (ab 1.6) |
+| Cron-Trigger | Zeitplan | `*/10 * * * *` für Benachrichtigungen und das Lernen |
 
 ## Ändern und veröffentlichen
 
-1. `index.html` bearbeiten.
-2. `python3 tools/build.py` ausführen. Das berechnet die Sicherheitsregeln (CSP) neu und aktualisiert `wetter2.html`.
-3. Die Zahl in `app-build` erhöhen, damit geöffnete Geräte das Update bemerken.
+1. `index.html` bearbeiten (die ganze App steht in dieser einen Datei), bei Bedarf `sw.js` und `worker/kachelmann-proxy.js`.
+2. `app-build` um 1 erhöhen und `app-notes` schreiben (ohne Anführungszeichen und ohne `&`, `<`, `>`: ältere Geräte lesen den Text direkt aus der Seite). `app-build` zählt seit jeher einfach hoch, daran erkennen geöffnete Geräte das Update. Angezeigt wird „`app-version` (Build `app-build` − 56)“: `app-build` 57 ist „1.0 (Build 1)“.
+3. `python3 tools/build.py` ausführen. Das prüft alle Skripte der Seite, `sw.js` und den Worker auf Syntaxfehler (`node --check`), lässt ESLint laufen, wenn es installiert ist (`tools/eslint.config.mjs`; Fehler brechen ab, z. B. nicht erklärte Namen), prüft, ob die in `sw.js` genannten Dateien da sind, berechnet die Sicherheitsregeln (CSP) neu, schreibt `version.json` und aktualisiert `wetter2.html`.
+4. Nach `main` schieben; GitHub Pages veröffentlicht die Seite. Den Worker bei Änderungen wie oben beschrieben hochladen.
+
+**Widget (`widget/Wetter-Widget.js`, Scriptable):** Wird nicht automatisch aktualisiert. Nach einer Änderung den Text in Scriptable neu einfügen (mit 1.0 wegen der richtig zugeordneten Viertelstunden).
