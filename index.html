@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-kpKuYoq9RVpREMR3qVgF6gkvpBePft9Rby54TVzrdzo=' 'sha256-+CD5i0gDObdMiTFeSjBHM8SvIjSFGtFW+gQH/GdjeWc=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://s3.amazonaws.com https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-DORu0RAIUGZFadd67a+fHofWB+iUBWFtsxfivJznUtI=' 'sha256-+CD5i0gDObdMiTFeSjBHM8SvIjSFGtFW+gQH/GdjeWc=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://s3.amazonaws.com https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -14,9 +14,9 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/favicon-64.png">
-<meta name="app-build" content="54">
-<meta name="app-version" content="2.18">
-<meta name="app-notes" content="Version 2.18: „Regen in 2 Stunden“ kommt jetzt aus dem Radar (DWD bzw. GeoSphere). Länder-Radare mit Vorhersage aus der Bewegung im Radar. Gewitter zeigen, ob sie stärker oder schwächer werden und ob Hagel möglich ist. Pollen-Tagebuch, das lernt, welche Pollen dich stören. Nebel-Satellitenbild auf der Karte. Mit dem neuen Worker 1.6: Modellmix, angepasste Regenwahrscheinlichkeit, Wind und Böen, Hochnebel-Erkennung, KI-Übersetzung, Push-Texte in ganzen Sätzen und Ruhezeiten aus deinem Alltag, alles lernt für immer weiter.">
+<meta name="app-build" content="55">
+<meta name="app-version" content="2.19">
+<meta name="app-notes" content="Version 2.19: Das Regenradar läuft jetzt flüssig (Zwischenbilder mit der Bewegung des Regens, so viele Bilder pro Sekunde wie das Gerät schafft). Radar Österreich zeigt den ganzen Kartenausschnitt statt eines Kastens und bleibt nicht mehr stehen, wenn eine Antwort von GeoSphere mitten im Laden abreißt.">
 <script>/* alte Adresse wetter2.html -> neue Startseite */
 try{if(top!==self)document.documentElement.style.display="none"}catch(e){document.documentElement.style.display="none"}
 window.__redir=/\/wetter2\.html$/i.test(location.pathname);
@@ -893,7 +893,7 @@ html.locked body>*:not(#gate){display:none!important}
     <button class="gbtn fsx" id="fsx" type="button">Schließen</button>
     <div class="scrub" id="play">
      <button id="pp" type="button" aria-label="Abspielen oder anhalten"></button>
-     <div class="slw"><input id="sl" type="range" min="0" max="0" value="0" aria-label="Zeitpunkt des Radars"><i id="nowline" aria-hidden="true"></i><button type="button" id="nowtick" aria-label="Zum aktuellen Radarbild springen">Jetzt</button></div>
+     <div class="slw"><input id="sl" type="range" min="0" max="0" step="any" value="0" aria-label="Zeitpunkt des Radars"><i id="nowline" aria-hidden="true"></i><button type="button" id="nowtick" aria-label="Zum aktuellen Radarbild springen">Jetzt</button></div>
      <span id="ts"></span>
     </div>
     <div class="scrub" id="fplay">
@@ -1031,7 +1031,14 @@ function tfetch(u,o,ms){
  const c=new AbortController(),t=setTimeout(()=>c.abort(),ms||25000);
  return fetch(u,Object.assign({},o||{},{signal:c.signal})).then(r=>{clearTimeout(t);return r},e=>{clearTimeout(t);throw e});
 }
-async function getJ(u,ms){const r=await tfetch(u,undefined,ms);if(!r.ok)throw new Error(r.status);return r.json()}
+/* JSON holen. Das Zeitlimit gilt bis die ganze Antwort gelesen ist (vorher endete es, sobald die ersten Bytes da waren;
+   riss eine große Antwort danach ab, wartete die App für immer). */
+async function getJ(u,ms){
+ const c=typeof AbortController!=="undefined"?new AbortController():null;let to=0;
+ const lim=new Promise((_,no)=>{to=setTimeout(()=>{try{if(c)c.abort()}catch(e){}const e=new Error("Zeitüberschreitung");e.name="AbortError";no(e)},ms||25000)});
+ try{return await Promise.race([fetch(u,c?{signal:c.signal}:undefined).then(r=>{if(!r.ok)throw new Error(r.status);return r.json()}),lim])}
+ finally{clearTimeout(to)}
+}
 /* Reihenfolge der Abrufe: alte Antworten (z. B. vom vorherigen Ort) werden verworfen.
    Klappt eine automatische Aktualisierung nicht, bleibt die letzte gute Anzeige stehen. */
 const SEQ={},SHOWN={},PK=()=>(+place.lat).toFixed(3)+","+(+place.lon).toFixed(3);
@@ -1974,7 +1981,7 @@ async function loadRadar(){
   refreshFcFrames();
   show(Math.max(0,pastCount-1));
   if(!rvNow)loadSteer().then(()=>{refreshFcFrames();const f=frames[idx];if(f&&f.ex!=null)show(idx);exNote();if(!exOn())loadFc()});
-  else hideFc();
+  else{hideFc();if(!ex)loadSteer()}
   const last=past[past.length-1];
   if(last)freshNote(last.time);
   if(mode==="rv"&&(wasPlaying||(wallOn&&wallPlay())))toggle();
@@ -2170,8 +2177,7 @@ function demNeed(){
 function snowRefresh(){
  clearTimeout(snRT);snRT=setTimeout(()=>{
   const d=dwData,f=frames[idx];
-  if(d&&d.smK!==snVer()&&mode==="dwd"){const old=d.img;d.img=[];d.busy={};d.sm=null;setTimeout(()=>old.forEach(u=>{if(u&&u.startsWith("blob:"))URL.revokeObjectURL(u)}),5000);if(f&&f.dw!=null)showDw(f.dw)}
-  if(mode==="at"&&atData&&f&&f.at!=null)atShow(f.at);
+  if((mode==="dwd"&&d&&f&&f.dw!=null)||(mode==="at"&&atData&&f&&f.at!=null))rgRedraw();
   if(mode==="nat"&&NATR[ccNow()]&&NATR[ccNow()].rc){snTile.clear();layers.forEach(l=>{if(l.eachLayer)l.eachLayer(x=>x.redraw&&x.redraw());else if(l.redraw)l.redraw()})}
   rLive();
  },500);
@@ -2182,12 +2188,6 @@ function dwMask(d){
  const g=d.geo,la0=g.bounds[0][0],lo0=g.bounds[0][1],la1=g.bounds[1][0],lo1=g.bounds[1][1],my=la=>Math.log(Math.tan(Math.PI/4+la*Math.PI/360)),m0=my(la0),m1=my(la1),m=new Uint8Array(g.Wc*g.Hc);
  for(let py=0;py<g.Hc;py++){const la=(2*Math.atan(Math.exp(m1-(py+.5)/g.Hc*(m1-m0)))-Math.PI/2)*180/Math.PI;
   for(let px=0;px<g.Wc;px++){const o=py*g.Wc+px;if(g.idxMap[o]<0)continue;m[o]=snowAt(la,lo0+(px+.5)/g.Wc*(lo1-lo0))?1:0}}
- d.sm=m;d.smK=k;return m;
-}
-/* Maske für die 1-km-Punkte von GeoSphere */
-function atMask(d){
- if(!sf)return null;const k=snVer();if(d.sm&&d.smK===k)return d.sm;
- const m=new Uint8Array(d.n);for(let i=0;i<d.n;i++)if(d.la[i]===d.la[i])m[i]=snowAt(d.la[i],d.lo[i])?1:0;
  d.sm=m;d.smK=k;return m;
 }
 /* Maske je Radar-Kachel der Länder: 64 × 64 Felder zu 4 Bildpunkten, für alle Zeitpunkte gleich */
@@ -2350,8 +2350,8 @@ async function u16(b64,packed){
  const buf=await new Response(new Blob([bin]).stream().pipeThrough(new DecompressionStream("deflate"))).arrayBuffer();
  return new Uint16Array(buf);
 }
-let dwNext=0,dwOv=null,dwOv2=null,dwFront=null,dwData=null,dwBox=null,dwSeq=0,dwKey="",dwT=0,dwGeoC={k:"",g:null},dwFell=0;
-function hideDw(){[dwOv,dwOv2].forEach(o=>{try{if(o)map.removeLayer(o)}catch(e){}});dwOv=dwOv2=dwFront=null}
+let dwNext=0,dwData=null,dwBox=null,dwSeq=0,dwKey="",dwT=0,dwGeoC={k:"",g:null},dwFell=0;
+function hideDw(){rgClear()}
 function dwGeometry(g,n){
  let pts=g&&(g.coordinates||g);
  while(Array.isArray(pts)&&Array.isArray(pts[0])&&Array.isArray(pts[0][0]))pts=pts[0];
@@ -2381,6 +2381,25 @@ function dwGeometry(g,n){
  }
  return{W,H,Wc,Hc,idxMap,cov,bounds:[[la0,lo0],[la1,lo1]],wkm,hkm,o:TL.xy,a:[ax,ay],b:[bx,by2]};
 }
+/* DWD-Raster für die Zeichnung (siehe „Radarbild flüssig zeichnen“): Stärke je Bildpunkt in Web-Mercator */
+function dwDs(d){
+ if(d.ds)return d.ds;
+ const g=d.geo,codes=[],P={},n=g.Wc*g.Hc,b=g.bounds;
+ const ds={id:"dw"+(++rgIds),W:g.Wc,H:g.Hc,bounds:b,nf:d.R.length,km:Math.max(.3,(b[1][1]-b[0][1])*111.32*Math.cos((b[0][0]+b[1][0])*Math.PI/360)/g.Wc),
+  t:d.R.map(x=>Date.parse(x.timestamp)/1000),code:k=>codes[k]||null,ver:()=>0,attr:"Radar: DWD über Bright Sky",
+  statKey:()=>snVer()+"|"+(sf?1:0),
+  stat:()=>{const sm=dwMask(d),s=new Uint8Array(n*4);for(let o=0;o<n;o++){if(g.idxMap[o]<0)continue;const p=o*4;s[p+2]=255;s[p+1]=g.cov[o]?255:0;s[p]=(sm?sm[o]:d.snow)?255:0}return s},
+  prep:k=>{
+   if(codes[k])return Promise.resolve(codes[k]);
+   if(!d.R[k])return Promise.reject(new Error("Bild"));
+   if(!P[k])P[k]=(async()=>{
+    const v=d.vals[k]||(d.vals[k]=await u16(d.R[k].precipitation_5,d.packed)),c=new Uint8Array(n);
+    for(let o=0;o<n;o++){const i=g.idxMap[o];if(i<0)continue;const raw=v[i];c[o]=raw>=60000?0:raw<1?1:rCode(raw*.12)}
+    codes[k]=c;return c})().catch(e=>{delete P[k];throw e});
+   return P[k];
+  }};
+ return d.ds=ds;
+}
 async function loadDwd(cla,clo){
  if(!map)return;
  const la=cla!=null?cla:+place.lat,lo=clo!=null?clo:+place.lon,key=la.toFixed(2)+","+lo.toFixed(2);
@@ -2399,8 +2418,7 @@ async function loadDwd(cla,clo){
   const gk=JSON.stringify(j.geometry)+"|"+first.length;
   if(dwGeoC.k!==gk)dwGeoC={k:gk,g:dwGeometry(j.geometry,first.length)};
   const geo=dwGeoC.g;
-  const oldD=dwData;if(oldD&&oldD.img)setTimeout(()=>oldD.img.forEach(u=>{if(u&&u.startsWith("blob:"))URL.revokeObjectURL(u)}),5000);
-  dwData={geo,R,packed,vals:[first],img:[],snow:!!(lastJ&&lastJ.current&&lastJ.current.temperature_2m<=0.5)};
+  dwData={geo,R,packed,vals:[first],snow:!!(lastJ&&lastJ.current&&lastJ.current.temperature_2m<=0.5)};
   dwBox=[la,lo];
   const now=Date.now();
   frames=R.map((x,k)=>({time:Date.parse(x.timestamp)/1000,dw:k}));
@@ -2428,51 +2446,6 @@ async function loadDwd(cla,clo){
   $("fnote").textContent="Das DWD-Radar ist gerade nicht erreichbar, deshalb das weltweite Radar.";
   dwFell=Date.now();setMode(atCovered(+place.lat,+place.lon)?"at":"rv");
  }
-}
-/* Bild für einen Zeitpunkt vorbereiten: als Blob speichern und schon entschlüsseln, damit der Wechsel ohne Ruckeln geht */
-async function dwPrep(k){
- const d=dwData;if(!d||!d.R[k])return null;
- if(d.img[k])return d.img[k];
- if(d.busy&&d.busy[k])return d.busy[k];
- (d.busy||(d.busy={}))[k]=(async()=>{
-  const v=d.vals[k]||(d.vals[k]=await u16(d.R[k].precipitation_5,d.packed));
-  if(dwData!==d)return null;
-  const g=d.geo,cv=document.createElement("canvas");cv.width=g.Wc;cv.height=g.Hc;
-  const ctx=cv.getContext("2d"),im=ctx.createImageData(g.Wc,g.Hc),px=im.data,pal0=d.snow?SNOWC:RAINC,sm=dwMask(d);
-  for(let o=0;o<g.idxMap.length;o++){
-   const i=g.idxMap[o];if(i<0)continue;
-   const p=o*4;
-   if(!g.cov[o]){px[p]=110;px[p+1]=120;px[p+2]=135;px[p+3]=70;continue}
-   const raw=v[i];if(raw<1||raw>=60000)continue;
-   const r=raw*.12,c=ramp(sm?(sm[o]?SNOWC:RAINC):pal0,r);
-   px[p]=c[0];px[p+1]=c[1];px[p+2]=c[2];px[p+3]=Math.round(255*Math.min(1,.35+r*.6)*.92);
-  }
-  ctx.putImageData(im,0,0);
-  let url=null;
-  try{const b=await new Promise(r=>cv.toBlob(r,"image/png"));if(b)url=URL.createObjectURL(b)}catch(e){}
-  if(!url)url=cv.toDataURL("image/png");
-  try{const i2=new Image();i2.src=url;if(i2.decode)await i2.decode()}catch(e){}
-  if(dwData!==d){if(url.startsWith("blob:"))URL.revokeObjectURL(url);return null}
-  d.img[k]=url;return url;
- })();
- return d.busy[k];
-}
-async function showDw(k){
- const d=dwData;if(!d||!d.R[k])return;
- if(!d.img[k])await dwPrep(k);
- if(dwData!==d||!d.img[k])return;
- if(frames[idx]&&frames[idx].dw!==k)return;
- try{
-  const mk=op=>L.imageOverlay(d.img[k],d.geo.bounds,{pane:"fc",opacity:op,interactive:false,className:"dwov",attribution:"Radar: DWD über Bright Sky"}).addTo(map);
-  if(!dwOv){dwOv=mk(.9);dwOv2=mk(0);dwFront=dwOv;rLive();return}
-  const front=dwFront,back=front===dwOv?dwOv2:dwOv,bb=L.latLngBounds(d.geo.bounds);
-  if(back.setBounds)back.setBounds(bb);
-  back.setUrl(d.img[k]);
-  const swap=()=>{if(dwFront!==front)return;if(back.setOpacity)back.setOpacity(.9);if(front.setOpacity)front.setOpacity(0);if(front.setBounds)front.setBounds(bb);dwFront=back};
-  const el=back.getElement?back.getElement():null;
-  if(el&&!el.complete){el.onload=swap;setTimeout(swap,400)}else swap();
- }catch(e){}
- rLive();
 }
 
 /* ============ Zugbahn von Gewittern und Starkregen (aus dem DWD-Radar) ============
@@ -2614,42 +2587,65 @@ function trkAlarm(){
 
 /* ============ Radar „Österreich“: GeoSphere Austria (INCA-Nowcast) ============
    Niederschlag aus den österreichischen Radaren und Messstationen, 1 km, alle 15 Minuten neu, 3 Stunden voraus.
-   Geladen wird der Kartenausschnitt (höchstens etwa 35.000 km²). GeoSphere liefert die Werte als Punkte; sie werden hier
-   zu einem Bild gemalt. Aus denselben Daten kommen die Zugbahnen von Gewittern für ganz Österreich. */
+   Geladen wird der ganze sichtbare Kartenausschnitt, soweit GeoSphere Daten hat (Österreich und ein Streifen rundherum).
+   Größere Ausschnitte kommen in Stücken von höchstens 25.000 km² (etwa 6 MB, GeoSphere braucht dafür bis zu einer halben
+   Minute), drei gleichzeitig, die Kartenmitte zuerst. GeoSphere liefert Punkte; sie kommen in ein Raster in Web-Mercator
+   (wie die Karte) mit Zellen von 1,08 km, etwas größer als der Punktabstand, damit keine Lücken bleiben.
+   Aus denselben Daten kommen die Zugbahnen von Gewittern. */
 const AT_BOX=[45.5,8.1,49.48,17.74],GS_NOW="https://dataset.api.hub.geosphere.at/v1/grid/forecast/nowcast-v1-15min-1km?parameters=rr&output_format=geojson";
-/* GeoSphere stellt die Antwort erst zusammen: meist in ein paar Sekunden, manchmal dauert es eine halbe Minute. Deshalb großzügig warten
-   und einen etwas kleineren Ausschnitt laden (25.000 km² sind etwa 6 MB). */
-const AT_KM2=25000,AT_MS=90000;
+const AT_KM2=25000,AT_MS=90000,AT_CS=1.08/(111.32*Math.cos(47.5*Math.PI/180));
 const atCovered=(la,lo)=>la>=45.6&&la<=49.4&&lo>=8.2&&lo<=17.6;
-let atImg=null,atData=null,atCv=null,atBusy=false,atWant=false,atFail=0,atPause=0,atNext=0,atSeq=0,atProj=null,atMoveT=0,atTk=null,atTkNext=0,atChkBusy=false,atMetaBad=0;
+const mercY=la=>Math.log(Math.tan(Math.PI/4+la*Math.PI/360))*180/Math.PI,imercY=y=>(2*Math.atan(Math.exp(y*Math.PI/180))-Math.PI/2)*180/Math.PI;
+/* Stärke als Zahl von 0 bis 255: 0 = keine Daten, 1 = trocken, 2 bis 255 = 0,1 bis 200 mm/h (gleichmäßig im Logarithmus, Schritte von 3 %) */
+const RC_L=Math.log(2000),rCode=r=>r<.1?1:Math.min(255,2+Math.round(253*Math.log(r/.1)/RC_L)),RDEC=new Float32Array(256);
+for(let q=2;q<256;q++)RDEC[q]=.1*Math.exp((q-2)/253*RC_L);
+let atData=null,atBusy=false,atBusyT=0,atWant=false,atFail=0,atPF=0,atPause=0,atNext=0,atSeq=0,atMoveT=0,atTkNext=0,atChkBusy=false,atChkT=0,atMetaBad=0,atMetaR=null,atNewer=0,atHook=false;
 /* Ob es einen neuen Lauf gibt, verrät die kleine Beschreibung des Datensatzes (wenige kB, schnell).
-   Erst wenn dort ein neuerer Lauf steht, wird das große Radarbild geladen. Gemessen am 8.11.2026: ein Lauf ist
+   Erst wenn dort ein neuerer Lauf steht, werden die großen Radardaten geladen. Gemessen am 8.11.2026: ein Lauf ist
    17 bis 21 Minuten nach seiner Startzeit abrufbar; ab 16 Minuten wird alle 2 Minuten nachgesehen. */
 const GS_META="https://dataset.api.hub.geosphere.at/v1/grid/forecast/nowcast-v1-15min-1km/metadata",AT_LAG=16*60,AT_POLL=2*60000;
 async function atLatest(){
  if(Date.now()<atMetaBad)return null;
  try{
   const j=await getJ(GS_META+"?t="+Math.floor(Date.now()/60000),20000),r=Date.parse(j&&j.last_forecast_reftime);
-  if(isFinite(r))return r/1000;
+  if(isFinite(r)){atMetaR=r/1000;return r/1000}
  }catch(e){}
- /* klappt die Abfrage nicht, eine halbe Stunde lang wie früher nach der Uhr gehen */
+ /* klappt die Abfrage nicht, eine halbe Stunde lang nach der Uhr gehen */
  atMetaBad=Date.now()+30*60000;return null;
 }
-const atCovers=(d,bb)=>!!d&&d.bb[0]<=bb[0]+.02&&d.bb[1]<=bb[1]+.02&&d.bb[2]>=bb[2]-.02&&d.bb[3]>=bb[3]-.02;
 /* Bild, das jetzt gilt: das letzte, das nicht in der Zukunft liegt */
 function atNowIdx(d){const now=Date.now()/1000+60;let k=0;for(let i=0;i<d.t.length;i++)if(d.t[i]<=now)k=i;return k}
 /* Beginn der Abfrage: 45 Minuten zurück, GeoSphere beginnt dann beim Messbild des neuesten Laufs */
 const atStart=()=>new Date(Math.floor(Date.now()/900000)*900000-45*60000).toISOString().slice(0,16);
-/* Ausschnitt für die Abfrage: Karte plus etwas Rand, bei großem Ausschnitt nur die Mitte */
-function atBbox(pad,maxKm2){
- const sz=map.getSize(),c=map.getCenter(),a=map.containerPointToLatLng([-sz.x*pad,-sz.y*pad]),b=map.containerPointToLatLng([sz.x*(1+pad),sz.y*(1+pad)]);
- let S=b.lat,N=a.lat,W=a.lng,E=b.lng;
- const kx=111.32*Math.cos(c.lat*Math.PI/180),area=(N-S)*110.57*(E-W)*kx;
- if(area>maxKm2){const f=Math.sqrt(maxKm2/area),hh=(N-S)*f/2,hw=(E-W)*f/2;S=c.lat-hh;N=c.lat+hh;W=c.lng-hw;E=c.lng+hw}
- S=Math.max(AT_BOX[0],S);W=Math.max(AT_BOX[1],W);N=Math.min(AT_BOX[2],N);E=Math.min(AT_BOX[3],E);
+/* sichtbarer Ausschnitt plus Rand, begrenzt auf das Gebiet von GeoSphere */
+function atBbox(pad){
+ const sz=map.getSize(),a=map.containerPointToLatLng([-sz.x*pad,-sz.y*pad]),b=map.containerPointToLatLng([sz.x*(1+pad),sz.y*(1+pad)]);
+ const S=Math.max(AT_BOX[0],b.lat),W=Math.max(AT_BOX[1],a.lng),N=Math.min(AT_BOX[2],a.lat),E=Math.min(AT_BOX[3],b.lng);
  return N-S>.05&&E-W>.05?[S,W,N,E]:null;
 }
-/* GeoJSON von GeoSphere in kompakte Felder umwandeln */
+/* Was davon im gezeigten Lauf noch fehlt: Stichproben auf einem Gitter, das Fehlende als ein Rechteck */
+function atMissing(d,bb){
+ const n=14,dy=(bb[2]-bb[0])/(n-1),dx=(bb[3]-bb[1])/(n-1),e=1e-6;let S=1e9,W=1e9,N=-1e9,E=-1e9;
+ for(let i=0;i<n;i++)for(let j=0;j<n;j++){
+  const la=bb[0]+i*dy,lo=bb[1]+j*dx;
+  if(d.rects.some(r=>la>=r[0]-e&&la<=r[2]+e&&lo>=r[1]-e&&lo<=r[3]+e))continue;
+  S=Math.min(S,la);N=Math.max(N,la);W=Math.min(W,lo);E=Math.max(E,lo);
+ }
+ if(S>N)return[];
+ return[[Math.max(bb[0],S-dy),Math.max(bb[1],W-dx),Math.min(bb[2],N+dy),Math.min(bb[3],E+dx)]];
+}
+/* in Stücke von höchstens AT_KM2 teilen, die Kartenmitte zuerst */
+function atPieces(rs,c){
+ const out=[];
+ rs.forEach(r=>{
+  const mid=(r[0]+r[2])/2,wk=(r[3]-r[1])*111.32*Math.cos(mid*Math.PI/180),hk=(r[2]-r[0])*110.57,n=Math.max(1,Math.ceil(wk*hk/AT_KM2));
+  const nx=Math.max(1,Math.min(n,Math.round(Math.sqrt(n*wk/Math.max(1,hk))))),ny=Math.ceil(n/nx);
+  for(let i=0;i<ny;i++)for(let j=0;j<nx;j++)out.push([r[0]+(r[2]-r[0])*i/ny,r[1]+(r[3]-r[1])*j/nx,r[0]+(r[2]-r[0])*(i+1)/ny,r[1]+(r[3]-r[1])*(j+1)/nx]);
+ });
+ const dist=p=>Math.hypot(((p[0]+p[2])/2-c.lat)*1.5,(p[1]+p[3])/2-c.lng);
+ return out.sort((a,b)=>dist(a)-dist(b));
+}
+/* GeoJSON von GeoSphere als Punktlisten (für die Werte am Ort, „Regen in 2 Stunden“) */
 function atParse(j){
  const fs=(j&&j.features)||[],T=(j&&j.timestamps)||[],n=fs.length;
  if(!n||!T.length)throw new Error("leer");
@@ -2661,66 +2657,142 @@ function atParse(j){
  }
  return{t:T.map(x=>Date.parse(x)/1000),la,lo,V,n};
 }
+/* leeres Raster für einen Lauf (ganzes Gebiet von GeoSphere, oder nur bb) */
+function atGrid(bb){
+ const yT=mercY(bb[2]),W=Math.max(2,Math.ceil((bb[3]-bb[1])/AT_CS)),H=Math.max(2,Math.ceil((yT-mercY(bb[0]))/AT_CS));
+ return{lo0:bb[1],yT,W,H,bounds:[[imercY(yT-H*AT_CS),bb[1]],[bb[2],bb[1]+W*AT_CS]]};
+}
+function atNewRun(j,ref,bb){
+ const T=((j&&j.timestamps)||[]).map(x=>Date.parse(x)/1000);
+ if(!T.length||!T.every(x=>isFinite(x)))throw new Error("leer");
+ const g=atGrid(bb||AT_BOX);
+ return{ref:ref!=null?ref:T[0],t:T,g,V:T.map(()=>new Uint8Array(g.W*g.H)),has:new Uint8Array(g.W*g.H),rects:[],n:0,ver:0,at:Date.now(),
+  snow:!!(lastJ&&lastJ.current&&lastJ.current.temperature_2m<=0.5)};
+}
+/* Punkte eines Stücks ins Raster; einzelne Zellen ohne Punkt aus den Nachbarn füllen */
+function atFill(d,j,bb){
+ const fs=(j&&j.features)||[],T=(j&&j.timestamps)||[],g=d.g,W=g.W,H=g.H,nT=d.t.length,has=d.has;
+ if(T.length!==nT||Math.abs(Date.parse(T[0])/1000-d.t[0])>1)throw new Error("Zeiten");
+ let r0=H,r1=-1,c0=W,c1=-1,n=0;
+ for(const f of fs){
+  const c=f&&f.geometry&&f.geometry.coordinates,p=f&&f.properties&&f.properties.parameters&&f.properties.parameters.rr,a=p&&p.data;
+  if(!c)continue;
+  const lo=+c[0],la=+c[1];if(!(la===la&&lo===lo))continue;
+  const x=Math.floor((lo-g.lo0)/AT_CS),y=Math.floor((g.yT-mercY(la))/AT_CS);
+  if(x<0||y<0||x>=W||y>=H)continue;
+  const o=y*W+x;
+  if(has[o]===2)for(let k=0;k<nT;k++)d.V[k][o]=0;
+  has[o]=1;n++;
+  if(y<r0)r0=y;if(y>r1)r1=y;if(x<c0)c0=x;if(x>c1)c1=x;
+  if(a)for(let k=0;k<nT;k++){const v=a[k];if(v==null||!(v>=0))continue;const q=rCode(v*4);if(q>d.V[k][o])d.V[k][o]=q}
+ }
+ const holes=[];
+ for(let y=Math.max(1,r0);y<=Math.min(H-2,r1);y++)for(let x=Math.max(1,c0);x<=Math.min(W-2,c1);x++){
+  const o=y*W+x;if(!has[o]&&(has[o-1]?1:0)+(has[o+1]?1:0)+(has[o-W]?1:0)+(has[o+W]?1:0)>=3)holes.push(o);
+ }
+ for(const o of holes){
+  for(let k=0;k<nT;k++){const V=d.V[k];let s=0,m=0;for(const q of [o-1,o+1,o-W,o+W])if(has[q]===1&&V[q]){s+=V[q];m++}V[o]=m?Math.round(s/m):0}
+  has[o]=2;
+ }
+ d.rects.push(bb);d.n+=n;d.ver++;
+ return n;
+}
+function atHooks(){
+ if(atHook||!map)return;atHook=true;
+ map.on("moveend",()=>{if(mode!=="at"||lay!=="rain")return;clearTimeout(atMoveT);atMoveT=setTimeout(()=>loadAt(false),700)});
+}
+const hmT=t=>new Date(t*1000).toLocaleTimeString("de-AT",{hour:"2-digit",minute:"2-digit"});
+/* GeoSphere selbst liefert nichts Neues (der neueste Lauf ist älter als 50 Minuten, sonst sind es 17 bis 36) */
+function atStaleNote(){
+ const r=Math.max(atMetaR||0,atData?atData.ref:0);
+ if(mode!=="at"||!r||Date.now()/1000-r<=50*60)return false;
+ $("fnote").textContent="GeoSphere hat seit "+hmT(r)+" Uhr keine neuen Radardaten veröffentlicht. Sobald es wieder welche gibt, lädt die App sie von selbst. Den aktuellen Regen zeigt solange „Weltweit“.";
+ return true;
+}
 async function loadAt(force){
  if(!map||mode!=="at")return;
  if(lay!=="rain"){rdrSkip=true;return}
- const bb=atBbox(.08,AT_KM2);
+ atHooks();
+ const bb=atBbox(.12);
  if(!bb){$("fnote").textContent="Dieser Kartenausschnitt liegt außerhalb von Österreich. Das Radar „Österreich“ gibt es nur dort.";return}
- const cov=atCovers(atData,bb);
- if(!force&&cov){
-  atTick();
-  if(Date.now()<atNext||atChkBusy||atBusy)return;
-  /* alle paar Minuten nachsehen, ob GeoSphere schon einen neueren Lauf hat */
-  atChkBusy=true;atNext=Date.now()+AT_POLL;
-  let r=null;try{r=await atLatest()}finally{atChkBusy=false}
-  if(!map||mode!=="at"||lay!=="rain"||!atData)return;
-  if(r!=null?r<=atData.ref+60:Date.now()<(atData.ref+15*60+AT_LAG+5*60)*1000)return;
- }
- /* nach einem Fehlschlag eine halbe Minute Pause, außer du wählst das Radar selbst neu */
- if(!force&&Date.now()<atPause)return;
- /* läuft schon eine Abfrage: danach noch einmal prüfen, statt eine zweite zu starten */
+ atTick();
+ const now=Date.now();
+ /* Wächter: Was nach 2 Minuten nicht fertig ist, gilt als hängengeblieben. Früher blieb das Radar dann stehen,
+    bis die App neu geöffnet wurde (eine Antwort, die mitten im Laden abriss, wurde endlos weiter erwartet). */
+ if(atBusy&&now-atBusyT>AT_MS+30000){atSeq++;atBusy=false}
+ if(atChkBusy&&now-atChkT>45000)atChkBusy=false;
  if(atBusy){atWant=true;return}
- atBusy=true;atWant=false;const my=++atSeq;
- if(!cov){$("fnote").textContent=atFail?"GeoSphere antwortet gerade sehr langsam, neuer Versuch läuft … Bis dahin zeigen „DWD 1 km“ und „Weltweit“ den Regen.":"Radar von GeoSphere Austria wird geladen … das kann bis zu einer halben Minute dauern.";if(!frames.length)$("ts").textContent="Lädt …"}
- try{
-  const j=await getJ(GS_NOW+"&bbox="+bb.map(x=>x.toFixed(3)).join(",")+"&start="+atStart(),AT_MS);
-  if(my!==atSeq||mode!=="at")return;
-  const d=atParse(j);d.bb=bb;d.snow=!!(lastJ&&lastJ.current&&lastJ.current.temperature_2m<=0.5);d.at=Date.now();
-  const rf=Date.parse(j.reference_time);d.ref=isFinite(rf)?rf/1000:d.t[0];
-  atData=d;atFail=0;atPause=0;
-  /* ein neuer Lauf kommt alle 15 Minuten; frühestens, wenn er fertig sein kann, wird nachgesehen */
-  atNext=Math.max(Date.now()+AT_POLL,(d.ref+15*60+AT_LAG)*1000);
-  atUse(d);
- }catch(e){
-  console.error(e);
-  if(my===atSeq&&mode==="at"){
-   const slow=!!e&&e.name==="AbortError";
-   $("fnote").textContent=atData?(slow?"GeoSphere antwortet gerade sehr langsam. Du siehst den letzten Stand, es wird gleich wieder versucht.":"GeoSphere antwortet gerade nicht. Du siehst den letzten Stand, es wird gleich wieder versucht."):
-    (slow?"GeoSphere Austria antwortet gerade sehr langsam.":"Das Radar von GeoSphere Austria ist gerade nicht erreichbar.")+" Es wird in einer Minute wieder versucht. Bis dahin zeigen „DWD 1 km“ und „Weltweit“ den Regen.";
-   if(!frames.length)$("ts").textContent="";
-  }
-  atNext=Date.now()+60000;atFail++;atPause=Date.now()+30000;
- }finally{
-  if(my===atSeq){atBusy=false;if(atWant&&mode==="at"){atWant=false;setTimeout(()=>loadAt(false),0)}}
+ if(!force&&now<atPause)return;
+ const d=atData;let fresh=!d||atNewer>d.ref+60;
+ if(d&&!fresh&&now>=atNext&&!atChkBusy){
+  atChkBusy=true;atChkT=now;atNext=now+AT_POLL;
+  let r=null;try{r=await atLatest()}finally{atChkBusy=false}
+  if(!map||mode!=="at"||lay!=="rain"||atData!==d)return;
+  if(r!=null?r>d.ref+60:Date.now()>=(d.ref+15*60+AT_LAG+5*60)*1000)fresh=true;
+  atStaleNote();
+  if(atBusy){atWant=true;return}
  }
+ const need=fresh?[bb]:atMissing(d,bb);
+ if(!need.length)return;
+ atBusy=true;atBusyT=Date.now();atWant=false;
+ const my=++atSeq,pieces=atPieces(need,map.getCenter());
+ let run=fresh?null:d,ok=0,bad=0,slow=false,lim=false,newer=0;
+ if(!d){$("fnote").textContent=atFail?"GeoSphere antwortet gerade sehr langsam, neuer Versuch läuft … Bis dahin zeigen „DWD 1 km“ und „Weltweit“ den Regen.":"Radar von GeoSphere Austria wird geladen … das kann bis zu einer halben Minute dauern.";if(!frames.length)$("ts").textContent="Lädt …"}
+ const one=async()=>{
+  while(pieces.length&&my===atSeq&&!newer){
+   const p=pieces.shift();
+   try{
+    /* Stücke für einen schon begonnenen Lauf ab dessen erstem Bild, damit alle dieselben Zeiten haben */
+    const j=await getJ(GS_NOW+"&bbox="+p.map(x=>x.toFixed(3)).join(",")+"&start="+(run?new Date(run.t[0]*1000).toISOString().slice(0,16):atStart()),AT_MS);
+    if(my!==atSeq||mode!=="at")return;
+    const rf=Date.parse(j&&j.reference_time),ref=isFinite(rf)?rf/1000:null;
+    if(!run)run=atNewRun(j,ref);
+    else if(ref!=null&&Math.abs(ref-run.ref)>60){if(ref>run.ref){newer=ref;atNewer=ref}throw new Error("anderer Lauf")}
+    atFill(run,j,p);ok++;
+    /* Noch nichts zu sehen: jedes Stück gleich zeigen. Sonst bleibt der alte Lauf, bis der neue ganz da ist. */
+    if(!atData){atData=run;atUse(run)}else if(run===atData)rgRedraw();
+   }catch(e){
+    if(my!==atSeq)return;
+    bad++;if(e&&e.name==="AbortError")slow=true;if(e&&e.message==="429")lim=true;
+    /* GeoSphere lehnt das Stück ab (z. B. keine Daten in diesem Eck): nicht immer wieder fragen */
+    if(run&&/^4\d\d$/.test(String(e&&e.message))&&e.message!=="429")run.rects.push(p);
+    console.warn("GeoSphere:",e&&e.message);
+   }
+  }
+ };
+ try{await Promise.all([one(),one(),one()])}finally{if(my===atSeq)atBusy=false}
+ if(my!==atSeq||mode!=="at")return;
+ if(run&&ok){
+  atFail=0;
+  if(atData!==run){atData=run;atUse(run)}else atTrack(run,"at");
+  if(fresh)atNext=Math.max(Date.now()+AT_POLL,(run.ref+15*60+AT_LAG)*1000);
+  /* einzelne Stücke fehlen: nachholen, bei wiederholten Fehlern mit immer längerer Pause (höchstens 5 Minuten) */
+  if(bad){atPF++;const w=lim?120000:Math.min(300000,30000*Math.pow(2,atPF-1));atPause=Date.now()+w;setTimeout(()=>{if(mode==="at")loadAt(false)},w+500)}else atPF=0;
+ }else if(bad){
+  $("fnote").textContent=atData?(slow?"GeoSphere antwortet gerade sehr langsam. Du siehst den letzten Stand, es wird gleich wieder versucht.":"GeoSphere antwortet gerade nicht. Du siehst den letzten Stand, es wird gleich wieder versucht."):
+   (slow?"GeoSphere Austria antwortet gerade sehr langsam.":"Das Radar von GeoSphere Austria ist gerade nicht erreichbar.")+" Es wird in einer Minute wieder versucht. Bis dahin zeigen „DWD 1 km“ und „Weltweit“ den Regen.";
+  if(!frames.length)$("ts").textContent="";
+  atNext=Date.now()+60000;atFail++;atPause=Date.now()+(lim?120000:30000);
+ }
+ if(newer){atNext=0;setTimeout(()=>{if(mode==="at")loadAt(false)},800)}
+ else if(atWant&&mode==="at"){atWant=false;setTimeout(()=>loadAt(false),0)}
 }
 /* Daten anzeigen: Zeitleiste, Bild für jetzt, Zugbahnen */
 function atUse(d){
  const now=Date.now()/1000,wasPlaying=!!timer;
  if(timer)toggle();
- atProj=null;
  frames=d.t.map((t,k)=>({time:t,at:k}));
  pastCount=Math.max(1,frames.filter(f=>f.time<=now+60).length);
  idx=0;$("sl").max=Math.max(0,frames.length-1);placeTick();
- atPanes();show(pastCount-1);
+ show(pastCount-1);
  if(wasPlaying||(wallOn&&wallPlay()))toggle();
  atFresh(d);
- $("fnote").textContent="Vorhersage von GeoSphere Austria bis "+new Date(d.t[d.t.length-1]*1000).toLocaleTimeString("de-AT",{hour:"2-digit",minute:"2-digit"})+" Uhr.";
+ if(!atStaleNote())$("fnote").textContent="Vorhersage von GeoSphere Austria bis "+hmT(d.t[d.t.length-1])+" Uhr.";
  atTrack(d,"at");
 }
 function atFresh(d){
  const min=Math.round(Date.now()/60000-d.ref/60);
- $("fresh").textContent="Letzte Messung: "+new Date(d.ref*1000).toLocaleTimeString("de-AT",{hour:"2-digit",minute:"2-digit"})+" Uhr"+(min>=0?" (vor "+min+" Min.)":"")+", danach Vorhersage";
+ $("fresh").textContent="Letzte Messung: "+hmT(d.ref)+" Uhr"+(min>=0?" (vor "+min+" Min.)":"")+", danach Vorhersage";
 }
 /* Jede Minute: „Jetzt“ rückt auf das Bild der aktuellen Viertelstunde weiter, auch bevor ein neuer Lauf da ist */
 function atTick(){
@@ -2729,59 +2801,41 @@ function atTick(){
  if(pc!==pastCount){const was=idx===pastCount-1;pastCount=pc;placeTick();if(was&&!timer)show(pc-1)}
  atFresh(d);
 }
-function atPanes(){
- if(atCv||!map)return;
- const p=map.getPane("atp")||map.createPane("atp");p.style.zIndex=341;p.style.pointerEvents="none";
- atCv=document.createElement("canvas");atCv.className="fcv";p.appendChild(atCv);
- map.on("zoomstart",()=>{if(atCv)atCv.style.visibility="hidden"});
- map.on("moveend resize",()=>{
-  if(mode!=="at")return;atProj=null;const f=frames[idx];if(f&&f.at!=null)atShow(f.at);
-  clearTimeout(atMoveT);atMoveT=setTimeout(()=>loadAt(false),800);
- });
+function atHide(){rgClear()}
+/* Raster für die Zeichnung: Stärke je Zelle und Bild; dazu je Zelle Schnee ja/nein */
+function atDs(d){
+ if(d.ds)return d.ds;
+ const g=d.g;
+ return d.ds={id:"at"+(++rgIds),W:g.W,H:g.H,bounds:g.bounds,nf:d.t.length,km:1.08,t:d.t,code:k=>d.V[k]||null,ver:()=>d.ver,
+  statKey:()=>snVer()+"|"+d.ver+"|"+(sf?1:0),stat:()=>atStat(d),attr:"Radar: GeoSphere Austria"};
 }
-function atHide(){if(atCv){const c=atCv.getContext("2d");c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,atCv.width,atCv.height)}}
-function im0Clear(){if(atImg)atImg.data.fill(0)}
-/* Bild für einen Zeitpunkt: jeder 1-km-Punkt wird als kleines Quadrat in seiner Farbe gemalt */
-function atShow(k){
- const d=atData;if(!d||!atCv||!map)return;
- const sz=map.getSize(),dp=Math.min(2,window.devicePixelRatio||1),W=Math.round(sz.x*dp),H=Math.round(sz.y*dp);
- if(!atProj||atProj.W!==W||atProj.H!==H){
-  L.DomUtil.setPosition(atCv,map.containerPointToLayerPoint([0,0]));
-  atCv.width=W;atCv.height=H;atCv.style.width=sz.x+"px";atCv.style.height=sz.y+"px";
-  const x=new Float32Array(d.n),y=new Float32Array(d.n);
-  for(let i=0;i<d.n;i++){if(d.la[i]!==d.la[i]){x[i]=-1e4;continue}const p=map.latLngToContainerPoint([d.la[i],d.lo[i]]);x[i]=p.x*dp;y[i]=p.y*dp}
-  const mpp=156543.03392*Math.cos(map.getCenter().lat*Math.PI/180)/Math.pow(2,map.getZoom());
-  atProj={W,H,x,y,s:Math.max(1,1000/mpp*dp*1.12)};
+function atStat(d){
+ const g=d.g,W=g.W,H=g.H,nT=d.V.length,s=new Uint8Array(W*H*4),all=!sf&&d.snow;
+ for(let y=0;y<H;y++){
+  let la=null;
+  for(let x=0;x<W;x++){
+   const o=y*W+x,p=o*4;s[p+1]=255;s[p+2]=255;
+   if(all){s[p]=255;continue}
+   if(!sf)continue;
+   let wet=false;for(let k=0;k<nT;k++)if(d.V[k][o]>=2){wet=true;break}
+   if(!wet)continue;
+   if(la==null)la=imercY(g.yT-(y+.5)*AT_CS);
+   s[p]=snowAt(la,g.lo0+(x+.5)*AT_CS)?255:0;
+  }
  }
- atCv.style.visibility="";
- im0Clear();
- const c=atCv.getContext("2d"),im=atImg&&atImg.width===W&&atImg.height===H?atImg:(atImg=c.createImageData(W,H)),px=im.data,P=atProj,V=d.V[k]||d.V[0],pal0=d.snow?SNOWC:RAINC,sm=atMask(d),h=P.s/2;
- for(let i=0;i<d.n;i++){
-  const v=V[i];if(v<.025)continue;
-  const X=P.x[i],Y=P.y[i];if(X<-h||Y<-h||X>W+h||Y>H+h)continue;
-  const r=v*4,col=ramp(sm?(sm[i]?SNOWC:RAINC):pal0,r),a=Math.round(255*Math.min(1,.35+r*.6)*.92);
-  const x0=Math.max(0,Math.round(X-h)),x1=Math.min(W,Math.round(X+h)),y0=Math.max(0,Math.round(Y-h)),y1=Math.min(H,Math.round(Y+h));
-  for(let yy=y0;yy<y1;yy++){let o=(yy*W+x0)*4;for(let xx=x0;xx<x1;xx++,o+=4){px[o]=col[0];px[o+1]=col[1];px[o+2]=col[2];px[o+3]=a}}
- }
- c.putImageData(im,0,0);
+ return s;
 }
-/* Zugbahnen aus GeoSphere-Daten: Punkte in ein 1-km-Raster einsortieren, Zellen jetzt, in 15 und in 30 Minuten suchen.
+/* Zugbahnen aus GeoSphere-Daten: Zellen jetzt, in 15 und in 30 Minuten suchen.
    Die Bewegung dazwischen ist die Zugbahn, die GeoSphere selbst aus den Radarbildern berechnet hat. */
 function atTrack(d,src){
- const S=d.bb[0],W=d.bb[1],N=d.bb[2],E=d.bb[3],mid=(S+N)/2,dy=.009,dx=.009/Math.cos(mid*Math.PI/180);
- const GW=Math.max(2,Math.ceil((E-W)/dx)+1),GH=Math.max(2,Math.ceil((N-S)/dy)+1),F=[],k0=atNowIdx(d);
- /* jetzt, in 15 und in 30 Minuten */
+ const g=d.g,F=[],k0=atNowIdx(d),n=g.W*g.H;
  for(let k=k0;k<Math.min(k0+3,d.V.length);k++){
-  const g=new Uint16Array(GW*GH),V=d.V[k];
-  for(let i=0;i<d.n;i++){
-   const v=V[i];if(v<.5)continue;
-   const r=Math.round((N-d.la[i])/dy),c=Math.round((d.lo[i]-W)/dx);if(r<0||c<0||r>=GH||c>=GW)continue;
-   const raw=Math.min(59999,Math.round(v*4/.12));const o=r*GW+c;if(raw>g[o])g[o]=raw;
-  }
-  F.push({t:d.t[k],c:trkFind(g,GW,GH)});
+  const V=d.V[k],raw=new Uint16Array(n);
+  for(let o=0;o<n;o++){const q=V[o];if(q>=2)raw[o]=Math.min(59999,Math.round(RDEC[q]/.12))}
+  F.push({t:d.t[k],c:trkFind(raw,g.W,g.H)});
  }
- const toLL=(r,c)=>[N-r*dy,W+c*dx];
- trkBuild(F,toLL,dx*111.32*Math.cos(mid*Math.PI/180),dy*110.57,++trkSeq,src);
+ const toLL=(r,c)=>[imercY(g.yT-(r+.5)*AT_CS),g.lo0+(c+.5)*AT_CS],km=AT_CS*111.32*Math.cos((+place.lat||47.5)*Math.PI/180);
+ trkBuild(F,toLL,km,km,++trkSeq,src);
 }
 /* Für Orte in Österreich, wenn „Weltweit“ gewählt ist: nur für die Zugbahnen den Umkreis um den Ort laden */
 async function atTrackOnly(){
@@ -2793,12 +2847,265 @@ async function atTrackOnly(){
   const end=new Date(Math.floor(Date.now()/900000)*900000+45*60000).toISOString().slice(0,16);
   const j=await getJ(GS_NOW+"&bbox="+bb.map(x=>x.toFixed(3)).join(",")+"&end="+end,AT_MS);
   if(mode!=="rv")return;
-  const d=atParse(j);d.bb=bb;
+  const rf=Date.parse(j&&j.reference_time),d=atNewRun(j,isFinite(rf)?rf/1000:null,bb);atFill(d,j,bb);
   atTkNext=Math.max(Date.now()+5*60000,(d.t[0]+33*60)*1000);
   atTrack(d,"atk");
  }catch(e){console.error(e);atTkNext=Date.now()+3*60000}
 }
 
+/* ============ Radarbild flüssig zeichnen (DWD 1 km und Österreich) ============
+   Ein Bild (WebGL) liegt über der Karte. Jeder Zeitpunkt ist ein Raster mit der Stärke je Zelle, die Farben kommen aus einer
+   Tabelle (Regen und Schnee), weich vergrößert. Zwischen zwei Radarbildern wird das Regengebiet weitergeschoben statt nur
+   überblendet: Für jedes Stück der Karte wird gesucht, wohin der Regen bis zum nächsten Bild gezogen ist (Blockvergleich auf
+   einem gröberen Raster, Ausreißer verworfen, geglättet). Daraus rechnet die Grafikkarte die Zwischenbilder, so viele, wie der
+   Bildschirm zeigt (60 oder 120 pro Sekunde). Ohne WebGL wird überblendet. */
+let rg=null,rgIds=0;
+const RG_VS="attribute vec2 p;uniform vec4 r;varying vec2 uv;void main(){uv=p;gl_Position=vec4(mix(r.xy,r.zw,p),0.,1.);}";
+const RG_FS="#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n"+
+ "uniform sampler2D A,B,F,S,P;uniform float t,m;uniform vec2 fs,fu;varying vec2 uv;"+
+ "void main(){vec4 s=texture2D(S,uv);if(s.b<.5)discard;"+
+ "if(s.g<.5){float g=70./255.;gl_FragColor=vec4(vec3(110.,120.,135.)/255.*g,g);return;}"+
+ "vec2 f=(texture2D(F,uv*fu).rg*255.-128.)*fs;"+
+ "float a=texture2D(A,uv-t*f).r,b=texture2D(B,uv+(1.-t)*f).r,v=mix(a,b,t*m)*255.;"+
+ "float x=(v+.5)/256.;vec4 c=mix(texture2D(P,vec2(x,.25)),texture2D(P,vec2(x,.75)),s.r);"+
+ "if(c.a<.004)discard;gl_FragColor=vec4(c.rgb*c.a,c.a);}";
+/* Farbtabelle: Zeile 0 Regen, Zeile 1 Schnee, je 256 Stufen (wie bisher: Deckkraft steigt mit der Menge) */
+function rgPal(){
+ const p=new Uint8Array(256*2*4);
+ [RAINC,SNOWC].forEach((st,row)=>{
+  for(let q=0;q<256;q++){
+   const o=(row*256+q)*4,r=RDEC[Math.max(2,q)],c=ramp(st,r);
+   p[o]=c[0];p[o+1]=c[1];p[o+2]=c[2];p[o+3]=q<2?0:Math.round(255*Math.min(1,.35+r*.6)*.92);
+  }
+ });
+ return p;
+}
+function rgEnsure(){
+ if(rg)return!!rg.cv;
+ if(!map)return false;
+ rg={cv:null,tex:new Map(),ftex:new Map(),fd:new Map(),img:new Map(),fq:null,fBusy:false,cur:null,ds:null,attr:"",pal:rgPal()};
+ const pane=map.getPane("atp")||map.createPane("atp");pane.style.zIndex=341;pane.style.pointerEvents="none";
+ let cv=document.createElement("canvas"),gl=null;
+ try{gl=cv.getContext("webgl",{alpha:true,premultipliedAlpha:true,antialias:false,depth:false,stencil:false})||cv.getContext("experimental-webgl")}catch(e){gl=null}
+ if(gl&&!rgGl(gl)){gl=null;cv=document.createElement("canvas")}
+ rg.gl=gl;if(!gl)rg.c2=cv.getContext("2d");
+ cv.className="fcv leaflet-zoom-animated";pane.appendChild(cv);rg.cv=cv;
+ map.on("zoomanim",e=>rgXform(e.center,e.zoom));
+ map.on("zoom",()=>rgXform(map.getCenter(),map.getZoom()));
+ map.on("moveend zoomend resize viewreset",()=>{if(rg){rg.placed=false;rgRedraw()}});
+ if(gl){
+  cv.addEventListener("webglcontextlost",e=>{e.preventDefault();rg.lost=true});
+  cv.addEventListener("webglcontextrestored",()=>{rg.lost=false;rgGl(rg.gl);rg.tex=new Map();rg.ftex=new Map();rg.statK="";rgRedraw()});
+ }
+ return true;
+}
+function rgGl(gl){
+ try{
+  const sh=(t,s)=>{const o=gl.createShader(t);gl.shaderSource(o,s);gl.compileShader(o);if(!gl.getShaderParameter(o,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(o));return o};
+  const pr=gl.createProgram();gl.attachShader(pr,sh(gl.VERTEX_SHADER,RG_VS));gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,RG_FS));gl.linkProgram(pr);
+  if(!gl.getProgramParameter(pr,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(pr));
+  gl.useProgram(pr);
+  const b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([0,0,1,0,0,1,1,1]),gl.STATIC_DRAW);
+  const ap=gl.getAttribLocation(pr,"p");gl.enableVertexAttribArray(ap);gl.vertexAttribPointer(ap,2,gl.FLOAT,false,0,0);
+  const U={};["A","B","F","S","P","t","m","fs","fu","r"].forEach(n=>U[n]=gl.getUniformLocation(pr,n));
+  gl.uniform1i(U.A,0);gl.uniform1i(U.B,1);gl.uniform1i(U.F,2);gl.uniform1i(U.S,3);gl.uniform1i(U.P,4);
+  gl.pixelStorei(gl.UNPACK_ALIGNMENT,1);
+  rg.U=U;
+  rg.palT=rgTexNew(gl,gl.RGBA,256,2,rg.pal);
+  rg.zero=rgTexNew(gl,gl.RGBA,1,1,new Uint8Array([128,128,0,255]));
+  rg.statT=null;rg.statK="";
+  gl.disable(gl.BLEND);
+  return true;
+ }catch(e){console.warn("WebGL:",e&&e.message);return false}
+}
+function rgTexNew(gl,fmt,w,h,data,old){
+ const t=old||gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,t);
+ gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+ gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+ gl.texImage2D(gl.TEXTURE_2D,0,fmt,w,h,0,fmt,gl.UNSIGNED_BYTE,data);
+ return t;
+}
+/* Bild über die Karte legen: sichtbarer Ausschnitt plus 15 % Rand (beim Verschieben der Karte bleibt der Regen sichtbar) */
+function rgPlace(){
+ const sz=map.getSize(),pad=.15,cw=Math.max(1,Math.round(sz.x*(1+2*pad))),ch=Math.max(1,Math.round(sz.y*(1+2*pad)));
+ const pr=Math.max(.5,Math.min(2,window.devicePixelRatio||1,Math.sqrt(6e6/(cw*ch)))),W=Math.round(cw*pr),H=Math.round(ch*pr),cv=rg.cv;
+ if(cv.width!==W||cv.height!==H){cv.width=W;cv.height=H}
+ cv.style.width=cw+"px";cv.style.height=ch+"px";
+ const off=L.point(-sz.x*pad,-sz.y*pad),lp=map.containerPointToLayerPoint(off);
+ L.DomUtil.setPosition(cv,lp);
+ rg.nw=map.containerPointToLatLng(off);rg.z=map.getZoom();rg.lp=lp;rg.cw=cw;rg.ch=ch;rg.placed=true;
+}
+/* beim Zoomen mitskalieren wie die Kacheln, danach scharf neu zeichnen */
+function rgXform(c,z){
+ if(!rg||!rg.cv||!rg.nw||!rg.cur)return;
+ try{L.DomUtil.setTransform(rg.cv,map._latLngToNewLayerPoint(rg.nw,z,c).round(),map.getZoomScale(z,rg.z))}catch(e){}
+}
+function rgSetDs(ds){
+ const gl=rg.gl;
+ if(gl){rg.tex.forEach(x=>gl.deleteTexture(x.t));rg.ftex.forEach(x=>gl.deleteTexture(x.t))}
+ rg.tex=new Map();rg.ftex=new Map();rg.fd=new Map();rg.img=new Map();rg.statK="";rg.ds=ds;
+ rg.fq=gl&&ds.nf>1?{ds,list:[...Array(ds.nf-1).keys()]}:null;
+ rgFlowKick();
+}
+function rgShow(ds,k,t){
+ if(!map||!ds||!rgEnsure())return;
+ if(rg.ds!==ds)rgSetDs(ds);
+ rg.cur={ds,k,t:t>0?t:0};
+ if(rg.attr!==ds.attr){try{if(rg.attr)map.attributionControl.removeAttribution(rg.attr);if(ds.attr)map.attributionControl.addAttribution(ds.attr)}catch(e){}rg.attr=ds.attr}
+ rgDraw();
+}
+function rgRedraw(){if(rg&&rg.cur)rgDraw()}
+function rgClear(){
+ if(!rg||!rg.cv)return;
+ rg.cur=null;
+ if(rg.attr){try{map.attributionControl.removeAttribution(rg.attr)}catch(e){}rg.attr=""}
+ if(rg.gl){const gl=rg.gl;gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT)}else if(rg.c2)rg.c2.clearRect(0,0,rg.cv.width,rg.cv.height);
+ rg.cv.style.display="none";
+}
+/* Raster eines Bildes als Textur (die letzten 8 bleiben auf der Grafikkarte) */
+function rgTex(ds,k){
+ const c=ds.code(k);if(!c)return null;
+ const v=ds.ver?ds.ver():0,gl=rg.gl;let e=rg.tex.get(k);
+ if(e&&e.v===v){rg.tex.delete(k);rg.tex.set(k,e);return e.t}
+ const t=rgTexNew(gl,gl.LUMINANCE,ds.W,ds.H,c,e&&e.t);
+ rg.tex.delete(k);rg.tex.set(k,{t,v});
+ while(rg.tex.size>8){const [kk,x]=rg.tex.entries().next().value;gl.deleteTexture(x.t);rg.tex.delete(kk)}
+ return t;
+}
+function rgStat(ds){
+ const key=ds.id+"|"+ds.statKey();
+ if(rg.statK!==key){rg.statT=rgTexNew(rg.gl,rg.gl.RGBA,ds.W,ds.H,ds.stat(),rg.statT);rg.statK=key}
+ return rg.statT;
+}
+/* Bewegung zwischen Bild k und k+1 als kleine Textur; fehlt sie noch, wird sie im Hintergrund berechnet */
+function rgFlowTex(ds,k){
+ const d=rg.fd.get(k),v=ds.ver?ds.ver():0;
+ if(!d||d.v!==v){if(rg.fq&&rg.fq.list.indexOf(k)<0)rg.fq.list.push(k);rgFlowKick()}
+ if(!d)return null;
+ let e=rg.ftex.get(k);
+ if(!e||e.v!==d.v){const gl=rg.gl,t=rgTexNew(gl,gl.RGBA,d.f.gw,d.f.gh,d.f.data,e&&e.t);e={t,v:d.v,f:d.f};rg.ftex.set(k,e)}
+ return e;
+}
+function rgFlowKick(){if(!rg||rg.fBusy||!rg.fq||!rg.fq.list.length)return;rg.fBusy=true;setTimeout(rgFlowStep,25)}
+async function rgFlowStep(){
+ rg.fBusy=false;
+ const q=rg.fq;if(!q||q.ds!==rg.ds||!q.list.length)return;
+ const ds=q.ds,cur=rg.cur&&rg.cur.ds===ds?rg.cur.k:0,n=ds.nf;
+ let bi=0,bd=1e9;q.list.forEach((k,i)=>{const d=(k-cur+n)%n;if(d<bd){bd=d;bi=i}});
+ const k=q.list.splice(bi,1)[0];
+ try{
+  let A=ds.code(k),B=ds.code(k+1);
+  if(!A&&ds.prep)A=await ds.prep(k);if(!B&&ds.prep)B=await ds.prep(k+1);
+  if(rg.ds===ds&&A&&B){
+   const v=ds.ver?ds.ver():0,hrs=Math.max(1/60,Math.abs(ds.t[k+1]-ds.t[k])/3600);
+   rg.fd.set(k,{f:rgFlowCalc(A,B,ds.W,ds.H,Math.ceil(110*hrs/ds.km)),v});
+   if(rg.cur&&rg.cur.ds===ds&&rg.cur.k===k&&rg.cur.t>0)rgDraw();
+  }
+ }catch(e){}
+ rgFlowKick();
+}
+/* Blockvergleich: grobes Raster (Mittel über s×s Zellen), Blöcke zu 4×4, Suche im Umkreis der größten möglichen Bewegung
+   (110 km/h). Leichte Vorliebe für kleine Bewegungen, Zwischenwerte über eine Parabel, Ausreißer gegen den Median der
+   Nachbarn, Lücken (kein Regen im Block) aus den Nachbarn, zum Schluss geglättet. Ergebnis in Zellen, kodiert 128 ± 4·dx. */
+function rgFlowCalc(A,B,W,H,maxC){
+ const s=W*H>200000?4:3,dw=Math.ceil(W/s),dh=Math.ceil(H/s),a=new Float32Array(dw*dh),b=new Float32Array(dw*dh);
+ for(let y=0;y<H;y++){const r=((y/s)|0)*dw;for(let x=0;x<W;x++){const o=y*W+x,i=r+((x/s)|0),p=A[o],q=B[o];if(p>1)a[i]+=p;if(q>1)b[i]+=q}}
+ const nn=1/(s*s);for(let i=0;i<a.length;i++){a[i]*=nn;b[i]*=nn}
+ const bs=4,gw=Math.ceil(dw/bs),gh=Math.ceil(dh/bs),R=Math.max(1,Math.min(9,Math.ceil(maxC/s))),cw=2*R+1;
+ const fx=new Float32Array(gw*gh),fy=new Float32Array(gw*gh),ok=new Uint8Array(gw*gh),cost=new Float32Array(cw*cw);
+ for(let gy=0;gy<gh;gy++)for(let gx=0;gx<gw;gx++){
+  const x0=gx*bs,y0=gy*bs,x1=Math.min(dw,x0+bs),y1=Math.min(dh,y0+bs),nc=(x1-x0)*(y1-y0);
+  let sa=0;for(let y=y0;y<y1;y++)for(let x=x0;x<x1;x++)sa+=a[y*dw+x];
+  if(sa<4*nc)continue;
+  let best=1e30,bx=0,by=0;
+  for(let dy=-R;dy<=R;dy++)for(let dx=-R;dx<=R;dx++){
+   let c=0;
+   for(let y=y0;y<y1;y++){const yy=y+dy,ro=y*dw;if(yy<0||yy>=dh){for(let x=x0;x<x1;x++)c+=a[ro+x];continue}const rb=yy*dw;
+    for(let x=x0;x<x1;x++){const xx=x+dx;c+=Math.abs(a[ro+x]-(xx>=0&&xx<dw?b[rb+xx]:0))}}
+   c=c/nc+.4*(dx*dx+dy*dy);cost[(dy+R)*cw+dx+R]=c;if(c<best){best=c;bx=dx;by=dy}
+  }
+  const C=(x,y)=>cost[(y+R)*cw+x+R];let sx=0,sy=0;
+  if(bx>-R&&bx<R){const l=C(bx-1,by),m=C(bx,by),r=C(bx+1,by),dn=l-2*m+r;if(dn>1e-6)sx=Math.max(-.5,Math.min(.5,(l-r)/(2*dn)))}
+  if(by>-R&&by<R){const u=C(bx,by-1),m=C(bx,by),d2=C(bx,by+1),dn=u-2*m+d2;if(dn>1e-6)sy=Math.max(-.5,Math.min(.5,(u-d2)/(2*dn)))}
+  const o=gy*gw+gx;fx[o]=(bx+sx)*s;fy[o]=(by+sy)*s;ok[o]=1;
+ }
+ const med=v=>{v.sort((p,q)=>p-q);return v[v.length>>1]};
+ /* Ausreißer */
+ const ox=fx.slice(),oy=fy.slice();
+ for(let gy=0;gy<gh;gy++)for(let gx=0;gx<gw;gx++){const o=gy*gw+gx;if(!ok[o])continue;const X=[],Y=[];
+  for(let j=-1;j<=1;j++)for(let i=-1;i<=1;i++){const xx=gx+i,yy=gy+j;if(xx<0||yy<0||xx>=gw||yy>=gh)continue;const q=yy*gw+xx;if(ok[q]){X.push(ox[q]);Y.push(oy[q])}}
+  if(X.length>=4){const mx=med(X),my=med(Y);if(Math.abs(ox[o]-mx)+Math.abs(oy[o]-my)>1.5*s){fx[o]=mx;fy[o]=my}}}
+ /* Lücken füllen */
+ const GX=[],GY=[];for(let o=0;o<gw*gh;o++)if(ok[o]){GX.push(fx[o]);GY.push(fy[o])}
+ const g0x=GX.length?med(GX):0,g0y=GY.length?med(GY):0;
+ for(let pass=0;pass<8;pass++){const nk=ok.slice();let any=false;
+  for(let gy=0;gy<gh;gy++)for(let gx=0;gx<gw;gx++){const o=gy*gw+gx;if(ok[o])continue;let sx=0,sy=0,m=0;
+   for(let j=-1;j<=1;j++)for(let i=-1;i<=1;i++){const xx=gx+i,yy=gy+j;if(xx<0||yy<0||xx>=gw||yy>=gh)continue;const q=yy*gw+xx;if(ok[q]){sx+=fx[q];sy+=fy[q];m++}}
+   if(m){fx[o]=sx/m;fy[o]=sy/m;nk[o]=1;any=true}}
+  ok.set(nk);if(!any)break}
+ for(let o=0;o<gw*gh;o++)if(!ok[o]){fx[o]=g0x;fy[o]=g0y}
+ /* glätten */
+ for(let pass=0;pass<2;pass++){const px=fx.slice(),py=fy.slice();
+  for(let gy=0;gy<gh;gy++)for(let gx=0;gx<gw;gx++){let sx=0,sy=0,m=0;
+   for(let j=-1;j<=1;j++)for(let i=-1;i<=1;i++){const xx=gx+i,yy=gy+j;if(xx<0||yy<0||xx>=gw||yy>=gh)continue;const q=yy*gw+xx;sx+=px[q];sy+=py[q];m++}
+   fx[gy*gw+gx]=sx/m;fy[gy*gw+gx]=sy/m}}
+ const data=new Uint8Array(gw*gh*4);
+ for(let o=0;o<gw*gh;o++){data[o*4]=Math.max(0,Math.min(255,Math.round(128+fx[o]*4)));data[o*4+1]=Math.max(0,Math.min(255,Math.round(128+fy[o]*4)));data[o*4+3]=255}
+ return{gw,gh,cell:bs*s,data,mx:g0x,my:g0y};
+}
+function rgDraw(){
+ const st=rg&&rg.cur;if(!st||!map||rg.lost)return;
+ const ds=st.ds,k=st.k;
+ if(rg.gl){
+  const A=rgTex(ds,k);
+  if(!A){if(ds.prep)ds.prep(k).then(()=>{if(rg.cur===st)rgDraw()},()=>{});return}
+  let t=st.t,B=null,F=null;
+  if(t>0&&k+1<ds.nf){B=rgTex(ds,k+1);if(!B){if(ds.prep)ds.prep(k+1).then(()=>{if(rg.cur===st)rgDraw()},()=>{});t=0}}else t=0;
+  if(t>0)F=rgFlowTex(ds,k);
+  if(!rg.placed)rgPlace();
+  rg.cv.style.display="";
+  const gl=rg.gl,U=rg.U,S=rgStat(ds),b=ds.bounds,p0=map.latLngToLayerPoint([b[1][0],b[0][1]]),p1=map.latLngToLayerPoint([b[0][0],b[1][1]]);
+  const X=v=>(v-rg.lp.x)/rg.cw*2-1,Y=v=>1-(v-rg.lp.y)/rg.ch*2;
+  gl.viewport(0,0,rg.cv.width,rg.cv.height);gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);
+  const bind=(u,tx)=>{gl.activeTexture(gl.TEXTURE0+u);gl.bindTexture(gl.TEXTURE_2D,tx)};
+  bind(0,A);bind(1,B||A);bind(2,F?F.t:rg.zero);bind(3,S);bind(4,rg.palT);
+  gl.uniform1f(U.t,t);gl.uniform1f(U.m,B?1:0);
+  gl.uniform2f(U.fs,1/(4*ds.W),1/(4*ds.H));
+  gl.uniform2f(U.fu,F?ds.W/(F.f.gw*F.f.cell):1,F?ds.H/(F.f.gh*F.f.cell):1);
+  gl.uniform4f(U.r,X(p0.x),Y(p0.y),X(p1.x),Y(p1.y));
+  gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+  return;
+ }
+ /* ohne WebGL: Bild je Zeitpunkt einmal malen, beim Abspielen überblenden */
+ const A=rgImg(ds,k);
+ if(!A){if(ds.prep)ds.prep(k).then(()=>{if(rg.cur===st)rgDraw()},()=>{});return}
+ const B=st.t>0&&k+1<ds.nf?rgImg(ds,k+1):null;
+ if(st.t>0&&!B&&ds.prep&&k+1<ds.nf)ds.prep(k+1).then(()=>{if(rg.cur===st)rgDraw()},()=>{});
+ if(!rg.placed)rgPlace();
+ rg.cv.style.display="";
+ const c=rg.c2,sx=rg.cv.width/rg.cw,b=ds.bounds,p0=map.latLngToLayerPoint([b[1][0],b[0][1]]),p1=map.latLngToLayerPoint([b[0][0],b[1][1]]);
+ c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,rg.cv.width,rg.cv.height);c.imageSmoothingEnabled=true;
+ const x=(p0.x-rg.lp.x)*sx,y=(p0.y-rg.lp.y)*sx,w=(p1.x-p0.x)*sx,h=(p1.y-p0.y)*sx;
+ c.globalAlpha=B?1-st.t:1;c.drawImage(A,x,y,w,h);
+ if(B){c.globalAlpha=st.t;c.drawImage(B,x,y,w,h)}
+ c.globalAlpha=1;
+}
+function rgImg(ds,k){
+ const code=ds.code(k);if(!code)return null;
+ const key=k+"|"+(ds.ver?ds.ver():0)+"|"+ds.statKey();let e=rg.img.get(k);
+ if(e&&e.key===key)return e.cv;
+ const st=ds.stat(),P=rg.pal,cv=e?e.cv:document.createElement("canvas");cv.width=ds.W;cv.height=ds.H;
+ const g=cv.getContext("2d"),im=g.createImageData(ds.W,ds.H),px=im.data;
+ for(let o=0;o<code.length;o++){
+  const p=o*4;if(!st[p+2])continue;
+  if(!st[p+1]){px[p]=110;px[p+1]=120;px[p+2]=135;px[p+3]=70;continue}
+  const q=code[o];if(q<2)continue;const pp=((st[p]>127?256:0)+q)*4;
+  px[p]=P[pp];px[p+1]=P[pp+1];px[p+2]=P[pp+2];px[p+3]=P[pp+3];
+ }
+ g.putImageData(im,0,0);
+ rg.img.set(k,{cv,key});if(rg.img.size>6)rg.img.delete(rg.img.keys().next().value);
+ return cv;
+}
 /* ============ Radar-Prognose: das neueste Radarbild zieht mit dem Höhenwind weiter ============ */
 let ex=null,rvNow=0,exHook=false,exLayer=null;
 const exOn=()=>!!ex&&!rvNow;
@@ -2943,31 +3250,89 @@ function rvWindow(i){
 function show(i){
  if(!frames.length)return;
  const old=frames[idx];
+ xfReset();
  if(old&&old.ex!=null){const L0=layers[pastCount-1];if(L0)L0.setOpacity(0)}
  if(layers[idx])layers[idx].setOpacity(0);
  exReset();
  idx=i;const f=frames[i];
  if(!f)return;
  rvWindow(i);
- if(f.at!=null){hideFc();atShow(f.at)}
- else if(f.dw!=null){hideFc();showDw(f.dw);const nx=frames[(i+1)%frames.length];if(timer&&nx&&nx.dw!=null)setTimeout(()=>dwPrep(nx.dw),80)}
+ if(f.at!=null){hideFc();if(atData)rgShow(atDs(atData),f.at,0)}
+ else if(f.dw!=null){hideFc();if(dwData){const ds=dwDs(dwData);rgShow(ds,f.dw,0);for(const n of [i+1,i+2]){const nx=frames[n];if(nx&&nx.dw!=null)ds.prep(nx.dw).catch(()=>{})}}}
  else if(f.ex!=null){hideFc();const L0=layers[pastCount-1];if(L0){L0.setOpacity(Math.max(.5,.78-f.ex*.03));exShift(f.ex)}}
  else if(f.fc!=null)showFc(f);else{hideFc();if(layers[idx])layers[idx].setOpacity(.78)}
- $("sl").value=i;
- $("ts").textContent=new Date(f.time*1000).toLocaleTimeString("de-AT",{hour:"2-digit",minute:"2-digit"})+" Uhr"+(f.fc!=null||f.ex!=null||i>=pastCount?" (Prognose)":"");
+ $("sl").value=i;playPos=i;
+ tsSet(i,0);
  trkVis();
  legRain();rLive();
 }
-function step(){
- const n=(idx+1)%frames.length;
- show(n);
- timer=setTimeout(step,n===frames.length-1?1800:550);
+/* ============ Abspielen: flüssig statt Bild für Bild ============
+   Die Zeitleiste läuft stufenlos (ein Radarbild alle 0,55 Sekunden wie bisher), gezeichnet wird bei jedem Bild des
+   Bildschirms (requestAnimationFrame: 60 oder 120 pro Sekunde, je nach Gerät). DWD 1 km und Österreich: Zwischenbilder mit
+   Bewegung (siehe oben). Weltweit und die Radare der Länder: die beiden Radarbilder werden überblendet und dabei mit der
+   Zugrichtung mitgeschoben. Am Ende 1,8 Sekunden Pause, dann von vorn. */
+const FRAME_MS=550;
+let playPos=0,playLast=0,playHold=0,playEnd=false,tsLast="",xf=[],blT=0;
+function lSubs(l){const s=[];if(!l)return s;if(l.eachLayer)l.eachLayer(x=>s.push(x));else s.push(l);return s}
+function lOp(l,o){lSubs(l).forEach(x=>{x.options.opacity=o;const c=x.getContainer&&x.getContainer();if(c)c.style.opacity=o})}
+function lTr(l,dx,dy,z){lSubs(l).forEach(x=>{const c=x.getContainer&&x.getContainer();if(!c)return;c.style.transform=dx||dy?"translate("+dx.toFixed(1)+"px,"+dy.toFixed(1)+"px)":"";if(z!=null)c.style.zIndex=z})}
+function xfReset(){xf.forEach(l=>{lTr(l,0,0,5);lOp(l,0)});xf=[]}
+function tsSet(k,t){
+ const f=frames[k],g=frames[k+1];if(!f)return;
+ const tm=t>0&&g?f.time+(g.time-f.time)*t:f.time,fut=f.fc!=null||f.ex!=null||k>=pastCount||(t>0&&k+1>=pastCount);
+ const s=new Date(Math.round(tm/60)*60000).toLocaleTimeString("de-AT",{hour:"2-digit",minute:"2-digit"})+" Uhr"+(fut?" (Prognose)":"");
+ if(s!==tsLast||$("ts").textContent!==s){tsLast=s;$("ts").textContent=s}
+}
+/* Stelle p der Zeitleiste zeigen (k = ganzes Bild, t = Anteil zum nächsten) */
+function showPos(p){
+ const n=frames.length;if(!n)return;
+ p=Math.max(0,Math.min(n-1,p));
+ let k=Math.floor(p),t=p-k;if(k>=n-1){k=n-1;t=0}
+ if(k!==idx)show(k);
+ blend(k,t);
+ playPos=p;$("sl").value=p;tsSet(k,t);
+}
+function blend(k,t){
+ const f=frames[k],g=frames[k+1];if(!f)return;
+ if(t<=0||!g){if(blT>0){blT=0;xfReset();show(k)}return}
+ blT=t;
+ if(f.at!=null){if(atData)rgShow(atDs(atData),f.at,g.at!=null?t:0);return}
+ if(f.dw!=null){if(dwData)rgShow(dwDs(dwData),f.dw,g.dw!=null?t:0);return}
+ /* Prognose durch Weiterschieben des neuesten Bildes */
+ if(f.ex!=null||(g.ex!=null&&k===pastCount-1)){
+  const L0=layers[pastCount-1];if(!L0)return;
+  const e0=f.ex!=null?f.ex:0,e=e0+((g.ex!=null?g.ex:e0)-e0)*t;
+  lOp(L0,e<=0?.78:Math.max(.5,.78-e*.03));exShift(e);return;
+ }
+ if(f.fc!=null||g.fc!=null)return;
+ const A=layers[k],B=layers[k+1];if(!A||!B||!B._wOn)return;
+ const v=mode==="nat"?natMv:ex,dm=(g.time-f.time)/60;let dx=0,dy=0;
+ if(v&&dm>0&&dm<40){const mpp=156543.03392*Math.cos(map.getCenter().lat*Math.PI/180)/Math.pow(2,map.getZoom());dx=v.e*dm*1000/mpp;dy=-v.n*dm*1000/mpp}
+ /* B liegt oben; A so, dass sich die Deckkraft dort, wo beide Regen zeigen, nicht ändert */
+ const ob=.78*t,oa=.78*(1-t)/(1-ob);
+ lOp(A,oa);lOp(B,ob);lTr(A,t*dx,t*dy,5);lTr(B,-(1-t)*dx,-(1-t)*dy,6);
+ xf=[A,B];
+}
+function playTick(ts){
+ if(!timer)return;
+ const dt=playLast?Math.min(100,ts-playLast):16;playLast=ts;
+ const n=frames.length;
+ if(n<2||lay!=="rain"){timer=null;$("pp").innerHTML=PLAY;return}
+ if(playHold>0){playHold-=dt;if(playHold<=0&&playEnd){playEnd=false;showPos(0)}}
+ else{let p=playPos+dt/FRAME_MS;if(p>=n-1){p=n-1;playHold=1800;playEnd=true}showPos(p)}
+ timer=requestAnimationFrame(playTick);
 }
 function toggle(){
- if(timer){clearTimeout(timer);timer=null;$("pp").innerHTML=PLAY;return}
+ if(timer){
+  cancelAnimationFrame(timer);timer=null;$("pp").innerHTML=PLAY;
+  /* angehalten: auf das nächste ganze Bild, damit die Werte beim Antippen zum Bild passen */
+  const r=Math.min(frames.length-1,Math.round(playPos));if(frames[r]&&lay==="rain"&&(r!==idx||blT>0)){blT=0;show(r)}
+  return;
+ }
  if(frames.length<2||lay!=="rain")return;
  $("pp").innerHTML=PAUSE;
- timer=setTimeout(step,300);
+ playPos=idx;playHold=300;playEnd=idx>=frames.length-1;playLast=0;
+ timer=requestAnimationFrame(playTick);
 }
 function setMode(m,user){
  mode=m;legRain();try{if(map)map.closePopup()}catch(e){}
@@ -2983,9 +3348,10 @@ function setMode(m,user){
  }else if(m==="at"){
   hideFc();exReset();layers.forEach(l=>{try{map.removeLayer(l)}catch(e){}l._wOn=0});hideDw();clearTrk();atHide();
   frames=[];pastCount=0;idx=0;$("sl").max=0;$("ts").textContent="";$("fresh").textContent="";$("fnote").textContent="";placeTick();
-  $("mnote").textContent="Radar von GeoSphere Austria (INCA): Niederschlag aus den österreichischen Radaren und Messstationen, mit 1 km Auflösung, alle 15 Minuten neu. Nach „Jetzt“ folgt die Vorhersage von GeoSphere für 3 Stunden. Beim weiten Herauszoomen wird nur der Bereich um die Kartenmitte geladen. Ob Regen (blau) oder Schnee (lila), entscheidet die Temperatur an jeder Stelle, mit ihrer Höhe. Tippe auf den Regen (oder fahr mit der Maus darüber), dann siehst du die Menge an dieser Stelle.";
+  $("mnote").textContent="Radar von GeoSphere Austria (INCA): Niederschlag aus den österreichischen Radaren und Messstationen, mit 1 km Auflösung, alle 15 Minuten neu. Nach „Jetzt“ folgt die Vorhersage von GeoSphere für 3 Stunden. Geladen wird der ganze sichtbare Ausschnitt, soweit GeoSphere Daten hat (Österreich und ein Streifen rundherum); weit herausgezoomt sind das mehr Daten. Ob Regen (blau) oder Schnee (lila), entscheidet die Temperatur an jeder Stelle, mit ihrer Höhe. Tippe auf den Regen (oder fahr mit der Maus darüber), dann siehst du die Menge an dieser Stelle.";
   /* schon geladene Daten sofort zeigen und nur bei Bedarf neu laden */
-  if(lay==="rain"&&atData&&Date.now()-atData.at<20*60000){atUse(atData);loadAt(false)}else{atNext=0;loadAt(true)}
+  if(lay==="rain"&&atData)atUse(atData);
+  atNext=0;loadAt(true);
  }else if(m==="nat"){
   hideFc();exReset();hideDw();clearTrk();atHide();
   frames=[];pastCount=0;idx=0;$("sl").max=0;$("ts").textContent="";$("fresh").textContent="";$("fnote").textContent="";placeTick();
@@ -3354,11 +3720,12 @@ function dwVal(la,lo,k){
 }
 function atVal(la,lo,k){
  const d=atData;if(!d)return null;
- const V=d.V[k]||d.V[0],c=Math.cos(la*Math.PI/180);let b=1e9,bi=-1;
- for(let i=0;i<d.n;i++){const dy=d.la[i]-la;if(dy>.02||dy<-.02)continue;const dx=(d.lo[i]-lo)*c,q=dy*dy+dx*dx;if(q<b){b=q;bi=i}}
- if(bi<0||b>1.2e-4){const bb=d.bb,inb=la>=bb[0]&&la<=bb[2]&&lo>=bb[1]&&lo<=bb[3];return{out:inb?"Bis hierher reicht das Radar „Österreich“ nicht.":"Dieser Bereich ist noch nicht geladen. Schieb die Karte dorthin, dann lädt das Radar ihn nach."}}
- const v=V[bi];if(!(v>=0))return{out:"Für diese Stelle gibt es gerade keine Messung."};
- const sa=snowAt(la,lo);return{r:v<.025?0:v*4,snow:sa==null?d.snow:sa,t:tempAt(la,lo)};
+ const g=d.g,x=Math.floor((lo-g.lo0)/AT_CS),y=Math.floor((g.yT-mercY(la))/AT_CS),o=y*g.W+x;
+ const inR=d.rects.some(b=>la>=b[0]&&la<=b[2]&&lo>=b[1]&&lo<=b[3]);
+ if(x<0||y<0||x>=g.W||y>=g.H||!d.has[o])return{out:inR||!atCovered(la,lo)?"Bis hierher reicht das Radar „Österreich“ nicht.":"Dieser Bereich ist noch nicht geladen. Schieb die Karte dorthin, dann lädt das Radar ihn nach."};
+ const q=(d.V[k]||d.V[0])[o];
+ if(!q)return{out:"Für diese Stelle gibt es gerade keine Messung."};
+ const sa=snowAt(la,lo);return{r:RDEC[q],snow:sa==null?d.snow:sa,t:tempAt(la,lo)};
 }
 function fcVal(la,lo,k){
  const d=fcData,f=d&&d.fr[k];if(!f||!f.P||!map)return null;
@@ -3545,7 +3912,8 @@ $("q").addEventListener("input",e=>{
 document.addEventListener("click",e=>{if(!e.target.closest(".search"))$("res").style.display="none"});
 $("geo").onclick=()=>{follow=true;saveState();useGPS(true)};
 $("pp").onclick=()=>{toggle();if(wallOn){try{localStorage.setItem("wetter-wplay",timer?"1":"0")}catch(e){}}};
-$("sl").oninput=e=>{if(timer)toggle();show(+e.target.value)};
+$("sl").oninput=e=>{if(timer)toggle();showPos(+e.target.value)};
+$("sl").onchange=e=>{const v=+e.target.value,r=Math.round(v);if(Math.abs(v-r)>.001)showPos(r)};
 $("nowtick").onclick=()=>{if(timer)toggle();show(Math.max(0,pastCount-1))};
 document.querySelectorAll("#mode button").forEach(b=>b.onclick=()=>setMode(b.dataset.m,true));
 document.querySelectorAll("#basemode button").forEach(b=>b.onclick=()=>setBase(b.dataset.b));
