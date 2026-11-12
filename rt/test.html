@@ -1,20 +1,19 @@
 <!doctype html><meta charset="utf-8"><body><pre id="o"></pre><script>
 const out=[];const log=s=>{console.log(s);out.push(s);document.getElementById("o").textContent=out.join("\n")};
-const merc=la=>Math.log(Math.tan(Math.PI/4+la*Math.PI/360))*180/Math.PI;
-const BOX=[45.50,8.10,49.48,17.74],CS=0.0143,lo0=BOX[1],yT=merc(BOX[2]),W=Math.ceil((BOX[3]-BOX[1])/CS),H=Math.ceil((yT-merc(BOX[0]))/CS);
-const w=new Worker("../radar-at.js");let id=0;const q=new Map();w.onmessage=e=>{const c=q.get(e.data.id);q.delete(e.data.id);c(e.data)};w.onerror=e=>log("WORKER ERROR "+e.message);
-const req=(kind,url)=>new Promise(r=>{const i=++id;q.set(i,r);w.postMessage({id:i,kind,url,g:{lo0,yT,W,H},cs:CS,rcMin:.1,rcL:Math.log(300),ms:90000,tw:1})});
-const iso=t=>new Date(t*1000).toISOString().slice(0,16),B="https://dataset.api.hub.geosphere.at/v1/grid/forecast/",BB="&bbox=45.50,8.10,49.48,17.74";
+const iso=t=>new Date(t*1000).toISOString().slice(0,16),B="https://dataset.api.hub.geosphere.at/v1/grid/forecast/nwp-v2-1h-1km?output_format=netcdf&bbox=45.50,8.10,49.48,17.74";
+async function f(lbl,url){const c=new AbortController(),tm=setTimeout(()=>c.abort(),75000),t0=performance.now();
+ try{const r=await fetch(url,{signal:c.signal});const b=await r.arrayBuffer();log(lbl+" status="+r.status+" bytes="+b.byteLength+" "+Math.round(performance.now()-t0)+"ms")}
+ catch(e){log(lbl+" FEHLER "+e.name+" "+Math.round(performance.now()-t0)+"ms")}clearTimeout(tm)}
 (async()=>{try{
- const mn=await (await fetch(B+"nowcast-v1-15min-1km/metadata")).json(),ref=Date.parse(mn.last_forecast_reftime)/1000;log("nowcast ref "+iso(ref));
- let t0=performance.now(),m=await req("rr",B+"nowcast-v1-15min-1km?parameters=rr&output_format=netcdf"+BB+"&start="+iso(ref-900));log("rr ok="+m.ok+" n="+(m.t||[]).length+" "+(m.err||"")+" "+Math.round(performance.now()-t0)+"ms");
- const tEnd=m.t[m.t.length-1];
- t0=performance.now();m=await req("t2m",B+"nowcast-v1-15min-1km?parameters=t2m&output_format=netcdf"+BB+"&start="+iso(ref)+"&end="+iso(ref));log("t2m ok="+m.ok+" snow="+(m.S?m.S.reduce((a,b)=>a+b,0):"-")+" "+(m.err||"")+" "+Math.round(performance.now()-t0)+"ms");
- t0=performance.now();m=await req("rr",B+"nowcast-v1-15min-1km?parameters=rr&output_format=netcdf"+BB+"&forecast_offset=1&start="+iso(ref-900)+"&end="+iso(ref-900));log("hist ok="+m.ok+" t="+(m.t?iso(m.t[0]):"")+" "+(m.err||"")+" "+Math.round(performance.now()-t0)+"ms");
- const mm=await (await fetch(B+"nwp-v2-1h-1km/metadata")).json(),mref=Date.parse(mm.last_forecast_reftime)/1000;log("model ref "+iso(mref));
- const h1=Math.ceil((tEnd+60)/3600)*3600;
- t0=performance.now();m=await req("tp",B+"nwp-v2-1h-1km?parameters=tp,sf&output_format=netcdf"+BB+"&start="+iso(h1)+"&end="+iso(h1+9*3600));log("block ok="+m.ok+" n="+(m.t||[]).length+" SM="+!!m.SM+" bytes="+m.bytes+" "+(m.err||"")+" status="+m.status+" "+Math.round(performance.now()-t0)+"ms");
- t0=performance.now();m=await req("tp",B+"nwp-v2-1h-1km?parameters=tp,sf&output_format=netcdf"+BB+"&start="+iso(h1+24*3600)+"&end="+iso(h1+24*3600));log("single ok="+m.ok+" n="+(m.t||[]).length+" t="+(m.t?iso(m.t[0]):"")+" "+(m.err||"")+" "+Math.round(performance.now()-t0)+"ms");
- if(m.ok){let mx=0;for(const v of m.V[0])if(v>mx)mx=v;log("single max code "+mx)}
+ const mm=await (await fetch("https://dataset.api.hub.geosphere.at/v1/grid/forecast/nwp-v2-1h-1km/metadata")).json(),ref=Date.parse(mm.last_forecast_reftime)/1000;log("model ref "+iso(ref));
+ const h1=Math.ceil(Date.now()/3600000+1)*3600,P="&parameters=tp,sf";
+ await f("A single +3h",B+P+"&start="+iso(h1+3*3600)+"&end="+iso(h1+3*3600));
+ await f("B 2fr +24h",B+P+"&start="+iso(h1+24*3600)+"&end="+iso(h1+25*3600));
+ await f("C 6fr +24h",B+P+"&start="+iso(h1+24*3600)+"&end="+iso(h1+29*3600));
+ await f("D tp single +24h",B+"&parameters=tp&start="+iso(h1+24*3600)+"&end="+iso(h1+24*3600));
+ await f("E single +36h",B+P+"&start="+iso(h1+36*3600)+"&end="+iso(h1+36*3600));
+ await f("F 3fr +0h",B+P+"&start="+iso(h1)+"&end="+iso(h1+2*3600));
+ await Promise.all([f("G par1 +12..14",B+P+"&start="+iso(h1+12*3600)+"&end="+iso(h1+14*3600)),f("G par2 +15..17",B+P+"&start="+iso(h1+15*3600)+"&end="+iso(h1+17*3600))]);
+ await f("H whole run ref..+60h tp only",B+"&parameters=tp&start="+iso(ref)+"&end="+iso(ref+60*3600));
 }catch(e){log("FEHLER "+e)}log("FERTIG")})();
 </script>
