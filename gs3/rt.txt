@@ -1,9 +1,18 @@
-CONSOLE meta 2026-11-12T15:00 31064ms
-CONSOLE rr ok=false n=0 Zeit 90001ms
-CONSOLE Failed to load resource: the server responded with a status of 504 ()
-CONSOLE FEHLER RangeError: Invalid time value
-CONSOLE FERTIG
-meta 2026-11-12T15:00 31064ms
-rr ok=false n=0 Zeit 90001ms
-FEHLER RangeError: Invalid time value
-FERTIG
+dwd_icon_seamless_eps 200 513ms keys=41 first=time,precipitation,precipitation_member01 last=precipitation_member39 n=168 nonnull=168
+icon_seamless 200 104ms keys=41 first=time,precipitation,precipitation_member01 last=precipitation_member39 n=168 nonnull=168
+ecmwf_ifs025 200 104ms keys=52 first=time,precipitation,precipitation_member01 last=precipitation_member50 n=168 nonnull=168
+ecmwf_ifs025_ensemble 200 105ms keys=52 first=time,precipitation,precipitation_member01 last=precipitation_member50 n=168 nonnull=168
+ecmwf_ifs_eps 400 99ms {"error":true,"reason":"Invalid value: Cannot initialize MultiDomains from invalid String value ecmwf_ifs_eps"}
+gfs_seamless 200 104ms keys=32 first=time,precipitation,precipitation_member01 last=precipitation_member30 n=168 nonnull=168
+ncep_gefs_seamless 200 107ms keys=32 first=time,precipitation,precipitation_member01 last=precipitation_member30 n=168 nonnull=168
+gfs025 200 104ms keys=32 first=time,precipitation,precipitation_member01 last=precipitation_member30 n=168 nonnull=168
+ncep_gefs025 200 105ms keys=32 first=time,precipitation,precipitation_member01 last=precipitation_member30 n=168 nonnull=168
+gem_global 200 106ms keys=22 first=time,precipitation,precipitation_member01 last=precipitation_member20 n=168 nonnull=168
+gem_global_ensemble 200 105ms keys=22 first=time,precipitation,precipitation_member01 last=precipitation_member20 n=168 nonnull=168
+dwd_icon_d2_eps 200 105ms keys=21 first=time,precipitation,precipitation_member01 last=precipitation_member19 n=168 nonnull=61
+icon_d2 200 102ms keys=21 first=time,precipitation,precipitation_member01 last=precipitation_member19 n=168 nonnull=61
+ecmwf_ifs_eps_europe 400 100ms {"error":true,"reason":"Invalid value: Cannot initialize MultiDomains from invalid String value ecmwf_ifs_eps_europe"}
+ukmo_global_ensemble_20km 200 103ms keys=19 first=time,precipitation,precipitation_member01 last=precipitation_member17 n=168 nonnull=168
+multi 200 keys=92 sample=precipitation_member01_dwd_icon_seamless_eps,precipitation_member01_ecmwf_ifs025_ensemble | time,precipitation_dwd_icon_seamless_eps,precipitation_member01_dwd_icon_seamless_eps,precipitation_member02_dwd_icon_seamless_eps
+metar 0 TypeError: fetch failed
+past 200 locs=2 keys=time,temperature_2m_geosphere_arome_austria,wind_speed_10m_geosphere_arome_austria,precipitation_geosphere_arome_austria,temperature_2m_ecmwf_ifs,wind_speed_10m_ecmwf_ifs,precipitation_ecmwf_ifs,temperature_2m_dwd_icon_d2_ruc_native,wind_speed_10m_dwd_icon_d2_ruc_native,precipitation_dwd_icon_d2_ruc_native n=96 elev=298 nonnullT=temperature_2m_geosphere_arome_austria:0 temperature_2m_ecmwf_ifs:96 temperature_2m_dwd_icon_d2_ruc_native:96
