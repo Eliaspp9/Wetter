@@ -1,1 +1,20 @@
-CONSOLE Failed to load resource: the server responded with a status of 404 (File not found)
+CONSOLE nowcast ref 2026-11-12T14:00
+CONSOLE Attribute REFERENCE_LIST type not implemented, set to null.
+CONSOLE rr ok=true n=13  2155ms
+CONSOLE Attribute REFERENCE_LIST type not implemented, set to null.
+CONSOLE t2m ok=true snow=1868  822ms
+CONSOLE Attribute REFERENCE_LIST type not implemented, set to null.
+CONSOLE hist ok=true t=2026-11-12T13:45  1660ms
+CONSOLE model ref 2026-11-12T09:00
+CONSOLE Attribute REFERENCE_LIST type not implemented, set to null.
+CONSOLE block ok=true n=10 SM=true bytes=3774588  status=undefined 22037ms
+CONSOLE single ok=false n=0 t= Zeit 90001ms
+CONSOLE FERTIG
+nowcast ref 2026-11-12T14:00
+rr ok=true n=13  2155ms
+t2m ok=true snow=1868  822ms
+hist ok=true t=2026-11-12T13:45  1660ms
+model ref 2026-11-12T09:00
+block ok=true n=10 SM=true bytes=3774588  status=undefined 22037ms
+single ok=false n=0 t= Zeit 90001ms
+FERTIG
