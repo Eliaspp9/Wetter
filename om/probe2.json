@@ -1,0 +1,595 @@
+{
+ "newyork": {
+  "jetzt": "2026-11-12T08:30",
+  "m": {
+   "ncep_rrfs_conus": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-15T13:00",
+    "fehlt": [
+     "precipitation_probability"
+    ]
+   },
+   "ncep_nbm_conus": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-18T23:00",
+    "fehlt": [
+     "cloud_cover_low"
+    ]
+   },
+   "ncep_rrfs_north_america": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-15T13:00",
+    "fehlt": [
+     "precipitation_probability"
+    ]
+   },
+   "cmc_gem_hrdps": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-14T01:00",
+    "fehlt": [
+     "precipitation_probability"
+    ]
+   },
+   "ecmwf_ifs": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-18T23:00",
+    "fehlt": []
+   }
+  }
+ },
+ "kansascity": {
+  "jetzt": "2026-11-12T07:30",
+  "m": {
+   "ncep_rrfs_conus": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-15T12:00",
+    "fehlt": [
+     "precipitation_probability"
+    ]
+   },
+   "ncep_nbm_conus": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-18T23:00",
+    "fehlt": [
+     "cloud_cover_low"
+    ]
+   },
+   "ncep_rrfs_north_america": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-15T12:00",
+    "fehlt": [
+     "precipitation_probability"
+    ]
+   },
+   "ecmwf_ifs": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-18T23:00",
+    "fehlt": []
+   }
+  }
+ },
+ "losangeles": {
+  "jetzt": "2026-11-12T05:30",
+  "m": {
+   "ncep_rrfs_conus": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-15T10:00",
+    "fehlt": [
+     "precipitation_probability"
+    ]
+   },
+   "ncep_nbm_conus": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-18T23:00",
+    "fehlt": [
+     "cloud_cover_low"
+    ]
+   },
+   "ncep_rrfs_north_america": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-15T10:00",
+    "fehlt": [
+     "precipitation_probability"
+    ]
+   },
+   "ecmwf_ifs": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-18T23:00",
+    "fehlt": []
+   }
+  }
+ },
+ "miami": {
+  "jetzt": "2026-11-12T08:30",
+  "m": {
+   "ncep_rrfs_conus": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-15T13:00",
+    "fehlt": [
+     "precipitation_probability"
+    ]
+   },
+   "ncep_nbm_conus": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-18T23:00",
+    "fehlt": [
+     "cloud_cover_low"
+    ]
+   },
+   "ncep_rrfs_north_america": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-15T13:00",
+    "fehlt": [
+     "precipitation_probability"
+    ]
+   },
+   "ecmwf_ifs": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-18T23:00",
+    "fehlt": []
+   }
+  }
+ },
+ "seattle": {
+  "jetzt": "2026-11-12T05:30",
+  "m": {
+   "ncep_rrfs_conus": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-15T10:00",
+    "fehlt": [
+     "precipitation_probability"
+    ]
+   },
+   "ncep_nbm_conus": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-18T23:00",
+    "fehlt": [
+     "cloud_cover_low"
+    ]
+   },
+   "ncep_rrfs_north_america": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-15T10:00",
+    "fehlt": [
+     "precipitation_probability"
+    ]
+   },
+   "cmc_gem_hrdps": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-13T22:00",
+    "fehlt": [
+     "precipitation_probability"
+    ]
+   },
+   "cmc_gem_hrdps_west": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-13T16:00",
+    "fehlt": [
+     "precipitation_probability",
+     "cloud_cover_low"
+    ]
+   },
+   "ecmwf_ifs": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-18T23:00",
+    "fehlt": []
+   }
+  }
+ },
+ "anchorage": {
+  "jetzt": "2026-11-12T04:30",
+  "m": {
+   "ncep_rrfs_north_america": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-15T09:00",
+    "fehlt": [
+     "precipitation_probability"
+    ]
+   },
+   "ecmwf_ifs": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-18T23:00",
+    "fehlt": []
+   }
+  }
+ },
+ "honolulu": {
+  "jetzt": "2026-11-12T03:30",
+  "m": {
+   "ncep_rrfs_north_america": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-15T08:00",
+    "fehlt": [
+     "precipitation_probability"
+    ]
+   },
+   "ecmwf_ifs": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-18T23:00",
+    "fehlt": []
+   }
+  }
+ },
+ "toronto": {
+  "jetzt": "2026-11-12T08:30",
+  "m": {
+   "ncep_rrfs_conus": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-15T13:00",
+    "fehlt": [
+     "precipitation_probability"
+    ]
+   },
+   "ncep_nbm_conus": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-18T23:00",
+    "fehlt": [
+     "cloud_cover_low"
+    ]
+   },
+   "ncep_rrfs_north_america": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-15T13:00",
+    "fehlt": [
+     "precipitation_probability"
+    ]
+   },
+   "cmc_gem_hrdps": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-14T01:00",
+    "fehlt": [
+     "precipitation_probability"
+    ]
+   },
+   "ecmwf_ifs": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-18T23:00",
+    "fehlt": []
+   }
+  }
+ },
+ "vancouver": {
+  "jetzt": "2026-11-12T06:30",
+  "m": {
+   "ncep_rrfs_conus": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-15T11:00",
+    "fehlt": [
+     "precipitation_probability"
+    ]
+   },
+   "ncep_nbm_conus": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-18T23:00",
+    "fehlt": [
+     "cloud_cover_low"
+    ]
+   },
+   "ncep_rrfs_north_america": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-15T11:00",
+    "fehlt": [
+     "precipitation_probability"
+    ]
+   },
+   "cmc_gem_hrdps": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-13T23:00",
+    "fehlt": [
+     "precipitation_probability"
+    ]
+   },
+   "cmc_gem_hrdps_west": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-13T17:00",
+    "fehlt": [
+     "precipitation_probability",
+     "cloud_cover_low"
+    ]
+   },
+   "ecmwf_ifs": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-18T23:00",
+    "fehlt": []
+   }
+  }
+ },
+ "calgary": {
+  "jetzt": "2026-11-12T07:30",
+  "m": {
+   "ncep_rrfs_conus": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-15T12:00",
+    "fehlt": [
+     "precipitation_probability"
+    ]
+   },
+   "ncep_nbm_conus": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-18T23:00",
+    "fehlt": [
+     "cloud_cover_low"
+    ]
+   },
+   "ncep_rrfs_north_america": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-15T12:00",
+    "fehlt": [
+     "precipitation_probability"
+    ]
+   },
+   "cmc_gem_hrdps": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-14T00:00",
+    "fehlt": [
+     "precipitation_probability"
+    ]
+   },
+   "cmc_gem_hrdps_west": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-13T18:00",
+    "fehlt": [
+     "precipitation_probability",
+     "cloud_cover_low"
+    ]
+   },
+   "ecmwf_ifs": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-18T23:00",
+    "fehlt": []
+   }
+  }
+ },
+ "montreal": {
+  "jetzt": "2026-11-12T08:30",
+  "m": {
+   "ncep_rrfs_conus": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-15T13:00",
+    "fehlt": [
+     "precipitation_probability"
+    ]
+   },
+   "ncep_nbm_conus": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-18T23:00",
+    "fehlt": [
+     "cloud_cover_low"
+    ]
+   },
+   "ncep_rrfs_north_america": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-15T13:00",
+    "fehlt": [
+     "precipitation_probability"
+    ]
+   },
+   "cmc_gem_hrdps": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-14T01:00",
+    "fehlt": [
+     "precipitation_probability"
+    ]
+   },
+   "ecmwf_ifs": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-18T23:00",
+    "fehlt": []
+   }
+  }
+ },
+ "mexiko": {
+  "jetzt": "2026-11-12T07:30",
+  "m": {
+   "ncep_rrfs_north_america": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-15T12:00",
+    "fehlt": [
+     "precipitation_probability"
+    ]
+   },
+   "ecmwf_ifs": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-18T23:00",
+    "fehlt": []
+   }
+  }
+ },
+ "cancun": {
+  "jetzt": "2026-11-12T08:30",
+  "m": {
+   "ncep_rrfs_north_america": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-15T13:00",
+    "fehlt": [
+     "precipitation_probability"
+    ]
+   },
+   "ecmwf_ifs": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-18T23:00",
+    "fehlt": []
+   }
+  }
+ },
+ "havanna": {
+  "jetzt": "2026-11-12T08:30",
+  "m": {
+   "ncep_nbm_conus": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-18T23:00",
+    "fehlt": [
+     "cloud_cover_low"
+    ]
+   },
+   "ncep_rrfs_north_america": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-15T13:00",
+    "fehlt": [
+     "precipitation_probability"
+    ]
+   },
+   "ecmwf_ifs": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-18T23:00",
+    "fehlt": []
+   }
+  }
+ },
+ "puertorico": {
+  "jetzt": "2026-11-12T09:30",
+  "m": {
+   "ncep_rrfs_north_america": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-15T14:00",
+    "fehlt": [
+     "precipitation_probability"
+    ]
+   },
+   "ecmwf_ifs": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-18T23:00",
+    "fehlt": []
+   }
+  }
+ },
+ "tokio": {
+  "jetzt": "2026-11-12T22:30",
+  "m": {
+   "jma_msm": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-15T15:00",
+    "fehlt": [
+     "precipitation_probability",
+     "wind_gusts_10m"
+    ]
+   },
+   "ecmwf_ifs": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-18T23:00",
+    "fehlt": []
+   }
+  }
+ },
+ "sapporo": {
+  "jetzt": "2026-11-12T22:30",
+  "m": {
+   "jma_msm": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-15T15:00",
+    "fehlt": [
+     "precipitation_probability",
+     "wind_gusts_10m"
+    ]
+   },
+   "ecmwf_ifs": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-18T23:00",
+    "fehlt": []
+   }
+  }
+ },
+ "okinawa": {
+  "jetzt": "2026-11-12T22:30",
+  "m": {
+   "jma_msm": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-15T15:00",
+    "fehlt": [
+     "precipitation_probability",
+     "wind_gusts_10m"
+    ]
+   },
+   "ecmwf_ifs": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-18T23:00",
+    "fehlt": []
+   }
+  }
+ },
+ "stmarien": {
+  "jetzt": "2026-11-12T14:30",
+  "m": {
+   "dwd_icon_d2_ruc_native": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-13T16:00",
+    "fehlt": [
+     "precipitation_probability"
+    ]
+   },
+   "ecmwf_ifs": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-18T23:00",
+    "fehlt": []
+   }
+  }
+ },
+ "innsbruck": {
+  "jetzt": "2026-11-12T14:30",
+  "m": {
+   "dwd_icon_d2_ruc_native": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-13T16:00",
+    "fehlt": [
+     "precipitation_probability"
+    ]
+   },
+   "ecmwf_ifs": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-18T23:00",
+    "fehlt": []
+   }
+  }
+ },
+ "leipzig": {
+  "jetzt": "2026-11-12T14:30",
+  "m": {
+   "dwd_icon_d2_ruc_native": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-13T16:00",
+    "fehlt": [
+     "precipitation_probability"
+    ]
+   },
+   "ecmwf_ifs": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-18T23:00",
+    "fehlt": []
+   }
+  }
+ },
+ "zuerich": {
+  "jetzt": "2026-11-12T14:30",
+  "m": {
+   "dwd_icon_d2_ruc_native": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-13T16:00",
+    "fehlt": [
+     "precipitation_probability"
+    ]
+   },
+   "ecmwf_ifs": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-18T23:00",
+    "fehlt": []
+   }
+  }
+ },
+ "wien": {
+  "jetzt": "2026-11-12T14:30",
+  "m": {
+   "dwd_icon_d2_ruc_native": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-13T16:00",
+    "fehlt": [
+     "precipitation_probability"
+    ]
+   },
+   "ecmwf_ifs": {
+    "von": "2026-11-12T00:00",
+    "bis": "2026-11-18T23:00",
+    "fehlt": []
+   }
+  }
+ }
+}
