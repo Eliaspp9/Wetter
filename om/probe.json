@@ -1,0 +1,1559 @@
+{
+ "forecast": {
+  "stmarien": {
+   "geosphere_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "geosphere_claef_austria": {
+    "h": 62,
+    "bis": "2026-11-14T13:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "dwd_icon_d2_native": {
+    "h": 56,
+    "bis": "2026-11-14T07:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dwd_icon_d2": {
+    "h": 56,
+    "bis": "2026-11-14T07:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dwd_icon_eu_native": {
+    "h": 122,
+    "bis": "2026-11-17T01:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dwd_icon_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "meteoswiss_icon_ch1": {
+    "h": 41,
+    "bis": "2026-11-13T16:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "meteoswiss_icon_ch2": {
+    "h": 122,
+    "bis": "2026-11-17T01:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "meteofrance_arome_france_hd": {
+    "h": 56,
+    "bis": "2026-11-14T07:00",
+    "fehlt": [
+     "precipitation_probability",
+     "weather_code",
+     "snowfall",
+     "cloud_cover"
+    ],
+    "jetzt": null
+   },
+   "meteofrance_seamless": {
+    "h": 104,
+    "bis": "2026-11-16T07:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "knmi_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dmi_harmonie_arome_europe": {
+    "h": 64,
+    "bis": "2026-11-14T15:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "dmi_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "metno_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "ukmo_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "chmi_aladin_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "italia_meteo_arpae_icon_2i": {
+    "h": 74,
+    "bis": "2026-11-15T01:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "ecmwf_ifs": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "ecmwf_aifs025_single": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [
+     "precipitation_probability",
+     "wind_gusts_10m"
+    ],
+    "jetzt": null
+   }
+  },
+  "leipzig": {
+   "geosphere_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "geosphere_claef_austria": {
+    "h": 62,
+    "bis": "2026-11-14T13:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "dwd_icon_d2_native": {
+    "h": 56,
+    "bis": "2026-11-14T07:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dwd_icon_d2": {
+    "h": 56,
+    "bis": "2026-11-14T07:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dwd_icon_eu_native": {
+    "h": 122,
+    "bis": "2026-11-17T01:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dwd_icon_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "meteofrance_arome_france_hd": {
+    "h": 56,
+    "bis": "2026-11-14T07:00",
+    "fehlt": [
+     "precipitation_probability",
+     "weather_code",
+     "snowfall",
+     "cloud_cover"
+    ],
+    "jetzt": null
+   },
+   "meteofrance_seamless": {
+    "h": 104,
+    "bis": "2026-11-16T07:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "knmi_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dmi_harmonie_arome_europe": {
+    "h": 64,
+    "bis": "2026-11-14T15:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "dmi_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "metno_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "ukmo_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "chmi_aladin_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "ecmwf_ifs": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "ecmwf_aifs025_single": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [
+     "precipitation_probability",
+     "wind_gusts_10m"
+    ],
+    "jetzt": null
+   }
+  },
+  "zuerich": {
+   "geosphere_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "geosphere_claef_austria": {
+    "h": 62,
+    "bis": "2026-11-14T13:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "dwd_icon_d2_native": {
+    "h": 56,
+    "bis": "2026-11-14T07:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dwd_icon_d2": {
+    "h": 56,
+    "bis": "2026-11-14T07:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dwd_icon_eu_native": {
+    "h": 122,
+    "bis": "2026-11-17T01:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dwd_icon_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "meteoswiss_icon_ch1": {
+    "h": 41,
+    "bis": "2026-11-13T16:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "meteoswiss_icon_ch2": {
+    "h": 122,
+    "bis": "2026-11-17T01:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "meteofrance_arome_france_hd": {
+    "h": 56,
+    "bis": "2026-11-14T07:00",
+    "fehlt": [
+     "precipitation_probability",
+     "weather_code",
+     "snowfall",
+     "cloud_cover"
+    ],
+    "jetzt": null
+   },
+   "meteofrance_seamless": {
+    "h": 104,
+    "bis": "2026-11-16T07:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "knmi_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dmi_harmonie_arome_europe": {
+    "h": 64,
+    "bis": "2026-11-14T15:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "dmi_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "metno_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "ukmo_uk_deterministic_2km": {
+    "h": 59,
+    "bis": "2026-11-14T10:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "ukmo_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "chmi_aladin_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "italia_meteo_arpae_icon_2i": {
+    "h": 74,
+    "bis": "2026-11-15T01:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "ecmwf_ifs": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "ecmwf_aifs025_single": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [
+     "precipitation_probability",
+     "wind_gusts_10m"
+    ],
+    "jetzt": null
+   }
+  },
+  "paris": {
+   "geosphere_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dwd_icon_d2_native": {
+    "h": 56,
+    "bis": "2026-11-14T07:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dwd_icon_d2": {
+    "h": 56,
+    "bis": "2026-11-14T07:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dwd_icon_eu_native": {
+    "h": 122,
+    "bis": "2026-11-17T01:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dwd_icon_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "meteoswiss_icon_ch1": {
+    "h": 41,
+    "bis": "2026-11-13T16:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "meteoswiss_icon_ch2": {
+    "h": 122,
+    "bis": "2026-11-17T01:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "meteofrance_arome_france_hd": {
+    "h": 56,
+    "bis": "2026-11-14T07:00",
+    "fehlt": [
+     "precipitation_probability",
+     "weather_code",
+     "snowfall",
+     "cloud_cover"
+    ],
+    "jetzt": null
+   },
+   "meteofrance_seamless": {
+    "h": 104,
+    "bis": "2026-11-16T07:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "knmi_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dmi_harmonie_arome_europe": {
+    "h": 64,
+    "bis": "2026-11-14T15:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "dmi_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "metno_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "ukmo_uk_deterministic_2km": {
+    "h": 59,
+    "bis": "2026-11-14T10:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "ukmo_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "chmi_aladin_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "ecmwf_ifs": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "ecmwf_aifs025_single": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [
+     "precipitation_probability",
+     "wind_gusts_10m"
+    ],
+    "jetzt": null
+   }
+  },
+  "amsterdam": {
+   "geosphere_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dwd_icon_d2_native": {
+    "h": 56,
+    "bis": "2026-11-14T07:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dwd_icon_d2": {
+    "h": 56,
+    "bis": "2026-11-14T07:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dwd_icon_eu_native": {
+    "h": 122,
+    "bis": "2026-11-17T01:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dwd_icon_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "meteofrance_arome_france_hd": {
+    "h": 56,
+    "bis": "2026-11-14T07:00",
+    "fehlt": [
+     "precipitation_probability",
+     "weather_code",
+     "snowfall",
+     "cloud_cover"
+    ],
+    "jetzt": null
+   },
+   "meteofrance_seamless": {
+    "h": 104,
+    "bis": "2026-11-16T07:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "knmi_harmonie_arome_netherlands": {
+    "h": 67,
+    "bis": "2026-11-14T18:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "knmi_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dmi_harmonie_arome_europe": {
+    "h": 64,
+    "bis": "2026-11-14T15:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "dmi_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "metno_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "ukmo_uk_deterministic_2km": {
+    "h": 59,
+    "bis": "2026-11-14T10:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "ukmo_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "chmi_aladin_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "ecmwf_ifs": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "ecmwf_aifs025_single": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [
+     "precipitation_probability",
+     "wind_gusts_10m"
+    ],
+    "jetzt": null
+   }
+  },
+  "kopenhagen": {
+   "geosphere_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dwd_icon_d2_native": {
+    "h": 56,
+    "bis": "2026-11-14T07:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dwd_icon_d2": {
+    "h": 56,
+    "bis": "2026-11-14T07:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dwd_icon_eu_native": {
+    "h": 122,
+    "bis": "2026-11-17T01:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dwd_icon_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "meteofrance_seamless": {
+    "h": 104,
+    "bis": "2026-11-16T07:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "knmi_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dmi_harmonie_arome_europe": {
+    "h": 64,
+    "bis": "2026-11-14T15:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "dmi_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "metno_nordic": {
+    "h": 66,
+    "bis": "2026-11-14T17:00",
+    "fehlt": [
+     "precipitation_probability",
+     "cloud_cover_low"
+    ],
+    "jetzt": null
+   },
+   "metno_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "ukmo_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "chmi_aladin_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "ecmwf_ifs": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "ecmwf_aifs025_single": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [
+     "precipitation_probability",
+     "wind_gusts_10m"
+    ],
+    "jetzt": null
+   }
+  },
+  "oslo": {
+   "geosphere_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dwd_icon_eu_native": {
+    "h": 122,
+    "bis": "2026-11-17T01:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dwd_icon_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "meteofrance_seamless": {
+    "h": 104,
+    "bis": "2026-11-16T07:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "knmi_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dmi_harmonie_arome_europe": {
+    "h": 64,
+    "bis": "2026-11-14T15:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "dmi_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "metno_nordic": {
+    "h": 66,
+    "bis": "2026-11-14T17:00",
+    "fehlt": [
+     "precipitation_probability",
+     "cloud_cover_low"
+    ],
+    "jetzt": null
+   },
+   "metno_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "ukmo_uk_deterministic_2km": {
+    "h": 59,
+    "bis": "2026-11-14T10:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "ukmo_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "ecmwf_ifs": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "ecmwf_aifs025_single": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [
+     "precipitation_probability",
+     "wind_gusts_10m"
+    ],
+    "jetzt": null
+   }
+  },
+  "london": {
+   "geosphere_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dwd_icon_d2_native": {
+    "h": 55,
+    "bis": "2026-11-14T06:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dwd_icon_d2": {
+    "h": 55,
+    "bis": "2026-11-14T06:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dwd_icon_eu_native": {
+    "h": 121,
+    "bis": "2026-11-17T00:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dwd_icon_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "meteofrance_arome_france_hd": {
+    "h": 55,
+    "bis": "2026-11-14T06:00",
+    "fehlt": [
+     "precipitation_probability",
+     "weather_code",
+     "snowfall",
+     "cloud_cover"
+    ],
+    "jetzt": null
+   },
+   "meteofrance_seamless": {
+    "h": 103,
+    "bis": "2026-11-16T06:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "knmi_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dmi_harmonie_arome_europe": {
+    "h": 63,
+    "bis": "2026-11-14T14:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "dmi_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "metno_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "ukmo_uk_deterministic_2km": {
+    "h": 58,
+    "bis": "2026-11-14T09:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "ukmo_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "chmi_aladin_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "ecmwf_ifs": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "ecmwf_aifs025_single": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [
+     "precipitation_probability",
+     "wind_gusts_10m"
+    ],
+    "jetzt": null
+   }
+  },
+  "prag": {
+   "geosphere_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "geosphere_claef_austria": {
+    "h": 65,
+    "bis": "2026-11-14T16:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "dwd_icon_d2_native": {
+    "h": 56,
+    "bis": "2026-11-14T07:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dwd_icon_d2": {
+    "h": 56,
+    "bis": "2026-11-14T07:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dwd_icon_eu_native": {
+    "h": 122,
+    "bis": "2026-11-17T01:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dwd_icon_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "meteofrance_arome_france_hd": {
+    "h": 56,
+    "bis": "2026-11-14T07:00",
+    "fehlt": [
+     "precipitation_probability",
+     "weather_code",
+     "snowfall",
+     "cloud_cover"
+    ],
+    "jetzt": null
+   },
+   "meteofrance_seamless": {
+    "h": 104,
+    "bis": "2026-11-16T07:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "knmi_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dmi_harmonie_arome_europe": {
+    "h": 64,
+    "bis": "2026-11-14T15:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "dmi_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "metno_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "ukmo_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "chmi_aladin_cz_1km": {
+    "h": 74,
+    "bis": "2026-11-15T01:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "chmi_aladin_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "ecmwf_ifs": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "ecmwf_aifs025_single": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [
+     "precipitation_probability",
+     "wind_gusts_10m"
+    ],
+    "jetzt": null
+   }
+  },
+  "rom": {
+   "geosphere_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dwd_icon_eu_native": {
+    "h": 122,
+    "bis": "2026-11-17T01:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dwd_icon_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "meteofrance_arome_france_hd": {
+    "h": 56,
+    "bis": "2026-11-14T07:00",
+    "fehlt": [
+     "precipitation_probability",
+     "weather_code",
+     "snowfall",
+     "cloud_cover"
+    ],
+    "jetzt": null
+   },
+   "meteofrance_seamless": {
+    "h": 104,
+    "bis": "2026-11-16T07:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "knmi_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dmi_harmonie_arome_europe": {
+    "h": 64,
+    "bis": "2026-11-14T15:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "dmi_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "metno_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "ukmo_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "chmi_aladin_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "italia_meteo_arpae_icon_2i": {
+    "h": 74,
+    "bis": "2026-11-15T01:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "ecmwf_ifs": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "ecmwf_aifs025_single": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [
+     "precipitation_probability",
+     "wind_gusts_10m"
+    ],
+    "jetzt": null
+   }
+  },
+  "bozen": {
+   "geosphere_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "geosphere_claef_austria": {
+    "h": 62,
+    "bis": "2026-11-14T13:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "dwd_icon_d2_native": {
+    "h": 56,
+    "bis": "2026-11-14T07:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dwd_icon_d2": {
+    "h": 56,
+    "bis": "2026-11-14T07:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dwd_icon_eu_native": {
+    "h": 122,
+    "bis": "2026-11-17T01:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dwd_icon_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "meteoswiss_icon_ch1": {
+    "h": 41,
+    "bis": "2026-11-13T16:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "meteoswiss_icon_ch2": {
+    "h": 122,
+    "bis": "2026-11-17T01:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "meteofrance_arome_france_hd": {
+    "h": 56,
+    "bis": "2026-11-14T07:00",
+    "fehlt": [
+     "precipitation_probability",
+     "weather_code",
+     "snowfall",
+     "cloud_cover"
+    ],
+    "jetzt": null
+   },
+   "meteofrance_seamless": {
+    "h": 104,
+    "bis": "2026-11-16T07:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "knmi_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dmi_harmonie_arome_europe": {
+    "h": 64,
+    "bis": "2026-11-14T15:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "dmi_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "metno_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "ukmo_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "chmi_aladin_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "italia_meteo_arpae_icon_2i": {
+    "h": 74,
+    "bis": "2026-11-15T01:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "ecmwf_ifs": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "ecmwf_aifs025_single": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [
+     "precipitation_probability",
+     "wind_gusts_10m"
+    ],
+    "jetzt": null
+   }
+  },
+  "wien": {
+   "geosphere_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "geosphere_claef_austria": {
+    "h": 65,
+    "bis": "2026-11-14T16:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "dwd_icon_d2_native": {
+    "h": 56,
+    "bis": "2026-11-14T07:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dwd_icon_d2": {
+    "h": 56,
+    "bis": "2026-11-14T07:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dwd_icon_eu_native": {
+    "h": 122,
+    "bis": "2026-11-17T01:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dwd_icon_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "meteoswiss_icon_ch1": {
+    "h": 41,
+    "bis": "2026-11-13T16:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "meteoswiss_icon_ch2": {
+    "h": 122,
+    "bis": "2026-11-17T01:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "meteofrance_seamless": {
+    "h": 104,
+    "bis": "2026-11-16T07:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "knmi_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dmi_harmonie_arome_europe": {
+    "h": 64,
+    "bis": "2026-11-14T15:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "dmi_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "metno_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "ukmo_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "chmi_aladin_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "italia_meteo_arpae_icon_2i": {
+    "h": 74,
+    "bis": "2026-11-15T01:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "ecmwf_ifs": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "ecmwf_aifs025_single": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [
+     "precipitation_probability",
+     "wind_gusts_10m"
+    ],
+    "jetzt": null
+   }
+  },
+  "innsbruck": {
+   "geosphere_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "geosphere_claef_austria": {
+    "h": 62,
+    "bis": "2026-11-14T13:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "dwd_icon_d2_native": {
+    "h": 56,
+    "bis": "2026-11-14T07:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dwd_icon_d2": {
+    "h": 56,
+    "bis": "2026-11-14T07:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dwd_icon_eu_native": {
+    "h": 122,
+    "bis": "2026-11-17T01:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dwd_icon_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "meteoswiss_icon_ch1": {
+    "h": 41,
+    "bis": "2026-11-13T16:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "meteoswiss_icon_ch2": {
+    "h": 122,
+    "bis": "2026-11-17T01:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "meteofrance_arome_france_hd": {
+    "h": 56,
+    "bis": "2026-11-14T07:00",
+    "fehlt": [
+     "precipitation_probability",
+     "weather_code",
+     "snowfall",
+     "cloud_cover"
+    ],
+    "jetzt": null
+   },
+   "meteofrance_seamless": {
+    "h": 104,
+    "bis": "2026-11-16T07:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "knmi_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "dmi_harmonie_arome_europe": {
+    "h": 64,
+    "bis": "2026-11-14T15:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "dmi_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "metno_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "ukmo_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "chmi_aladin_seamless": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "italia_meteo_arpae_icon_2i": {
+    "h": 74,
+    "bis": "2026-11-15T01:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "ecmwf_ifs": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "ecmwf_aifs025_single": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [
+     "precipitation_probability",
+     "wind_gusts_10m"
+    ],
+    "jetzt": null
+   }
+  }
+ },
+ "prev": {
+  "geosphere_seamless": "ok",
+  "geosphere_claef_austria": "ok",
+  "dwd_icon_d2_native": "ok",
+  "dwd_icon_d2": "ok",
+  "dwd_icon_eu_native": "ok",
+  "dwd_icon_seamless": "ok",
+  "meteoswiss_icon_ch1": "ok",
+  "meteoswiss_icon_ch2": "ok",
+  "meteofrance_arome_france_hd": "ok",
+  "meteofrance_seamless": "ok",
+  "knmi_harmonie_arome_netherlands": "No data is available for this location",
+  "knmi_seamless": "ok",
+  "dmi_harmonie_arome_europe": "ok",
+  "dmi_seamless": "ok",
+  "metno_nordic": "No data is available for this location",
+  "metno_seamless": "ok",
+  "ukmo_uk_deterministic_2km": "No data is available for this location",
+  "ukmo_seamless": "ok",
+  "chmi_aladin_cz_1km": "No data is available for this location",
+  "chmi_aladin_seamless": "ok",
+  "italia_meteo_arpae_icon_2i": "ok",
+  "ecmwf_ifs": "ok",
+  "ecmwf_aifs025_single": "ok"
+ },
+ "current": {}
+}
