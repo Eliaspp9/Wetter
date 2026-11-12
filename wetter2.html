@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-lCHYWFjwRfu7fJMvMRnbFakBpGlRYUwvdWWLroh3Cko=' 'sha256-ZyIe2jiyILx7hrlC7bYtqmOtp5LNpEC2dh6zfg5acsw=' 'sha256-4CoWjqLPtE4OpZFJbF4O6PPrVb8Fm75djoUa/2ooruo=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src 'self'; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://s3.amazonaws.com https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-285fPEGby2/4TzKj3HOSc+oCkSuBOCI84QI8y2jN46U=' 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-lCHYWFjwRfu7fJMvMRnbFakBpGlRYUwvdWWLroh3Cko=' 'sha256-4iNdanS9k1ZIY9Ts6+CNE212b72bKIe9k0A3QFvPvgQ=' 'sha256-3TCorMLa/UTHQmSOTsxSph7XLfwQQibAV/iE+AxBXX0=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src 'self'; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://s3.amazonaws.com https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -14,9 +14,15 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/favicon-64.png">
-<meta name="app-build" content="58">
+<meta name="app-build" content="59">
 <meta name="app-version" content="1.0">
-<meta name="app-notes" content="Version 1.0 (Build 1): Alles durchgesehen, Fehler behoben und schneller gemacht. Die App startet viel schneller: Das Wetter steht beim Öffnen fast sofort da, weil der letzte Stand gleich gezeigt wird und alle Daten gleichzeitig geholt werden. Das Regenradar Österreich lädt jetzt immer ganz Österreich auf einmal (etwa 1 MB, 1 bis 2 Sekunden statt viele Stücke zu je 6 MB), egal wohin du zoomst, ohne Lücken, und holt neue Daten gleich, wenn du die App aus dem Hintergrund zurückholst. Die Regen-Vorschau für die nächsten 2 Stunden war eine Viertelstunde zu spät und stimmt jetzt. Benachrichtigungen kommen zuverlässiger, die Schrift lädt ohne Google, dazu viele Kleinigkeiten.">
+<meta name="app-notes" content="Neue Adresse: Die App liegt jetzt bei Cloudflare (wetter.elias-ziegler.workers.dev). Version 1.0 (Build 1): Alles durchgesehen, Fehler behoben und schneller gemacht. Die App startet viel schneller: Das Wetter steht beim Öffnen fast sofort da, weil der letzte Stand gleich gezeigt wird und alle Daten gleichzeitig geholt werden. Das Regenradar Österreich lädt jetzt immer ganz Österreich auf einmal (etwa 1 MB, 1 bis 2 Sekunden statt viele Stücke zu je 6 MB), egal wohin du zoomst, ohne Lücken, und holt neue Daten gleich, wenn du die App aus dem Hintergrund zurückholst. Die Regen-Vorschau für die nächsten 2 Stunden war eine Viertelstunde zu spät und stimmt jetzt. Benachrichtigungen kommen zuverlässiger, die Schrift lädt ohne Google, dazu viele Kleinigkeiten.">
+<script>/* Umzug von GitHub (eliaspp9.github.io/Wetter) hierher: die alte Seite gibt Einstellungen und Lieblingsorte in der Adresse
+   mit (#umzug=…). Übernommen wird nur, was hier noch nicht gesetzt ist; danach verschwindet der Zusatz aus der Adresse. */
+try{var mz=/^#umzug=([\w-]+)$/.exec(location.hash);if(mz){var mo=JSON.parse(decodeURIComponent(escape(atob(mz[1].replace(/-/g,"+").replace(/_/g,"/")))));
+ for(var mk in mo)if(/^wetter-/.test(mk)&&typeof mo[mk]==="string"&&localStorage.getItem(mk)==null)localStorage.setItem(mk,mo[mk]);
+ history.replaceState(null,"",location.pathname+location.search)}}catch(e){}
+</script>
 <script>/* alte Adresse wetter2.html -> neue Startseite */
 try{if(top!==self)document.documentElement.style.display="none"}catch(e){document.documentElement.style.display="none"}
 window.__redir=/\/wetter2\.html$/i.test(location.pathname);
@@ -422,6 +428,8 @@ html.wall.night .wdim{opacity:.55}
 html.wall .wbar{display:flex;justify-content:center;flex-wrap:wrap;gap:6px;margin-top:10px;opacity:.75}
 .wbar button{border:0;border-radius:10px;padding:5px 10px;font-size:12px;font-weight:600;background:rgba(255,255,255,.18);color:#fff}
 html.wall .upd{bottom:14px;z-index:3420}
+.moved{position:fixed;left:10px;right:10px;top:calc(env(safe-area-inset-top,0px) + 10px);z-index:2147483000;max-width:560px;margin:0 auto;padding:14px 16px;border-radius:16px;background:#0B54B2;color:#fff;font-size:15px;line-height:1.45;box-shadow:0 8px 30px rgba(0,0,0,.35)}
+.moved button{display:block;width:100%;margin-top:10px;padding:12px;border:0;border-radius:12px;background:#fff;color:#0B54B2;font:inherit;font-weight:600;cursor:pointer}
 @media (orientation:portrait){
  html.wall body{grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr) auto auto}
  html.wall .hero{grid-area:1/1/2/2}
@@ -852,7 +860,7 @@ html.wall.night.nm .wdim{opacity:0}
 .ptr.spin{transform:translate(-50%,14px)!important;opacity:1!important;transition:transform .2s}
 .ptr.spin svg{animation:ptrs .8s linear infinite}
 @keyframes ptrs{to{transform:rotate(360deg)}}
-html.locked body>*:not(#gate){display:none!important}
+html.locked body>*:not(#gate):not(.moved){display:none!important}
 #gate{position:fixed;inset:0;z-index:100000;display:flex;align-items:center;justify-content:center;padding:20px;background:linear-gradient(160deg,rgb(var(--a)),rgb(var(--b)))}
 #gate[hidden]{display:none}
 #gate form{width:min(380px,100%);background:var(--surface);color:var(--ink);border-radius:22px;padding:28px 24px;box-shadow:0 20px 60px rgba(0,0,0,.28);display:flex;flex-direction:column;gap:14px}
@@ -4223,13 +4231,13 @@ function gpsHelp(code,detail){
    app?"Die Wetter-App ganz schließen (vom unteren Rand nach oben wischen und die App wegschieben), neu öffnen und rechts oben auf das Standort-Symbol tippen.":"Die Seite neu laden und rechts oben auf das Standort-Symbol tippen."],info);
   if(isAndroid&&app)return gpsMsg("err","Der Standort ist für die Wetter-App gesperrt. So erlaubst du ihn:",[
    "Lange auf das Wetter-Symbol am Startbildschirm drücken → „App-Info“ (ⓘ) → Berechtigungen → Standort → „Nur während der Nutzung der App zulassen“, „Genauen Standort verwenden“ einschalten.",
-   "In Chrome: ⋮ → Einstellungen → Website-Einstellungen → Standort. Steht „eliaspp9.github.io“ unter „Blockiert“, antippen und „Zulassen“ wählen.",
+   "In Chrome: ⋮ → Einstellungen → Website-Einstellungen → Standort. Steht „wetter.elias-ziegler.workers.dev“ unter „Blockiert“, antippen und „Zulassen“ wählen.",
    "Die Wetter-App schließen, neu öffnen und rechts oben auf das Standort-Symbol tippen."],info);
   if(isAndroid)return gpsMsg("err","Der Standort ist für diese Seite gesperrt. So erlaubst du ihn:",[
    "Links neben der Adresse auf das Symbol tippen → Berechtigungen → Standort → „Zulassen“.",
    "Ist der Standort am Handy aus: von oben wischen und „Standort“ einschalten.",
    "Die Seite neu laden und rechts oben auf das Standort-Symbol tippen."],info);
-  return gpsMsg("err","Der Standort ist für diese Seite gesperrt.",["Im Browser links in der Adressleiste auf das Symbol klicken und den Standort für eliaspp9.github.io erlauben.","Die Seite neu laden und rechts oben auf das Standort-Symbol tippen."],info);
+  return gpsMsg("err","Der Standort ist für diese Seite gesperrt.",["Im Browser links in der Adressleiste auf das Symbol klicken und den Standort für wetter.elias-ziegler.workers.dev erlauben.","Die Seite neu laden und rechts oben auf das Standort-Symbol tippen."],info);
  }
  if(code===3)return gpsMsg("err","Die Standortsuche hat zu lange gedauert.",["Kurz ins Freie gehen oder WLAN einschalten (hilft dem Handy beim Orten).","Dann noch einmal rechts oben auf das Standort-Symbol tippen – oder oben einen Ort suchen."],info);
  return gpsMsg("err","Das Handy findet gerade keinen Standort.",[
@@ -6135,7 +6143,7 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("shr").hidden)cl
 const meta=n=>{const m=document.querySelector('meta[name="'+n+'"]');return m?m.content:""};
 /* app-build zählt seit jeher einfach hoch; daran erkennen auch ältere Geräte ein Update (sie vergleichen diese Zahl).
    Angezeigt wird der Build seit Version 1.0: Build 1 ist app-build 57. */
-const BUILD=+meta("app-build")||0,BUILD0=57,verText=b=>meta("app-version")+" (Build "+(b-BUILD0)+")";
+const BUILD=+meta("app-build")||0,BUILD0=58,verText=b=>meta("app-version")+" (Build "+(b-BUILD0)+")";
 let remote=null,lastChk=0;
 $("ver").textContent=verText(BUILD);
 /* Anmeldung: bis wann sie gilt und ob sie sich von selbst verlängert */
@@ -6406,6 +6414,26 @@ document.addEventListener("visibilitychange",()=>{
  var API="https://wetter-proxy.elias-ziegler.workers.dev";
  var html=document.documentElement,gate=document.getElementById("gate"),form=document.getElementById("gate-form"),err=document.getElementById("gate-err"),btn=document.getElementById("gate-btn");
  var started=false,fails=0;
+ /* Die App ist umgezogen (12.11.2026). Auf der alten Adresse bei GitHub: Hinweis mit Knopf. Der Knopf meldet die
+    Benachrichtigungen hier ab (sonst kämen sie doppelt) und nimmt Einstellungen und Lieblingsorte mit (ohne Anmeldung). */
+ var NEW="https://wetter.elias-ziegler.workers.dev/";
+ if(location.hostname==="eliaspp9.github.io"){
+  var mv=document.createElement("div");mv.className="moved";
+  mv.innerHTML='<b>Die Wetter-App ist umgezogen.</b> Neue Adresse: wetter.elias-ziegler.workers.dev<br>Einstellungen und Lieblingsorte werden mitgenommen. Danach bitte dort neu anmelden und die Seite zum Home-Bildschirm hinzufügen (die alte Verknüpfung kannst du löschen).<button type="button" id="moved-go">Zur neuen Adresse</button>';
+  document.body.appendChild(mv);html.classList.add("is-moved");
+  document.getElementById("moved-go").onclick=async function(){
+   this.disabled=true;this.textContent="Einen Moment …";
+   try{
+    var reg=navigator.serviceWorker&&await navigator.serviceWorker.getRegistration(),sub=reg&&reg.pushManager&&await reg.pushManager.getSubscription(),t=token();
+    if(sub){if(t)await fetch(API+"/push/unsub",{method:"POST",headers:{"Content-Type":"application/json",Authorization:"Bearer "+t},body:JSON.stringify({endpoint:sub.endpoint})}).catch(function(){});await sub.unsubscribe().catch(function(){})}
+   }catch(e){}
+   var o={},n=0;
+   try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i),v=localStorage.getItem(k);
+    if(!/^wetter-/.test(k)||/\||^wetter-(token|auth|renew|pre$|last$|pkey|push$|build|use$|wrn|gsst)/.test(k)||!v||v.length>6000||n+v.length>24000)continue;o[k]=v;n+=v.length}}catch(e){}
+   var b="";try{b=btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"")}catch(e){}
+   location.href=NEW+(b?"#umzug="+b:"");
+  };
+ }
  function payload(t){try{return JSON.parse(atob(String(t).split(".")[0].replace(/-/g,"+").replace(/_/g,"/")))}catch(e){return null}}
  function token(){
   var t=null;try{t=localStorage.getItem("wetter-token")||sessionStorage.getItem("wetter-token")}catch(e){}

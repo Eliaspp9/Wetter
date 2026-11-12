@@ -1,0 +1,12 @@
+// Die Seite (App) bei Cloudflare: wetter.elias-ziegler.workers.dev. Nur Dateien, kein eigener Code.
+// Ausgeliefert wird der ganze Ordner außer dem, was in .assetsignore steht.
+// Der Worker mit Anmeldung, Kachelmann und Benachrichtigungen ist ein eigener: worker/kachelmann-proxy.js (wetter-proxy).
+{
+  "name": "wetter",
+  "compatibility_date": "2026-11-07",
+  "assets": {
+    "directory": "./",
+    "not_found_handling": "404-page",
+    "html_handling": "auto-trailing-slash"
+  }
+}

@@ -1,7 +1,7 @@
-// Wetter-Proxy 1.0 (Build 1): hält den Kachelmann-Schlüssel geheim, prüft die Anmeldung, verschickt Wetter-Benachrichtigungen
+// Wetter-Proxy 1.0 (Build 2): hält den Kachelmann-Schlüssel geheim, prüft die Anmeldung, verschickt Wetter-Benachrichtigungen
 // und lernt jede Stunde, wie weit die Vorhersage an deinen Orten danebenliegt (lernende Korrektur).
 // Einzurichten bei Cloudflare unter Workers & Pages. Variablen (Settings > Variables and Secrets):
-//   ALLOWED_ORIGIN  (Text)    https://eliaspp9.github.io
+//   ALLOWED_ORIGIN  (Text)    https://eliaspp9.github.io (mehrere mit Komma getrennt; die Adresse bei Cloudflare gilt immer)
 //   LOGIN_USER      (Text)    dein Benutzername
 //   LOGIN_PASS      (Secret)  dein Passwort
 //   KACHELMANN_KEY  (Secret)  dein API-Schlüssel von Kachelmann
@@ -12,7 +12,7 @@
 // Für die KI (Übersetzen der Warnungen anderer Länder, Push-Texte in ganzen Sätzen), ab Version 1.6:
 //   Bindung AI      (Workers AI, Variablenname AI). Ohne sie läuft alles wie vorher, nur ohne KI.
 const enc = new TextEncoder();
-const VERSION = "1.0", BUILD = 1;
+const VERSION = "1.0", BUILD = 2;
 /* Abrufe mit Zeitlimit: ein hängender Dienst soll weder eine Anfrage noch den Zeitplan aufhalten.
    tf: Limit bis die Antwort beginnt (für durchgereichte Antworten); jf: Limit bis das JSON ganz gelesen ist. */
 async function tf(u, o, ms) {
@@ -61,6 +61,13 @@ async function checkToken(env, req) {
     if (!ok) return false;
     return JSON.parse(new TextDecoder().decode(unb64u(m[1]))).exp > Date.now();
   } catch (e) { return false; }
+}
+
+/* Von welchen Seiten die App den Worker benutzen darf: die eingetragene(n) Adresse(n) und die App bei Cloudflare (seit 12.11.2026) */
+const APP_ORIGINS = ["https://wetter.elias-ziegler.workers.dev"];
+function allowedOrigin(env, origin) {
+  if (APP_ORIGINS.includes(origin)) return true;
+  return String(env.ALLOWED_ORIGIN || "").split(",").some((o) => o.trim() === origin);
 }
 
 /* ---------- Schutz gegen Passwort-Raten ----------
@@ -822,7 +829,7 @@ export default {
       "X-Frame-Options": "DENY",
       "Content-Security-Policy": "default-src 'none'; frame-ancestors 'none'",
     };
-    if (origin && env.ALLOWED_ORIGIN && origin === env.ALLOWED_ORIGIN) h["Access-Control-Allow-Origin"] = origin;
+    if (origin && allowedOrigin(env, origin)) h["Access-Control-Allow-Origin"] = origin;
     const json = (o, s = 200) => new Response(JSON.stringify(o), { status: s, headers: h });
     if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: h });
     try { return await route(req, env, ctx, h, json); }
