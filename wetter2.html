@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-285fPEGby2/4TzKj3HOSc+oCkSuBOCI84QI8y2jN46U=' 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-lCHYWFjwRfu7fJMvMRnbFakBpGlRYUwvdWWLroh3Cko=' 'sha256-mhb+NT16NgOhY0BTHJKMYBE4BGTDsZn40BgS0tuHjK0=' 'sha256-RuxfNxmpjp4A0o44t73N+6O4m9ajjPnJ8Ah9hbvLASk=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src 'self'; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://s3.amazonaws.com https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-285fPEGby2/4TzKj3HOSc+oCkSuBOCI84QI8y2jN46U=' 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-lCHYWFjwRfu7fJMvMRnbFakBpGlRYUwvdWWLroh3Cko=' 'sha256-kNJiIFBFaMDSuPiORbxIdM/P+ZM72A03kGDftIXsR8w=' 'sha256-RuxfNxmpjp4A0o44t73N+6O4m9ajjPnJ8Ah9hbvLASk=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src 'self'; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://s3.amazonaws.com https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -14,7 +14,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/favicon-64.png">
-<meta name="app-build" content="61">
+<meta name="app-build" content="62">
 <meta name="app-version" content="1.0">
 <meta name="app-notes" content="Neue Adresse: Die App liegt jetzt bei Cloudflare (wetter.elias-ziegler.workers.dev). Version 1.0 (Build 1): Alles durchgesehen, Fehler behoben und schneller gemacht. Die App startet viel schneller: Das Wetter steht beim Öffnen fast sofort da, weil der letzte Stand gleich gezeigt wird und alle Daten gleichzeitig geholt werden. Das Regenradar Österreich lädt jetzt immer ganz Österreich auf einmal (etwa 1 MB, 1 bis 2 Sekunden statt viele Stücke zu je 6 MB), egal wohin du zoomst, ohne Lücken, und holt neue Daten gleich, wenn du die App aus dem Hintergrund zurückholst. Die Regen-Vorschau für die nächsten 2 Stunden war eine Viertelstunde zu spät und stimmt jetzt. Benachrichtigungen kommen zuverlässiger, die Schrift lädt ohne Google, dazu viele Kleinigkeiten.">
 <script>/* Umzug von GitHub (eliaspp9.github.io/Wetter) hierher: die alte Seite gibt Einstellungen und Lieblingsorte in der Adresse
@@ -1339,7 +1339,9 @@ const LOK={AT:["geosphere_claef_austria","dwd_icon_d2_native"],DE:["dwd_icon_d2_
 const LOKN={geosphere_claef_austria:"GeoSphere Austria (C-LAEF)",dwd_icon_d2_native:"DWD ICON-D2",meteoswiss_icon_ch1:"MeteoSchweiz ICON-CH1",meteoswiss_icon_ch2:"MeteoSchweiz ICON-CH2",
  meteofrance_arome_france_hd:"Météo-France AROME HD",knmi_harmonie_arome_netherlands:"KNMI Harmonie",dmi_harmonie_arome_europe:"DMI Harmonie",metno_nordic:"MET Norway Nordic",
  ukmo_uk_deterministic_2km:"Met Office UK 2 km",chmi_aladin_cz_1km:"ČHMÚ Aladin 1 km",italia_meteo_arpae_icon_2i:"ItaliaMeteo ICON-2I",chmi_aladin_central_europe_2km:"ČHMÚ Aladin Mitteleuropa"};
-const lokModels=()=>LOK[ccNow()]||[];
+/* Land noch unbekannt (erste Abfrage an einem neuen Punkt, z. B. beim Mitgehen per GPS): im Raum Österreich gleich die Reihe für
+   Österreich nehmen; die Modelle liefern außerhalb ihres Gebiets nichts, dann springt das nächste ein */
+const lokModels=()=>{const c=ccNow();if(c)return LOK[c]||[];const la=+place.lat,lo=+place.lon;return la>=46.3&&la<=49.1&&lo>=9.5&&lo<=17.2?LOK.AT:[]};
 /* Antwort mit mehreren Modellen (Felder mit Modell-Endung) zu einer Vorhersage zusammensetzen. Je Stunde und Wert: bis Ende morgen
    die Reihe lok, dann ECMWF, dann Open-Meteo; ab übermorgen ECMWF, dann Open-Meteo. j._src merkt je Wert und Stunde die Quelle
    (L = vor Ort, E = ECMWF, B = Open-Meteo), damit die gelernten ECMWF-Korrekturen nur auf ECMWF-Werte kommen.
@@ -1410,7 +1412,9 @@ async function loadWeather(auto){
   let j;
   /* Heute und morgen das genaueste Modell vor Ort (Tabelle LOK, je Land), danach ECMWF IFS (9 km). Was beide nicht rechnen
      (UV-Index), kommt aus dem Standardmodell von Open-Meteo. Klappt das nicht, nur ECMWF, dann nur Open-Meteo. */
-  const lok=lokModels();
+  /* erst das Land des Orts klären (höchstens 3 Sekunden), sonst käme beim ersten Laden nur ECMWF */
+  if(!ccNow()){try{await Promise.race([placeCC(),new Promise(r=>setTimeout(r,3000))])}catch(e){}if(my!==wSeq)return}
+  const lok=lokModels(),usedCC=ccNow();
   try{
    if(!lok.length)throw new Error("kein lok");
    j=omChain(await getJ(base+full+"&models="+lok.concat(["ecmwf_ifs","best_match"]).join(",")),lok);
@@ -1420,6 +1424,7 @@ async function loadWeather(auto){
    try{j=await getJ(base+full)}catch(e2){j=await getJ(base+"&current="+cur+"&hourly="+hr+"&daily="+dl)}
    j.src="om";
   }}
+  j.cc=usedCC;
   if(my!==wSeq)return;
   if(auto)showErr("");
   wFail=0;
@@ -1662,7 +1667,7 @@ function dayDetail(i){
  if(D.uv_index_max&&D.uv_index_max[i]!=null)parts.push("<span>UV <b>"+fmt(D.uv_index_max[i])+"</b></span>");
  {const zl=alpDay(date,pmm);if(zl)parts.push(zl)}
  {const K=kiNow(),q=K&&K[date];if(q)parts.push('<span><i class="ki-key"></i>KI-Modell <b>'+deg(q.lo)+" / "+deg(q.hi)+"</b>"+(q.p!=null?", Niederschlag <b>"+(q.p<0.1?"keiner":fmt(q.p)+" mm")+"</b>":"")+"</span>")}
- const note=mdl==="ECMWF"?"Wettermodell ECMWF IFS (über Open-Meteo).":"Wettermodelle über Open-Meteo.";
+ const note=mdl==="ECMWF"?"Wettermodell ECMWF IFS (über Open-Meteo).":mdl==="Open-Meteo"?"Wettermodelle über Open-Meteo.":mdl+" (über Open-Meteo), was es nicht rechnet, von ECMWF IFS.";
  return'<div class="dd-sum">'+parts.join("")+"</div>"+(body?'<table class="kc-tab"><tr><th>Uhrzeit</th><th></th><th>Temp.</th><th>Regen</th><th>Wind</th></tr>'+body+"</table>":'<p class="muted">Für diesen Tag liegen keine Details vor.</p>')+'<p class="dd-src">Quelle: '+note+"</p>";
 }
 /* Mond: Phase, Beleuchtung, Auf- und Untergang (vereinfachte Formeln nach Meeus, wie in SunCalc; genau auf wenige Minuten) */
@@ -1774,6 +1779,7 @@ const landName=cc=>{try{return new Intl.DisplayNames(["de"],{type:"region"}).of(
 const langName=l=>{try{return new Intl.DisplayNames(["de"],{type:"language"}).of(l)||l}catch(e){return l}};
 /* Land und Verwaltungsnamen des Ortes (einmal je Ort, dann gemerkt) */
 const ccMem={};
+let ccRe="";
 const ccInf={};
 async function placeCC(){
  const k=(+place.lat).toFixed(2)+","+(+place.lon).toFixed(2);
@@ -1908,6 +1914,8 @@ async function loadWarnings(){
  /* in anderen Ländern: MeteoAlarm bzw. National Weather Service */
  let geo=null;try{geo=await placeCC()}catch(e){}
  try{natUpdate()}catch(e){}
+ /* Land erst jetzt bekannt und anders als beim Laden des Wetters: Wetter gleich mit dem Modell vor Ort neu holen (einmal je Ort) */
+ try{const c=geo&&geo.cc;if(c&&LOK[c]&&lastJ&&!lastJ.cc&&lastJK===pk&&ccRe!==pk){ccRe=pk;omNext=0;setTimeout(()=>loadWeather(true),0)}}catch(e){}
  if(!q.ok())return;
  const cc=geo&&geo.cc;
  if(cc&&MA_SLUG[cc]){jobs.push(warnMA);runs.push(warnMA(cc,geo))}else if(cc==="US"){jobs.push(warnUS);runs.push(warnUS())}
@@ -6202,7 +6210,7 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("shr").hidden)cl
 const meta=n=>{const m=document.querySelector('meta[name="'+n+'"]');return m?m.content:""};
 /* app-build zählt seit jeher einfach hoch; daran erkennen auch ältere Geräte ein Update (sie vergleichen diese Zahl).
    Angezeigt wird der Build seit Version 1.0: Build 1 ist app-build 57. */
-const BUILD=+meta("app-build")||0,BUILD0=60,verText=b=>meta("app-version")+" (Build "+(b-BUILD0)+")";
+const BUILD=+meta("app-build")||0,BUILD0=61,verText=b=>meta("app-version")+" (Build "+(b-BUILD0)+")";
 let remote=null,lastChk=0;
 $("ver").textContent=verText(BUILD);
 /* Anmeldung: bis wann sie gilt und ob sie sich von selbst verlängert */
