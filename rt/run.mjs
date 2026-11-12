@@ -1,11 +1,5 @@
-const mod=await import("./sw.mjs");
-const env={PROXY:{fetch:async()=>new Response("{}",{status:200})}};
-const P=[["Utzenaich",48.23,13.42,"geosphere_arome_austria,dwd_icon_d2,ecmwf_ifs"],["Wien",48.2,16.37,"geosphere_arome_austria,ecmwf_ifs"],["Berlin",52.52,13.4,"dwd_icon_d2,ecmwf_ifs"],["NewYork",40.71,-74.0,"ncep_hrrr_conus,gfs_seamless,ecmwf_ifs"],["Sydney",-33.87,151.2,"ecmwf_ifs,bom_access_global"],["Sahara",23,10,"ecmwf_ifs"]];
-for(const [n,la,lo,m] of P){
- for(const ep of ["pp","sk"]){
-  const t0=Date.now();const r=await mod.default.fetch(new Request("https://x/bf/"+ep+"?la="+la+"&lo="+lo+"&m="+m,{headers:{Cookie:"wt=abc.def"}}),env);
-  const t=await r.text();let o;try{o=JSON.parse(t)}catch(e){o=t}
-  const s=ep==="pp"&&o.p?{src:o.src,n:o.p.length,first24:o.p.slice(0,24).join(" "),max:Math.max(...o.p.filter(x=>x!=null))}:o;
-  console.log(n,ep,r.status,(Date.now()-t0)+"ms",JSON.stringify(s).slice(0,500));
- }
-}
+const B="https://api.open-meteo.com/v1/forecast?latitude=48.1666&longitude=14.2461&timezone=auto&forecast_days=7";
+const full="&current=temperature_2m,apparent_temperature,relative_humidity_2m,precipitation,weather_code,wind_speed_10m,wind_direction_10m,surface_pressure,is_day,cloud_cover,wind_gusts_10m&hourly=temperature_2m,precipitation_probability,weather_code,precipitation,wind_speed_10m,wind_gusts_10m,snowfall,cloud_cover,cloud_cover_low,relative_humidity_2m,is_day&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max,sunrise,sunset,uv_index_max";
+const U={main:B+full+"&models=dwd_icon_d2_ruc_native,geosphere_claef_austria,dwd_icon_d2_native,ecmwf_ifs,best_match",ec:B+full+"&models=ecmwf_ifs",plain:B+full,
+ nc:"https://api.open-meteo.com/v1/forecast?latitude=48.1666&longitude=14.2461&current=temperature_2m&forecast_days=2&timezone=auto&models=dwd_icon_d2_ruc_native&minutely_15=precipitation,rain,snowfall"};
+for(const [k,u] of Object.entries(U)){const t0=Date.now();try{const r=await fetch(u);const t=await r.text();console.log(k,r.status,Date.now()-t0+"ms",t.slice(0,180).replace(/\n/g," "))}catch(e){console.log(k,"ERR",String(e))}}
