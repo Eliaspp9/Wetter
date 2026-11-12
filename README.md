@@ -121,6 +121,12 @@ Gemessen mit nachgestellter Netz-Verzögerung am zweiten Start (Ort Utzenaich, R
 - **Weniger Arbeit beim Start:** Die Bewegung des Regens fürs flüssige Radar wird in kleinen Stücken (höchstens 6 ms) und erst nach 3 Sekunden Ruhe oder beim Abspielen berechnet. Stundenkacheln werden nur neu gebaut, wenn sich etwas geändert hat. Der Worker wird nicht mehr bei jedem Start gefragt, ob er die Anmeldung verlängern kann (höchstens alle 12 Stunden), der Schlüssel für Benachrichtigungen wird gemerkt.
 - **Wackelige Verbindung:** Schlägt ein Abruf sofort fehl (typisch direkt nach dem Zurückholen der App), wird er nach 0,7 und 2,5 Sekunden wiederholt. In den ersten 5 Sekunden nach dem Zurückholen wird ein Abruf, der nach 6 Sekunden noch keine Antwort hat, abgebrochen und neu gestellt. Zeitlimits gelten bis zum Ende der Antwort, nicht nur bis zu den ersten Bytes. Nach einem misslungenen Laden versucht es die App nach 8 und 20 Sekunden von selbst wieder.
 
+## Adresse: Cloudflare statt GitHub Pages (seit 12.11.2026)
+
+Die App liegt jetzt unter **https://wetter.elias-ziegler.workers.dev/** (Cloudflare-Worker `wetter`, nur Dateien, kein eigener Code; Einstellungen in `wrangler.jsonc`, was nicht mit hinaus soll in `.assetsignore`). Der Worker `wetter-proxy` lässt diese Adresse immer zu (`APP_ORIGINS`), dazu weiter `ALLOWED_ORIGIN`.
+- Auf der alten Adresse bei GitHub zeigt die App einen Hinweis mit Knopf „Zur neuen Adresse“. Der Knopf meldet die Benachrichtigungen dort ab (sonst kämen sie doppelt) und nimmt Einstellungen und Lieblingsorte in der Adresse mit (`#umzug=…`, ohne Anmeldung und ohne Zwischenspeicher). Die neue Seite übernimmt sie ganz am Anfang und entfernt den Zusatz wieder.
+- Veröffentlichen: über den Cloudflare-Zugang (Dateien hochladen, dann Worker `wetter` mit den Dateien neu anlegen). Wird das Projekt bei GitHub privat, kann Cloudflare (Workers Builds) direkt mit dem Projekt verbunden werden: dann veröffentlicht jeder Push auf `main` von selbst.
+
 ## Radar Österreich: ganz Österreich auf einmal (1.0, Build 1, Stand 12.11.)
 
 Statt des sichtbaren Ausschnitts in Stücken (Text, je etwa 6 MB, oft 10 bis 30 Sekunden pro Stück) holt die App das ganze Gebiet von GeoSphere (Österreich und ein Streifen rundherum, 701 × 431 Punkte, 13 Bilder) in einem Abruf als NetCDF: etwa 1 MB, 1 bis 2 Sekunden. GeoSphere erlaubt das, weil für NetCDF bis zu 10 Millionen Werte je Abruf gelten (Text: 1 Million).

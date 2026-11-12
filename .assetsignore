@@ -1,0 +1,11 @@
+# Was NICHT zur Seite bei Cloudflare gehört (nur Code und Werkzeuge)
+.git
+.github
+.assetsignore
+wrangler.jsonc
+README.md
+tools
+worker
+worker.html
+widget
+.gitignore
