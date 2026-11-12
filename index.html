@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-lCHYWFjwRfu7fJMvMRnbFakBpGlRYUwvdWWLroh3Cko=' 'sha256-lvKpcV+EsU0KHXdF7yZhwxs4LQa60i0sSA8Pl56jziM=' 'sha256-4CoWjqLPtE4OpZFJbF4O6PPrVb8Fm75djoUa/2ooruo=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src 'self'; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://s3.amazonaws.com https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-lCHYWFjwRfu7fJMvMRnbFakBpGlRYUwvdWWLroh3Cko=' 'sha256-ZyIe2jiyILx7hrlC7bYtqmOtp5LNpEC2dh6zfg5acsw=' 'sha256-4CoWjqLPtE4OpZFJbF4O6PPrVb8Fm75djoUa/2ooruo=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src 'self'; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://s3.amazonaws.com https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -14,9 +14,9 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/favicon-64.png">
-<meta name="app-build" content="57">
+<meta name="app-build" content="58">
 <meta name="app-version" content="1.0">
-<meta name="app-notes" content="Version 1.0 (Build 1): Alles durchgesehen, Fehler behoben und schneller gemacht. Die App startet viel schneller: Das Wetter steht beim Öffnen fast sofort da, weil der letzte Stand gleich gezeigt wird und alle Daten gleichzeitig geholt werden. Das Regenradar Österreich holt neue Daten jetzt gleich, wenn du die App aus dem Hintergrund zurückholst. Die Regen-Vorschau für die nächsten 2 Stunden war eine Viertelstunde zu spät und stimmt jetzt. Benachrichtigungen kommen zuverlässiger, die Schrift lädt ohne Google, dazu viele Kleinigkeiten.">
+<meta name="app-notes" content="Version 1.0 (Build 1): Alles durchgesehen, Fehler behoben und schneller gemacht. Die App startet viel schneller: Das Wetter steht beim Öffnen fast sofort da, weil der letzte Stand gleich gezeigt wird und alle Daten gleichzeitig geholt werden. Das Regenradar Österreich lädt jetzt immer ganz Österreich auf einmal (etwa 1 MB, 1 bis 2 Sekunden statt viele Stücke zu je 6 MB), egal wohin du zoomst, ohne Lücken, und holt neue Daten gleich, wenn du die App aus dem Hintergrund zurückholst. Die Regen-Vorschau für die nächsten 2 Stunden war eine Viertelstunde zu spät und stimmt jetzt. Benachrichtigungen kommen zuverlässiger, die Schrift lädt ohne Google, dazu viele Kleinigkeiten.">
 <script>/* alte Adresse wetter2.html -> neue Startseite */
 try{if(top!==self)document.documentElement.style.display="none"}catch(e){document.documentElement.style.display="none"}
 window.__redir=/\/wetter2\.html$/i.test(location.pathname);
@@ -2742,10 +2742,13 @@ function trkAlarm(){
 
 /* ============ Radar „Österreich“: GeoSphere Austria (INCA-Nowcast) ============
    Niederschlag aus den österreichischen Radaren und Messstationen, 1 km, alle 15 Minuten neu, 3 Stunden voraus.
-   Geladen wird der ganze sichtbare Kartenausschnitt, soweit GeoSphere Daten hat (Österreich und ein Streifen rundherum).
-   Größere Ausschnitte kommen in Stücken von höchstens 25.000 km² (etwa 6 MB, GeoSphere braucht dafür bis zu einer halben
-   Minute), drei gleichzeitig, die Kartenmitte zuerst. GeoSphere liefert Punkte; sie kommen in ein Raster in Web-Mercator
-   (wie die Karte) mit Zellen von 1,08 km, etwas größer als der Punktabstand, damit keine Lücken bleiben.
+   Ab 1.0: Geladen wird immer das ganze Gebiet von GeoSphere (Österreich und ein Streifen rundherum) in EINEM Abruf als
+   NetCDF: etwa 1 MB, GeoSphere braucht dafür 1 bis 2 Sekunden. Ausgepackt und umgerechnet wird im Hintergrund (radar-at.js
+   mit hdf5.min.js), der neue Stand erscheint erst, wenn er ganz da ist; bis dahin bleibt der alte stehen.
+   Nur wenn das nicht geht (die Datei lässt sich nicht lesen), kommt der alte Weg: der sichtbare Ausschnitt als Text in Stücken
+   von höchstens 25.000 km² (etwa 6 MB, bis zu einer halben Minute), die Kartenmitte zuerst.
+   Die Punkte von GeoSphere kommen in ein Raster in Web-Mercator (wie die Karte) mit Zellen von 1,08 km, etwas größer als der
+   Punktabstand, damit keine Lücken bleiben.
    Aus denselben Daten kommen die Zugbahnen von Gewittern. */
 const AT_BOX=[45.5,8.1,49.48,17.74],GS_NOW="https://dataset.api.hub.geosphere.at/v1/grid/forecast/nowcast-v1-15min-1km?parameters=rr&output_format=geojson";
 const AT_KM2=25000,AT_MS=90000,AT_CS=1.08/(111.32*Math.cos(47.5*Math.PI/180));
@@ -2755,6 +2758,42 @@ const mercY=la=>Math.log(Math.tan(Math.PI/4+la*Math.PI/360))*180/Math.PI,imercY=
    Schritte von 3,5 %). Ab 0,03, weil GeoSphere schon 0,01 mm je Viertelstunde (0,04 mm/h, Niesel) liefert; das wird ganz zart gezeigt. */
 const RC_MIN=.03,RC_L=Math.log(200/RC_MIN),rCode=r=>r<RC_MIN?1:Math.min(255,2+Math.round(253*Math.log(r/RC_MIN)/RC_L)),RDEC=new Float32Array(256);
 for(let q=2;q<256;q++)RDEC[q]=RC_MIN*Math.exp((q-2)/253*RC_L);
+const GS_NC="https://dataset.api.hub.geosphere.at/v1/grid/forecast/nowcast-v1-15min-1km?parameters=rr&output_format=netcdf&bbox="+AT_BOX.map(x=>x.toFixed(2)).join(",");
+let atW=null,atWid=0,atNcOff=0;const atWq=new Map();
+/* ganz Österreich auf einmal (siehe oben). Fehler: e.net = Netz oder GeoSphere, sonst ließ sich die Datei nicht lesen */
+function atNc(){
+ return new Promise((res,rej)=>{
+  const fail=(msg,o)=>rej(Object.assign(new Error(msg),o||{}));
+  if(!window.Worker)return fail("kein Worker");
+  if(!atW){
+   try{atW=new Worker("radar-at.js")}catch(e){return fail("kein Worker")}
+   atW.onmessage=e=>{const m=e.data,c=m&&atWq.get(m.id);if(c){atWq.delete(m.id);c(m)}};
+   atW.onerror=()=>{const w=atW;atW=null;try{w.terminate()}catch(x){}for(const [id,c] of [...atWq]){atWq.delete(id);c({ok:false,err:"Worker"})}};
+  }
+  const id=++atWid,g=atGrid(AT_BOX),start=atStart();
+  const tm=setTimeout(()=>{const c=atWq.get(id);if(!c)return;atWq.delete(id);const w=atW;atW=null;try{w.terminate()}catch(x){}c({ok:false,net:true,abort:true,err:"Zeit"})},AT_MS+20000);
+  atWq.set(id,m=>{
+   clearTimeout(tm);
+   if(!m.ok)return fail(m.err,{net:!!m.net,abort:!!m.abort,status:m.status||0});
+   /* Beginnt die Datei erst nach dem verlangten Anfang, ist ihr erstes Bild das Messbild des Laufs; sonst ist der Lauf
+      älter als der Anfang (GeoSphere hängt nach), dann gilt die Zeit aus der Beschreibung */
+   const st=Date.parse(start+":00Z")/1000;let ref=m.base;
+   if(m.base<=st+60&&atMetaR&&atMetaR<=m.base)ref=atMetaR;
+   res({ref,t:m.t,g,V:m.V,has:m.has,fid:new Uint16Array(g.W*g.H),fseq:0,rects:[AT_BOX.slice()],n:m.n,ver:1,at:Date.now(),nc:true,
+    snow:!!(lastJ&&lastJ.current&&lastJ.current.temperature_2m<=0.5)});
+  });
+  atW.postMessage({id,url:GS_NC+"&start="+start,g:{lo0:g.lo0,yT:g.yT,W:g.W,H:g.H},cs:AT_CS,rcMin:RC_MIN,rcL:RC_L,ms:AT_MS});
+ });
+}
+/* Laden misslungen (Netz oder GeoSphere): sagen und von selbst nach 4, 10 und 25 Sekunden, danach jede Minute neu versuchen */
+function atFailed(slow,lim){
+ $("fnote").textContent=atData?(slow?"GeoSphere antwortet gerade sehr langsam. Du siehst den letzten Stand, es wird gleich wieder versucht.":"GeoSphere antwortet gerade nicht. Du siehst den letzten Stand, es wird gleich wieder versucht."):
+  (slow?"GeoSphere Austria antwortet gerade sehr langsam.":"Das Radar von GeoSphere Austria ist gerade nicht erreichbar.")+" Es wird gleich wieder versucht. Bis dahin zeigen „DWD 1 km“ und „Weltweit“ den Regen.";
+ if(!frames.length)$("ts").textContent="";
+ const w=lim?120000:[4000,10000,25000,60000][Math.min(3,atFail)];
+ atFail++;atNext=Date.now()+w;atPause=Date.now()+w-300;
+ setTimeout(()=>{if(mode==="at"&&!document.hidden)loadAt(false)},w+200);
+}
 let atData=null,atBusy=false,atBusyT=0,atWant=false,atFail=0,atPF=0,atPause=0,atNext=0,atSeq=0,atMoveT=0,atTkNext=0,atChkBusy=false,atChkT=0,atMetaBad=0,atMetaR=null,atNewer=0,atFreshT=0,atHook=false;
 /* Ob es einen neuen Lauf gibt, verrät die kleine Beschreibung des Datensatzes (wenige kB, schnell).
    Erst wenn dort ein neuerer Lauf steht, werden die großen Radardaten geladen. Gemessen am 8.11.2026: ein Lauf ist
@@ -2904,6 +2943,29 @@ async function loadAt(force){
   if(!atStaleNote()&&back&&!fresh)$("fnote").textContent="Vorhersage von GeoSphere Austria bis "+hmT(d.t[d.t.length-1])+" Uhr.";
   if(atBusy){atWant=true;return}
  }
+ /* neuer Lauf: ganz Österreich auf einmal */
+ if(fresh&&now>=atNcOff){
+  atBusy=true;atBusyT=Date.now();atWant=false;atFreshT=Date.now();
+  const my=++atSeq;
+  if(!d){$("fnote").textContent=atFail?"GeoSphere antwortet gerade langsam, neuer Versuch läuft … Bis dahin zeigen „DWD 1 km“ und „Weltweit“ den Regen.":"Radar von GeoSphere Austria wird geladen …";if(!frames.length)$("ts").textContent="Lädt …"}
+  else $("fnote").textContent="Neue Radardaten von GeoSphere werden geladen …";
+  let run=null,err=null;
+  try{run=await atNc()}catch(e){err=e}finally{if(my===atSeq)atBusy=false}
+  if(my!==atSeq||mode!=="at")return;
+  if(run){
+   atFail=0;atPF=0;atNewer=0;
+   /* älter als der gezeigte (ein Server von GeoSphere hängt nach): den gezeigten behalten und in 2 Minuten wieder fragen */
+   if(atData&&run.ref<atData.ref-60){atNext=Date.now()+AT_POLL;if(!atStaleNote())$("fnote").textContent="Vorhersage von GeoSphere Austria bis "+hmT(atData.t[atData.t.length-1])+" Uhr."}
+   else{atData=run;atUse(run);atNext=Math.max(Date.now()+AT_POLL,(run.ref+15*60+AT_LAG)*1000)}
+  }else if(err&&err.net){
+   console.warn("GeoSphere:",err.message);atFailed(!!err.abort,err.status===429);
+  }else{
+   /* Datei nicht lesbar (oder kein Hintergrund-Rechnen möglich): 6 Stunden lang der alte Weg in Stücken */
+   console.warn("GeoSphere NetCDF:",err&&err.message);atNcOff=Date.now()+6*3600000;setTimeout(()=>{if(mode==="at")loadAt(true)},0);
+  }
+  if(atWant&&mode==="at"){atWant=false;setTimeout(()=>loadAt(false),0)}
+  return;
+ }
  const need=fresh?[bb]:atMissing(d,bb);
  if(!need.length)return;
  atBusy=true;atBusyT=Date.now();atWant=false;if(fresh)atFreshT=Date.now();
@@ -2912,9 +2974,9 @@ async function loadAt(force){
  if(!d){$("fnote").textContent=atFail?"GeoSphere antwortet gerade sehr langsam, neuer Versuch läuft … Bis dahin zeigen „DWD 1 km“ und „Weltweit“ den Regen.":"Radar von GeoSphere Austria wird geladen … das kann bis zu einer halben Minute dauern.";if(!frames.length)$("ts").textContent="Lädt …"}
  /* alter Stand ist zu sehen, der neue wird geholt: das auch sagen (sonst sieht es aus, als täte sich nichts) */
  else if(fresh)$("fnote").textContent="Neue Radardaten von GeoSphere werden geladen …";
- /* Ist der gezeigte Stand schon älter als 45 Minuten (etwa weil die App im Hintergrund war), wird der neue gleich mit dem
-    ersten Teil gezeigt und der Rest ergänzt; sonst bleibt der alte stehen, bis der neue ganz da ist */
- const early=!!d&&Date.now()/1000-d.ref>45*60;
+ /* Der alte Stand bleibt stehen, bis der neue ganz da ist. Früher kam ein neuer schon mit dem ersten Teil, wenn der alte
+    älter als 45 Minuten war: Fehlte dann ein Teil, blieb dort eine Lücke mit geraden Kanten. */
+ const early=false;
  /* sichtbarer Lauf, aber noch nicht alles da: sagen, dass der Rest kommt (sonst sieht eine Kante wie ein Fehler aus) */
  const prog=()=>{if(run&&run===atData&&ok+bad<total)$("fnote").textContent="Radar lädt den Rest des Ausschnitts … ("+(ok+bad)+" von "+total+" Teilen)"};
  const one=async()=>{
@@ -2961,16 +3023,7 @@ async function loadAt(force){
   }else atPF=0;
   /* Stücke von einem älteren Lauf: in gut 2 Minuten neu holen */
   if(soft)setTimeout(()=>{if(mode==="at")loadAt(false)},125000);
- }else if(bad){
-  $("fnote").textContent=atData?(slow?"GeoSphere antwortet gerade sehr langsam. Du siehst den letzten Stand, es wird gleich wieder versucht.":"GeoSphere antwortet gerade nicht. Du siehst den letzten Stand, es wird gleich wieder versucht."):
-   (slow?"GeoSphere Austria antwortet gerade sehr langsam.":"Das Radar von GeoSphere Austria ist gerade nicht erreichbar.")+" Es wird in einer Minute wieder versucht. Bis dahin zeigen „DWD 1 km“ und „Weltweit“ den Regen.";
-  if(!frames.length)$("ts").textContent="";
-  /* neuer Versuch von selbst: nach 4, 10 und 25 Sekunden, danach jede Minute (früher erst mit der nächsten Minute, und nur
-     wenn 20 Sekunden lang niemand den Bildschirm berührt hat) */
-  const w=lim?120000:[4000,10000,25000,60000][Math.min(3,atFail)];
-  atFail++;atNext=Date.now()+w;atPause=Date.now()+w-300;
-  setTimeout(()=>{if(mode==="at"&&!document.hidden)loadAt(false)},w+200);
- }
+ }else if(bad)atFailed(slow,lim);
  if(newer&&atData&&newer>atData.ref+60){atNext=0;setTimeout(()=>{if(mode==="at")loadAt(false)},Math.max(800,60000-(Date.now()-atFreshT)))}
  else if(atWant&&mode==="at"){atWant=false;setTimeout(()=>loadAt(false),0)}
 }
@@ -3559,7 +3612,7 @@ function setMode(m,user){
  }else if(m==="at"){
   hideFc();exReset();layers.forEach(l=>{try{map.removeLayer(l)}catch(e){}l._wOn=0});hideDw();clearTrk();atHide();
   frames=[];pastCount=0;idx=0;$("sl").max=0;$("ts").textContent="";$("fresh").textContent="";$("fnote").textContent="";placeTick();
-  $("mnote").textContent="Radar von GeoSphere Austria (INCA): Niederschlag aus den österreichischen Radaren und Messstationen, mit 1 km Auflösung, alle 15 Minuten neu. Nach „Jetzt“ folgt die Vorhersage von GeoSphere für 3 Stunden. Geladen wird der ganze sichtbare Ausschnitt, soweit GeoSphere Daten hat (Österreich und ein Streifen rundherum); weit herausgezoomt sind das mehr Daten. Ob Regen (blau) oder Schnee (lila), entscheidet die Temperatur an jeder Stelle, mit ihrer Höhe. Tippe auf den Regen (oder fahr mit der Maus darüber), dann siehst du die Menge an dieser Stelle.";
+  $("mnote").textContent="Radar von GeoSphere Austria (INCA): Niederschlag aus den österreichischen Radaren und Messstationen, mit 1 km Auflösung, alle 15 Minuten neu. Nach „Jetzt“ folgt die Vorhersage von GeoSphere für 3 Stunden. Geladen wird immer ganz Österreich mit einem Streifen rundherum (etwa 1 MB), egal wohin du schiebst oder zoomst. Ein neuer Stand erscheint erst, wenn er ganz da ist. Ob Regen (blau) oder Schnee (lila), entscheidet die Temperatur an jeder Stelle, mit ihrer Höhe. Tippe auf den Regen (oder fahr mit der Maus darüber), dann siehst du die Menge an dieser Stelle.";
   /* schon geladene Daten sofort zeigen und nur bei Bedarf neu laden */
   if(lay==="rain"&&atData)atUse(atData);
   atNext=0;loadAt(true);
@@ -6082,7 +6135,7 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("shr").hidden)cl
 const meta=n=>{const m=document.querySelector('meta[name="'+n+'"]');return m?m.content:""};
 /* app-build zählt seit jeher einfach hoch; daran erkennen auch ältere Geräte ein Update (sie vergleichen diese Zahl).
    Angezeigt wird der Build seit Version 1.0: Build 1 ist app-build 57. */
-const BUILD=+meta("app-build")||0,BUILD0=56,verText=b=>meta("app-version")+" (Build "+(b-BUILD0)+")";
+const BUILD=+meta("app-build")||0,BUILD0=57,verText=b=>meta("app-version")+" (Build "+(b-BUILD0)+")";
 let remote=null,lastChk=0;
 $("ver").textContent=verText(BUILD);
 /* Anmeldung: bis wann sie gilt und ob sie sich von selbst verlängert */

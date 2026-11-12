@@ -6,7 +6,8 @@
 - kopiert index.html nach wetter2.html (alte Adresse, leitet automatisch um)
 
 Versionen: <meta name="app-build"> zählt bei jeder Veröffentlichung um 1 hoch (auch ältere Geräte erkennen daran ein Update).
-Angezeigt wird „Version (Build n)“ mit n = app-build − 56, also app-build 57 = Version 1.0 (Build 1)."""
+Angezeigt wird „Version (Build n)“ mit n = app-build − BUILD0 (steht in index.html, derzeit 57: app-build 58 = 1.0 (Build 1)).
+BUILD0 wird erhöht, wenn eine neue Fassung dieselbe Anzeige behalten soll; app-build zählt immer weiter (daran erkennen Geräte das Update)."""
 import re, hashlib, base64, shutil, sys, pathlib, json, html, subprocess, tempfile, os
 root = pathlib.Path(__file__).resolve().parent.parent
 p = root / "index.html"
@@ -25,6 +26,8 @@ def check_js(code, name, module=False):
     finally: os.unlink(tmp)
 for n, code in enumerate(scripts): check_js(code, "index.html, Skript %d" % (n + 1))
 check_js((root / "sw.js").read_text(encoding="utf-8"), "sw.js")
+check_js((root / "radar-at.js").read_text(encoding="utf-8"), "radar-at.js")
+if not (root / "hdf5.min.js").exists(): sys.exit("FEHLER: hdf5.min.js fehlt (radar-at.js braucht es)")
 check_js((root / "worker" / "kachelmann-proxy.js").read_text(encoding="utf-8"), "worker/kachelmann-proxy.js", module=True)
 
 def lint():
@@ -82,4 +85,4 @@ if w.exists():
     t = t.replace('<meta charset="utf-8">\n', '<meta charset="utf-8">\n<meta http-equiv="Content-Security-Policy" content="%s">\n' % wcsp, 1)
     assert t.count("Content-Security-Policy") == 1
     w.write_text(t, encoding="utf-8")
-print("Geprüft (%s) und gebaut: Version %s (Build %d, app-build %d), %d Inline-Skripte, version.json und wetter2.html geschrieben" % (lint_info, meta("app-version"), build - 56, build, len(hashes)))
+print("Geprüft (%s) und gebaut: Version %s (Build %d, app-build %d), %d Inline-Skripte, version.json und wetter2.html geschrieben" % (lint_info, meta("app-version"), build - int(re.search(r"BUILD0=(\d+)", s).group(1)), build, len(hashes)))

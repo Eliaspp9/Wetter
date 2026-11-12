@@ -121,6 +121,15 @@ Gemessen mit nachgestellter Netz-Verzögerung am zweiten Start (Ort Utzenaich, R
 - **Weniger Arbeit beim Start:** Die Bewegung des Regens fürs flüssige Radar wird in kleinen Stücken (höchstens 6 ms) und erst nach 3 Sekunden Ruhe oder beim Abspielen berechnet. Stundenkacheln werden nur neu gebaut, wenn sich etwas geändert hat. Der Worker wird nicht mehr bei jedem Start gefragt, ob er die Anmeldung verlängern kann (höchstens alle 12 Stunden), der Schlüssel für Benachrichtigungen wird gemerkt.
 - **Wackelige Verbindung:** Schlägt ein Abruf sofort fehl (typisch direkt nach dem Zurückholen der App), wird er nach 0,7 und 2,5 Sekunden wiederholt. In den ersten 5 Sekunden nach dem Zurückholen wird ein Abruf, der nach 6 Sekunden noch keine Antwort hat, abgebrochen und neu gestellt. Zeitlimits gelten bis zum Ende der Antwort, nicht nur bis zu den ersten Bytes. Nach einem misslungenen Laden versucht es die App nach 8 und 20 Sekunden von selbst wieder.
 
+## Radar Österreich: ganz Österreich auf einmal (1.0, Build 1, Stand 12.11.)
+
+Statt des sichtbaren Ausschnitts in Stücken (Text, je etwa 6 MB, oft 10 bis 30 Sekunden pro Stück) holt die App das ganze Gebiet von GeoSphere (Österreich und ein Streifen rundherum, 701 × 431 Punkte, 13 Bilder) in einem Abruf als NetCDF: etwa 1 MB, 1 bis 2 Sekunden. GeoSphere erlaubt das, weil für NetCDF bis zu 10 Millionen Werte je Abruf gelten (Text: 1 Million).
+- `radar-at.js` (Web Worker) lädt die Datei, packt sie mit `hdf5.min.js` aus (jsfive, gemeinfrei, mit pako inflate, MIT) und rechnet sie ins Raster der Karte um. Die App bleibt dabei flüssig.
+- Werte in der Datei: Niederschlag in 0,01 mm je Viertelstunde, -999 = keine Daten; Zeit als „minutes since <erstes Bild>“. Geprüft: Wert für Wert gleich wie die Text-Antwort von GeoSphere.
+- Der neue Stand erscheint erst, wenn er ganz da ist; bis dahin bleibt der alte stehen (keine Lücken mit geraden Kanten mehr). Zoomen und Verschieben laden nichts nach.
+- Lässt sich die Datei nicht lesen, kommt für 6 Stunden der alte Weg in Stücken. Antwortet GeoSphere nicht, neuer Versuch nach 4, 10, 25 und dann 60 Sekunden.
+- Die Anzeige bleibt „1.0 (Build 1)“: `app-build` ist 58, `BUILD0` in `index.html` wurde auf 57 gesetzt.
+
 ## Fehler, die mit 1.0 behoben wurden
 
 - **Radar Österreich blieb nach dem Hintergrund stehen** („Stand vor 100 Minuten“): Die ersten Abrufe nach dem Zurückholen scheiterten oder hingen, die App wertete das als Ausfall von GeoSphere und versuchte es erst nach einer Minute wieder, und auch nur, wenn 20 Sekunden lang nichts angetippt wurde. Jetzt: sofortiger neuer Versuch (siehe oben), eigene Wiederholung nach 4, 10, 25 und 60 Sekunden, das Antippen bremst nach 3 Minuten ohne Aktualisierung nicht mehr, und ist der gezeigte Lauf älter als 45 Minuten, erscheint der neue schon mit dem ersten geladenen Stück. Solange geladen wird, steht das unter der Karte. Nachgestellt (100 Minuten im Hintergrund): vorher 64 bzw. 23 Sekunden bis zum neuen Bild, jetzt 8.
