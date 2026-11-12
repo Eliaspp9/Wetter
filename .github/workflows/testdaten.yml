@@ -10,20 +10,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: GeoSphere v2 pruefen
+      - name: GeoSphere Einzelbilder
         run: |
-          mkdir -p gs
+          mkdir -p gs2
           B=https://dataset.api.hub.geosphere.at/v1
-          for ds in nwp-v2-1h-1km ensemble-v2-1h-1km; do curl -sS --retry 3 "$B/grid/forecast/$ds/metadata" -o gs/meta-$ds.json; sleep 1; done
-          REF=$(python3 -c "import json;print(json.load(open('gs/meta-nwp-v2-1h-1km.json'))['last_forecast_reftime'][:16])")
-          echo "REF $REF"
-          E=$(python3 -c "import datetime as d;t=d.datetime.fromisoformat('$REF');print((t+d.timedelta(hours=23)).strftime('%Y-%m-%dT%H:%M'))")
-          curl -sS -D gs/nwp24.hdr --retry 3 "$B/grid/forecast/nwp-v2-1h-1km?parameters=tp&output_format=netcdf&bbox=45.50,8.10,49.48,17.74&start=$REF&end=$E" -o gs/nwp24.nc; sleep 1
-          curl -sS -D gs/nwp24s.hdr --retry 3 "$B/grid/forecast/nwp-v2-1h-1km?parameters=tp,sf,pt&output_format=netcdf&bbox=45.50,8.10,49.48,17.74&start=$REF&end=$E" -o gs/nwp24s.nc; sleep 1
-          ST=$(date -u -d "@$(( ($(date +%s)/900)*900 - 1800 ))" +%Y-%m-%dT%H:%M)
-          curl -sS -D gs/t2m.hdr --retry 3 "$B/grid/forecast/nowcast-v1-15min-1km?parameters=t2m&output_format=netcdf&bbox=45.50,8.10,49.48,17.74&start=$ST&end=$ST" -o gs/t2m.nc
-          ls -la gs
+          curl -sS --retry 3 "$B/grid/forecast/nowcast-v1-15min-1km/metadata" -o gs2/meta.json
+          R0=$(python3 -c "import json;print(json.load(open('gs2/meta.json'))['available_forecast_reftimes'][0][:16])")
+          R1=$(python3 -c "import json;print(json.load(open('gs2/meta.json'))['available_forecast_reftimes'][1][:16])")
+          echo "$R0 $R1" > gs2/refs.txt
+          BB=45.50,8.10,49.48,17.74
+          curl -sS -D gs2/t2m.hdr --retry 3 "$B/grid/forecast/nowcast-v1-15min-1km?parameters=t2m&output_format=netcdf&bbox=$BB&start=$R0&end=$R0" -o gs2/t2m.nc; sleep 1
+          curl -sS --retry 3 "$B/timeseries/forecast/nowcast-v1-15min-1km?parameters=t2m&lat_lon=48.17,14.24&lat_lon=47.27,11.39&start=$R0&end=$R0" -o gs2/t2m_pt.json; sleep 1
+          curl -sS -D gs2/hist1.hdr --retry 3 "$B/grid/forecast/nowcast-v1-15min-1km?parameters=rr&output_format=netcdf&bbox=$BB&forecast_offset=1&start=$R1&end=$R1" -o gs2/hist1.nc; sleep 1
+          M0=$(python3 -c "import json,urllib.request as u;print(json.load(u.urlopen('$B/grid/forecast/nwp-v2-1h-1km/metadata'))['last_forecast_reftime'][:16])")
+          T=$(python3 -c "import datetime as d;print((d.datetime.fromisoformat('$M0')+d.timedelta(hours=20)).strftime('%Y-%m-%dT%H:%M'))")
+          curl -sS -D gs2/pt.hdr --retry 3 "$B/grid/forecast/nwp-v2-1h-1km?parameters=tp,pt&output_format=netcdf&bbox=$BB&start=$T&end=$T" -o gs2/pt.nc
+          ls -la gs2
       - name: Ablegen
         run: |
           git config user.name "testdaten"; git config user.email "testdaten@users.noreply.github.com"
-          git add om gs && git commit -qm "Daten: Radar NetCDF (gs3)" && git push -q
+          git add om gs gs2 && git commit -qm "Daten: Radar NetCDF (gs4)" && git push -q
