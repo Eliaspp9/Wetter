@@ -1,20 +1,8 @@
-== https://static.avalanche.report/weather_stations/stations.geojson 200 296382 1241ms
-n 355 {"AT-07":262,"IT-32":93}
-{"id":"01766df3-cdec-b653-3d29-9a1acf03a479","geometry":{"coordinates":[11.132125,47.243247,2419],"type":"Point"},"properties":{"LD":739.1,"LT":-0.1,"LT_MAX":4.2,"LT_MIN":-0.1,"LWD-Region":"AT-07-09 Grieskogelgruppe","N24":0.8,"N48":2.1,"N6":0.5,"N72":8.7,"RH":97,"TD":-0.517,"WG":7.382,"WR":286.627,"date":"2026-11-12T21:40:00+01:00","name":"Inzing Brechten","operator":"fotho-electric.tirol","operatorLink":"https://www.inzing-wetter.at/proxy/wetter/","plot":"brechten"},"type":"Feature"}
-mit LT 341 date 2026-11-12T21:40:00+01:00
-== https://www.data.gv.at/katalog/api/3/action/package_search?q=Lufttemperatur%20Echtzeit&rows=15 404 5122 581ms
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="shortcut icon" type="image/ico" href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEU
-== https://www.data.gv.at/katalog/api/3/action/package_search?q=Wetterstation%20Temperatur&rows=15 404 5122 120ms
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="shortcut icon" type="image/ico" href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEU
+offset 0 200 1176ms 2026-11-12T15:00+00:00 2026-11-12T21:00+00:00 55 2 
+offset 2 200 870ms 2026-11-12T09:00+00:00 2026-11-12T21:00+00:00 49 2 
+offset 5 200 512ms 2026-11-12T00:00+00:00 2026-11-12T21:00+00:00 40 2 
+offset 8 400 184ms undefined undefined undefined undefined 
+offset 11 400 1106ms undefined undefined undefined undefined 
+offset 14 400 567ms undefined undefined undefined undefined 
+offset 16 400 198ms undefined undefined undefined undefined 
+offset 20 400 184ms undefined undefined undefined undefined 
