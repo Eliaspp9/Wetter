@@ -1,0 +1,24 @@
+name: Testdaten Radar
+on:
+  push:
+    branches: [testdaten-nc]
+jobs:
+  holen:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Radar Österreich als NetCDF holen
+        run: |
+          mkdir nc
+          B="https://dataset.api.hub.geosphere.at/v1/grid/forecast/nowcast-v1-15min-1km"
+          curl -sS "$B/metadata" -o nc/metadata.json
+          ST=$(date -u -d "@$(( ($(date +%s)/900)*900 - 2700 ))" +%Y-%m-%dT%H:%M)
+          curl -sS -D nc/ganz.hdr "$B?parameters=rr&bbox=45.50,8.10,49.48,17.74&output_format=netcdf&start=$ST" -o nc/ganz.nc
+          curl -sS "$B?parameters=rr&bbox=47.9,13.9,48.5,14.7&output_format=netcdf&start=$ST" -o nc/klein.nc
+          curl -sS "$B?parameters=rr&bbox=47.9,13.9,48.5,14.7&output_format=geojson&start=$ST" -o nc/klein.geojson
+          curl -sS "$B?parameters=rr&bbox=45.50,8.10,49.48,17.74&output_format=netcdf" -o nc/ohne_start.nc
+          ls -la nc
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nc
+          path: nc
+          retention-days: 1
