@@ -1,6 +1,4 @@
-const t0=Date.now();
-try{const m=await (await fetch("https://dataset.api.hub.geosphere.at/v1/timeseries/forecast/nwp-v2-1h-1km/metadata")).json();
-console.log("meta ms",Date.now()-t0,"ref",m.last_forecast_reftime,"freq",m.frequency);
-console.log("params",JSON.stringify((m.parameters||[]).map(p=>p.name+"|"+p.unit+"|"+(p.long_name||p.description||"").slice(0,40))));}catch(e){console.log("meta",String(e))}
-const t1=Date.now();
-try{const r=await fetch("https://dataset.api.hub.geosphere.at/v1/timeseries/forecast/nwp-v2-1h-1km?lat_lon=48.1627,14.2419&parameters=t2m,tp,u10m,v10m,ugust,vgust,rh2m,tcc,sf&output_format=geojson");const t=await r.text();console.log("ts",r.status,Date.now()-t1,"ms",t.slice(0,600))}catch(e){console.log("ts",String(e))}
+const fs=await import("fs");
+const r=await fetch("https://dataset.api.hub.geosphere.at/v1/timeseries/forecast/nwp-v2-1h-1km?lat_lon=48.1627,14.2419&parameters=2t,10u,10v,10fg,2r&output_format=geojson");const t=await r.text();console.log(r.status,t.length,t.slice(0,300));fs.writeFileSync("gs3/gs1.json",t);
+const B="https://api.open-meteo.com/v1/forecast?latitude=48.1627&longitude=14.2419&timezone=auto&forecast_days=7&current=temperature_2m,apparent_temperature,relative_humidity_2m,precipitation,weather_code,wind_speed_10m,wind_direction_10m,surface_pressure,is_day,cloud_cover,wind_gusts_10m&hourly=temperature_2m,precipitation_probability,weather_code,precipitation,wind_speed_10m,wind_gusts_10m,snowfall,cloud_cover,cloud_cover_low,relative_humidity_2m,is_day&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max,sunrise,sunset,uv_index_max&models=dwd_icon_d2_ruc_native,geosphere_claef_austria,dwd_icon_d2_native,ecmwf_ifs,best_match";
+fs.writeFileSync("gs3/main.json",await (await fetch(B)).text());
