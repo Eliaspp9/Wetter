@@ -127,6 +127,13 @@ Die App liegt jetzt unter **https://wetter.elias-ziegler.workers.dev/** (Cloudfl
 - Auf der alten Adresse bei GitHub zeigt die App einen Hinweis mit Knopf „Zur neuen Adresse“. Der Knopf meldet die Benachrichtigungen dort ab (sonst kämen sie doppelt) und nimmt Einstellungen und Lieblingsorte in der Adresse mit (`#umzug=…`, ohne Anmeldung und ohne Zwischenspeicher). Die neue Seite übernimmt sie ganz am Anfang und entfernt den Zusatz wieder.
 - Veröffentlichen: Cloudflare ist mit dem Projekt verbunden (Workers Builds, seit 12.11.2026): Jeder Push auf `main` veröffentlicht die Seite von selbst (`npx wrangler deploy` mit `wrangler.jsonc`). Das funktioniert auch, wenn das Projekt privat ist. Der Worker `wetter-proxy` wird weiter getrennt hochgeladen.
 
+## Genauestes Modell je Ort, KI-Modelle zum Vergleich (12.11.2026)
+
+- **Heute und morgen** kommt die Vorhersage vom genauesten Modell vor Ort, je Land in Europa (Tabelle `LOK` in `index.html`, z. B. Österreich: GeoSphere C-LAEF, dann ICON-D2; Deutschland: DWD ICON-D2; Schweiz: MeteoSchweiz ICON-CH1/CH2; Frankreich: AROME HD; Skandinavien: MET Norway Nordic; Mittel- und Südosteuropa: ČHMÚ Aladin; Italien: ICON-2I). Ab übermorgen ECMWF IFS. Was ein Modell nicht rechnet (z. B. Regenwahrscheinlichkeit) oder wo es nicht hinreicht, kommt Stunde für Stunde vom nächsten in der Reihe (`omChain`). Portugal, Griechenland und Zypern haben bei Open-Meteo kein Modell vor Ort, dort ECMWF. Geprüft am 12.11.2026 an 45 Orten. Die Quelle steht oben und bei den 7 Tagen.
+- Die gelernten Korrekturen (Regenwahrscheinlichkeit, Wind, Hochnebel, Temperatur) wurden an ECMWF gelernt und gelten nur für Stunden, die von ECMWF kommen (`j._src`).
+- **Modellmix (Lernen):** zusätzlich GeoSphere C-LAEF, ICON-D2 und die KI-Modelle KI DWD (AICON) und KI NOAA (AIGFS); der Worker lernt sie ab Worker 1.0 (Build 4) mit.
+- **Modellvergleich (Wetter-Fans):** das Modell vor Ort, ICON-D2, ICON-EU (neue Namen, die alten enden am 30.11.2026), ECMWF, GFS und drei KI-Modelle (ECMWF AIFS, DWD AICON, NOAA AIGFS).
+
 ## Seite bei Cloudflare: eine Adresse, Anmeldung vor der App, Sicherheitsregeln (12.11.2026)
 
 `site/worker.js` (Worker `wetter`, wird mit `wrangler.jsonc` bei jedem Push veröffentlicht) steht vor allen Dateien:
