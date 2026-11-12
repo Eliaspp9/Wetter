@@ -18,12 +18,12 @@ jobs:
           REF=$(python3 -c "import json;print(json.load(open('gs/meta-nwp-v2-1h-1km.json'))['last_forecast_reftime'][:16])")
           echo "REF $REF"
           E=$(python3 -c "import datetime as d;t=d.datetime.fromisoformat('$REF');print((t+d.timedelta(hours=23)).strftime('%Y-%m-%dT%H:%M'))")
-          curl -sS -D gs/nwp24.hdr --retry 3 "$B/grid/forecast/nwp-v2-1h-1km?parameters=rr_acc&output_format=netcdf&bbox=45.50,8.10,49.48,17.74&start=$REF&end=$E" -o gs/nwp24.nc; sleep 1
-          curl -sS -D gs/nwp24s.hdr --retry 3 "$B/grid/forecast/nwp-v2-1h-1km?parameters=rr_acc,snow_acc&output_format=netcdf&bbox=45.50,8.10,49.48,17.74&start=$REF&end=$E" -o gs/nwp24s.nc; sleep 1
+          curl -sS -D gs/nwp24.hdr --retry 3 "$B/grid/forecast/nwp-v2-1h-1km?parameters=tp&output_format=netcdf&bbox=45.50,8.10,49.48,17.74&start=$REF&end=$E" -o gs/nwp24.nc; sleep 1
+          curl -sS -D gs/nwp24s.hdr --retry 3 "$B/grid/forecast/nwp-v2-1h-1km?parameters=tp,sf,pt&output_format=netcdf&bbox=45.50,8.10,49.48,17.74&start=$REF&end=$E" -o gs/nwp24s.nc; sleep 1
           ST=$(date -u -d "@$(( ($(date +%s)/900)*900 - 1800 ))" +%Y-%m-%dT%H:%M)
           curl -sS -D gs/t2m.hdr --retry 3 "$B/grid/forecast/nowcast-v1-15min-1km?parameters=t2m&output_format=netcdf&bbox=45.50,8.10,49.48,17.74&start=$ST&end=$ST" -o gs/t2m.nc
           ls -la gs
       - name: Ablegen
         run: |
           git config user.name "testdaten"; git config user.email "testdaten@users.noreply.github.com"
-          git add om gs && git commit -qm "Daten: Radar NetCDF (gs2)" && git push -q
+          git add om gs && git commit -qm "Daten: Radar NetCDF (gs3)" && git push -q
