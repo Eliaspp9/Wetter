@@ -127,6 +127,14 @@ Die App liegt jetzt unter **https://wetter.elias-ziegler.workers.dev/** (Cloudfl
 - Auf der alten Adresse bei GitHub zeigt die App einen Hinweis mit Knopf „Zur neuen Adresse“. Der Knopf meldet die Benachrichtigungen dort ab (sonst kämen sie doppelt) und nimmt Einstellungen und Lieblingsorte in der Adresse mit (`#umzug=…`, ohne Anmeldung und ohne Zwischenspeicher). Die neue Seite übernimmt sie ganz am Anfang und entfernt den Zusatz wieder.
 - Veröffentlichen: Cloudflare ist mit dem Projekt verbunden (Workers Builds, seit 12.11.2026): Jeder Push auf `main` veröffentlicht die Seite von selbst (`npx wrangler deploy` mit `wrangler.jsonc`). Das funktioniert auch, wenn das Projekt privat ist. Der Worker `wetter-proxy` wird weiter getrennt hochgeladen.
 
+## Seite bei Cloudflare: eine Adresse, Anmeldung vor der App, Sicherheitsregeln (12.11.2026)
+
+`site/worker.js` (Worker `wetter`, wird mit `wrangler.jsonc` bei jedem Push veröffentlicht) steht vor allen Dateien:
+- **/api/…** geht über ein Service Binding (`PROXY`) an `wetter-proxy`. Die App nutzt auf der Cloudflare-Adresse `location.origin + "/api"` statt der Worker-Adresse: gleiche Adresse, daher keine CORS-Vorabanfragen mehr (vorher vor fast jeder Anfrage mit Anmeldung eine zusätzliche).
+- **App nur nach Anmeldung:** `/` bzw. `index.html` gibt es nur mit gültigem Anmelde-Cookie `wt` (HttpOnly, Secure, SameSite=Strict, 30 Tage). Gesetzt wird es bei `/api/login` und `/api/renew`; Geräte, die schon vorher angemeldet waren, tauschen ihr Token einmal über `/api/session` (die App macht das beim Start, danach alle 12 Stunden). Ohne Cookie kommt `login.html` (mit `login.js`). Geprüft wird das Token beim Proxy (`/auth`), 10 Minuten gemerkt. Schriften, Symbole und die übrigen Dateien bleiben frei abrufbar. Abmelden löscht auch das Cookie (`/api/logout`).
+- **Sicherheitsregeln vom Server** bei jeder Antwort: `X-Frame-Options: DENY` und `frame-ancestors 'none'` (keine Einbettung in fremde Seiten), HSTS, `nosniff`, Referrer-Policy, Permissions-Policy (nur Standort), Cross-Origin-Opener-Policy. Die Regeln in der Seite selbst (CSP-Meta) gelten weiter.
+- Der Service Worker speichert nur echte App-Seiten (mit `app-build`), nie die Anmeldeseite, und lässt `/api/` und die Anmeldeseite in Ruhe.
+
 ## Radar Österreich: ganz Österreich auf einmal (1.0, Build 1, Stand 12.11.)
 
 Statt des sichtbaren Ausschnitts in Stücken (Text, je etwa 6 MB, oft 10 bis 30 Sekunden pro Stück) holt die App das ganze Gebiet von GeoSphere (Österreich und ein Streifen rundherum, 701 × 431 Punkte, 13 Bilder) in einem Abruf als NetCDF: etwa 1 MB, 1 bis 2 Sekunden. GeoSphere erlaubt das, weil für NetCDF bis zu 10 Millionen Werte je Abruf gelten (Text: 1 Million).

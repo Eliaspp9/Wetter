@@ -1,12 +1,18 @@
-// Die Seite (App) bei Cloudflare: wetter.elias-ziegler.workers.dev. Nur Dateien, kein eigener Code.
-// Ausgeliefert wird der ganze Ordner außer dem, was in .assetsignore steht.
-// Der Worker mit Anmeldung, Kachelmann und Benachrichtigungen ist ein eigener: worker/kachelmann-proxy.js (wetter-proxy).
+// Die Wetter-App bei Cloudflare: https://wetter.elias-ziegler.workers.dev
+// Cloudflare veröffentlicht das bei jedem Push auf main von selbst (Workers Builds).
+// site/worker.js: Sicherheitsregeln, App nur nach Anmeldung, /api/… -> Worker wetter-proxy (worker/kachelmann-proxy.js, eigener Worker).
+// Ausgeliefert wird der Ordner außer dem, was in .assetsignore steht.
 {
   "name": "wetter",
+  "main": "site/worker.js",
   "compatibility_date": "2026-11-07",
   "assets": {
     "directory": "./",
+    "binding": "ASSETS",
+    "run_worker_first": true,
     "not_found_handling": "404-page",
     "html_handling": "auto-trailing-slash"
-  }
+  },
+  "services": [{ "binding": "PROXY", "service": "wetter-proxy" }],
+  "observability": { "enabled": true }
 }
