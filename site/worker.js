@@ -276,7 +276,8 @@ async function bfSK(la, lo, models) {
 /* /bf/tip: Tipps für den Tag. Die App schickt die Fakten (aus ihren Vorhersagedaten nach festen Regeln bestimmt), ein kleines
    Sprachmodell von Cloudflare formuliert daraus kurze Tipps. Geprüft wird: keine neue Zahl, sinnvolle Länge, keine Sonderzeichen.
    Klappt das nicht, nimmt die App ihre festen Sätze. */
-const TIP_AI = ["@cf/meta/llama-3.1-8b-instruct-fast", "@cf/meta/llama-3.1-8b-instruct"];
+/* Llama 3.3 70B schreibt deutlich sauberer (am 12.11.2026 verglichen); das kleine Modell nur als Ersatz */
+const TIP_AI = ["@cf/meta/llama-3.3-70b-instruct-fp8-fast", "@cf/meta/llama-3.1-8b-instruct-fast"];
 async function bfTip(req, env) {
   if (!env.AI) return bfJson({ error: "keine KI" }, 503);
   let f = [];
@@ -284,17 +285,17 @@ async function bfTip(req, env) {
   if (!f.length) return bfJson({ t: [] });
   const ok = new Set(f.join(" ").match(/\d+(?:[.,]\d+)?/g) || []);
   const msgs = [
-    { role: "system", content: "Du schreibst für eine Wetter-App auf Deutsch kurze, freundliche Tipps für den Tag. Für jede Tatsache genau ein Tipp, ein Satz, höchstens 110 Zeichen, mit einem praktischen Rat (zum Beispiel Schirm, Jacke, Scheiben kratzen, Sonnencreme). Verwende nur die gegebenen Tatsachen, erfinde nichts, ändere keine Zahl und keine Uhrzeit. Eine Zeile pro Tipp, ohne Nummern, ohne Aufzählungszeichen, kein Emoji, keine Anführungszeichen." },
-    { role: "user", content: f.map((x) => "- " + x).join("\n") },
+    { role: "system", content: "Du formulierst für eine Wetter-App auf Deutsch kurze, freundliche Tipps für den Tag. Du bekommst nummerierte Tatsachen. Schreibe zu jeder Tatsache genau einen Satz mit einem praktischen Rat, in derselben Reihenfolge, eine Zeile pro Tatsache, also genau so viele Zeilen wie Tatsachen. Sprich den Leser mit du an. Höchstens 110 Zeichen pro Satz. Verwende nur die jeweilige Tatsache, erfinde nichts dazu, übernimm Zahlen und Uhrzeiten genau. Ohne Nummern, ohne Aufzählungszeichen, kein Emoji, keine Anführungszeichen." },
+    { role: "user", content: f.map((x, i) => i + 1 + ". " + x).join("\n") },
   ];
   for (const m of TIP_AI) {
     try {
       const r = await env.AI.run(m, { messages: msgs, max_tokens: 260, temperature: 0.4 });
       const t = String((r && (r.response || (r.result && r.result.response))) || "").split(/\n+/)
         .map((x) => x.replace(/^\s*(?:[-*•]|\d+[.)])\s*/, "").replace(/^["„»“]+|["“«”]+$/g, "").trim()).filter((x) => x.length >= 12);
-      if (t.length < 1 || t.length > f.length + 1) continue;
+      if (t.length !== f.length) continue;
       if (t.some((x) => x.length > 140 || /[<>{}*#\[\]]/.test(x) || !(x.match(/\d+(?:[.,]\d+)?/g) || []).every((n) => ok.has(n)))) continue;
-      return bfJson({ t: t.slice(0, f.length), m });
+      return bfJson({ t, m });
     } catch (e) {}
   }
   return bfJson({ t: [] });
