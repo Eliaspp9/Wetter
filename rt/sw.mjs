@@ -216,7 +216,22 @@ async function bfPP(la, lo) {
   return bfJson({ t0: T[0] || 0, p, src: names, at: Math.round(Date.now() / 1000) });
 }
 const BF_MOD = /^[a-z0-9_]{2,40}$/;
-async function bfSK(la, lo, models) {
+/* Das 1-km-Modell von GeoSphere (Open-Meteo hat es nicht): ältere Läufe direkt bei GeoSphere holen (forecast_offset 2 und 5,
+   also Vorhersagen von vor etwa 6 bis 21 Stunden für die Stunden bis jetzt) und genauso mit den Stationen vergleichen.
+   Ergebnis wie bei den anderen Modellen (Gewicht, Fehler) und dazu der mittlere Fehler b (Vorhersage minus Messung),
+   mit dem die App das Modell ausbessert. */
+const GS1 = "geosphere_1km", GS1_URL = "https://dataset.api.hub.geosphere.at/v1/timeseries/forecast/nwp-v2-1h-1km";
+async function gs1Past(S) {
+  const now = Math.floor(Date.now() / 3600000) * 3600, ll = S.map((o) => "&lat_lon=" + o.la.toFixed(4) + "," + o.lo.toFixed(4)).join("");
+  const one = async (o) => {
+    try {
+      const r = await tfetch(GS1_URL + "?parameters=2t,10u,10v&output_format=geojson&forecast_offset=" + o + "&start=" + isoM(now - o * 3 * 3600) + ll, 22000);
+      return r.ok ? await r.json() : null;
+    } catch (e) { return null; }
+  };
+  return (await Promise.all([one(2), one(5)])).filter((j) => j && Array.isArray(j.timestamps) && Array.isArray(j.features));
+}
+async function bfSK(la, lo, models, g) {
   const dla = 0.55, dlo = Math.min(2.5, 0.8 / Math.max(0.2, Math.cos((la * Math.PI) / 180)));
   const bb = [la - dla, lo - dlo, la + dla, lo + dlo].map((x) => x.toFixed(2)).join(",");
   let a = [];
@@ -263,9 +278,31 @@ async function bfSK(la, lo, models) {
       }
     }
   });
-  const out = { t: {}, w: {}, r: {}, e: {}, n: 0, st: S.map((o) => o.id) };
-  for (const m of models) {
+  const all = models.slice();
+  if (g) {
+    const P = await gs1Past(S), q = (acc[GS1] = { tE: 0, tN: 0, wE: 0, wN: 0, rE: 0, rN: 0, tB: 0 });
+    for (const j of P) {
+      j.features.forEach((f, si) => {
+        const o = S[si], pa = f && f.properties && f.properties.parameters;
+        if (!o || !pa || !pa["2t"]) return;
+        const T = pa["2t"].data || [], U = (pa["10u"] || {}).data || [], V = (pa["10v"] || {}).data || [];
+        const ix = new Map(j.timestamps.map((t, i) => [Date.parse(t) / 1000, i]));
+        for (const ob of o.ob) {
+          const hr = Math.round(ob.t / 3600) * 3600;
+          if (Math.abs(hr - ob.t) > 1200 || hr > now) continue;
+          const i = ix.get(hr);
+          if (i == null) continue;
+          if (T[i] != null && ob.T != null) { q.tE += Math.abs(T[i] - ob.T); q.tB += T[i] - ob.T; q.tN++; }
+          if (U[i] != null && V[i] != null && ob.W != null) { q.wE += Math.abs(Math.hypot(U[i], V[i]) * 3.6 - ob.W); q.wN++; }
+        }
+      });
+    }
+    all.push(GS1);
+  }
+  const out = { t: {}, w: {}, r: {}, e: {}, b: {}, n: 0, st: S.map((o) => o.id) };
+  for (const m of all) {
     const q = acc[m];
+    if (q.tN >= 20 && q.tB != null) out.b[m] = Math.round((q.tB / q.tN) * 100) / 100;
     if (q.tN >= 20) { out.e[m] = Math.round((q.tE / q.tN) * 100) / 100; out.t[m] = 1 / Math.pow(q.tE / q.tN + 0.3, 2); out.n = Math.max(out.n, q.tN); }
     if (q.wN >= 20) out.w[m] = 1 / Math.pow(q.wE / q.wN + 1.5, 2);
     if (q.rN >= 20) out.r[m] = Math.round((1 - q.rE / q.rN) * 1000) / 1000;
@@ -300,8 +337,22 @@ async function bfTip(req, env) {
   }
   return bfJson({ t: [] });
 }
+/* /om/<host>/<pfad>?…: Abfragen an Open-Meteo weiterleiten, damit nicht der Internetanschluss zu Hause zählt (Open-Meteo
+   erlaubt 10.000 Abfragen pro Anschluss und Tag). Nur für Angemeldete, nur die Open-Meteo-Server, nur GET, ohne
+   Cookies; die Antwort wird unverändert durchgereicht (kaum Rechenzeit). */
+const OM_HOSTS = new Set(["api.open-meteo.com", "air-quality-api.open-meteo.com", "previous-runs-api.open-meteo.com", "ensemble-api.open-meteo.com", "geocoding-api.open-meteo.com"]);
+async function omServe(req, env, url) {
+  if (!(await valid(env, getCookie(req, COOKIE)))) return bfJson({ error: "Nicht angemeldet" }, 401);
+  const m = /^\/om\/([a-z.-]+)(\/[A-Za-z0-9_\/.-]*)$/.exec(url.pathname);
+  if (!m || !OM_HOSTS.has(m[1]) || req.method !== "GET") return bfJson({ error: "Ungültig" }, 400);
+  try {
+    const r = await tfetch("https://" + m[1] + m[2] + url.search, 25000);
+    return new Response(r.body, { status: r.status, headers: { "Content-Type": r.headers.get("Content-Type") || "application/json", "Cache-Control": "no-store" } });
+  } catch (e) { return bfJson({ error: "Open-Meteo nicht erreichbar" }, 502); }
+}
 async function bfServe(req, env, url) {
   if (!(await valid(env, getCookie(req, COOKIE)))) return bfJson({ error: "Nicht angemeldet" }, 401);
+  if (url.pathname === "/bf/log" && req.method === "POST") { try { const b = await req.json(); console.log("APPFEHLER", JSON.stringify(b).slice(0, 1600)); } catch (e) {} return bfJson({ ok: 1 }); }
   if (url.pathname === "/bf/tip" && req.method === "POST") { try { return await bfTip(req, env); } catch (e) { return bfJson({ t: [] }); } }
   const la = Math.round(+url.searchParams.get("la") * 20) / 20, lo = Math.round(+url.searchParams.get("lo") * 20) / 20;
   if (!isFinite(la) || !isFinite(lo) || Math.abs(la) > 85 || Math.abs(lo) > 180) return bfJson({ error: "Ungültig" }, 400);
@@ -310,7 +361,7 @@ async function bfServe(req, env, url) {
     if (url.pathname === "/bf/sk") {
       const models = String(url.searchParams.get("m") || "").split(",").filter((m) => BF_MOD.test(m)).slice(0, 6);
       if (!models.length) return bfJson({ error: "Ungültig" }, 400);
-      return await bfSK(la, lo, models);
+      return await bfSK(la, lo, models, url.searchParams.get("g") === "1");
     }
   } catch (e) { return bfJson({ error: String((e && e.message) || e).slice(0, 80) }, 502); }
   return bfJson({ error: "Nicht gefunden" }, 404);
@@ -320,6 +371,7 @@ export default {
     const url = new URL(req.url);
     try {
       if (url.pathname === "/api" || url.pathname.startsWith("/api/")) return secure(await api(req, env, url), { "Cache-Control": "no-store" });
+      if (url.pathname.startsWith("/om/")) return secure(await omServe(req, env, url));
       if (url.pathname.startsWith("/bf/")) return secure(await bfServe(req, env, url));
       if (url.pathname === "/gm" || url.pathname.startsWith("/gm/") || url.pathname === "/gr" || url.pathname.startsWith("/gr/")) return secure(await gmServe(env, url));
       if (req.method !== "GET" && req.method !== "HEAD") return secure(new Response("Nicht erlaubt", { status: 405, headers: { Allow: "GET, HEAD" } }));

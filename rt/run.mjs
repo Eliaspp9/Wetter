@@ -1,3 +1,3 @@
-const B="https://dataset.api.hub.geosphere.at/v1/timeseries/forecast/nwp-v2-1h-1km?lat_lon=48.233,14.188&lat_lon=47.79,13.0&parameters=2t,10u,10v&output_format=geojson";
-for(const o of [1,3,5,6,7]){const t0=Date.now();try{const st=new Date(Date.now()-(o*3+3)*3600e3).toISOString().slice(0,13)+":00";const r=await fetch(B+"&forecast_offset="+o+"&start="+st);const t=await r.text();let j=null;try{j=JSON.parse(t)}catch(e){}
- console.log("offset",o,"start",st,r.status,Date.now()-t0+"ms",j&&j.reference_time,j&&j.timestamps&&j.timestamps[0],j&&j.timestamps&&j.timestamps.length,j?"":t.slice(0,200))}catch(e){console.log(o,"ERR",String(e))}}
+const mod=await import("./sw.mjs");const env={PROXY:{fetch:async()=>new Response("{}",{status:200})}};
+for(const [n,la,lo] of [["Noestlbach",48.163,14.242],["Innsbruck",47.26,11.39],["Wien",48.2,16.37]]){const t0=Date.now();
+const r=await mod.default.fetch(new Request("https://x/bf/sk?la="+la+"&lo="+lo+"&g=1&m=dwd_icon_d2_ruc_native,geosphere_claef_austria,dwd_icon_d2_native,ecmwf_ifs",{headers:{Cookie:"wt=a.b"}}),env);console.log(n,r.status,Date.now()-t0+"ms",(await r.text()).slice(0,600))}
