@@ -8,16 +8,16 @@ x-ratelimit-limit-hour: 240
 ratelimit-remaining: 4
 ratelimit-reset: 1
 ratelimit-limit: 5
-date: Thu, 12 Nov 2026 13:47:19 GMT
+date: Thu, 12 Nov 2026 13:50:38 GMT
 server: uvicorn
 content-disposition: attachment;filename=nowcasting.nc
 datapoint-count: 0
 accept-ranges: bytes
-last-modified: Thu, 12 Nov 2026 13:47:32 GMT
-etag: "2672b17a7542cc901e2b4001a0c97763"
+last-modified: Thu, 12 Nov 2026 13:50:49 GMT
+etag: "692d9eed0aad740fed711123d3ee4469"
 access-control-allow-origin: *
-x-kong-upstream-latency: 21056
-x-kong-proxy-latency: 24
+x-kong-upstream-latency: 3922
+x-kong-proxy-latency: 10
 via: 1.1 kong/3.9.1
-x-kong-request-id: 7c909e004cfd1f5ce486f830c651ed41
+x-kong-request-id: a83a4b6d9fb5a76c3a5abc616d9b3e12
 

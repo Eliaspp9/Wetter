@@ -1,1 +1,1 @@
-{"detail":"Parameters {'rr_acc', 'snow_acc'} do not exist or access is denied"}
+{"detail":"The data slice you requested is too large. The limit is 10000000 data points. You requested 22722336."}

@@ -1,6 +1,6 @@
-HTTP/2 400 
-content-type: application/json
-content-length: 67
+HTTP/2 200 
+content-type: application/x-netcdf
+content-length: 6347880
 x-ratelimit-remaining-second: 4
 x-ratelimit-limit-second: 5
 x-ratelimit-remaining-hour: 238
@@ -8,11 +8,16 @@ x-ratelimit-limit-hour: 240
 ratelimit-remaining: 4
 ratelimit-reset: 1
 ratelimit-limit: 5
-date: Thu, 12 Nov 2026 13:47:22 GMT
+date: Thu, 12 Nov 2026 13:48:12 GMT
 server: uvicorn
+content-disposition: attachment;filename=nwp.nc
+datapoint-count: 7574112
+accept-ranges: bytes
+last-modified: Thu, 12 Nov 2026 13:48:54 GMT
+etag: "fbac1a9cdbff4197550d6603a363f6fe"
 access-control-allow-origin: *
-x-kong-upstream-latency: 31
-x-kong-proxy-latency: 14
+x-kong-upstream-latency: 31663
+x-kong-proxy-latency: 12
 via: 1.1 kong/3.9.1
-x-kong-request-id: 6ff1db5d4bdcd959b4688324fb41377c
+x-kong-request-id: d570d145266ca85f32a7f0344c27762f
 
