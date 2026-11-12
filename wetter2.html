@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-285fPEGby2/4TzKj3HOSc+oCkSuBOCI84QI8y2jN46U=' 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-lCHYWFjwRfu7fJMvMRnbFakBpGlRYUwvdWWLroh3Cko=' 'sha256-JVDwbp8uJUm5trtHzVo92Tf/sCfojZ9KBXBIXBfbVs4=' 'sha256-RuxfNxmpjp4A0o44t73N+6O4m9ajjPnJ8Ah9hbvLASk=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src 'self'; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://s3.amazonaws.com https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-285fPEGby2/4TzKj3HOSc+oCkSuBOCI84QI8y2jN46U=' 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-lCHYWFjwRfu7fJMvMRnbFakBpGlRYUwvdWWLroh3Cko=' 'sha256-cZIkaF4q34F9MuXauRJmg2xYB90eF/RgsQpwyjyU7ks=' 'sha256-RuxfNxmpjp4A0o44t73N+6O4m9ajjPnJ8Ah9hbvLASk=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src 'self'; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://s3.amazonaws.com https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -14,7 +14,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/favicon-64.png">
-<meta name="app-build" content="69">
+<meta name="app-build" content="70">
 <meta name="app-version" content="1.0">
 <meta name="app-notes" content="Neue Adresse: Die App liegt jetzt bei Cloudflare (wetter.elias-ziegler.workers.dev). Version 1.0 (Build 1): Alles durchgesehen, Fehler behoben und schneller gemacht. Die App startet viel schneller: Das Wetter steht beim Öffnen fast sofort da, weil der letzte Stand gleich gezeigt wird und alle Daten gleichzeitig geholt werden. Das Regenradar Österreich lädt jetzt immer ganz Österreich auf einmal (etwa 1 MB, 1 bis 2 Sekunden statt viele Stücke zu je 6 MB), egal wohin du zoomst, ohne Lücken, und holt neue Daten gleich, wenn du die App aus dem Hintergrund zurückholst. Die Regen-Vorschau für die nächsten 2 Stunden war eine Viertelstunde zu spät und stimmt jetzt. Benachrichtigungen kommen zuverlässiger, die Schrift lädt ohne Google, dazu viele Kleinigkeiten.">
 <script>/* Umzug von GitHub (eliaspp9.github.io/Wetter) hierher: die alte Seite gibt Einstellungen und Lieblingsorte in der Adresse
@@ -396,7 +396,7 @@ html.wall .hicon{width:64px;height:64px}
 html.wall .temp{font-size:66px}
 html.wall .deg{font-size:34px}
 html.wall .hstats{margin-top:10px}
-html.wall .hsrc{display:none}
+html.wall .hsrc,html.wall .hero .srcbtn{display:none}
 html.wall .st{padding:4px 9px 4px 7px;gap:6px}html.wall .st svg{width:17px;height:17px}html.wall .st b{font-size:13.5px}
 html.wall .wchips{display:flex;flex-direction:column;gap:5px;width:100%;max-width:460px;margin:10px auto 0;text-align:left}
 .wchips .ww{display:flex;align-items:center;gap:9px;padding:5px 11px 5px 8px;border-radius:12px;background:rgba(8,14,26,.3);border:1px solid rgba(255,255,255,.12);border-left:4px solid var(--wc,rgba(255,255,255,.55))}
@@ -480,6 +480,12 @@ html.wall .upd{bottom:14px;z-index:3420}
 .nc-t{display:flex;justify-content:space-between;margin-top:6px;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
 .nc-key{display:flex;gap:16px;margin-top:10px;font-size:13px;color:var(--muted)}
 .nc-src{margin:8px 0 0;font-size:12px;color:var(--muted)}
+/* Quellen-Texte: zuerst eingeklappt, ein Tippen auf „Quelle“ klappt alle auf (wird gemerkt) */
+html:not(.srcopen) .srcf{display:none!important}
+.srcbtn{display:inline-flex;align-items:center;gap:4px;margin-top:6px;padding:4px 0;border:0;background:none;color:var(--muted);font:inherit;font-size:12px;font-weight:600;cursor:pointer;opacity:.9}
+.srcbtn::after{content:"▾";display:inline-block;transition:transform .2s}
+html.srcopen .srcbtn::after{transform:rotate(180deg)}
+.hero .srcbtn{color:inherit;opacity:.78}
 .ptb{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
 .ptb-h{margin:0 0 8px;font-size:14px}.ptb-h b{margin-right:6px}
 .ptb-b{display:flex;flex-wrap:wrap;gap:6px}
@@ -919,7 +925,7 @@ html.locked body>*:not(#gate):not(.moved){display:none!important}
   <p class="hobs" id="hobs" hidden></p>
   <div class="hstats" id="hstats"></div>
   <button type="button" class="hok" id="hok" hidden></button>
-  <p class="hsrc" id="hsrc"></p>
+  <button type="button" class="srcbtn" aria-label="Quellen der Daten zeigen oder verbergen">Quelle</button><p class="hsrc srcf" id="hsrc"></p>
   <div class="wchips" id="wchips"></div>
   <div class="wbar" id="wbar"><button type="button" id="wsound">Ton bei Alarm: aus</button><button type="button" id="wnight">Nachtanzeige: an</button><button type="button" id="wexit">Wandanzeige beenden</button></div>
   <div class="favs" id="favs"></div>
@@ -1015,7 +1021,7 @@ html.locked body>*:not(#gate):not(.moved){display:none!important}
   <section class="card s-days" id="sec-days" aria-labelledby="h-days">
    <div class="ch"><h2 id="h-days">7 Tage</h2></div>
    <div id="days"></div>
-   <p class="small" id="days-src"></p>
+   <button type="button" class="srcbtn" aria-label="Quellen der Daten zeigen oder verbergen">Quelle</button><p class="small srcf" id="days-src"></p>
    <p class="small klnote" id="kl-d" hidden></p>
   </section>
 
@@ -1482,6 +1488,7 @@ async function loadWeather(auto){
    if(!lok.length&&!ruc)throw new Error("kein lok");
    const raw=await getJ(base+full+"&models="+(ruc?[RUC]:[]).concat(lok,["ecmwf_ifs","best_match"]).join(","));
    [sk,pp]=await Promise.all([bfW(bfSK),bfW(bfPP)]);
+   if(sk)bfSkLast={k:PK(),sk};
    j=omChain(raw,lok,ruc,sk);if(sk&&sk.st&&sk.st.length&&(sk.t&&Object.keys(sk.t).length>=2))j.bfSt=sk.st;
    if(!j.current||j.current.temperature_2m==null)throw new Error("lok");j.src=j.lok||j.ruc?"lok":"ecmwf";
   }catch(e0){try{j=omPrefer(await getJ(base+full+"&models=ecmwf_ifs,best_match"),"ecmwf_ifs","best_match");if(!j.current||j.current.temperature_2m==null)throw new Error("ecmwf");j.src="ecmwf";j._src=null}
@@ -1737,7 +1744,7 @@ function dayDetail(i){
  {const zl=alpDay(date,pmm);if(zl)parts.push(zl)}
  {const K=kiNow(),q=K&&K[date];if(q)parts.push('<span><i class="ki-key"></i>KI-Modell <b>'+deg(q.lo)+" / "+deg(q.hi)+"</b>"+(q.p!=null?", Niederschlag <b>"+(q.p<0.1?"keiner":fmt(q.p)+" mm")+"</b>":"")+"</span>")}
  const note=mdl==="ECMWF"?"Wettermodell ECMWF IFS (über Open-Meteo).":mdl==="Open-Meteo"?"Wettermodelle über Open-Meteo.":mdl+" (über Open-Meteo), was es nicht rechnet, von ECMWF IFS.";
- return'<div class="dd-sum">'+parts.join("")+"</div>"+(body?'<table class="kc-tab"><tr><th>Uhrzeit</th><th></th><th>Temp.</th><th>Regen</th><th>Wind</th></tr>'+body+"</table>":'<p class="muted">Für diesen Tag liegen keine Details vor.</p>')+'<p class="dd-src">Quelle: '+note+"</p>";
+ return'<div class="dd-sum">'+parts.join("")+"</div>"+(body?'<table class="kc-tab"><tr><th>Uhrzeit</th><th></th><th>Temp.</th><th>Regen</th><th>Wind</th></tr>'+body+"</table>":'<p class="muted">Für diesen Tag liegen keine Details vor.</p>')+SRCB+'<p class="dd-src srcf">Quelle: '+note+"</p>";
 }
 /* Mond: Phase, Beleuchtung, Auf- und Untergang (vereinfachte Formeln nach Meeus, wie in SunCalc; genau auf wenige Minuten) */
 const MR=Math.PI/180,MJ=d=>d/864e5-0.5+2440588-2451545,MOB=MR*23.4397;
@@ -2012,6 +2019,7 @@ async function loadWarnings(){
 }
 
 /* ============ Regen-Vorschau und Niederschlagsart ============ */
+const SRCB='<button type="button" class="srcbtn" aria-label="Quellen der Daten zeigen oder verbergen">Quelle</button>';
 const NAME={rain:"Regen",snow:"Schnee",mix:"Schneeregen"},NOW={rain:"Es regnet",snow:"Es schneit",mix:"Es fällt Schneeregen"};
 const SV_DROP='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c3.5 4.6 6 7.6 6 11a6 6 0 0 1-12 0c0-3.4 2.5-6.4 6-11z" fill="#fff"/></svg>';
 const SV_FLAKE='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M4.2 7.5l15.6 9M19.8 7.5l-15.6 9" stroke="#fff" stroke-width="2.4" stroke-linecap="round" fill="none"/></svg>';
@@ -2043,8 +2051,38 @@ async function radarPoint(){
   const s=Object.keys(B).map(Number).sort((a,b)=>a-b).filter(k=>B[k].n>=2).map(k=>({t:k,mm:B[k].a*3/B[k].n}));
   return s.length?{src:"DWD-Radar mit Radar-Vorhersage",s}:null;
  };
- const order=cc==="AT"||(!dwCovered(la,lo)&&atCovered(la,lo))?[at,de]:dwCovered(la,lo)?[de,at]:atCovered(la,lo)?[at]:[];
- for(const f of order){try{if(f===at&&!atCovered(la,lo))continue;if(f===de&&!dwCovered(la,lo))continue;const r=await f();if(r)return r}catch(e){}}
+ /* Österreich zuerst vom eigenen Server (das Radar, das er ohnehin vorab holt): schnell, auch wenn GeoSphere hängt */
+ const atSv=async()=>{
+  if(!AT_SRV)return null;
+  const sv=atSrv&&Date.now()-atSrvT<120000?atSrv:await atSrvIdx();atSrvT=Date.now();
+  if(!sv||Date.now()/1000-sv.ref>50*60)return null;
+  let r=atRun&&atRun.ref===sv.ref?atRun:atPtRun&&atPtRun.ref===sv.ref?atPtRun:null;
+  if(!r)r=await atSrvRun(sv.ref);
+  const g=r.g,cx=Math.floor((lo-g.lo0)/AT_CS),cy=Math.floor((g.yT-mercY(la))/AT_CS),out=[];
+  r.t.forEach((t,k)=>{let a=0,n=0;for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){const x=cx+dx,y=cy+dy;if(x<0||y<0||x>=g.W||y>=g.H)continue;const o=y*g.W+x;if(!r.has[o])continue;const q=r.V[k][o];a+=q>=2?RDEC[q]/4:0;n++}if(n)out.push({t:t*1000,mm:a/n})});
+  return out.length?{src:"GeoSphere Austria (Radar-Nowcast)",s:out}:null;
+ };
+ const atAll=async()=>{try{const r=await atSv();if(r)return r}catch(e){console.warn("Radar vom Server:",e.message)}return at()};
+ /* überall sonst: das weltweite Radar (LibreWXR, in Europa das Radar aller Wetterdienste) mit seiner Vorhersage
+    (etwa 60 Minuten), an der Stelle ausgelesen (5 × 5 Bildpunkte, etwa 3 km) */
+ const wx=async()=>{
+  const j=await getJt(RVSRC[0].url,8000),rd=j&&j.radar;if(!rd)return null;
+  const fr=[...(rd.past||[]).slice(-2),...(rd.nowcast||[])];if(!fr.length)return null;
+  const z=8,n=1<<z,xf=(lo+180)/360*n,sl=Math.sin(la*Math.PI/180),yf=(.5-Math.log((1+sl)/(1-sl))/(4*Math.PI))*n;
+  const tx=Math.floor(xf),ty=Math.floor(yf),px=Math.min(251,Math.max(2,Math.floor((xf-tx)*256))),py=Math.min(251,Math.max(2,Math.floor((yf-ty)*256)));
+  const rc=rcInit().WX,snow=radSnow();
+  const one=f=>new Promise(res=>{const im=new Image();im.crossOrigin="anonymous";const to=setTimeout(()=>res(null),8000);
+   im.onload=()=>{clearTimeout(to);try{const c=document.createElement("canvas");c.width=c.height=256;const x=c.getContext("2d");x.drawImage(im,0,0);
+    const d=x.getImageData(px-2,py-2,5,5).data;let a=0,k=0;for(let i=0;i<d.length;i+=4){k++;if(d[i+3]<90)continue;let v=rc.inv(d[i],d[i+1],d[i+2]);if(v===v)v=rc.mm(v,snow);if(v>=rc.min)a+=v}
+    res({t:f.time*1000,r:a/k})}catch(e){res(null)}};
+   im.onerror=()=>{clearTimeout(to);res(null)};im.src=j.host+f.path+"/256/"+z+"/"+tx+"/"+ty+"/0/1_0.png"});
+  const V=(await Promise.all(fr.map(one))).filter(Boolean);if(V.length<3)return null;
+  const B={};for(const v of V){const k=Math.ceil(v.t/900000)*900000;(B[k]||(B[k]={a:0,n:0})).a+=v.r;B[k].n++}
+  const out=Object.keys(B).map(Number).sort((a,b)=>a-b).map(k=>({t:k,mm:B[k].a/B[k].n/4}));
+  return out.length?{src:"Radar weltweit (LibreWXR) mit Radar-Vorhersage",s:out}:null;
+ };
+ const order=cc==="AT"||(!dwCovered(la,lo)&&atCovered(la,lo))?[atAll,de,wx]:dwCovered(la,lo)?[de,atAll,wx]:atCovered(la,lo)?[atAll,wx]:[wx];
+ for(const f of order){try{if(f===atAll&&!atCovered(la,lo))continue;if(f===de&&!dwCovered(la,lo))continue;const r=await f();if(r)return r}catch(e){}}
  return null;
 }
 /* Radarwerte in die 15-Minuten-Reihe des Modells einsetzen; die Art (Regen/Schnee) kommt vom Modell oder, wo das Modell
@@ -2065,16 +2103,32 @@ function ncMerge(j,rp){
  if(used)j._ncSrc=rp.src;
  return used>0;
 }
+/* Modell für die Zeit nach dem Radar: das, das hier zuletzt beim Regen am treffsichersten war (Prüfung vom eigenen Server,
+   siehe bfGet „sk“); sonst in AT/DE/CH ICON-D2-RUC (stündlich neu gerechnet), sonst die Wahl von Open-Meteo */
+let bfSkLast=null;
+function ncModel(){
+ const sk=bfSkLast&&bfSkLast.k===PK()?bfSkLast.sk:null,r=sk&&sk.r;
+ if(r&&Object.keys(r).length>=2){const m=Object.keys(r).sort((a,b)=>r[b]-r[a])[0];if(m&&r[m]>Math.min(...Object.values(r)))return m}
+ return rucOn()?RUC:"";
+}
 async function loadNowcast(){
- const u="https://api.open-meteo.com/v1/forecast?latitude="+place.lat+"&longitude="+place.lon+"&current=temperature_2m&forecast_days=2&timezone=auto&minutely_15=",q=seq("nc");
+ const md=ncModel(),u0="https://api.open-meteo.com/v1/forecast?latitude="+place.lat+"&longitude="+place.lon+"&current=temperature_2m&forecast_days=2&timezone=auto",q=seq("nc");
+ /* Schnellstart: der letzte Stand für diesen Ort (höchstens 20 Minuten alt) steht sofort da */
+ if(!q.keep()){try{const o=JSON.parse(localStorage.getItem("wetter-nc")||"null");
+  if(o&&o.k===PK()&&Date.now()-o.t<20*60000&&o.j&&o.j.current){const off=+o.j.utc_offset_seconds||0;o.j.current.time=new Date(Math.floor(Date.now()/900000)*900000+off*1000).toISOString().slice(0,16);renderNowcast(o.j,o.j.current)}}catch(e){}}
  try{
   let j;
   const rpP=radarPoint().catch(()=>null);
-  try{j=await getJ(u+"precipitation,rain,snowfall")}catch(e){if(String(e.message)!=="400")throw e;j=await getJ(u+"precipitation")}
-  const rp=await rpP;
+  const get=async m=>{const u=u0+(m?"&models="+m:"")+"&minutely_15=";try{return await getJ(u+"precipitation,rain,snowfall")}catch(e){if(String(e.message)!=="400")throw e;return await getJ(u+"precipitation")}};
+  try{j=await get(md);if(!j.minutely_15||!j.minutely_15.precipitation||j.minutely_15.precipitation.every(v=>v==null))throw new Error("leer")}catch(e){if(!md)throw e;j=await get("")}
+  j._ncMod=md&&j.minutely_15?md:"";
+  /* höchstens 4 Sekunden auf das Radar warten; kommt es später, wird nachgebessert */
+  let late=false;
+  const rp=await Promise.race([rpP,new Promise(r=>setTimeout(()=>{late=true;r(null)},4000))]);
   if(!q.ok())return;
-  ncMerge(j,rp);
-  renderNowcast(j,j.current);q.done();
+  const fin=r=>{ncMerge(j,r);renderNowcast(j,j.current);q.done();try{localStorage.setItem("wetter-nc",JSON.stringify({k:PK(),t:Date.now(),j}))}catch(e){}};
+  fin(rp);
+  if(late)rpP.then(r=>{if(r&&q.ok())fin(r)});
  }catch(e){if(q.ok()&&!q.keep())$("nc").innerHTML='<p class="muted">Regen-Vorschau konnte nicht geladen werden.</p>'}
 }
 function renderNowcast(j,c){
@@ -2096,12 +2150,12 @@ function renderNowcast(j,c){
  const anySnow=v.some((x,k)=>ty(k)==="snow"||ty(k)==="mix");
  const end=v.findIndex(x=>!wet(x));
  ncState={wet0:wet(v[0]),end,tEnd:end>=0?t(end):"",first,tFirst:first>=0?t(first):"",ty0:ty(0),tyF:first>=0?ty(first):null};
- if(!wet(v[0])&&first<0){box.innerHTML='<p class="sr">'+msg+"</p>"+(j._ncSrc?'<p class="nc-src">Laut Radar: '+esc(j._ncSrc)+".</p>":"");heroSay();return}
+ if(!wet(v[0])&&first<0){box.innerHTML='<p class="sr">'+msg+"</p>"+(j._ncSrc?SRCB+'<p class="nc-src srcf">Laut Radar: '+esc(j._ncSrc)+".</p>":"");heroSay();return}
  const rgb=a=>"rgb("+a.map(Math.round).join(",")+")";
  const col=k=>{const x=v[k];if(!wet(x))return"var(--line)";const q=ty(k)||"rain",rc=rgb(ramp(RAINC,x)),sc=rgb(ramp(SNOWC,x));return q==="snow"?sc:q==="mix"?"linear-gradient(180deg,"+rc+","+sc+")":rc};
  box.innerHTML='<p class="sr">'+msg+'</p><div class="nc-bars">'+v.map((x,k)=>'<div title="'+t(k)+" Uhr: "+(NAME[ty(k)]||"trocken")+" "+String(Math.round((+x||0)*100)/100).replace(".",",")+' mm"><i style="height:'+Math.max(wet(x)?12:3,Math.min(100,(x||0)/1.5*100))+"%;background:"+col(k)+'"></i></div>').join("")+'</div><div class="nc-t"><span>'+t(0)+"</span><span>"+t(Math.min(4,v.length-1))+"</span><span>"+t(v.length-1)+"</span></div>"+
   (anySnow?'<div class="nc-key"><span><i style="background:var(--rain)"></i>Regen</span><span><i style="background:var(--snow)"></i>Schnee</span><span><i style="background:linear-gradient(90deg,var(--rain),var(--snow))"></i>Schneeregen</span></div>':"")+
-  '<p class="nc-src">'+(j._ncSrc?"Aus dem Radar: "+esc(j._ncSrc)+".":"Aus dem Wettermodell ICON des DWD.")+"</p>";
+  SRCB+'<p class="nc-src srcf">'+(j._ncSrc?"Erst aus dem Radar: "+esc(j._ncSrc)+", danach ":"Aus dem ")+"Wettermodell "+esc(j._ncMod?(j._ncMod===RUC?"DWD ICON-D2-RUC":LOKN[j._ncMod]||j._ncMod):"von Open-Meteo")+(j._ncMod&&j._ncMod!==RUC?" (hier zuletzt am treffsichersten beim Regen)":"")+".</p>";
  heroSay();
 }
 let ptLayer;
@@ -2941,7 +2995,7 @@ async function atNc(){
  const sv=atSrv&&Date.now()-atSrvT<90000?atSrv:await atSrvIdx();atSrvT=Date.now();
  if(sv&&(!atMetaR||sv.ref>=atMetaR-60)){
   try{
-   const m=await atReq("rr",location.origin+"/gr/rr/"+sv.ref,{fc0:sv.ref+60,ms:40000}),g=m.g;
+   const m=await atSrvRun(sv.ref),g=m.g;
    return{ref:sv.ref,t:m.t,g,V:m.V,has:m.has,fid:new Uint16Array(g.W*g.H),fseq:0,rects:[AT_BOX.slice()],n:m.n,ver:1,at:Date.now(),nc:true,
     snow:!!(lastJ&&lastJ.current&&lastJ.current.temperature_2m<=0.5)};
   }catch(e){console.warn("Radar vom Server:",e.message)}
@@ -3046,7 +3100,14 @@ const GS_META="https://dataset.api.hub.geosphere.at/v1/grid/forecast/nowcast-v1-
 /* Bei Cloudflare holt unser Server die Radardaten vorab (siehe site/worker.js): erst dort fragen, das ist schnell und
    klappt auch, wenn GeoSphere gerade sehr langsam ist. Sonst (alte Adresse, Server ohne Daten) direkt bei GeoSphere. */
 const AT_SRV=location.hostname==="wetter.elias-ziegler.workers.dev";
-let atSrv=null,atSrvT=0;
+let atSrv=null,atSrvT=0,atPtRun=null,atPtP=null;
+/* ein Lauf vom Server, nur einmal geladen, auch wenn Radar und „Nächste 2 Stunden“ ihn gleichzeitig brauchen */
+function atSrvRun(ref){
+ if(atPtRun&&atPtRun.ref===ref)return Promise.resolve(atPtRun);
+ if(atPtP&&atPtP.ref===ref)return atPtP.p;
+ const p=atReq("rr",location.origin+"/gr/rr/"+ref,{fc0:ref+60,ms:30000}).then(m=>(atPtRun={ref,t:m.t,g:m.g,V:m.V,has:m.has,n:m.n}),e=>{atPtP=null;throw e});
+ atPtP={ref,p};return p;
+}
 async function atSrvIdx(){
  if(!AT_SRV)return null;
  try{const j=await getJ(location.origin+"/gr?t="+Math.floor(Date.now()/60000),12000);if(j&&j.ref>0){atSrv=j;return j}}catch(e){}
@@ -4573,6 +4634,9 @@ $("geo").onclick=()=>{follow=true;saveState();useGPS(true)};
 $("pp").onclick=()=>{toggle();if(wallOn){try{localStorage.setItem("wetter-wplay",timer?"1":"0")}catch(e){}}};
 /* wo der Zug begann: davor an der Grenze anhalten (siehe fcEdge) */
 ["pointerdown","touchstart","mousedown"].forEach(ev=>$("sl").addEventListener(ev,()=>{slFrom=idx+(blT>0?.5:0)},{passive:true}));
+/* Quellen-Texte überall: ein Schalter für alle, gemerkt */
+try{if(localStorage.getItem("wetter-src")==="1")document.documentElement.classList.add("srcopen")}catch(e){}
+document.addEventListener("click",e=>{const b=e.target&&e.target.closest&&e.target.closest(".srcbtn");if(!b)return;const o=document.documentElement.classList.toggle("srcopen");try{localStorage.setItem("wetter-src",o?"1":"0")}catch(x){}});
 /* lange Texte unter dem Radar ein- und ausklappen (zuerst eingeklappt, wird gemerkt) */
 {const b=$("rmore"),box=$("rmorebox"),set=o=>{box.hidden=!o;b.setAttribute("aria-expanded",o?"true":"false");b.firstChild.textContent=o?"Weniger anzeigen ":"Mehr Infos zum Radar "};
  let o=false;try{o=localStorage.getItem("wetter-rmore")==="1"}catch(e){}set(o);
@@ -5704,7 +5768,7 @@ async function loadTrend(){
  el.innerHTML=R.map(r=>{const dt=new Date(r.date+"T12:00"),l=(r.lo-mn)/span*100,wd=Math.max(8,(r.hi-r.lo)/span*100);
   const k=r.code!=null?kind(r.code,true):r.p!=null&&r.p>=1?(r.hi<=1?"snow":"rain"):null;
   return'<div class="dw"><div class="day" style="cursor:default"><div class="dn"><b>'+dt.toLocaleDateString("de-AT",{weekday:"short"}).replace(".","")+"</b><span>"+dt.getDate()+"."+(dt.getMonth()+1)+".</span></div><div>"+(k?ic(k,30):"")+'</div><div class="dp">'+(r.pr!=null&&r.pr>=10?"<span>"+Math.round(r.pr)+" %</span>":"")+(r.p!=null&&r.p>=0.1?"<small>"+fmt(r.p)+" mm</small>":"")+'</div><div class="dlo">'+deg(r.lo)+'</div><div class="dbar"><i style="left:'+l.toFixed(1)+"%;width:"+Math.min(wd,100-l).toFixed(1)+"%;background:linear-gradient(90deg,"+tcol(r.lo)+","+tcol(r.hi)+')"></i>'+kiBar(r)+'</div><div class="dhi">'+deg(r.hi)+"</div><div></div></div></div>"}).join("")+
-  '<p class="small">Tag 8 bis 14. Quelle: '+esc(src)+". Je weiter weg, desto unsicherer."+(kv.length?'<br><span class="ki-key"></span>Strich darunter: KI-Modell AIFS des Europäischen Wetterzentrums (EZMW) zum Vergleich.':"")+"</p>";
+  '<button type="button" class="srcbtn" aria-label="Quellen der Daten zeigen oder verbergen">Quelle</button><p class="small srcf">Tag 8 bis 14. Quelle: '+esc(src)+". Je weiter weg, desto unsicherer."+(kv.length?'<br><span class="ki-key"></span>Strich darunter: KI-Modell AIFS des Europäischen Wetterzentrums (EZMW) zum Vergleich.':"")+"</p>";
 }
 
 /* ============ Glätte, Frost und Schnee (aus dem Wettermodell) ============ */
@@ -6549,7 +6613,7 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("shr").hidden)cl
 const meta=n=>{const m=document.querySelector('meta[name="'+n+'"]');return m?m.content:""};
 /* app-build zählt seit jeher einfach hoch; daran erkennen auch ältere Geräte ein Update (sie vergleichen diese Zahl).
    Angezeigt wird der Build seit Version 1.0: Build 1 ist app-build 57. */
-const BUILD=+meta("app-build")||0,BUILD0=68,verText=b=>meta("app-version")+" (Build "+(b-BUILD0)+")";
+const BUILD=+meta("app-build")||0,BUILD0=69,verText=b=>meta("app-version")+" (Build "+(b-BUILD0)+")";
 let remote=null,lastChk=0;
 $("ver").textContent=verText(BUILD);
 /* Anmeldung: bis wann sie gilt und ob sie sich von selbst verlängert */
