@@ -1,4 +1,7 @@
-const fs=await import("fs");
-const r=await fetch("https://dataset.api.hub.geosphere.at/v1/timeseries/forecast/nwp-v2-1h-1km?lat_lon=48.1627,14.2419&parameters=2t,10u,10v,10fg,2r&output_format=geojson");const t=await r.text();console.log(r.status,t.length,t.slice(0,300));fs.writeFileSync("gs3/gs1.json",t);
-const B="https://api.open-meteo.com/v1/forecast?latitude=48.1627&longitude=14.2419&timezone=auto&forecast_days=7&current=temperature_2m,apparent_temperature,relative_humidity_2m,precipitation,weather_code,wind_speed_10m,wind_direction_10m,surface_pressure,is_day,cloud_cover,wind_gusts_10m&hourly=temperature_2m,precipitation_probability,weather_code,precipitation,wind_speed_10m,wind_gusts_10m,snowfall,cloud_cover,cloud_cover_low,relative_humidity_2m,is_day&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max,sunrise,sunset,uv_index_max&models=dwd_icon_d2_ruc_native,geosphere_claef_austria,dwd_icon_d2_native,ecmwf_ifs,best_match";
-fs.writeFileSync("gs3/main.json",await (await fetch(B)).text());
+for(const u of ["https://static.avalanche.report/weather_stations/stations.geojson","https://www.data.gv.at/katalog/api/3/action/package_search?q=Lufttemperatur%20Echtzeit&rows=15","https://www.data.gv.at/katalog/api/3/action/package_search?q=Wetterstation%20Temperatur&rows=15"]){
+ try{const t0=Date.now();const r=await fetch(u);const t=await r.text();console.log("==",u,r.status,t.length,Date.now()-t0+"ms");
+  try{const j=JSON.parse(t);
+   if(j.features){const f=j.features;const reg={};f.forEach(x=>{const p=x.properties||{};const k=(p["LWD-Region"]||p.region||"?").slice(0,5);reg[k]=(reg[k]||0)+1});console.log("n",f.length,JSON.stringify(reg).slice(0,300));console.log(JSON.stringify(f[0]).slice(0,700));const withT=f.filter(x=>x.properties&&x.properties.LT!=null).length;console.log("mit LT",withT,"date",f[0].properties&&f[0].properties.date)}
+   else if(j.result){console.log(j.result.results.map(x=>x.title+" | "+(x.organization&&x.organization.title)).join("\n"))}
+  }catch(e){console.log(t.slice(0,300))}
+ }catch(e){console.log("ERR",u,String(e))}}
