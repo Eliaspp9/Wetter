@@ -43,6 +43,8 @@ self.onmessage = async (ev) => {
     const g = m.g, W = g.W, H = g.H, cs = m.cs, N = R * C, rcMin = m.rcMin, rcL = m.rcL;
     const code = (r) => (r < rcMin ? 1 : Math.min(255, 2 + Math.round(253 * Math.log(r / rcMin) / rcL)));
     const nV = kind === "t2m" ? 0 : T;
+    /* Vorhersage- und Modellbilder (Zeit nach fc0): sehr schwachen Niederschlag weglassen */
+    const lim = Array.from({ length: T }, (_, k) => (kind === "tp" || t[k] > (m.fc0 == null ? Infinity : m.fc0) ? m.faint || 0 : 0));
     const V = Array.from({ length: nV }, () => new Uint8Array(W * H)), has = new Uint8Array(W * H);
     /* Schnee: bei t2m je Zelle (1 = Schnee, 0 = Regen), beim Modell je Bild und Zelle */
     const S = kind === "t2m" ? new Uint8Array(W * H) : null, SM = sfv ? Array.from({ length: T }, () => new Uint8Array(W * H)) : null;
@@ -66,7 +68,9 @@ self.onmessage = async (ev) => {
           const q = v[k * N + i];
           if (q === fill || !(q >= 0)) continue;
           any = true;
-          const r = kind === "tp" ? q / 1000 : q / 100 * 4, c = code(r);
+          const r = kind === "tp" ? q / 1000 : q / 100 * 4;
+          if (r < lim[k]) continue;
+          const c = code(r);
           if (c > V[k][o]) V[k][o] = c;
           if (SM && r > 0) { const s = sfv[k * N + i]; if (s >= 0 && s / 1000 >= r * 0.5) SM[k][o] = 1; }
         }
