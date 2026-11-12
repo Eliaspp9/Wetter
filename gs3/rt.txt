@@ -1,1 +1,12 @@
 lok [ 'geosphere_claef_austria', 'dwd_icon_d2_native' ] ruc true
+sk {"t":{"dwd_icon_d2_ruc_native":0.328,"geosphere_claef_austria":0.165,"dwd_icon_d2_native":0.308,"ecmwf_ifs":0.199},"w":{"dwd_icon_d2_ruc_native":0.247,"geosphere_claef_austria":0.297,"dwd_icon_d2_native":0.232,"ecmwf_ifs":0.224},"r":{"dwd_icon_d2_ruc_native":0.853,"geosphere_claef_austria":0.811,"dwd_icon_d2_native":0.853,"ecmwf_ifs":0.768},"e":{"dwd_icon_d2_ruc_native":0.42,"geosphere_claef_austria":0.71,"dwd_icon_d2_native":0.44,"ecmwf_ifs":0.63},"n":95,"st":["LOWL"]}
+pp {"t0":1794441600,"p":[97,69,62,33,2,2,6,0,0,0,0,0,0,3,3,5,38,62,88,99,99,99,100,100,100,100,100,100,99,99,94,43,23,5,0,0,0,0,0,0,1,1,1,1,2,2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+omChain ok [ 5.5, 5.6, 5.7, 5.5, 5.5 ] undefined
+bfProb ok [
+   88,  99,  99, 99,
+  100, 100, 100
+] [
+  100, 100,  0, 1,
+   60,  60, 63
+]
+tips [{"f":"Regen etwa von 20 bis 7 Uhr","d":"Schirm mitnehmen: Regen etwa von 20 bis 7 Uhr."},{"f":"Trocken etwa von 8 bis 11 Uhr","d":"Trocken etwa von 8 bis 11 Uhr: gute Zeit für draußen."}]
