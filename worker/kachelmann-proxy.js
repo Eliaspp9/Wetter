@@ -1,4 +1,4 @@
-// Wetter-Proxy 1.0 (Build 4): hält den Kachelmann-Schlüssel geheim, prüft die Anmeldung, verschickt Wetter-Benachrichtigungen
+// Wetter-Proxy 1.0 (Build 5): hält den Kachelmann-Schlüssel geheim, prüft die Anmeldung, verschickt Wetter-Benachrichtigungen
 // und lernt jede Stunde, wie weit die Vorhersage an deinen Orten danebenliegt (lernende Korrektur).
 // Einzurichten bei Cloudflare unter Workers & Pages. Variablen (Settings > Variables and Secrets):
 //   ALLOWED_ORIGIN  (Text)    https://eliaspp9.github.io (mehrere mit Komma getrennt; die Adresse bei Cloudflare gilt immer)
@@ -12,7 +12,7 @@
 // Für die KI (Übersetzen der Warnungen anderer Länder, Push-Texte in ganzen Sätzen), ab Version 1.6:
 //   Bindung AI      (Workers AI, Variablenname AI). Ohne sie läuft alles wie vorher, nur ohne KI.
 const enc = new TextEncoder();
-const VERSION = "1.0", BUILD = 4;
+const VERSION = "1.0", BUILD = 5;
 /* Abrufe mit Zeitlimit: ein hängender Dienst soll weder eine Anfrage noch den Zeitplan aufhalten.
    tf: Limit bis die Antwort beginnt (für durchgereichte Antworten); jf: Limit bis das JSON ganz gelesen ist. */
 async function tf(u, o, ms) {
@@ -550,16 +550,30 @@ const getJ = (u) => jf(u, { headers: { Accept: "application/json" } }, 15000);
    Gesucht wird das erste nasse Intervall, das noch läuft oder in der nächsten Stunde beginnt.
    i = Stelle in der Reihe (-1: nichts), min = Minuten bis zum Beginn (0: es läuft schon), dur = Dauer in Minuten, mx = stärkste Viertelstunde.
    Bis Version 1.6 wurde die Zeit t als Beginn genommen; die Hinweise kamen dadurch mit einer Viertelstunde zu viel („in 30 Minuten“ statt „in 15“). */
+/* Regen in der nächsten Stunde. In Österreich zuerst die Radar-Vorhersage von GeoSphere (INCA-Nowcast, 1 km: Radar und
+   Messstationen, mit der Zugrichtung der Schauer), Schnee bei höchstens 1 °C; sonst oder wenn GeoSphere nicht antwortet
+   Open-Meteo. Beide Werte sind Summen der Viertelstunde VOR dem Zeitstempel. */
 async function rainSoon(lat, lon) {
+  if (lat >= 46.3 && lat <= 49.1 && lon >= 9.5 && lon <= 17.2) {
+    try {
+      const st = new Date(Math.floor(Date.now() / 900000) * 900000 - 45 * 60000).toISOString().slice(0, 16);
+      const j = await getJ("https://dataset.api.hub.geosphere.at/v1/timeseries/forecast/nowcast-v1-15min-1km?parameters=rr,t2m&lat_lon=" + lat + "," + lon + "&start=" + st);
+      const f = j.features && j.features[0], pr = f && f.properties && f.properties.parameters;
+      if (pr && pr.rr && Array.isArray(j.timestamps)) return soonOf(j.timestamps.map((t) => Date.parse(t)), pr.rr.data || [], (k) => pr.t2m && pr.t2m.data && pr.t2m.data[k] != null && pr.t2m.data[k] <= 1);
+    } catch (e) {}
+  }
   const j = await getJ("https://api.open-meteo.com/v1/forecast?latitude=" + lat + "&longitude=" + lon + "&minutely_15=precipitation,snowfall&forecast_minutely_15=8&timezone=GMT");
-  const m = j.minutely_15 || {}, T = (m.time || []).map((t) => Date.parse(t + ":00Z")), P = m.precipitation || [], S = m.snowfall || [], now = Date.now();
-  const wet = (k) => P[k] != null && P[k] >= 0.1;
+  const m = j.minutely_15 || {}, P = m.precipitation || [], S = m.snowfall || [];
+  return soonOf((m.time || []).map((t) => Date.parse(t + ":00Z")), P, (k) => (S[k] || 0) * 0.7 >= P[k] * 0.5);
+}
+function soonOf(T, P, isSnow) {
+  const now = Date.now(), wet = (k) => P[k] != null && P[k] >= 0.1;
   let i = -1;
   for (let k = 0; k < T.length && i < 0; k++) if (T[k] > now && T[k] - 900000 < now + 3600000 && wet(k)) i = k;
   if (i < 0) return { i };
   let n = 0, mx = 0;
   for (let k = i; k < P.length && wet(k); k++) { n++; mx = Math.max(mx, P[k]); }
-  return { i, min: Math.max(0, Math.round((T[i] - 900000 - now) / 60000)), snow: (S[i] || 0) * 0.7 >= P[i] * 0.5, dur: n * 15, mx };
+  return { i, min: Math.max(0, Math.round((T[i] - 900000 - now) / 60000)), snow: !!isSnow(i), dur: n * 15, mx };
 }
 async function warnings(lat, lon) {
   const out = [];
