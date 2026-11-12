@@ -1,4 +1,4 @@
-// Wetter-Proxy 1.0 (Build 3): hält den Kachelmann-Schlüssel geheim, prüft die Anmeldung, verschickt Wetter-Benachrichtigungen
+// Wetter-Proxy 1.0 (Build 4): hält den Kachelmann-Schlüssel geheim, prüft die Anmeldung, verschickt Wetter-Benachrichtigungen
 // und lernt jede Stunde, wie weit die Vorhersage an deinen Orten danebenliegt (lernende Korrektur).
 // Einzurichten bei Cloudflare unter Workers & Pages. Variablen (Settings > Variables and Secrets):
 //   ALLOWED_ORIGIN  (Text)    https://eliaspp9.github.io (mehrere mit Komma getrennt; die Adresse bei Cloudflare gilt immer)
@@ -12,7 +12,7 @@
 // Für die KI (Übersetzen der Warnungen anderer Länder, Push-Texte in ganzen Sätzen), ab Version 1.6:
 //   Bindung AI      (Workers AI, Variablenname AI). Ohne sie läuft alles wie vorher, nur ohne KI.
 const enc = new TextEncoder();
-const VERSION = "1.0", BUILD = 3;
+const VERSION = "1.0", BUILD = 4;
 /* Abrufe mit Zeitlimit: ein hängender Dienst soll weder eine Anfrage noch den Zeitplan aufhalten.
    tf: Limit bis die Antwort beginnt (für durchgereichte Antworten); jf: Limit bis das JSON ganz gelesen ist. */
 async function tf(u, o, ms) {
@@ -335,7 +335,11 @@ async function klObs(places) {
    wd  Wind und Böen: Faktor zwischen Vorhersage und Messung (gleitendes Mittel des Logarithmus).
    fg  Hochnebel/bedeckt tagsüber: logistische Regression aus Bewölkung, tiefer Bewölkung, Luftfeuchte, Wind, Jahreszeit, Tageszeit.
    Für pp, wd und fg merkt sich der Worker alle 6 Stunden die ECMWF-Vorhersage (36 Stunden) und vergleicht 12 bis 30 Stunden später. */
-const MX_M = { icon: "icon_seamless", ec: "ecmwf_ifs", gfs: "gfs_seamless", ai: "ecmwf_aifs025_single" };
+/* Modellmix: weltweite Modelle (auch die KI-Modelle von ECMWF, DWD und NOAA) und die Modelle vor Ort (nur Mitteleuropa;
+   außerhalb ihres Gebiets antwortet Open-Meteo mit einem Fehler, daher eine eigene Abfrage) */
+const MX_G = { icon: "icon_seamless", ec: "ecmwf_ifs", gfs: "gfs_seamless", ai: "ecmwf_aifs025_single", aic: "dwd_aicon_global_native", aig: "ncep_aigfs025" };
+const MX_R = { cl: "geosphere_claef_austria", d2: "dwd_icon_d2_native" };
+const MX_M = Object.assign({}, MX_G, MX_R);
 const ema = (o, k, v, a) => { o[k] = o[k] == null ? v : (1 - a) * o[k] + a * v; };
 function mxLearn(M, F, y) {
   const ks = Object.keys(F).filter((m) => F[m] != null && isFinite(F[m]));
@@ -408,11 +412,14 @@ async function klRun(env) {
   const obs = await klObs(todo);
   // Modellmix: Temperatur von vier Modellen, gerechnet 1 und 3 Tage vorher
   let mxr = [];
-  try {
-    const j = await klJ("https://previous-runs-api.open-meteo.com/v1/forecast?latitude=" + todo.map((p) => p.la.toFixed(3)).join(",") + "&longitude=" + todo.map((p) => p.lo.toFixed(3)).join(",") +
-      "&hourly=temperature_2m_previous_day1,temperature_2m_previous_day3&models=" + Object.values(MX_M).join(",") + "&past_days=1&forecast_days=1&timezone=GMT");
-    mxr = Array.isArray(j) ? j : [j];
-  } catch (e) {}
+  const mxq = (models) => klJ("https://previous-runs-api.open-meteo.com/v1/forecast?latitude=" + todo.map((p) => p.la.toFixed(3)).join(",") + "&longitude=" + todo.map((p) => p.lo.toFixed(3)).join(",") +
+      "&hourly=temperature_2m_previous_day1,temperature_2m_previous_day3&models=" + Object.values(models).join(",") + "&past_days=1&forecast_days=1&timezone=GMT").then((j) => (Array.isArray(j) ? j : [j]));
+  const [mg, mr] = await Promise.allSettled([mxq(MX_G), mxq(MX_R)]);
+  if (mg.status === "fulfilled") {
+    mxr = mg.value;
+    /* die Modelle vor Ort dazulegen (gleiche Orte, gleiche Stunden) */
+    if (mr.status === "fulfilled") mxr.forEach((x, i) => { const y = mr.value[i]; if (x && x.hourly && y && y.hourly) Object.keys(y.hourly).forEach((k) => { if (k !== "time" && !(k in x.hourly)) x.hourly[k] = y.hourly[k]; }); });
+  }
   // Modell (Open-Meteo best_match) an Orten und Stationen, um aus den Stationen die Temperatur am Ort zu bestimmen
   const pts = [];
   todo.forEach((p) => { pts.push({ la: p.la, lo: p.lo, h: p.h }); p.st.forEach((s) => pts.push({ la: s.la, lo: s.lo, h: s.h })); });
