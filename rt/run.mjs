@@ -1,7 +1,3 @@
-for(const u of ["https://static.avalanche.report/weather_stations/stations.geojson","https://www.data.gv.at/katalog/api/3/action/package_search?q=Lufttemperatur%20Echtzeit&rows=15","https://www.data.gv.at/katalog/api/3/action/package_search?q=Wetterstation%20Temperatur&rows=15"]){
- try{const t0=Date.now();const r=await fetch(u);const t=await r.text();console.log("==",u,r.status,t.length,Date.now()-t0+"ms");
-  try{const j=JSON.parse(t);
-   if(j.features){const f=j.features;const reg={};f.forEach(x=>{const p=x.properties||{};const k=(p["LWD-Region"]||p.region||"?").slice(0,5);reg[k]=(reg[k]||0)+1});console.log("n",f.length,JSON.stringify(reg).slice(0,300));console.log(JSON.stringify(f[0]).slice(0,700));const withT=f.filter(x=>x.properties&&x.properties.LT!=null).length;console.log("mit LT",withT,"date",f[0].properties&&f[0].properties.date)}
-   else if(j.result){console.log(j.result.results.map(x=>x.title+" | "+(x.organization&&x.organization.title)).join("\n"))}
-  }catch(e){console.log(t.slice(0,300))}
- }catch(e){console.log("ERR",u,String(e))}}
+const B="https://dataset.api.hub.geosphere.at/v1/timeseries/forecast/nwp-v2-1h-1km?lat_lon=48.233,14.188&lat_lon=47.79,13.0&parameters=2t,10u,10v&output_format=geojson";
+for(const o of [0,2,5,8,11,14,16,20]){const t0=Date.now();try{const r=await fetch(B+"&forecast_offset="+o);const t=await r.text();let j=null;try{j=JSON.parse(t)}catch(e){}
+ console.log("offset",o,r.status,Date.now()-t0+"ms",j&&j.reference_time,j&&j.timestamps&&j.timestamps[0],j&&j.timestamps&&j.timestamps.length,j&&j.features&&j.features.length,j?"":t.slice(0,150))}catch(e){console.log(o,"ERR",String(e))}}
