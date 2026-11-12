@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-285fPEGby2/4TzKj3HOSc+oCkSuBOCI84QI8y2jN46U=' 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-lCHYWFjwRfu7fJMvMRnbFakBpGlRYUwvdWWLroh3Cko=' 'sha256-iYaS1RmwlOAZziFeb8Q+rWgj/mH6T47FWwG2DxSe7v4=' 'sha256-RuxfNxmpjp4A0o44t73N+6O4m9ajjPnJ8Ah9hbvLASk=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src 'self'; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://s3.amazonaws.com https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-285fPEGby2/4TzKj3HOSc+oCkSuBOCI84QI8y2jN46U=' 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-TccR0BgCco5MD/t1RF/FQtkgVajH7Z95LiMwvg88QBo=' 'sha256-K7EDNbBUHic/lA7eVCvb9/U+vqn5WTFkzIJISU7N6r4=' 'sha256-RuxfNxmpjp4A0o44t73N+6O4m9ajjPnJ8Ah9hbvLASk=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src 'self'; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://s3.amazonaws.com https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -14,7 +14,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/favicon-64.png">
-<meta name="app-build" content="73">
+<meta name="app-build" content="74">
 <meta name="app-version" content="1.0">
 <meta name="app-notes" content="Neue Adresse: Die App liegt jetzt bei Cloudflare (wetter.elias-ziegler.workers.dev). Version 1.0 (Build 1): Alles durchgesehen, Fehler behoben und schneller gemacht. Die App startet viel schneller: Das Wetter steht beim Öffnen fast sofort da, weil der letzte Stand gleich gezeigt wird und alle Daten gleichzeitig geholt werden. Das Regenradar Österreich lädt jetzt immer ganz Österreich auf einmal (etwa 1 MB, 1 bis 2 Sekunden statt viele Stücke zu je 6 MB), egal wohin du zoomst, ohne Lücken, und holt neue Daten gleich, wenn du die App aus dem Hintergrund zurückholst. Die Regen-Vorschau für die nächsten 2 Stunden war eine Viertelstunde zu spät und stimmt jetzt. Benachrichtigungen kommen zuverlässiger, die Schrift lädt ohne Google, dazu viele Kleinigkeiten.">
 <script>/* Umzug von GitHub (eliaspp9.github.io/Wetter) hierher: die alte Seite gibt Einstellungen und Lieblingsorte in der Adresse
@@ -47,7 +47,11 @@ if(window.__redir)location.replace(location.pathname.replace(/wetter2\.html$/i,"
      var it=pre[e[0]]={t:now,p:null},go=function(){
       if(pre[e[0]]!==it||it.p)return;          /* die App hat inzwischen selbst gefragt */
       var q={};if(ac)q.signal=ac.signal;if(e[1])q.headers={Authorization:"Bearer "+tok};
-      it.t=Date.now();it.p=fetch(e[0],q);it.p.catch(function(){});
+      it.t=Date.now();
+      /* Open-Meteo über die eigene Seite (siehe fetchR), sonst direkt */
+      var om=location.hostname==="wetter.elias-ziegler.workers.dev"&&/^https:\/\/((?:api|air-quality-api|previous-runs-api|ensemble-api|geocoding-api)\.open-meteo\.com)(\/.*)$/.exec(e[0]);
+      it.p=om?fetch(location.origin+"/om/"+om[1]+om[2],q).then(function(r){return r.ok?r:fetch(e[0],q)},function(){return fetch(e[0],q)}):fetch(e[0],q);
+      it.p.catch(function(){});
      };
      /* das Wichtigste sofort, der Rest eine Viertelsekunde später */
      if(e[4])setTimeout(go,250);else go();
@@ -1167,7 +1171,18 @@ document.addEventListener("visibilitychange",()=>{if(document.hidden)hiddenAt=Da
    - Netzfehler in den ersten 8 Sekunden: nach 0,7 und nach 2,5 Sekunden noch einmal versuchen (nicht ohne Netz: da soll die
      Meldung sofort kommen)
    - in den ersten 5 Sekunden nach dem Zurückkommen: kommt 6 Sekunden lang keine Antwort, abbrechen und neu anfragen */
+/* Open-Meteo über die eigene Seite (siehe site/worker.js /om/): dann zählt nicht der Internetanschluss zu Hause
+   (Open-Meteo erlaubt pro Anschluss 10.000 Abfragen am Tag; am 12.11.2026 war das erreicht). Weist Open-Meteo die eigene
+   Seite ab oder klappt es nicht, wird 10 Minuten lang wieder direkt gefragt. */
+const OMX=/^https:\/\/((?:api|air-quality-api|previous-runs-api|ensemble-api|geocoding-api)\.open-meteo\.com)(\/.*)$/,OM_PX=location.hostname==="wetter.elias-ziegler.workers.dev";
+let omPxBad=0;
 function fetchR(u,o){
+ const m=OM_PX&&Date.now()>omPxBad?OMX.exec(u):null;
+ if(!m)return fetchR0(u,o);
+ const s=o&&o.signal;
+ return fetchR0(location.origin+"/om/"+m[1]+m[2],o).then(r=>{if(r.ok||r.status===400)return r;omPxBad=Date.now()+600000;return fetchR0(u,o)},e=>{if(s&&s.aborted)throw e;omPxBad=Date.now()+600000;return fetchR0(u,o)});
+}
+function fetchR0(u,o){
  const t0=Date.now(),s=o&&o.signal,wait=ms=>new Promise(r=>setTimeout(r,ms));
  const go=n=>{
   let c=null,to=0,hedged=false,opt=o;
@@ -1217,6 +1232,28 @@ async function getJ(u,ms){
  const lim=new Promise((_,no)=>{to=setTimeout(()=>{try{if(c)c.abort()}catch(e){}const e=new Error("Zeitüberschreitung");e.name="AbortError";no(e)},ms||25000)});
  try{return await Promise.race([net(u,c?{signal:c.signal}:undefined).then(r=>{if(!r.ok)throw new Error(r.status);return r.json()}),lim])}
  finally{clearTimeout(to)}
+}
+/* wie getJ, aber die Antwort wird gemerkt (ttl in ms), auch über einen Neustart der App: für Daten, die sich selten
+   ändern (Trend, Vergleich, Luft, UV, …). So fragt die App bei jedem Öffnen viel seltener bei Open-Meteo. */
+const OC=new Map();
+const getJc180=(u,ms)=>getJc(u,180*60000,ms);
+const getJc60=(u,ms)=>getJc(u,60*60000,ms);
+const getJc30=(u,ms)=>getJc(u,30*60000,ms);
+async function getJc(u,ttl,ms){
+ const k="wetter-oc|"+u,now=Date.now();
+ let c=OC.get(u);
+ if(!c){try{c=JSON.parse(localStorage.getItem(k)||"null")}catch(e){c=null}}
+ if(c&&now-c.t<ttl){OC.set(u,c);return JSON.parse(JSON.stringify(c.d))}
+ const d=await getJ(u,ms);
+ c={t:now,d};OC.set(u,c);
+ try{
+  const v=JSON.stringify(c);
+  if(v.length<350000){
+   for(let i=localStorage.length-1;i>=0;i--){const x=localStorage.key(i);if(x&&x.indexOf("wetter-oc|")===0&&x!==k){try{const o=JSON.parse(localStorage.getItem(x));if(!o||now-o.t>6*3600000)localStorage.removeItem(x)}catch(y){localStorage.removeItem(x)}}}
+   localStorage.setItem(k,v);
+  }
+ }catch(e){}
+ return JSON.parse(JSON.stringify(d));
 }
 /* Reihenfolge der Abrufe: alte Antworten (z. B. vom vorherigen Ort) werden verworfen.
    Klappt eine automatische Aktualisierung nicht, bleibt die letzte gute Anzeige stehen. */
@@ -2233,7 +2270,7 @@ async function loadPtypes(){
  const lats=[],lons=[],q=seq("pt");
  for(let i=-2;i<=2;i++)for(let k=-2;k<=2;k++){lats.push((place.lat+i*0.45).toFixed(3));lons.push((place.lon+k*0.63).toFixed(3))}
  try{
-  const r=await getJ("https://api.open-meteo.com/v1/forecast?latitude="+lats.join(",")+"&longitude="+lons.join(",")+"&current=precipitation,rain,showers,snowfall&timezone=auto");
+  const r=await getJc30("https://api.open-meteo.com/v1/forecast?latitude="+lats.join(",")+"&longitude="+lons.join(",")+"&current=precipitation,rain,showers,snowfall&timezone=auto");
   if(!q.ok())return;
   const arr=Array.isArray(r)?r:[r];
   if(ptLayer)map.removeLayer(ptLayer);
@@ -5511,7 +5548,7 @@ function skinK(){let k=1;try{const v=localStorage.getItem("wetter-skin");if(v!=n
 async function loadSun(){
  const q=seq("sun");
  try{
-  const j=await getJ("https://api.open-meteo.com/v1/forecast?latitude="+(+place.lat).toFixed(3)+"&longitude="+(+place.lon).toFixed(3)+"&hourly=uv_index&forecast_days=2&timezone=auto");
+  const j=await getJc60("https://api.open-meteo.com/v1/forecast?latitude="+(+place.lat).toFixed(3)+"&longitude="+(+place.lon).toFixed(3)+"&hourly=uv_index&forecast_days=2&timezone=auto");
   if(!q.ok())return;
   sunJ=j;renderSun();q.done();
  }catch(e){if(q.ok()&&!q.keep())$("sec-sun").hidden=true}
@@ -5546,7 +5583,7 @@ document.addEventListener("click",e=>{const b=e.target&&e.target.closest&&e.targ
 async function loadAir(){
  const el=$("air"),q=seq("air");
  try{
-  const j=await getJ("https://air-quality-api.open-meteo.com/v1/air-quality?latitude="+(+place.lat).toFixed(3)+"&longitude="+(+place.lon).toFixed(3)+"&current=european_aqi,pm2_5,pm10,ozone,nitrogen_dioxide&hourly="+Object.keys(POL).join(",")+"&forecast_days=2&timezone=auto");
+  const j=await getJc60("https://air-quality-api.open-meteo.com/v1/air-quality?latitude="+(+place.lat).toFixed(3)+"&longitude="+(+place.lon).toFixed(3)+"&current=european_aqi,pm2_5,pm10,ozone,nitrogen_dioxide&hourly="+Object.keys(POL).join(",")+"&forecast_days=2&timezone=auto");
   if(!q.ok())return;
   airJ=j;renderAir(j);q.done();
  }catch(e){if(q.ok()&&!q.keep())el.innerHTML='<p class="muted">Luft- und Pollendaten konnten nicht geladen werden.</p>'}
@@ -5623,7 +5660,7 @@ let pastJ=null;
 async function loadPast(){
  const el=$("past"),q=seq("past");
  try{
-  const j=await getJ("https://api.open-meteo.com/v1/forecast?latitude="+(+place.lat).toFixed(3)+"&longitude="+(+place.lon).toFixed(3)+"&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum&past_days=7&forecast_days=1&timezone=auto");
+  const j=await getJc180("https://api.open-meteo.com/v1/forecast?latitude="+(+place.lat).toFixed(3)+"&longitude="+(+place.lon).toFixed(3)+"&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum&past_days=7&forecast_days=1&timezone=auto");
   if(!q.ok())return;
   pastJ={k:PK(),j};renderPast();q.done();
  }catch(e){if(q.ok()&&!q.keep())el.innerHTML='<p class="muted">Der Rückblick konnte nicht geladen werden.</p>'}
@@ -5864,7 +5901,7 @@ async function loadTrend(){
  if(!rows){
   try{
    const tu="https://api.open-meteo.com/v1/forecast?latitude="+(+place.lat).toFixed(3)+"&longitude="+(+place.lon).toFixed(3)+"&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max&forecast_days=14&timezone=auto";
-   let j,ec=true;try{j=await getJ(tu+"&models=ecmwf_ifs");if(!j.daily||j.daily.temperature_2m_max.filter(x=>x!=null).length<10)throw new Error("kurz")}catch(e){j=await getJ(tu);ec=false}
+   let j,ec=true;try{j=await getJc180(tu+"&models=ecmwf_ifs");if(!j.daily||j.daily.temperature_2m_max.filter(x=>x!=null).length<10)throw new Error("kurz")}catch(e){j=await getJc180(tu);ec=false}
    const D=j.daily;rows=D.time.map((d,i)=>({date:d,hi:D.temperature_2m_max[i],lo:D.temperature_2m_min[i],p:D.precipitation_sum[i],pr:D.precipitation_probability_max?D.precipitation_probability_max[i]:null,code:D.weather_code[i]})).filter(r=>r.hi!=null&&r.lo!=null);src=ec?"ECMWF IFS (über Open-Meteo)":"Open-Meteo (Wettermodelle)";
   }catch(e){if(q.ok()&&!q.keep())el.innerHTML='<p class="muted">Der 14-Tage-Trend konnte nicht geladen werden.</p>';return}
  }
@@ -5973,11 +6010,11 @@ async function loadAlpine(){
  const pv="temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,wind_direction_10m,wind_gusts_10m,is_day,cloud_cover,snow_depth";
  const pU=pp=>B+pp.map(p=>p.la).join(",")+"&longitude="+pp.map(p=>p.lo).join(",")+"&elevation="+pp.map(p=>p.e).join(",")+"&current="+pv+"&daily=weather_code,temperature_2m_max,temperature_2m_min&forecast_days=2&timezone=auto&models=ecmwf_ifs";
  /* zuerst das DWD-Modell (hat die Schneefallgrenze), sonst die normale Vorhersage (nur Nullgradgrenze) */
- const snow=async()=>{try{return await getJ("https://api.open-meteo.com/v1/dwd-icon?"+loc.slice(1)+"freezing_level_height,snowfall_height,precipitation")}catch(e){return await getJ("https://api.open-meteo.com/v1/forecast?"+loc.slice(1)+"freezing_level_height,precipitation")}};
+ const snow=async()=>{try{return await getJc60("https://api.open-meteo.com/v1/dwd-icon?"+loc.slice(1)+"freezing_level_height,snowfall_height,precipitation")}catch(e){return await getJc60("https://api.open-meteo.com/v1/forecast?"+loc.slice(1)+"freezing_level_height,precipitation")}};
  const peaks=async()=>{
   if(!P.length)return[];
-  try{const r=await getJ(pU(P)),a=Array.isArray(r)?r:[r];if(a.length!==P.length)throw new Error("n");return a}
-  catch(e){return Promise.all(P.map(p=>getJ(pU([p])).catch(()=>getJ(pU([p]).replace("&models=ecmwf_ifs","")).catch(()=>null))))}
+  try{const r=await getJc60(pU(P)),a=Array.isArray(r)?r:[r];if(a.length!==P.length)throw new Error("n");return a}
+  catch(e){return Promise.all(P.map(p=>getJc60(pU([p])).catch(()=>getJc60(pU([p]).replace("&models=ecmwf_ifs","")).catch(()=>null))))}
  };
  const atP=P.filter(p=>AT_REG.test(p.reg));
  const [s,pk,sg]=await Promise.all([snow().catch(()=>null),peaks().catch(()=>[]),atP.length?sgLoad(atP).catch(()=>null):Promise.resolve(null)]);
@@ -6145,7 +6182,7 @@ async function loadKi(){
   const la=(+place.lat).toFixed(3),lo=(+place.lon).toFixed(3),base="https://previous-runs-api.open-meteo.com/v1/forecast?latitude="+la+"&longitude="+lo+"&past_days=30&forecast_days=3&timezone=GMT&models=ecmwf_ifs&hourly=";
   const V1="temperature_2m,cloud_cover,cloud_cover_low,wind_speed_10m,temperature_2m_previous_day1,cloud_cover_previous_day1,cloud_cover_low_previous_day1,wind_speed_10m_previous_day1";
   const V2="temperature_2m,cloud_cover,wind_speed_10m,temperature_2m_previous_day1,cloud_cover_previous_day1,wind_speed_10m_previous_day1";
-  const [ob,pr]=await Promise.all([obsHist(30),getJ(base+V1).catch(()=>getJ(base+V2))]);
+  const [ob,pr]=await Promise.all([obsHist(30),getJc60(base+V1).catch(()=>getJc60(base+V2))]);
   r=kiCalc(ob,pr);
  }catch(e){console.error(e);r={err:1}}
  if(my!==kiSeq)return;
@@ -6231,7 +6268,7 @@ let iceSeq=0;
 async function loadIce(){
  const my=++iceSeq,sec=$("sec-ice"),el=$("ice"),q=seq("ice");
  try{
-  const j=await getJ("https://api.open-meteo.com/v1/forecast?latitude="+(+place.lat).toFixed(3)+"&longitude="+(+place.lon).toFixed(3)+"&hourly=temperature_2m,dew_point_2m,soil_temperature_0cm,precipitation,snowfall,snow_depth,weather_code&past_hours=6&forecast_hours=30&timezone=auto");
+  const j=await getJc30("https://api.open-meteo.com/v1/forecast?latitude="+(+place.lat).toFixed(3)+"&longitude="+(+place.lon).toFixed(3)+"&hourly=temperature_2m,dew_point_2m,soil_temperature_0cm,precipitation,snowfall,snow_depth,weather_code&past_hours=6&forecast_hours=30&timezone=auto");
   if(my!==iceSeq)return;
   const H=j.hourly,T=H.time,off=(+j.utc_offset_seconds||0)*1000,nowK=new Date(Date.now()+off).toISOString().slice(0,13);
   let i0=T.findIndex(t=>t.slice(0,13)===nowK);if(i0<0)i0=Math.min(6,T.length-1);
@@ -6724,7 +6761,7 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("shr").hidden)cl
 const meta=n=>{const m=document.querySelector('meta[name="'+n+'"]');return m?m.content:""};
 /* app-build zählt seit jeher einfach hoch; daran erkennen auch ältere Geräte ein Update (sie vergleichen diese Zahl).
    Angezeigt wird der Build seit Version 1.0: Build 1 ist app-build 57. */
-const BUILD=+meta("app-build")||0,BUILD0=72,verText=b=>meta("app-version")+" (Build "+(b-BUILD0)+")";
+const BUILD=+meta("app-build")||0,BUILD0=73,verText=b=>meta("app-version")+" (Build "+(b-BUILD0)+")";
 let remote=null,lastChk=0;
 $("ver").textContent=verText(BUILD);
 /* Anmeldung: bis wann sie gilt und ob sie sich von selbst verlängert */

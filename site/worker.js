@@ -300,6 +300,19 @@ async function bfTip(req, env) {
   }
   return bfJson({ t: [] });
 }
+/* /om/<host>/<pfad>?…: Abfragen an Open-Meteo weiterleiten, damit nicht der Internetanschluss zu Hause zählt (Open-Meteo
+   erlaubt 10.000 Abfragen pro Anschluss und Tag). Nur für Angemeldete, nur die Open-Meteo-Server, nur GET, ohne
+   Cookies; die Antwort wird unverändert durchgereicht (kaum Rechenzeit). */
+const OM_HOSTS = new Set(["api.open-meteo.com", "air-quality-api.open-meteo.com", "previous-runs-api.open-meteo.com", "ensemble-api.open-meteo.com", "geocoding-api.open-meteo.com"]);
+async function omServe(req, env, url) {
+  if (!(await valid(env, getCookie(req, COOKIE)))) return bfJson({ error: "Nicht angemeldet" }, 401);
+  const m = /^\/om\/([a-z.-]+)(\/[A-Za-z0-9_\/.-]*)$/.exec(url.pathname);
+  if (!m || !OM_HOSTS.has(m[1]) || req.method !== "GET") return bfJson({ error: "Ungültig" }, 400);
+  try {
+    const r = await tfetch("https://" + m[1] + m[2] + url.search, 25000);
+    return new Response(r.body, { status: r.status, headers: { "Content-Type": r.headers.get("Content-Type") || "application/json", "Cache-Control": "no-store" } });
+  } catch (e) { return bfJson({ error: "Open-Meteo nicht erreichbar" }, 502); }
+}
 async function bfServe(req, env, url) {
   if (!(await valid(env, getCookie(req, COOKIE)))) return bfJson({ error: "Nicht angemeldet" }, 401);
   if (url.pathname === "/bf/log" && req.method === "POST") { try { const b = await req.json(); console.log("APPFEHLER", JSON.stringify(b).slice(0, 1600)); } catch (e) {} return bfJson({ ok: 1 }); }
@@ -321,6 +334,7 @@ export default {
     const url = new URL(req.url);
     try {
       if (url.pathname === "/api" || url.pathname.startsWith("/api/")) return secure(await api(req, env, url), { "Cache-Control": "no-store" });
+      if (url.pathname.startsWith("/om/")) return secure(await omServe(req, env, url));
       if (url.pathname.startsWith("/bf/")) return secure(await bfServe(req, env, url));
       if (url.pathname === "/gm" || url.pathname.startsWith("/gm/") || url.pathname === "/gr" || url.pathname.startsWith("/gr/")) return secure(await gmServe(env, url));
       if (req.method !== "GET" && req.method !== "HEAD") return secure(new Response("Nicht erlaubt", { status: 405, headers: { Allow: "GET, HEAD" } }));
