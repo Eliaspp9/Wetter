@@ -2,23 +2,52 @@ name: Testdaten Radar
 on:
   push:
     branches: [testdaten-nc]
+permissions:
+  contents: write
 jobs:
   holen:
+    if: "!contains(github.event.head_commit.message, 'Daten: Radar NetCDF')"
     runs-on: ubuntu-latest
     steps:
-      - name: Radar Österreich als NetCDF holen
+      - uses: actions/checkout@v4
+      - name: Wettermodelle prüfen
         run: |
-          mkdir nc
-          B="https://dataset.api.hub.geosphere.at/v1/grid/forecast/nowcast-v1-15min-1km"
-          curl -sS "$B/metadata" -o nc/metadata.json
-          ST=$(date -u -d "@$(( ($(date +%s)/900)*900 - 2700 ))" +%Y-%m-%dT%H:%M)
-          curl -sS -D nc/ganz.hdr "$B?parameters=rr&bbox=45.50,8.10,49.48,17.74&output_format=netcdf&start=$ST" -o nc/ganz.nc
-          curl -sS "$B?parameters=rr&bbox=47.9,13.9,48.5,14.7&output_format=netcdf&start=$ST" -o nc/klein.nc
-          curl -sS "$B?parameters=rr&bbox=47.9,13.9,48.5,14.7&output_format=geojson&start=$ST" -o nc/klein.geojson
-          curl -sS "$B?parameters=rr&bbox=45.50,8.10,49.48,17.74&output_format=netcdf" -o nc/ohne_start.nc
-          ls -la nc
-      - uses: actions/upload-artifact@v4
-        with:
-          name: nc
-          path: nc
-          retention-days: 1
+          mkdir -p om
+          cat > probe.py <<'PY'
+          import json, urllib.request, time
+          M = ["geosphere_seamless","geosphere_claef_austria","dwd_icon_d2_native","dwd_icon_d2","dwd_icon_eu_native","dwd_icon_seamless","meteoswiss_icon_ch1","meteoswiss_icon_ch2","meteofrance_arome_france_hd","meteofrance_seamless","knmi_harmonie_arome_netherlands","knmi_seamless","dmi_harmonie_arome_europe","dmi_seamless","metno_nordic","metno_seamless","ukmo_uk_deterministic_2km","ukmo_seamless","chmi_aladin_cz_1km","chmi_aladin_seamless","italia_meteo_arpae_icon_2i","ecmwf_ifs","ecmwf_aifs025_single"]
+          P = {"stmarien":(48.17,14.24),"leipzig":(51.34,12.37),"zuerich":(47.37,8.54),"paris":(48.85,2.35),"amsterdam":(52.37,4.9),"kopenhagen":(55.68,12.57),"oslo":(59.91,10.75),"london":(51.5,-0.12),"prag":(50.08,14.43),"rom":(41.9,12.5),"bozen":(46.5,11.35),"wien":(48.21,16.37),"innsbruck":(47.27,11.39)}
+          H = "temperature_2m,precipitation_probability,weather_code,precipitation,wind_speed_10m,wind_gusts_10m,snowfall,cloud_cover,cloud_cover_low,relative_humidity_2m"
+          def get(u):
+              for i in range(3):
+                  try:
+                      with urllib.request.urlopen(u, timeout=60) as r: return json.load(r)
+                  except urllib.error.HTTPError as e:
+                      try: return {"error": True, "reason": json.load(e).get("reason")}
+                      except Exception: return {"error": True, "reason": str(e)}
+                  except Exception as e: time.sleep(2); err = str(e)
+              return {"error": True, "reason": err}
+          out = {"forecast": {}, "prev": {}, "current": {}}
+          for m in M:
+              out["prev"][m] = (lambda j: j.get("reason") if j.get("error") else "ok")(get("https://previous-runs-api.open-meteo.com/v1/forecast?latitude=48.17&longitude=14.24&hourly=temperature_2m_previous_day1&models=%s&past_days=1&forecast_days=1" % m))
+              time.sleep(0.3)
+          for name, (la, lo) in P.items():
+              j = get("https://api.open-meteo.com/v1/forecast?latitude=%s&longitude=%s&timezone=auto&forecast_days=7&hourly=%s&current=temperature_2m,weather_code&daily=temperature_2m_max,precipitation_sum&models=%s" % (la, lo, H, ",".join(M)))
+              if j.get("error"): out["forecast"][name] = j; continue
+              hh = j["hourly"]; r = {}
+              for m in M:
+                  t = hh.get("temperature_2m_" + m) or []
+                  n = sum(1 for v in t if v is not None)
+                  if not n: continue
+                  last = max(i for i, v in enumerate(t) if v is not None)
+                  miss = [v for v in H.split(",") if not any(x is not None for x in (hh.get(v + "_" + m) or []))]
+                  r[m] = {"h": n, "bis": hh["time"][last], "fehlt": miss, "jetzt": j.get("current", {}).get("temperature_2m_" + m)}
+              out["forecast"][name] = r
+              time.sleep(0.5)
+          json.dump(out, open("om/probe.json", "w"), indent=1)
+          PY
+          python3 probe.py
+      - name: Ablegen
+        run: |
+          git config user.name "testdaten"; git config user.email "testdaten@users.noreply.github.com"
+          git add om && git commit -qm "Daten: Radar NetCDF (Modelle)" && git push -q
