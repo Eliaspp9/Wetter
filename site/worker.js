@@ -168,11 +168,131 @@ async function gmServe(env, url) {
   if (!b) return new Response("Nicht gefunden", { status: 404 });
   return new Response(b, { headers: { "Content-Type": "application/x-netcdf", "Cache-Control": "private, max-age=86400, immutable" } });
 }
+/* ============ Beste Vorhersage je Ort (/bf/pp und /bf/sk), nur für Angemeldete ============
+   /bf/pp: echte Regenwahrscheinlichkeit aus Ensembles. Jedes Ensemble rechnet das Wetter 20 bis 50 Mal mit leicht
+     verschiedenen Anfangswerten. Wahrscheinlichkeit je Stunde = Anteil der Läufe mit mindestens 0,1 mm, gemittelt über die
+     Ensembles (jedes zählt gleich). Europa: DWD ICON (40 Läufe), ECMWF (51), in AT/DE/CH die ersten 2 Tage zusätzlich
+     ICON-D2 (20, 2 km). Nordamerika: GFS, ECMWF, GEM. Sonst: ECMWF, GFS, ICON.
+   /bf/sk: welches Modell an diesem Ort zuletzt am besten lag. Die Wettermeldungen der Flughäfen in der Nähe (bis 60 km) der
+     letzten 2 Tage werden mit den Modellen verglichen, die die App benutzt (am Ort der Station, auf ihre Höhe umgerechnet).
+     Ergebnis je Modell: Gewicht für Temperatur und Wind (je kleiner der Fehler, desto mehr), Trefferquote für Regen ja/nein.
+   Beides in zwei Abrufen, damit jeder nur wenig rechnen muss (Grenze im kostenlosen Paket). Die App merkt sich die Antworten
+   (Wahrscheinlichkeit 1 Stunde, Modellgüte 6 Stunden), so bleibt es bei wenigen Abrufen bei Open-Meteo. */
+const BF_HDR = { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" };
+const bfJson = (o, st = 200) => new Response(JSON.stringify(o), { status: st, headers: BF_HDR });
+function bfEns(la, lo) {
+  const eu = la > 30 && la < 72 && lo > -25 && lo < 45, na = la > 15 && la < 75 && lo > -170 && lo < -50;
+  const d2 = la > 45.5 && la < 55.5 && lo > 5 && lo < 17.5;
+  if (eu) return d2 ? ["dwd_icon_seamless_eps", "ecmwf_ifs025", "dwd_icon_d2_eps"] : ["dwd_icon_seamless_eps", "ecmwf_ifs025"];
+  if (na) return ["ncep_gefs_seamless", "ecmwf_ifs025", "gem_global"];
+  return ["ecmwf_ifs025", "ncep_gefs_seamless", "dwd_icon_seamless_eps"];
+}
+const BF_NAME = { dwd_icon_seamless_eps: "DWD ICON", dwd_icon_d2_eps: "DWD ICON-D2", ecmwf_ifs025: "ECMWF", ncep_gefs_seamless: "GFS", gem_global: "GEM" };
+async function bfPP(la, lo) {
+  const ens = bfEns(la, lo);
+  const r = await tfetch("https://ensemble-api.open-meteo.com/v1/ensemble?latitude=" + la + "&longitude=" + lo + "&hourly=precipitation&forecast_days=7&timezone=GMT&timeformat=unixtime&models=" + ens.join(","), 15000);
+  if (!r.ok) return bfJson({ error: "ensemble " + r.status }, 502);
+  const H = (await r.json()).hourly || {}, T = H.time || [];
+  /* Schlüssel: precipitation[_memberNN]_<modell> (bei einem Modell ohne Endung) */
+  const grp = new Map();
+  for (const k of Object.keys(H)) {
+    const m = /^precipitation(?:_member\d+)?(?:_(.+))?$/.exec(k);
+    if (!m) continue;
+    const g = m[1] || "x";
+    if (!grp.has(g)) grp.set(g, []);
+    grp.get(g).push(H[k]);
+  }
+  const p = new Array(T.length).fill(null), used = new Set();
+  for (let i = 0; i < T.length; i++) {
+    let s = 0, n = 0;
+    for (const [g, A] of grp) {
+      let w = 0, c = 0;
+      for (const a of A) { const v = a[i]; if (v == null) continue; c++; if (v >= 0.1) w++; }
+      if (c >= 5) { s += w / c; n++; used.add(g); }
+    }
+    if (n) p[i] = Math.round((s / n) * 100);
+  }
+  const names = [...used].map((g) => BF_NAME[ens.find((e) => g.startsWith(e)) || ""] || g);
+  return bfJson({ t0: T[0] || 0, p, src: names, at: Math.round(Date.now() / 1000) });
+}
+const BF_MOD = /^[a-z0-9_]{2,40}$/;
+async function bfSK(la, lo, models) {
+  const dla = 0.55, dlo = Math.min(2.5, 0.8 / Math.max(0.2, Math.cos((la * Math.PI) / 180)));
+  const bb = [la - dla, lo - dlo, la + dla, lo + dlo].map((x) => x.toFixed(2)).join(",");
+  let a = [];
+  try {
+    const r = await tfetch("https://aviationweather.gov/api/data/metar?format=json&hours=48&bbox=" + bb, 12000);
+    if (r.ok && r.status !== 204) a = await r.json();
+  } catch (e) {}
+  if (!Array.isArray(a)) a = [];
+  const km = (x) => Math.hypot((x.lat - la) * 111, (x.lon - lo) * 111 * Math.cos((la * Math.PI) / 180));
+  const st = new Map();
+  for (const x of a) {
+    if (!x || typeof x.lat !== "number" || typeof x.lon !== "number" || typeof x.obsTime !== "number") continue;
+    if (km(x) > 60) continue;
+    let o = st.get(x.icaoId);
+    if (!o) st.set(x.icaoId, (o = { id: x.icaoId, la: x.lat, lo: x.lon, h: typeof x.elev === "number" ? x.elev : null, d: km(x), ob: [] }));
+    o.ob.push({ t: x.obsTime, T: typeof x.temp === "number" ? x.temp : null, W: typeof x.wspd === "number" ? x.wspd * 1.852 : null, R: /(^|\s)[-+]?(VC)?(SH|TS)?(RA|DZ|SN|SG|PL|GR|GS)/.test(String(x.wxString || "")) });
+  }
+  const S = [...st.values()].filter((o) => o.ob.length >= 20 && o.h != null).sort((x, y) => x.d - y.d).slice(0, 3);
+  if (!S.length) return bfJson({ n: 0, st: [] });
+  const r = await tfetch("https://api.open-meteo.com/v1/forecast?latitude=" + S.map((o) => o.la.toFixed(3)).join(",") + "&longitude=" + S.map((o) => o.lo.toFixed(3)).join(",") +
+    "&elevation=" + S.map((o) => Math.round(o.h)).join(",") + "&past_days=2&forecast_days=1&hourly=temperature_2m,wind_speed_10m,precipitation&models=" + models.join(",") + "&timezone=GMT&timeformat=unixtime", 15000);
+  if (!r.ok) return bfJson({ error: "forecast " + r.status }, 502);
+  let L = await r.json();
+  if (!Array.isArray(L)) L = [L];
+  const now = Date.now() / 1000, acc = {};
+  models.forEach((m) => (acc[m] = { tE: 0, tN: 0, wE: 0, wN: 0, rE: 0, rN: 0 }));
+  S.forEach((o, si) => {
+    const H = L[si] && L[si].hourly;
+    if (!H || !H.time) return;
+    const idx = new Map(H.time.map((t, i) => [t, i]));
+    const one = models.length === 1;
+    for (const ob of o.ob) {
+      if (ob.t > now) continue;
+      const hr = Math.round(ob.t / 3600) * 3600;
+      if (Math.abs(hr - ob.t) > 1200) continue;
+      const i = idx.get(hr);
+      if (i == null) continue;
+      for (const m of models) {
+        const g = (n) => { const A = H[one ? n : n + "_" + m]; return A ? A[i] : null; }, q = acc[m];
+        const T = g("temperature_2m"), W = g("wind_speed_10m"), P = g("precipitation");
+        if (T != null && ob.T != null) { q.tE += Math.abs(T - ob.T); q.tN++; }
+        if (W != null && ob.W != null) { q.wE += Math.abs(W - ob.W); q.wN++; }
+        if (P != null) { q.rN++; if ((P >= 0.1) !== ob.R) q.rE++; }
+      }
+    }
+  });
+  const out = { t: {}, w: {}, r: {}, e: {}, n: 0, st: S.map((o) => o.id) };
+  for (const m of models) {
+    const q = acc[m];
+    if (q.tN >= 20) { out.e[m] = Math.round((q.tE / q.tN) * 100) / 100; out.t[m] = 1 / Math.pow(q.tE / q.tN + 0.3, 2); out.n = Math.max(out.n, q.tN); }
+    if (q.wN >= 20) out.w[m] = 1 / Math.pow(q.wE / q.wN + 1.5, 2);
+    if (q.rN >= 20) out.r[m] = Math.round((1 - q.rE / q.rN) * 1000) / 1000;
+  }
+  for (const k of ["t", "w"]) { const s = Object.values(out[k]).reduce((x, y) => x + y, 0); if (s) for (const m in out[k]) out[k][m] = Math.round((out[k][m] / s) * 1000) / 1000; }
+  return bfJson(out);
+}
+async function bfServe(req, env, url) {
+  if (!(await valid(env, getCookie(req, COOKIE)))) return bfJson({ error: "Nicht angemeldet" }, 401);
+  const la = Math.round(+url.searchParams.get("la") * 20) / 20, lo = Math.round(+url.searchParams.get("lo") * 20) / 20;
+  if (!isFinite(la) || !isFinite(lo) || Math.abs(la) > 85 || Math.abs(lo) > 180) return bfJson({ error: "Ungültig" }, 400);
+  try {
+    if (url.pathname === "/bf/pp") return await bfPP(la, lo);
+    if (url.pathname === "/bf/sk") {
+      const models = String(url.searchParams.get("m") || "").split(",").filter((m) => BF_MOD.test(m)).slice(0, 6);
+      if (!models.length) return bfJson({ error: "Ungültig" }, 400);
+      return await bfSK(la, lo, models);
+    }
+  } catch (e) { return bfJson({ error: String((e && e.message) || e).slice(0, 80) }, 502); }
+  return bfJson({ error: "Nicht gefunden" }, 404);
+}
 export default {
   async fetch(req, env) {
     const url = new URL(req.url);
     try {
       if (url.pathname === "/api" || url.pathname.startsWith("/api/")) return secure(await api(req, env, url), { "Cache-Control": "no-store" });
+      if (url.pathname.startsWith("/bf/")) return secure(await bfServe(req, env, url));
       if (url.pathname === "/gm" || url.pathname.startsWith("/gm/") || url.pathname === "/gr" || url.pathname.startsWith("/gr/")) return secure(await gmServe(env, url));
       if (req.method !== "GET" && req.method !== "HEAD") return secure(new Response("Nicht erlaubt", { status: 405, headers: { Allow: "GET, HEAD" } }));
       if (url.pathname === "/wetter2.html" || url.pathname === "/Wetter" || url.pathname.startsWith("/Wetter/")) return Response.redirect(url.origin + "/" + url.search, 301);
