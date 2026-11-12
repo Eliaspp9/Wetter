@@ -1,3 +1,4 @@
+process.on("unhandledRejection",e=>console.log("UNH",e&&e.stack));process.on("uncaughtException",e=>console.log("UNC",e&&e.stack));
 import {createRequire} from "module";const require=createRequire(import.meta.url);
 const C=require("./chain.cjs");const mod=await import("./sw.mjs");
 const env={PROXY:{fetch:async()=>new Response("{}",{status:200})}};
@@ -5,7 +6,7 @@ C.setCC("AT");const lok=C.lokModels(),ruc=C.rucOn();const ms=(ruc?["dwd_icon_d2_
 console.log("lok",lok,"ruc",ruc);
 const B="https://api.open-meteo.com/v1/forecast?latitude=48.1666&longitude=14.2461&timezone=auto&forecast_days=7";
 const full="&current=temperature_2m,apparent_temperature,relative_humidity_2m,precipitation,weather_code,wind_speed_10m,wind_direction_10m,surface_pressure,is_day,cloud_cover,wind_gusts_10m&hourly=temperature_2m,precipitation_probability,weather_code,precipitation,wind_speed_10m,wind_gusts_10m,snowfall,cloud_cover,cloud_cover_low,relative_humidity_2m,is_day&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max,sunrise,sunset,uv_index_max";
-const raw=await (await fetch(B+full+"&models="+ms.concat(["best_match"]).join(","))).json();
+let raw;try{raw=await (await fetch(B+full+"&models="+ms.concat(["best_match"]).join(","))).json()}catch(e){console.log("raw",e.stack)}
 const sk=JSON.parse(await (await mod.default.fetch(new Request("https://x/bf/sk?la=48.167&lo=14.246&m="+ms.join(","),{headers:{Cookie:"wt=a.b"}}),env)).text());
 const pp=JSON.parse(await (await mod.default.fetch(new Request("https://x/bf/pp?la=48.167&lo=14.246",{headers:{Cookie:"wt=a.b"}}),env)).text());
 console.log("sk",JSON.stringify(sk));console.log("pp",JSON.stringify(pp).slice(0,200));
