@@ -1,12 +1,4 @@
-Utzenaich pp 200 884ms {"src":["DWD ICON","ECMWF","DWD ICON-D2"],"n":168,"first24":"99 92 51 29 2 1 5 1 0 0 0 0 0 4 4 5 36 61 81 91 94 98 100 100","max":100}
-Utzenaich sk 200 961ms {"t":{"dwd_icon_d2":0.644,"ecmwf_ifs":0.356},"w":{"dwd_icon_d2":0.489,"ecmwf_ifs":0.511},"r":{"dwd_icon_d2":0.856,"ecmwf_ifs":0.814},"e":{"dwd_icon_d2":0.72,"ecmwf_ifs":1.07},"n":188,"st":["LOWL","LOWS"]}
-Wien pp 200 177ms {"src":["DWD ICON","ECMWF","DWD ICON-D2"],"n":168,"first24":"97 98 85 78 28 6 3 1 1 1 0 0 0 1 1 1 29 38 63 92 98 99 99 98","max":100}
-Wien sk 200 447ms {"t":{"ecmwf_ifs":1},"w":{"ecmwf_ifs":1},"r":{"ecmwf_ifs":0.83},"e":{"ecmwf_ifs":1.16},"n":94,"st":["LOWW"]}
-Berlin pp 200 176ms {"src":["DWD ICON","ECMWF","DWD ICON-D2"],"n":168,"first24":"0 1 1 1 4 4 4 6 8 13 5 1 1 0 0 0 0 0 0 0 0 0 0 0","max":50}
-Berlin sk 200 322ms {"t":{"dwd_icon_d2":0.518,"ecmwf_ifs":0.482},"w":{"dwd_icon_d2":0.628,"ecmwf_ifs":0.372},"r":{"dwd_icon_d2":1,"ecmwf_ifs":1},"e":{"dwd_icon_d2":0.42,"ecmwf_ifs":0.44},"n":96,"st":["EDDB"]}
-NewYork pp 200 174ms {"src":["GFS","ECMWF","GEM"],"n":168,"first24":"0 0 0 0 0 0 0 2 2 2 1 1 1 23 23 23 72 72 72 100 100 100 100 100","max":100}
-NewYork sk 200 957ms {"t":{"ncep_hrrr_conus":0.378,"gfs_seamless":0.378,"ecmwf_ifs":0.243},"w":{"ncep_hrrr_conus":0.365,"gfs_seamless":0.365,"ecmwf_ifs":0.269},"r":{"ncep_hrrr_conus":0.897,"gfs_seamless":0.897,"ecmwf_ifs":0.879},"e":{"ncep_hrrr_conus":1.36,"gfs_seamless":1.36,"ecmwf_ifs":1.77},"n":58,"st":["KJRB","KNYC","KEWR"]}
-Sydney pp 200 168ms {"src":["ECMWF","GFS","DWD ICON"],"n":168,"first24":"11 0 0 0 0 0 0 0 0 0 0 0 0 3 4 3 1 3 1 2 1 1 20 20","max":80}
-Sydney sk 200 291ms {"t":{"ecmwf_ifs":1},"w":{"ecmwf_ifs":1},"r":{"ecmwf_ifs":0.901},"e":{"ecmwf_ifs":1.29},"n":152,"st":["YSSY","YSWS","YSRI"]}
-Sahara pp 200 173ms {"src":["ECMWF","GFS","DWD ICON"],"n":168,"first24":"0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0","max":0}
-Sahara sk 200 81ms {"n":0,"st":[]}
+main 200 657ms {"latitude":48.169,"longitude":14.234256,"generationtime_ms":3.683328628540039,"utc_offset_seconds":3600,"timezone":"Europe/Vienna","timezone_abbreviation":"GMT+1","elevation":287.
+ec 200 127ms {"latitude":48.189804,"longitude":14.27379,"generationtime_ms":0.5925893783569336,"utc_offset_seconds":3600,"timezone":"Europe/Vienna","timezone_abbreviation":"GMT+1","elevation":2
+plain 200 128ms {"latitude":48.169,"longitude":14.234256,"generationtime_ms":2.0313262939453125,"utc_offset_seconds":3600,"timezone":"Europe/Vienna","timezone_abbreviation":"GMT+1","elevation":287
+nc 200 125ms {"latitude":48.169,"longitude":14.234256,"generationtime_ms":0.2582073211669922,"utc_offset_seconds":3600,"timezone":"Europe/Vienna","timezone_abbreviation":"GMT+1","elevation":287
