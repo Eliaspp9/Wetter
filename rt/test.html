@@ -1,8 +1,8 @@
 <!doctype html><meta charset="utf-8"><body><pre id="o"></pre><script>
-const out=[];const log=s=>{out.push(s);document.getElementById("o").textContent=out.join("\n")};
+const out=[];const log=s=>{console.log(s);out.push(s);document.getElementById("o").textContent=out.join("\n")};
 const merc=la=>Math.log(Math.tan(Math.PI/4+la*Math.PI/360))*180/Math.PI;
 const BOX=[45.50,8.10,49.48,17.74],CS=0.0143,lo0=BOX[1],yT=merc(BOX[2]),W=Math.ceil((BOX[3]-BOX[1])/CS),H=Math.ceil((yT-merc(BOX[0]))/CS);
-const w=new Worker("radar-at.js");let id=0;const q=new Map();w.onmessage=e=>{const c=q.get(e.data.id);q.delete(e.data.id);c(e.data)};w.onerror=e=>log("WORKER ERROR "+e.message);
+const w=new Worker("../radar-at.js");let id=0;const q=new Map();w.onmessage=e=>{const c=q.get(e.data.id);q.delete(e.data.id);c(e.data)};w.onerror=e=>log("WORKER ERROR "+e.message);
 const req=(kind,url)=>new Promise(r=>{const i=++id;q.set(i,r);w.postMessage({id:i,kind,url,g:{lo0,yT,W,H},cs:CS,rcMin:.1,rcL:Math.log(300),ms:90000,tw:1})});
 const iso=t=>new Date(t*1000).toISOString().slice(0,16),B="https://dataset.api.hub.geosphere.at/v1/grid/forecast/",BB="&bbox=45.50,8.10,49.48,17.74";
 (async()=>{try{
