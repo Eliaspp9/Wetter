@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-285fPEGby2/4TzKj3HOSc+oCkSuBOCI84QI8y2jN46U=' 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-lCHYWFjwRfu7fJMvMRnbFakBpGlRYUwvdWWLroh3Cko=' 'sha256-Pn5RudcIcVs6sBOfbrKopOccnYaCLDKjh0ZMlkMrufw=' 'sha256-RuxfNxmpjp4A0o44t73N+6O4m9ajjPnJ8Ah9hbvLASk=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src 'self'; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://s3.amazonaws.com https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-285fPEGby2/4TzKj3HOSc+oCkSuBOCI84QI8y2jN46U=' 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-lCHYWFjwRfu7fJMvMRnbFakBpGlRYUwvdWWLroh3Cko=' 'sha256-t2JCIPrkl3qjYrQWSKPthpyfqMKmBsrLER1rZ4EFbx0=' 'sha256-RuxfNxmpjp4A0o44t73N+6O4m9ajjPnJ8Ah9hbvLASk=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src 'self'; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://s3.amazonaws.com https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -14,7 +14,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/favicon-64.png">
-<meta name="app-build" content="71">
+<meta name="app-build" content="72">
 <meta name="app-version" content="1.0">
 <meta name="app-notes" content="Neue Adresse: Die App liegt jetzt bei Cloudflare (wetter.elias-ziegler.workers.dev). Version 1.0 (Build 1): Alles durchgesehen, Fehler behoben und schneller gemacht. Die App startet viel schneller: Das Wetter steht beim Öffnen fast sofort da, weil der letzte Stand gleich gezeigt wird und alle Daten gleichzeitig geholt werden. Das Regenradar Österreich lädt jetzt immer ganz Österreich auf einmal (etwa 1 MB, 1 bis 2 Sekunden statt viele Stücke zu je 6 MB), egal wohin du zoomst, ohne Lücken, und holt neue Daten gleich, wenn du die App aus dem Hintergrund zurückholst. Die Regen-Vorschau für die nächsten 2 Stunden war eine Viertelstunde zu spät und stimmt jetzt. Benachrichtigungen kommen zuverlässiger, die Schrift lädt ohne Google, dazu viele Kleinigkeiten.">
 <script>/* Umzug von GitHub (eliaspp9.github.io/Wetter) hierher: die alte Seite gibt Einstellungen und Lieblingsorte in der Adresse
@@ -314,8 +314,8 @@ main{position:relative;z-index:1;max-width:1180px;margin:-30px auto 0;padding:0 
  .tabs,.mini{display:none}
  .hero{padding-bottom:66px}
  main{margin-top:-42px;padding:0 20px}
- .grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:16px;align-items:start;grid-template-areas:"radar warn" "radar now" "radar obs" "radar hours" "radar ice" "radar days" "radar trend" "radar facts" "radar air" "radar mtn" "radar fans" "radar models" "radar ki" "radar past" "radar push"}
- .s-warn{grid-area:warn}.s-now{grid-area:now}.s-ice{grid-area:ice}.s-hours{grid-area:hours}.s-fans{grid-area:fans}.s-days{grid-area:days}.s-facts{grid-area:facts}.s-obs{grid-area:obs}.s-models{grid-area:models}.s-trend{grid-area:trend}.s-past{grid-area:past}.s-air{grid-area:air}.s-push{grid-area:push}.s-mtn{grid-area:mtn}.s-ki{grid-area:ki}
+ .grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:16px;align-items:start;grid-template-areas:"radar warn" "radar now" "radar obs" "radar hours" "radar ice" "radar days" "radar trend" "radar facts" "radar sun" "radar air" "radar mtn" "radar fans" "radar models" "radar ki" "radar past" "radar push"}
+ .s-warn{grid-area:warn}.s-now{grid-area:now}.s-ice{grid-area:ice}.s-hours{grid-area:hours}.s-fans{grid-area:fans}.s-days{grid-area:days}.s-facts{grid-area:facts}.s-sun{grid-area:sun}.s-obs{grid-area:obs}.s-models{grid-area:models}.s-trend{grid-area:trend}.s-past{grid-area:past}.s-air{grid-area:air}.s-push{grid-area:push}.s-mtn{grid-area:mtn}.s-ki{grid-area:ki}
  .s-radar{grid-area:radar;position:sticky;top:16px}
  #map{height:min(72vh,700px)!important}
  .upd{bottom:calc(env(safe-area-inset-bottom,0px) + 12px)}
@@ -630,6 +630,13 @@ html.srcopen .srcbtn::after{transform:rotate(180deg)}
 
 /* Details */
 .facts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sun-big{font-size:17px;font-weight:650;margin:2px 0 6px}
+.sun-row{font-size:14px;line-height:1.45;margin:6px 0}
+.sun-row b{font-weight:650}
+.sun-warn{font-size:14px;line-height:1.45;margin:8px 0;padding:8px 10px;border-radius:10px;background:rgba(230,120,30,.14)}
+.skin{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:10px;font-size:13px;color:var(--muted)}
+.skin button{padding:5px 10px;border:1px solid var(--line);border-radius:999px;background:none;color:inherit;font:inherit;font-size:13px;cursor:pointer}
+.skin button.on{background:var(--accent);border-color:var(--accent);color:#fff}
 .fact{background:var(--tile);border-radius:14px;padding:12px 14px}
 .fact.wide{grid-column:1/-1}
 .fact h3{margin:0 0 4px;font-size:13px;font-weight:500;color:var(--muted)}
@@ -1035,6 +1042,13 @@ html.locked body>*:not(#gate):not(.moved){display:none!important}
   <section class="card s-trend" id="sec-trend" aria-labelledby="h-trend">
    <div class="ch"><h2 id="h-trend">Trend bis 14 Tage</h2></div>
    <div id="trend"><p class="muted">Wird geladen …</p></div>
+  </section>
+
+  <section class="card s-sun" id="sec-sun" aria-labelledby="h-sun" hidden>
+   <div class="ch"><h2 id="h-sun">Sonne &amp; Bräunen</h2></div>
+   <div id="sun"></div>
+   <div class="skin" role="group" aria-label="Dein Hauttyp"><span>Hauttyp:</span><button type="button" data-k="0">sehr hell</button><button type="button" data-k="1">hell</button><button type="button" data-k="2">mittel</button><button type="button" data-k="3">dunkler</button></div>
+   <button type="button" class="srcbtn" aria-label="Quellen der Daten zeigen oder verbergen">Quelle</button><p class="small srcf">UV-Index: Open-Meteo (Wettermodelle, mit Bewölkung). Zeiten bis zum Sonnenbrand sind Richtwerte nach Hauttyp; mit Sonnenschutz wird gerechnet, als wäre nur etwa ein Drittel des LSF wirksam, weil meist zu dünn eingecremt wird.</p>
   </section>
 
   <section class="card s-facts" id="sec-facts" aria-labelledby="h-facts">
@@ -1527,7 +1541,7 @@ async function loadWeather(auto){
  if(!auto||dN)loadNowcast();
  if(!auto||dO)loadObs();
  if(!auto||dI)loadIce();
- if(!auto||Date.now()-lastSlow>=SLOW_MS){lastSlow=Date.now();loadPtypes();loadAir();loadTrend();loadAlpine();if(fansOn){loadPast();loadModels();loadKi()}}
+ if(!auto||Date.now()-lastSlow>=SLOW_MS){lastSlow=Date.now();loadPtypes();loadAir();loadSun();loadTrend();loadAlpine();if(fansOn){loadPast();loadModels();loadKi()}}
  if(!auto)renderPush();
  try{localStorage.setItem("wetter-ort",JSON.stringify(place))}catch(e){}
 }
@@ -5485,6 +5499,48 @@ async function loadObs(){
 const AQ=[[20,"Gut","#2FA66A"],[40,"Ausreichend","#7BC043"],[60,"Mäßig","#E8B923"],[80,"Schlecht","#F08A24"],[100,"Sehr schlecht","#E5484D"],[1e9,"Extrem schlecht","#9B1C4B"]];
 const POL={birch_pollen:"Birke",alder_pollen:"Erle",grass_pollen:"Gräser",mugwort_pollen:"Beifuß",ragweed_pollen:"Ambrosia",olive_pollen:"Olive"};
 let airJ=null;
+/* ============ Sonne & Bräunen (weltweit, UV-Index stündlich von Open-Meteo) ============
+   Nur an Tagen mit UV ab 3. Gut zum Bräunen: Stunden mit UV 3 bis 8; ab 9 zu stark. Schutz nach UV und Hauttyp.
+   Zeit bis zum Sonnenbrand ohne Schutz: MED / (UV × 0,025 W/m² × 60 s), MED je Hauttyp 200/250/350/450 J/m².
+   Mit Schutz: nur etwa ein Drittel des LSF wirkt (meist zu dünn eingecremt). Richtwerte, keine Garantie. */
+const SKIN_MED=[200,250,350,450],SKIN_N=["sehr helle","helle","mittlere","dunklere"];
+let sunJ=null;
+function skinK(){let k=1;try{const v=localStorage.getItem("wetter-skin");if(v!=null&&v!=="")k=Math.max(0,Math.min(3,+v))}catch(e){}return k}
+async function loadSun(){
+ const q=seq("sun");
+ try{
+  const j=await getJ("https://api.open-meteo.com/v1/forecast?latitude="+(+place.lat).toFixed(3)+"&longitude="+(+place.lon).toFixed(3)+"&hourly=uv_index&forecast_days=2&timezone=auto");
+  if(!q.ok())return;
+  sunJ=j;renderSun();q.done();
+ }catch(e){if(q.ok()&&!q.keep())$("sec-sun").hidden=true}
+}
+function renderSun(){
+ const j=sunJ,sec=$("sec-sun"),el=$("sun");
+ document.querySelectorAll(".skin button").forEach(b=>b.classList.toggle("on",+b.dataset.k===skinK()));
+ const H=j&&j.hourly;if(!H||!H.time||!H.uv_index){sec.hidden=true;return}
+ const off=+j.utc_offset_seconds||0,nowS=new Date(Date.now()+off*1000).toISOString().slice(0,13)+":00",today=nowS.slice(0,10);
+ const day=d=>H.time.map((t,i)=>({t,i,h:+t.slice(11,13),u:H.uv_index[i]})).filter(x=>x.t.slice(0,10)===d&&x.u!=null);
+ let D=day(today).filter(x=>x.t>=nowS),when="Heute";
+ if(!D.some(x=>x.u>=2.5)){const d2=H.time.find(t=>t.slice(0,10)>today);D=d2?day(d2.slice(0,10)):[];when="Morgen"}
+ if(!D.some(x=>x.u>=2.5)){sec.hidden=true;return}
+ sec.hidden=false;
+ const k=skinK(),med=SKIN_MED[k],R=v=>Math.round(v),hh=h=>h+" Uhr";
+ const ranges=f=>{const o=[];let a=null,b=null;for(const x of D){if(f(R(x.u))){if(a==null)a=x.h;b=x.h}else if(a!=null){o.push([a,b]);a=null}}if(a!=null)o.push([a,b]);return o.map(([a,b])=>a===b?"um "+hh(a):a+" bis "+(b+1)+" Uhr")};
+ const good=ranges(u=>u>=3&&u<=8),hot=ranges(u=>u>=9);
+ const mx=D.reduce((m,x)=>x.u>m.u?x:m,D[0]),cur=when==="Heute"?D.find(x=>x.t===nowS):null;
+ const peak=Math.min(8,R(mx.u));
+ let spf=peak<=5?15:peak<=7?30:50;if(k===0)spf=Math.min(50,spf===15?30:50);if(k>=2&&spf>15)spf=spf===50?30:15;
+ const burn=u=>Math.round(med/(u*.025*60)),eff=Math.max(2,spf/3);
+ const b0=burn(Math.max(3,peak)),bs=Math.min(240,Math.round(b0*eff));
+ let h='<p class="sun-big">'+when+": UV bis "+R(mx.u)+" um "+hh(mx.h)+(cur?" · jetzt "+R(cur.u):"")+"</p>";
+ if(good.length)h+='<p class="sun-row"><b>Gut zum Bräunen:</b> '+good.join(", ")+" (UV 3 bis 8).</p>";
+ if(hot.length)h+='<p class="sun-warn"><b>Zu stark:</b> '+hot.join(", ")+" (UV 9 und mehr). Da besser in den Schatten, Sonnenbrand geht dann sehr schnell.</p>";
+ h+='<p class="sun-row"><b>Schutz:</b> mindestens LSF '+spf+" für "+SKIN_N[k]+" Haut. Bräunungsöl passt, wenn auf der Flasche mindestens LSF "+spf+" steht"+(spf>=30?"; Öle mit LSF 6 bis 15 sind heute zu wenig.":".")+"</p>";
+ h+='<p class="sun-row"><b>Wie lange:</b> ohne Schutz Sonnenbrand nach etwa '+b0+" Minuten (bei UV "+Math.max(3,peak)+"). Mit LSF "+spf+" grob "+(bs>=120?"bis zu "+Math.round(bs/60*2)/2+" Stunden":"etwa "+bs+" Minuten")+", aber alle 2 Stunden und nach dem Baden nachcremen.</p>";
+ if(peak>=8)h+='<p class="sun-warn">Bei UV 8 verbrennt die Haut sehr schnell. Zwischendurch Schatten, Sonnenbrille und Kopfbedeckung.</p>';
+ el.innerHTML=h;
+}
+document.addEventListener("click",e=>{const b=e.target&&e.target.closest&&e.target.closest(".skin button");if(!b)return;try{localStorage.setItem("wetter-skin",b.dataset.k)}catch(x){}if(sunJ)renderSun()});
 async function loadAir(){
  const el=$("air"),q=seq("air");
  try{
@@ -6666,7 +6722,7 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("shr").hidden)cl
 const meta=n=>{const m=document.querySelector('meta[name="'+n+'"]');return m?m.content:""};
 /* app-build zählt seit jeher einfach hoch; daran erkennen auch ältere Geräte ein Update (sie vergleichen diese Zahl).
    Angezeigt wird der Build seit Version 1.0: Build 1 ist app-build 57. */
-const BUILD=+meta("app-build")||0,BUILD0=70,verText=b=>meta("app-version")+" (Build "+(b-BUILD0)+")";
+const BUILD=+meta("app-build")||0,BUILD0=71,verText=b=>meta("app-version")+" (Build "+(b-BUILD0)+")";
 let remote=null,lastChk=0;
 $("ver").textContent=verText(BUILD);
 /* Anmeldung: bis wann sie gilt und ob sie sich von selbst verlängert */
