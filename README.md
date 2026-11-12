@@ -125,7 +125,7 @@ Gemessen mit nachgestellter Netz-Verzögerung am zweiten Start (Ort Utzenaich, R
 
 Die App liegt jetzt unter **https://wetter.elias-ziegler.workers.dev/** (Cloudflare-Worker `wetter`, nur Dateien, kein eigener Code; Einstellungen in `wrangler.jsonc`, was nicht mit hinaus soll in `.assetsignore`). Der Worker `wetter-proxy` lässt diese Adresse immer zu (`APP_ORIGINS`), dazu weiter `ALLOWED_ORIGIN`.
 - Auf der alten Adresse bei GitHub zeigt die App einen Hinweis mit Knopf „Zur neuen Adresse“. Der Knopf meldet die Benachrichtigungen dort ab (sonst kämen sie doppelt) und nimmt Einstellungen und Lieblingsorte in der Adresse mit (`#umzug=…`, ohne Anmeldung und ohne Zwischenspeicher). Die neue Seite übernimmt sie ganz am Anfang und entfernt den Zusatz wieder.
-- Veröffentlichen: über den Cloudflare-Zugang (Dateien hochladen, dann Worker `wetter` mit den Dateien neu anlegen). Wird das Projekt bei GitHub privat, kann Cloudflare (Workers Builds) direkt mit dem Projekt verbunden werden: dann veröffentlicht jeder Push auf `main` von selbst.
+- Veröffentlichen: Cloudflare ist mit dem Projekt verbunden (Workers Builds, seit 12.11.2026): Jeder Push auf `main` veröffentlicht die Seite von selbst (`npx wrangler deploy` mit `wrangler.jsonc`). Das funktioniert auch, wenn das Projekt privat ist. Der Worker `wetter-proxy` wird weiter getrennt hochgeladen.
 
 ## Radar Österreich: ganz Österreich auf einmal (1.0, Build 1, Stand 12.11.)
 
