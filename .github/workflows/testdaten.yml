@@ -19,10 +19,14 @@ jobs:
           P = {"newyork":(40.71,-74.0),"kansascity":(39.1,-94.58),"losangeles":(34.05,-118.24),"miami":(25.76,-80.19),"seattle":(47.61,-122.33),"anchorage":(61.22,-149.9),"honolulu":(21.31,-157.86),"toronto":(43.65,-79.38),"vancouver":(49.28,-123.12),"calgary":(51.05,-114.07),"montreal":(45.5,-73.57),"mexiko":(19.43,-99.13),"cancun":(21.16,-86.85),"havanna":(23.11,-82.37),"puertorico":(18.47,-66.11),"tokio":(35.68,139.76),"sapporo":(43.06,141.35),"okinawa":(26.21,127.68),"stmarien":(48.17,14.24),"innsbruck":(47.27,11.39),"leipzig":(51.34,12.37),"zuerich":(47.37,8.54),"wien":(48.21,16.37)}
           H = "temperature_2m,precipitation_probability,weather_code,precipitation,wind_speed_10m,wind_gusts_10m,snowfall,cloud_cover,cloud_cover_low,relative_humidity_2m"
           def get(u):
-              try:
-                  with urllib.request.urlopen(u, timeout=60) as r: return json.load(r)
-              except urllib.error.HTTPError as e:
-                  return {"error": True, "reason": json.load(e).get("reason")}
+              for i in range(4):
+                  try:
+                      with urllib.request.urlopen(u, timeout=60) as r: return json.load(r)
+                  except urllib.error.HTTPError as e:
+                      return {"error": True, "reason": json.load(e).get("reason")}
+                  except Exception as e:
+                      err = str(e); time.sleep(3)
+              return {"error": True, "reason": err}
           out = {}
           for name, (la, lo) in P.items():
               j = get("https://api.open-meteo.com/v1/forecast?latitude=%s&longitude=%s&timezone=auto&forecast_days=7&hourly=%s&current=temperature_2m&models=%s" % (la, lo, H, ",".join(M)))
