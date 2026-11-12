@@ -6,7 +6,7 @@ permissions:
   contents: write
 jobs:
   holen:
-    if: "!contains(github.event.head_commit.message, 'Daten: Radar NetCDF (rt10)')"
+    if: "!contains(github.event.head_commit.message, 'Daten: Radar NetCDF (rt11)')"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -19,4 +19,4 @@ jobs:
       - name: Ablegen
         run: |
           git config user.name "testdaten"; git config user.email "testdaten@users.noreply.github.com"
-          git add om gs gs2 gs3 && git commit -qm "Daten: Radar NetCDF (rt10)" && git push -q
+          git add om gs gs2 gs3 && git commit -qm "Daten: Radar NetCDF (rt11)" && git push -q
