@@ -1,34 +1,14 @@
 {
  "forecast": {
-  "stmarien": {
-   "dwd_aicon_global_native": {
-    "h": 168,
-    "bis": "2026-11-18T23:00",
+  "madrid": {
+   "meteofrance_arome_france_hd": {
+    "h": 56,
+    "bis": "2026-11-14T07:00",
     "fehlt": [
      "precipitation_probability",
      "weather_code",
-     "wind_gusts_10m",
-     "cloud_cover",
-     "cloud_cover_low"
-    ],
-    "jetzt": null
-   },
-   "ncep_aigfs025": {
-    "h": 168,
-    "bis": "2026-11-18T23:00",
-    "fehlt": [
-     "precipitation_probability",
-     "wind_gusts_10m",
-     "relative_humidity_2m"
-    ],
-    "jetzt": null
-   },
-   "ecmwf_aifs025_single": {
-    "h": 168,
-    "bis": "2026-11-18T23:00",
-    "fehlt": [
-     "precipitation_probability",
-     "wind_gusts_10m"
+     "snowfall",
+     "cloud_cover"
     ],
     "jetzt": null
    },
@@ -39,35 +19,47 @@
     "jetzt": null
    }
   },
-  "kc": {
-   "dwd_aicon_global_native": {
+  "lissabon": {
+   "ecmwf_ifs": {
     "h": 168,
     "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   }
+  },
+  "barcelona": {
+   "dmi_harmonie_arome_europe": {
+    "h": 64,
+    "bis": "2026-11-14T15:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "chmi_aladin_central_europe_2km": {
+    "h": 74,
+    "bis": "2026-11-15T01:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "meteofrance_arome_france_hd": {
+    "h": 56,
+    "bis": "2026-11-14T07:00",
     "fehlt": [
      "precipitation_probability",
      "weather_code",
-     "wind_gusts_10m",
-     "cloud_cover",
-     "cloud_cover_low"
+     "snowfall",
+     "cloud_cover"
     ],
     "jetzt": null
    },
-   "ncep_aigfs025": {
-    "h": 168,
-    "bis": "2026-11-18T23:00",
+   "knmi_harmonie_arome_europe": {
+    "h": 67,
+    "bis": "2026-11-14T18:00",
     "fehlt": [
-     "precipitation_probability",
-     "wind_gusts_10m",
-     "relative_humidity_2m"
-    ],
-    "jetzt": null
-   },
-   "ecmwf_aifs025_single": {
-    "h": 168,
-    "bis": "2026-11-18T23:00",
-    "fehlt": [
-     "precipitation_probability",
-     "wind_gusts_10m"
+     "precipitation_probability"
     ],
     "jetzt": null
    },
@@ -78,35 +70,959 @@
     "jetzt": null
    }
   },
-  "tokio": {
-   "dwd_aicon_global_native": {
+  "athen": {},
+  "bukarest": {
+   "chmi_aladin_central_europe_2km": {
+    "h": 75,
+    "bis": "2026-11-15T02:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "ecmwf_ifs": {
     "h": 168,
     "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   }
+  },
+  "sofia": {
+   "chmi_aladin_central_europe_2km": {
+    "h": 75,
+    "bis": "2026-11-15T02:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "ecmwf_ifs": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   }
+  },
+  "warschau": {
+   "dmi_harmonie_arome_europe": {
+    "h": 64,
+    "bis": "2026-11-14T15:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "chmi_aladin_central_europe_2km": {
+    "h": 74,
+    "bis": "2026-11-15T01:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "knmi_harmonie_arome_europe": {
+    "h": 67,
+    "bis": "2026-11-14T18:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "ecmwf_ifs": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   }
+  },
+  "budapest": {
+   "dmi_harmonie_arome_europe": {
+    "h": 64,
+    "bis": "2026-11-14T15:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "chmi_aladin_central_europe_2km": {
+    "h": 74,
+    "bis": "2026-11-15T01:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "italia_meteo_arpae_icon_2i": {
+    "h": 74,
+    "bis": "2026-11-15T01:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "knmi_harmonie_arome_europe": {
+    "h": 67,
+    "bis": "2026-11-14T18:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "geosphere_claef_austria": {
+    "h": 65,
+    "bis": "2026-11-14T16:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "ecmwf_ifs": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   }
+  },
+  "zagreb": {
+   "dmi_harmonie_arome_europe": {
+    "h": 64,
+    "bis": "2026-11-14T15:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "chmi_aladin_central_europe_2km": {
+    "h": 74,
+    "bis": "2026-11-15T01:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "dwd_icon_d2_native": {
+    "h": 56,
+    "bis": "2026-11-14T07:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "italia_meteo_arpae_icon_2i": {
+    "h": 74,
+    "bis": "2026-11-15T01:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "knmi_harmonie_arome_europe": {
+    "h": 67,
+    "bis": "2026-11-14T18:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "geosphere_claef_austria": {
+    "h": 65,
+    "bis": "2026-11-14T16:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "meteoswiss_icon_ch2": {
+    "h": 122,
+    "bis": "2026-11-17T01:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "ecmwf_ifs": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   }
+  },
+  "bratislava": {
+   "dmi_harmonie_arome_europe": {
+    "h": 64,
+    "bis": "2026-11-14T15:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "chmi_aladin_central_europe_2km": {
+    "h": 74,
+    "bis": "2026-11-15T01:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "dwd_icon_d2_native": {
+    "h": 56,
+    "bis": "2026-11-14T07:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "italia_meteo_arpae_icon_2i": {
+    "h": 74,
+    "bis": "2026-11-15T01:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "knmi_harmonie_arome_europe": {
+    "h": 67,
+    "bis": "2026-11-14T18:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "geosphere_claef_austria": {
+    "h": 62,
+    "bis": "2026-11-14T13:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "ecmwf_ifs": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   }
+  },
+  "belgrad": {
+   "dmi_harmonie_arome_europe": {
+    "h": 64,
+    "bis": "2026-11-14T15:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "chmi_aladin_central_europe_2km": {
+    "h": 74,
+    "bis": "2026-11-15T01:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "italia_meteo_arpae_icon_2i": {
+    "h": 74,
+    "bis": "2026-11-15T01:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "knmi_harmonie_arome_europe": {
+    "h": 67,
+    "bis": "2026-11-14T18:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "geosphere_claef_austria": {
+    "h": 65,
+    "bis": "2026-11-14T16:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "ecmwf_ifs": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   }
+  },
+  "riga": {
+   "dmi_harmonie_arome_europe": {
+    "h": 65,
+    "bis": "2026-11-14T16:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "chmi_aladin_central_europe_2km": {
+    "h": 75,
+    "bis": "2026-11-15T02:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "metno_nordic": {
+    "h": 67,
+    "bis": "2026-11-14T18:00",
     "fehlt": [
      "precipitation_probability",
-     "weather_code",
-     "wind_gusts_10m",
-     "cloud_cover",
      "cloud_cover_low"
     ],
     "jetzt": null
    },
-   "ncep_aigfs025": {
-    "h": 168,
-    "bis": "2026-11-18T23:00",
+   "knmi_harmonie_arome_europe": {
+    "h": 68,
+    "bis": "2026-11-14T19:00",
     "fehlt": [
-     "precipitation_probability",
-     "wind_gusts_10m",
-     "relative_humidity_2m"
+     "precipitation_probability"
     ],
     "jetzt": null
    },
-   "ecmwf_aifs025_single": {
+   "ecmwf_ifs": {
     "h": 168,
     "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   }
+  },
+  "tallinn": {
+   "dmi_harmonie_arome_europe": {
+    "h": 65,
+    "bis": "2026-11-14T16:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "metno_nordic": {
+    "h": 67,
+    "bis": "2026-11-14T18:00",
     "fehlt": [
      "precipitation_probability",
-     "wind_gusts_10m"
+     "cloud_cover_low"
+    ],
+    "jetzt": null
+   },
+   "knmi_harmonie_arome_europe": {
+    "h": 68,
+    "bis": "2026-11-14T19:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "ecmwf_ifs": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   }
+  },
+  "vilnius": {
+   "dmi_harmonie_arome_europe": {
+    "h": 65,
+    "bis": "2026-11-14T16:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "chmi_aladin_central_europe_2km": {
+    "h": 75,
+    "bis": "2026-11-15T02:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "metno_nordic": {
+    "h": 67,
+    "bis": "2026-11-14T18:00",
+    "fehlt": [
+     "precipitation_probability",
+     "cloud_cover_low"
+    ],
+    "jetzt": null
+   },
+   "knmi_harmonie_arome_europe": {
+    "h": 68,
+    "bis": "2026-11-14T19:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "ecmwf_ifs": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   }
+  },
+  "reykjavik": {
+   "dmi_harmonie_arome_europe": {
+    "h": 63,
+    "bis": "2026-11-14T14:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "knmi_harmonie_arome_europe": {
+    "h": 66,
+    "bis": "2026-11-14T17:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "ecmwf_ifs": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   }
+  },
+  "istanbul": {
+   "chmi_aladin_central_europe_2km": {
+    "h": 76,
+    "bis": "2026-11-15T03:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "ecmwf_ifs": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   }
+  },
+  "kiew": {
+   "chmi_aladin_central_europe_2km": {
+    "h": 75,
+    "bis": "2026-11-15T02:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "ecmwf_ifs": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   }
+  },
+  "helsinki": {
+   "dmi_harmonie_arome_europe": {
+    "h": 65,
+    "bis": "2026-11-14T16:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "metno_nordic": {
+    "h": 67,
+    "bis": "2026-11-14T18:00",
+    "fehlt": [
+     "precipitation_probability",
+     "cloud_cover_low"
+    ],
+    "jetzt": null
+   },
+   "knmi_harmonie_arome_europe": {
+    "h": 68,
+    "bis": "2026-11-14T19:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "ecmwf_ifs": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   }
+  },
+  "stockholm": {
+   "dmi_harmonie_arome_europe": {
+    "h": 64,
+    "bis": "2026-11-14T15:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "metno_nordic": {
+    "h": 66,
+    "bis": "2026-11-14T17:00",
+    "fehlt": [
+     "precipitation_probability",
+     "cloud_cover_low"
+    ],
+    "jetzt": null
+   },
+   "knmi_harmonie_arome_europe": {
+    "h": 67,
+    "bis": "2026-11-14T18:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "ecmwf_ifs": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   }
+  },
+  "dublin": {
+   "dmi_harmonie_arome_europe": {
+    "h": 63,
+    "bis": "2026-11-14T14:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "meteofrance_arome_france_hd": {
+    "h": 55,
+    "bis": "2026-11-14T06:00",
+    "fehlt": [
+     "precipitation_probability",
+     "weather_code",
+     "snowfall",
+     "cloud_cover"
+    ],
+    "jetzt": null
+   },
+   "knmi_harmonie_arome_europe": {
+    "h": 66,
+    "bis": "2026-11-14T17:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "ukmo_uk_deterministic_2km": {
+    "h": 58,
+    "bis": "2026-11-14T09:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "ecmwf_ifs": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   }
+  },
+  "malta": {
+   "italia_meteo_arpae_icon_2i": {
+    "h": 74,
+    "bis": "2026-11-15T01:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "ecmwf_ifs": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   }
+  },
+  "palermo": {
+   "italia_meteo_arpae_icon_2i": {
+    "h": 74,
+    "bis": "2026-11-15T01:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "ecmwf_ifs": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   }
+  },
+  "sarajevo": {
+   "dmi_harmonie_arome_europe": {
+    "h": 64,
+    "bis": "2026-11-14T15:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "chmi_aladin_central_europe_2km": {
+    "h": 74,
+    "bis": "2026-11-15T01:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "italia_meteo_arpae_icon_2i": {
+    "h": 74,
+    "bis": "2026-11-15T01:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "knmi_harmonie_arome_europe": {
+    "h": 67,
+    "bis": "2026-11-14T18:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "geosphere_claef_austria": {
+    "h": 65,
+    "bis": "2026-11-14T16:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "ecmwf_ifs": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   }
+  },
+  "tirana": {
+   "chmi_aladin_central_europe_2km": {
+    "h": 74,
+    "bis": "2026-11-15T01:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "italia_meteo_arpae_icon_2i": {
+    "h": 74,
+    "bis": "2026-11-15T01:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "ecmwf_ifs": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   }
+  },
+  "skopje": {
+   "chmi_aladin_central_europe_2km": {
+    "h": 74,
+    "bis": "2026-11-15T01:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "italia_meteo_arpae_icon_2i": {
+    "h": 74,
+    "bis": "2026-11-15T01:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "ecmwf_ifs": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   }
+  },
+  "chisinau": {
+   "chmi_aladin_central_europe_2km": {
+    "h": 75,
+    "bis": "2026-11-15T02:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "ecmwf_ifs": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   }
+  },
+  "minsk": {
+   "dmi_harmonie_arome_europe": {
+    "h": 66,
+    "bis": "2026-11-14T17:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "chmi_aladin_central_europe_2km": {
+    "h": 76,
+    "bis": "2026-11-15T03:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "metno_nordic": {
+    "h": 68,
+    "bis": "2026-11-14T19:00",
+    "fehlt": [
+     "precipitation_probability",
+     "cloud_cover_low"
+    ],
+    "jetzt": null
+   },
+   "knmi_harmonie_arome_europe": {
+    "h": 69,
+    "bis": "2026-11-14T20:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "ecmwf_ifs": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   }
+  },
+  "nikosia": {},
+  "luxemburg": {
+   "dmi_harmonie_arome_europe": {
+    "h": 64,
+    "bis": "2026-11-14T15:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "chmi_aladin_central_europe_2km": {
+    "h": 74,
+    "bis": "2026-11-15T01:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "dwd_icon_d2_native": {
+    "h": 56,
+    "bis": "2026-11-14T07:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "meteofrance_arome_france_hd": {
+    "h": 56,
+    "bis": "2026-11-14T07:00",
+    "fehlt": [
+     "precipitation_probability",
+     "weather_code",
+     "snowfall",
+     "cloud_cover"
+    ],
+    "jetzt": null
+   },
+   "knmi_harmonie_arome_europe": {
+    "h": 67,
+    "bis": "2026-11-14T18:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "geosphere_claef_austria": {
+    "h": 62,
+    "bis": "2026-11-14T13:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "ukmo_uk_deterministic_2km": {
+    "h": 59,
+    "bis": "2026-11-14T10:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "meteoswiss_icon_ch2": {
+    "h": 122,
+    "bis": "2026-11-17T01:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "ecmwf_ifs": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   }
+  },
+  "bruessel": {
+   "dmi_harmonie_arome_europe": {
+    "h": 64,
+    "bis": "2026-11-14T15:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "chmi_aladin_central_europe_2km": {
+    "h": 74,
+    "bis": "2026-11-15T01:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "dwd_icon_d2_native": {
+    "h": 56,
+    "bis": "2026-11-14T07:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "meteofrance_arome_france_hd": {
+    "h": 56,
+    "bis": "2026-11-14T07:00",
+    "fehlt": [
+     "precipitation_probability",
+     "weather_code",
+     "snowfall",
+     "cloud_cover"
+    ],
+    "jetzt": null
+   },
+   "knmi_harmonie_arome_europe": {
+    "h": 67,
+    "bis": "2026-11-14T18:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "ukmo_uk_deterministic_2km": {
+    "h": 59,
+    "bis": "2026-11-14T10:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "ecmwf_ifs": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   }
+  },
+  "ljubljana": {
+   "dmi_harmonie_arome_europe": {
+    "h": 64,
+    "bis": "2026-11-14T15:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "chmi_aladin_central_europe_2km": {
+    "h": 74,
+    "bis": "2026-11-15T01:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "dwd_icon_d2_native": {
+    "h": 56,
+    "bis": "2026-11-14T07:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "italia_meteo_arpae_icon_2i": {
+    "h": 74,
+    "bis": "2026-11-15T01:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "knmi_harmonie_arome_europe": {
+    "h": 67,
+    "bis": "2026-11-14T18:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "geosphere_claef_austria": {
+    "h": 65,
+    "bis": "2026-11-14T16:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "meteoswiss_icon_ch2": {
+    "h": 122,
+    "bis": "2026-11-17T01:00",
+    "fehlt": [],
+    "jetzt": null
+   },
+   "ecmwf_ifs": {
+    "h": 168,
+    "bis": "2026-11-18T23:00",
+    "fehlt": [],
+    "jetzt": null
+   }
+  },
+  "podgorica": {
+   "dmi_harmonie_arome_europe": {
+    "h": 64,
+    "bis": "2026-11-14T15:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "chmi_aladin_central_europe_2km": {
+    "h": 74,
+    "bis": "2026-11-15T01:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "italia_meteo_arpae_icon_2i": {
+    "h": 74,
+    "bis": "2026-11-15T01:00",
+    "fehlt": [
+     "precipitation_probability"
+    ],
+    "jetzt": null
+   },
+   "knmi_harmonie_arome_europe": {
+    "h": 67,
+    "bis": "2026-11-14T18:00",
+    "fehlt": [
+     "precipitation_probability"
     ],
     "jetzt": null
    },
@@ -118,12 +1034,6 @@
    }
   }
  },
- "prev": {
-  "dwd_aicon_global_native": "ok 48",
-  "ncep_aigfs025": "ok 48",
-  "google_weathernext2_ensemble_mean": "ok 48",
-  "ecmwf_aifs025_single": "ok 48",
-  "ecmwf_ifs": "ok 48"
- },
+ "prev": {},
  "current": {}
 }
