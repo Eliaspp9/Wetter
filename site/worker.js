@@ -122,16 +122,49 @@ async function gmRun(env) {
     }
   }
 }
+/* Radar Österreich (INCA-Nowcast von GeoSphere), ebenso vorab geholt: alle 5 Minuten wird nachgesehen, ob es einen neuen
+   Lauf gibt (alle 15 Minuten). Dann werden geholt und abgelegt (3 Stunden):
+   - gr:rr:<ref> ganz Österreich, Messbild und 3 Stunden Vorhersage (etwa 1 MB)
+   - gr:a:<ref>  nur das Messbild (für den Rückblick der App)
+   - gr:t:<ref>  Temperatur für Schnee oder Regen (einmal pro Stunde)
+   gr:idx sagt der App, was da ist. So lädt die App in Sekunden, auch wenn GeoSphere gerade sehr langsam ist,
+   und sieht notfalls den letzten Stand. Geschrieben wird nur bei einem neuen Lauf (KV erlaubt wenige Schreibvorgänge). */
+const GR_URL = "https://dataset.api.hub.geosphere.at/v1/grid/forecast/nowcast-v1-15min-1km",
+  GR_BB = "&output_format=netcdf&bbox=45.50,8.10,49.48,17.74";
+async function grGet(u, ms) {
+  const r = await tfetch(u, ms);
+  if (!r.ok) throw new Error(String(r.status));
+  const b = await r.arrayBuffer();
+  if (b.byteLength < 2000) throw new Error("leer");
+  return b;
+}
+async function grRun(env) {
+  const kv = env.GM;
+  if (!kv) return;
+  let ref;
+  try { const r = await tfetch(GR_URL + "/metadata?t=" + Math.floor(Date.now() / 60000), 60000), j = await r.json(); ref = Date.parse(j.last_forecast_reftime) / 1000; } catch (e) { return; }
+  if (!ref) return;
+  const ix = JSON.parse((await kv.get("gr:idx")) || "null") || { ref: 0, a: [], t2: 0 };
+  if (ref <= ix.ref) return;
+  const opt = { expirationTtl: 3 * 3600 }, q = "&start=" + isoM(ref);
+  const rr = await grGet(GR_URL + "?parameters=rr" + GR_BB + q, 150000);
+  await kv.put("gr:rr:" + ref, rr, opt);
+  let a = null, t2 = null;
+  try { a = await grGet(GR_URL + "?parameters=rr" + GR_BB + q + "&end=" + isoM(ref), 90000); await kv.put("gr:a:" + ref, a, opt); } catch (e) {}
+  if (ref - (ix.t2 || 0) >= 3300) { try { t2 = await grGet(GR_URL + "?parameters=t2m" + GR_BB + q + "&end=" + isoM(ref), 90000); await kv.put("gr:t:" + ref, t2, opt); } catch (e) {} }
+  const now = Date.now() / 1000;
+  await kv.put("gr:idx", JSON.stringify({ ref, at: Math.round(now), a: [...(ix.a || []), ...(a ? [ref] : [])].filter((t) => t > now - 2.5 * 3600).slice(-8), t2: t2 ? ref : ix.t2 || 0 }));
+}
 async function gmServe(env, url) {
   const kv = env.GM;
   if (!kv) return new Response("{}", { status: 503, headers: { "Content-Type": "application/json" } });
-  if (url.pathname === "/gm") {
-    const ix = (await kv.get("gm:idx")) || "{}";
+  if (url.pathname === "/gm" || url.pathname === "/gr") {
+    const ix = (await kv.get(url.pathname.slice(1) + ":idx")) || "{}";
     return new Response(ix, { headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" } });
   }
-  const m = url.pathname.match(/^\/gm\/(\d{9,11})\/(\d{9,11})$/);
-  if (!m) return new Response("Nicht gefunden", { status: 404 });
-  const b = await kv.get("gm:" + m[1] + ":" + m[2], { type: "arrayBuffer" });
+  const m = url.pathname.match(/^\/gm\/(\d{9,11})\/(\d{9,11})$/), g = url.pathname.match(/^\/gr\/(rr|a|t)\/(\d{9,11})$/);
+  if (!m && !g) return new Response("Nicht gefunden", { status: 404 });
+  const b = await kv.get(m ? "gm:" + m[1] + ":" + m[2] : "gr:" + g[1] + ":" + g[2], { type: "arrayBuffer" });
   if (!b) return new Response("Nicht gefunden", { status: 404 });
   return new Response(b, { headers: { "Content-Type": "application/x-netcdf", "Cache-Control": "private, max-age=86400, immutable" } });
 }
@@ -140,7 +173,7 @@ export default {
     const url = new URL(req.url);
     try {
       if (url.pathname === "/api" || url.pathname.startsWith("/api/")) return secure(await api(req, env, url), { "Cache-Control": "no-store" });
-      if (url.pathname === "/gm" || url.pathname.startsWith("/gm/")) return secure(await gmServe(env, url));
+      if (url.pathname === "/gm" || url.pathname.startsWith("/gm/") || url.pathname === "/gr" || url.pathname.startsWith("/gr/")) return secure(await gmServe(env, url));
       if (req.method !== "GET" && req.method !== "HEAD") return secure(new Response("Nicht erlaubt", { status: 405, headers: { Allow: "GET, HEAD" } }));
       if (url.pathname === "/wetter2.html" || url.pathname === "/Wetter" || url.pathname.startsWith("/Wetter/")) return Response.redirect(url.origin + "/" + url.search, 301);
       if (url.pathname === "/login.html" || url.pathname === "/login") return secure(Response.redirect(url.origin + "/" + url.hash, 302));
@@ -154,6 +187,8 @@ export default {
     }
   },
   async scheduled(event, env, ctx) {
-    ctx.waitUntil(gmRun(env).catch((e) => console.error("gmRun", e && e.message)));
+    ctx.waitUntil(grRun(env).catch((e) => console.error("grRun", e && e.message)));
+    /* das Wettermodell nur alle 10 Minuten */
+    if (new Date(event.scheduledTime || Date.now()).getUTCMinutes() % 10 < 5) ctx.waitUntil(gmRun(env).catch((e) => console.error("gmRun", e && e.message)));
   },
 };

@@ -14,8 +14,8 @@
     "html_handling": "auto-trailing-slash"
   },
   "services": [{ "binding": "PROXY", "service": "wetter-proxy" }],
-  // Zwischenspeicher für das Wettermodell von GeoSphere (gleicher KV-Speicher wie beim Worker, Schlüssel gm:…)
+  // Zwischenspeicher für Radar und Wettermodell von GeoSphere (gleicher KV-Speicher wie beim Worker, Schlüssel gm:…)
   "kv_namespaces": [{ "binding": "GM", "id": "cff44aa6d92b4c548d1eb1c33423bd98" }],
-  "triggers": { "crons": ["*/10 * * * *"] },
+  "triggers": { "crons": ["*/5 * * * *"] },
   "observability": { "enabled": true }
 }
