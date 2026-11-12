@@ -1,4 +1,1 @@
-main 200 657ms {"latitude":48.169,"longitude":14.234256,"generationtime_ms":3.683328628540039,"utc_offset_seconds":3600,"timezone":"Europe/Vienna","timezone_abbreviation":"GMT+1","elevation":287.
-ec 200 127ms {"latitude":48.189804,"longitude":14.27379,"generationtime_ms":0.5925893783569336,"utc_offset_seconds":3600,"timezone":"Europe/Vienna","timezone_abbreviation":"GMT+1","elevation":2
-plain 200 128ms {"latitude":48.169,"longitude":14.234256,"generationtime_ms":2.0313262939453125,"utc_offset_seconds":3600,"timezone":"Europe/Vienna","timezone_abbreviation":"GMT+1","elevation":287
-nc 200 125ms {"latitude":48.169,"longitude":14.234256,"generationtime_ms":0.2582073211669922,"utc_offset_seconds":3600,"timezone":"Europe/Vienna","timezone_abbreviation":"GMT+1","elevation":287
+lok [ 'geosphere_claef_austria', 'dwd_icon_d2_native' ] ruc true
