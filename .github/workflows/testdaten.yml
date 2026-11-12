@@ -10,23 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: GeoSphere Einzelbilder
+      - name: App-Radar mit echten Daten
         run: |
-          mkdir -p gs2
-          B=https://dataset.api.hub.geosphere.at/v1
-          curl -sS --retry 3 "$B/grid/forecast/nowcast-v1-15min-1km/metadata" -o gs2/meta.json
-          R0=$(python3 -c "import json;print(json.load(open('gs2/meta.json'))['available_forecast_reftimes'][0][:16])")
-          R1=$(python3 -c "import json;print(json.load(open('gs2/meta.json'))['available_forecast_reftimes'][1][:16])")
-          echo "$R0 $R1" > gs2/refs.txt
-          BB=45.50,8.10,49.48,17.74
-          curl -sS -D gs2/t2m.hdr --retry 3 "$B/grid/forecast/nowcast-v1-15min-1km?parameters=t2m&output_format=netcdf&bbox=$BB&start=$R0&end=$R0" -o gs2/t2m.nc; sleep 1
-          curl -sS --retry 3 "$B/timeseries/forecast/nowcast-v1-15min-1km?parameters=t2m&lat_lon=48.17,14.24&lat_lon=47.27,11.39&start=$R0&end=$R0" -o gs2/t2m_pt.json; sleep 1
-          curl -sS -D gs2/hist1.hdr --retry 3 "$B/grid/forecast/nowcast-v1-15min-1km?parameters=rr&output_format=netcdf&bbox=$BB&forecast_offset=1&start=$R1&end=$R1" -o gs2/hist1.nc; sleep 1
-          M0=$(python3 -c "import json,urllib.request as u;print(json.load(u.urlopen('$B/grid/forecast/nwp-v2-1h-1km/metadata'))['last_forecast_reftime'][:16])")
-          T=$(python3 -c "import datetime as d;print((d.datetime.fromisoformat('$M0')+d.timedelta(hours=20)).strftime('%Y-%m-%dT%H:%M'))")
-          curl -sS -D gs2/pt.hdr --retry 3 "$B/grid/forecast/nwp-v2-1h-1km?parameters=tp,pt&output_format=netcdf&bbox=$BB&start=$T&end=$T" -o gs2/pt.nc
-          ls -la gs2
+          git fetch -q origin main && git show origin/main:radar-at.js > radar-at.js && git show origin/main:hdf5.min.js > hdf5.min.js
+          (python3 -m http.server 8000 >/dev/null 2>&1 &) ; sleep 1
+          npm i -s playwright@1.48.2 >/dev/null 2>&1 && npx playwright install chromium >/dev/null 2>&1
+          mkdir -p gs3 && node rt/run.mjs | tee gs3/rt.txt
       - name: Ablegen
         run: |
           git config user.name "testdaten"; git config user.email "testdaten@users.noreply.github.com"
-          git add om gs gs2 && git commit -qm "Daten: Radar NetCDF (gs4)" && git push -q
+          git add om gs gs2 gs3 && git commit -qm "Daten: Radar NetCDF (rt)" && git push -q
