@@ -1,8 +1,5 @@
-offset 0 200 1176ms 2026-11-12T15:00+00:00 2026-11-12T21:00+00:00 55 2 
-offset 2 200 870ms 2026-11-12T09:00+00:00 2026-11-12T21:00+00:00 49 2 
-offset 5 200 512ms 2026-11-12T00:00+00:00 2026-11-12T21:00+00:00 40 2 
-offset 8 400 184ms undefined undefined undefined undefined 
-offset 11 400 1106ms undefined undefined undefined undefined 
-offset 14 400 567ms undefined undefined undefined undefined 
-offset 16 400 198ms undefined undefined undefined undefined 
-offset 20 400 184ms undefined undefined undefined undefined 
+offset 1 start 2026-11-12T15:00 200 12470ms 2026-11-12T12:00+00:00 2026-11-12T15:00+00:00 58 
+offset 3 start 2026-11-12T09:00 200 13998ms 2026-11-12T06:00+00:00 2026-11-12T09:00+00:00 58 
+offset 5 start 2026-11-12T03:00 200 13646ms 2026-11-12T00:00+00:00 2026-11-12T03:00+00:00 58 
+offset 6 start 2026-11-12T00:00 400 11697ms undefined undefined undefined 
+offset 7 start 2026-11-11T21:00 400 861ms undefined undefined undefined 
