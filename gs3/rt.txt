@@ -1,23 +1,9 @@
-CONSOLE model ref 2026-11-12T09:00
-CONSOLE A single +3h status=200 bytes=399746 55414ms
-CONSOLE B 2fr +24h status=200 bytes=190583 63123ms
-CONSOLE C 6fr +24h FEHLER AbortError 75000ms
-CONSOLE D tp single +24h status=200 bytes=103773 31987ms
-CONSOLE E single +36h status=200 bytes=98443 61850ms
-CONSOLE F 3fr +0h FEHLER AbortError 75000ms
-CONSOLE G par1 +12..14 FEHLER AbortError 75000ms
-CONSOLE G par2 +15..17 FEHLER AbortError 75000ms
-CONSOLE Failed to load resource: the server responded with a status of 400 ()
-CONSOLE H whole run ref..+60h tp only status=400 bytes=114 56533ms
+CONSOLE meta 2026-11-12T15:00 31064ms
+CONSOLE rr ok=false n=0 Zeit 90001ms
+CONSOLE Failed to load resource: the server responded with a status of 504 ()
+CONSOLE FEHLER RangeError: Invalid time value
 CONSOLE FERTIG
-model ref 2026-11-12T09:00
-A single +3h status=200 bytes=399746 55414ms
-B 2fr +24h status=200 bytes=190583 63123ms
-C 6fr +24h FEHLER AbortError 75000ms
-D tp single +24h status=200 bytes=103773 31987ms
-E single +36h status=200 bytes=98443 61850ms
-F 3fr +0h FEHLER AbortError 75000ms
-G par1 +12..14 FEHLER AbortError 75000ms
-G par2 +15..17 FEHLER AbortError 75000ms
-H whole run ref..+60h tp only status=400 bytes=114 56533ms
+meta 2026-11-12T15:00 31064ms
+rr ok=false n=0 Zeit 90001ms
+FEHLER RangeError: Invalid time value
 FERTIG
