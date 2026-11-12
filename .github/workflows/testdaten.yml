@@ -10,16 +10,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Echte Antworten holen
+      - name: GeoSphere pruefen
         run: |
-          mkdir -p om
-          F="&timezone=auto&forecast_days=7&current=temperature_2m,apparent_temperature,relative_humidity_2m,precipitation,weather_code,wind_speed_10m,wind_direction_10m,surface_pressure,is_day,cloud_cover,wind_gusts_10m&hourly=temperature_2m,precipitation_probability,weather_code,precipitation,wind_speed_10m,wind_gusts_10m,snowfall,cloud_cover,cloud_cover_low,relative_humidity_2m,is_day&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max,sunrise,sunset,uv_index_max"
-          for i in 1 2 3; do curl -sS --retry 3 "https://api.open-meteo.com/v1/forecast?latitude=48.17&longitude=14.24$F&models=dwd_icon_d2_ruc_native,geosphere_claef_austria,dwd_icon_d2_native,ecmwf_ifs,best_match" -o om/at.json && break; sleep 3; done
-          curl -sS --retry 3 "https://api.open-meteo.com/v1/forecast?latitude=39.1&longitude=-94.58$F&models=ncep_rrfs_conus,ncep_rrfs_north_america,ncep_nbm_conus,ecmwf_ifs,best_match" -o om/us.json
-          curl -sS --retry 3 "https://api.open-meteo.com/v1/forecast?latitude=35.68&longitude=139.76$F&models=jma_msm,ecmwf_ifs,best_match" -o om/jp.json
-          curl -sS --retry 3 "https://api.open-meteo.com/v1/forecast?latitude=49.28&longitude=-123.12$F&models=cmc_gem_hrdps_west,cmc_gem_hrdps,ncep_rrfs_north_america,ecmwf_ifs,best_match" -o om/ca.json
-          ls -la om
+          mkdir -p gs
+          B=https://dataset.api.hub.geosphere.at/v1
+          curl -sS --retry 3 "$B/datasets?type=grid&mode=forecast" -o gs/datasets.json
+          python3 -c "import json;d=json.load(open('gs/datasets.json'));print('\n'.join(sorted(d.keys())))" > gs/datasets.txt || true
+          for ds in nwp-v1-1h-2500m ensemble-v1-1h-2500m nowcast-v1-15min-1km; do curl -sS --retry 3 "$B/grid/forecast/$ds/metadata" -o gs/meta-$ds.json; sleep 1; done
+          BB=45.50,8.10,49.48,17.74
+          ST=$(date -u -d "@$(( ($(date +%s)/900)*900 - 2700 ))" +%Y-%m-%dT%H:%M)
+          curl -sS -D gs/rr.hdr --retry 3 "$B/grid/forecast/nowcast-v1-15min-1km?parameters=rr&output_format=netcdf&bbox=$BB&start=$ST" -o gs/rr.nc; sleep 1
+          curl -sS -D gs/rrt.hdr --retry 3 "$B/grid/forecast/nowcast-v1-15min-1km?parameters=rr,t2m&output_format=netcdf&bbox=$BB&start=$ST" -o gs/rrt.nc; sleep 1
+          for o in 1 3 5 6; do curl -sS -D gs/off$o.hdr --retry 3 "$B/grid/forecast/nowcast-v1-15min-1km?parameters=rr&output_format=netcdf&bbox=$BB&forecast_offset=$o" -o gs/off$o.nc; sleep 1; done
+          ls -la gs
       - name: Ablegen
         run: |
           git config user.name "testdaten"; git config user.email "testdaten@users.noreply.github.com"
-          git add om && git commit -qm "Daten: Radar NetCDF (echt2)" && git push -q
+          git add om gs && git commit -qm "Daten: Radar NetCDF (gs)" && git push -q
