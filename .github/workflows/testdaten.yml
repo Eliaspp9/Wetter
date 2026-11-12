@@ -6,7 +6,7 @@ permissions:
   contents: write
 jobs:
   holen:
-    if: "!contains(github.event.head_commit.message, 'Daten: Radar NetCDF (rt4)')"
+    if: "!contains(github.event.head_commit.message, 'Daten: Radar NetCDF (rt5)')"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -14,9 +14,9 @@ jobs:
         run: |
           git fetch -q origin main && git show origin/main:radar-at.js > radar-at.js && git show origin/main:hdf5.min.js > hdf5.min.js
           (python3 -m http.server 8000 >/dev/null 2>&1 &) ; sleep 1
-          npm i -s playwright@1.48.2 >/dev/null 2>&1 && npx playwright install chromium >/dev/null 2>&1
+          true
           mkdir -p gs3 && node rt/run.mjs | tee gs3/rt.txt
       - name: Ablegen
         run: |
           git config user.name "testdaten"; git config user.email "testdaten@users.noreply.github.com"
-          git add om gs gs2 gs3 && git commit -qm "Daten: Radar NetCDF (rt4)" && git push -q
+          git add om gs gs2 gs3 && git commit -qm "Daten: Radar NetCDF (rt5)" && git push -q
