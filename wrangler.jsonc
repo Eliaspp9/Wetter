@@ -16,6 +16,8 @@
   "services": [{ "binding": "PROXY", "service": "wetter-proxy" }],
   // Zwischenspeicher für Radar und Wettermodell von GeoSphere (gleicher KV-Speicher wie beim Worker, Schlüssel gm:…)
   "kv_namespaces": [{ "binding": "GM", "id": "cff44aa6d92b4c548d1eb1c33423bd98" }],
+  // KI von Cloudflare (Workers AI) für die Tipps des Tages
+  "ai": { "binding": "AI" },
   "triggers": { "crons": ["*/5 * * * *"] },
   "observability": { "enabled": true }
 }

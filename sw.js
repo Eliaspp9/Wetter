@@ -108,6 +108,8 @@ self.addEventListener("push",e=>{
 });
 self.addEventListener("notificationclick",e=>{
  e.notification.close();
- const url=(e.notification.data&&e.notification.data.url)||"./";
+ let url=(e.notification.data&&e.notification.data.url)||"./";
+ /* Meldungen vom Worker zeigen noch auf die alte Adresse bei GitHub: immer diese App öffnen, an der richtigen Stelle (#…) */
+ try{const u=new URL(url,self.registration.scope);if(u.origin!==self.location.origin)url=self.registration.scope+u.hash}catch(x){url="./"}
  e.waitUntil(clients.matchAll({type:"window",includeUncontrolled:true}).then(cs=>{for(const c of cs){if("focus" in c){if("navigate" in c)c.navigate(url).catch(()=>{});return c.focus()}}return clients.openWindow(url)}));
 });
