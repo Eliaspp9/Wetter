@@ -1,0 +1,23 @@
+HTTP/2 200 
+content-type: application/x-netcdf
+content-length: 1663296
+x-ratelimit-remaining-second: 4
+x-ratelimit-limit-second: 5
+x-ratelimit-remaining-hour: 238
+x-ratelimit-limit-hour: 240
+ratelimit-remaining: 4
+ratelimit-reset: 1
+ratelimit-limit: 5
+date: Thu, 12 Nov 2026 13:44:40 GMT
+server: uvicorn
+content-disposition: attachment;filename=nowcasting.nc
+datapoint-count: 3927703
+accept-ranges: bytes
+last-modified: Thu, 12 Nov 2026 13:44:50 GMT
+etag: "6e961a2b8a8a130a21d6ad2779ba671e"
+access-control-allow-origin: *
+x-kong-upstream-latency: 4960
+x-kong-proxy-latency: 12
+via: 1.1 kong/3.9.1
+x-kong-request-id: 93e3331569c93f3bb2487736cae3d273
+

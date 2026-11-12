@@ -1,0 +1,11 @@
+/grid/forecast/chem-v1-1h-12km
+/grid/forecast/chem-v1-1h-4km
+/grid/forecast/chem-v2-1h-3km
+/grid/forecast/chem-v2-1h-9km
+/grid/forecast/chem_aqi-v1-1d-3km
+/grid/forecast/chem_dust-v1-1h-0p2deg
+/grid/forecast/ensemble-v1-1h-2500m
+/grid/forecast/ensemble-v2-1h-1km
+/grid/forecast/nowcast-v1-15min-1km
+/grid/forecast/nwp-v1-1h-2500m
+/grid/forecast/nwp-v2-1h-1km

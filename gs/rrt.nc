@@ -1,0 +1,1 @@
+{"detail":"The data slice you requested is too large. The limit is 10000000 data points. You requested 10278450."}

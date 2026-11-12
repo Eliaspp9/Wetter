@@ -1,0 +1,1 @@
+{"detail":"Invalid forecast offset: forecast_offset must be between 0 and 5."}

@@ -1,0 +1,18 @@
+HTTP/2 400 
+content-type: application/json
+content-length: 78
+x-ratelimit-remaining-second: 4
+x-ratelimit-limit-second: 5
+x-ratelimit-remaining-hour: 233
+x-ratelimit-limit-hour: 240
+ratelimit-remaining: 4
+ratelimit-reset: 1
+ratelimit-limit: 5
+date: Thu, 12 Nov 2026 13:46:11 GMT
+server: uvicorn
+access-control-allow-origin: *
+x-kong-upstream-latency: 12476
+x-kong-proxy-latency: 13
+via: 1.1 kong/3.9.1
+x-kong-request-id: 781e9007c772db4c94f96e307b231c21
+
