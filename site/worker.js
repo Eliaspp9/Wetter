@@ -302,6 +302,7 @@ async function bfTip(req, env) {
 }
 async function bfServe(req, env, url) {
   if (!(await valid(env, getCookie(req, COOKIE)))) return bfJson({ error: "Nicht angemeldet" }, 401);
+  if (url.pathname === "/bf/log" && req.method === "POST") { try { const b = await req.json(); console.log("APPFEHLER", JSON.stringify(b).slice(0, 1600)); } catch (e) {} return bfJson({ ok: 1 }); }
   if (url.pathname === "/bf/tip" && req.method === "POST") { try { return await bfTip(req, env); } catch (e) { return bfJson({ t: [] }); } }
   const la = Math.round(+url.searchParams.get("la") * 20) / 20, lo = Math.round(+url.searchParams.get("lo") * 20) / 20;
   if (!isFinite(la) || !isFinite(lo) || Math.abs(la) > 85 || Math.abs(lo) > 180) return bfJson({ error: "Ungültig" }, 400);
