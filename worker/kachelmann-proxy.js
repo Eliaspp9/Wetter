@@ -1,4 +1,4 @@
-// Wetter-Proxy 1.0 (Build 2): hält den Kachelmann-Schlüssel geheim, prüft die Anmeldung, verschickt Wetter-Benachrichtigungen
+// Wetter-Proxy 1.0 (Build 3): hält den Kachelmann-Schlüssel geheim, prüft die Anmeldung, verschickt Wetter-Benachrichtigungen
 // und lernt jede Stunde, wie weit die Vorhersage an deinen Orten danebenliegt (lernende Korrektur).
 // Einzurichten bei Cloudflare unter Workers & Pages. Variablen (Settings > Variables and Secrets):
 //   ALLOWED_ORIGIN  (Text)    https://eliaspp9.github.io (mehrere mit Komma getrennt; die Adresse bei Cloudflare gilt immer)
@@ -12,7 +12,7 @@
 // Für die KI (Übersetzen der Warnungen anderer Länder, Push-Texte in ganzen Sätzen), ab Version 1.6:
 //   Bindung AI      (Workers AI, Variablenname AI). Ohne sie läuft alles wie vorher, nur ohne KI.
 const enc = new TextEncoder();
-const VERSION = "1.0", BUILD = 2;
+const VERSION = "1.0", BUILD = 3;
 /* Abrufe mit Zeitlimit: ein hängender Dienst soll weder eine Anfrage noch den Zeitplan aufhalten.
    tf: Limit bis die Antwort beginnt (für durchgereichte Antworten); jf: Limit bis das JSON ganz gelesen ist. */
 async function tf(u, o, ms) {
@@ -668,6 +668,11 @@ async function route(req, env, ctx, h, json) {
   }
 
   // Anmeldung verlängern: ein noch gültiges Token bekommt wieder 30 Tage (z. B. für ein Tablet, das dauernd offen ist)
+  // Nur prüfen, ob ein Token gilt (für die Seite bei Cloudflare: App erst nach Anmeldung)
+  if (url.pathname === "/auth" && req.method === "GET") {
+    return (await checkToken(env, req)) ? json({ ok: true }) : json({ error: "Nicht angemeldet" }, 401);
+  }
+
   if (url.pathname === "/renew" && req.method === "POST") {
     if (!(await checkToken(env, req))) return json({ error: "Nicht angemeldet" }, 401);
     return json({ token: await makeToken(env, env.LOGIN_USER), days: 30 });

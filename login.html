@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self'; font-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta name="theme-color" content="#0B54B2">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" href="icons/favicon-64.png">
+<title>Wetter – Anmelden</title>
+<style>
+@font-face{font-family:Poppins;font-weight:400;font-display:swap;src:url(fonts/poppins-400-latin.woff2) format("woff2")}
+@font-face{font-family:Poppins;font-weight:600;font-display:swap;src:url(fonts/poppins-600-latin.woff2) format("woff2")}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Poppins,system-ui,sans-serif;background:linear-gradient(160deg,#0B54B2,#2a8ae0);color:#0f172a}
+body{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}
+.box{width:100%;max-width:380px;background:#fff;border-radius:22px;padding:28px 24px;box-shadow:0 20px 50px rgba(0,0,0,.25)}
+h1{margin:0 0 4px;font-size:30px}p{margin:0 0 18px;color:#475569}
+label{display:block;font-weight:600;font-size:14px;margin:12px 0 6px}
+input[type=text],input[type=password]{width:100%;padding:13px 14px;border:1px solid #cbd5e1;border-radius:12px;font:inherit;font-size:16px;background:#f1f5f9}
+.keep{display:flex;gap:8px;align-items:center;margin:14px 0 18px;font-size:14px;color:#475569}
+button{width:100%;padding:14px;border:0;border-radius:12px;background:#1d6ae5;color:#fff;font:inherit;font-weight:600;font-size:16px;cursor:pointer}
+button:disabled{opacity:.6}
+#err{color:#b91c1c;font-size:14px;min-height:20px;margin:10px 0 0}
+#wait{text-align:center;color:#475569}
+@media (prefers-color-scheme:dark){.box{background:#0f172a;color:#e2e8f0}p,.keep,#wait{color:#94a3b8}input[type=text],input[type=password]{background:#1e293b;border-color:#334155;color:#e2e8f0}}
+</style>
+<script src="login.js" defer></script>
+</head>
+<body>
+<div class="box">
+ <h1>Wetter</h1>
+ <p id="wait">Einen Moment …</p>
+ <form id="f" hidden autocomplete="on">
+  <p>Bitte anmelden</p>
+  <label for="u">Benutzername</label><input id="u" name="user" type="text" autocomplete="username" autocapitalize="none" required>
+  <label for="p">Passwort</label><input id="p" name="pass" type="password" autocomplete="current-password" required>
+  <label class="keep"><input id="k" type="checkbox" checked> Angemeldet bleiben</label>
+  <button id="b" type="submit">Anmelden</button>
+  <div id="err" role="alert"></div>
+ </form>
+</div>
+</body>
+</html>

@@ -27,6 +27,8 @@ def check_js(code, name, module=False):
 for n, code in enumerate(scripts): check_js(code, "index.html, Skript %d" % (n + 1))
 check_js((root / "sw.js").read_text(encoding="utf-8"), "sw.js")
 check_js((root / "radar-at.js").read_text(encoding="utf-8"), "radar-at.js")
+check_js((root / "login.js").read_text(encoding="utf-8"), "login.js")
+check_js((root / "site" / "worker.js").read_text(encoding="utf-8"), "site/worker.js", module=True)
 if not (root / "hdf5.min.js").exists(): sys.exit("FEHLER: hdf5.min.js fehlt (radar-at.js braucht es)")
 check_js((root / "worker" / "kachelmann-proxy.js").read_text(encoding="utf-8"), "worker/kachelmann-proxy.js", module=True)
 

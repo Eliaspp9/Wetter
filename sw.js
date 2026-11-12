@@ -28,7 +28,8 @@ async function keep(res){
   /* unverändert (gleiche Kennung vom Server): nichts zu tun */
   if(old&&tag(old)&&tag(old)===tag(res)){try{if(res.body)res.body.cancel()}catch(x){}return}
   const cp=await clean(res),nb=buildOf(await cp.clone().text()),ob=old?buildOf(await old.text()):0;
-  if(!nb||nb>=ob)await c.put(SCOPE,cp);
+  /* nur eine echte App-Seite merken (nicht die Anmeldeseite, die der Server ohne Anmelde-Cookie schickt) */
+  if(nb&&nb>=ob)await c.put(SCOPE,cp);
  }catch(x){}
 }
 /* Startseite frisch holen und merken. q: Zusatz zur Adresse (?u=…), damit sicher die neueste Fassung kommt */
@@ -92,7 +93,7 @@ self.addEventListener("fetch",e=>{
  if(!u.pathname.startsWith(BASE))return;
  const path=u.pathname.slice(BASE.length);
  /* Update-Suche und der Service Worker selbst: immer aus dem Netz */
- if(path==="version.json"||path==="sw.js")return;
+ if(path==="version.json"||path==="sw.js"||path==="login"||path==="login.html"||path==="login.js"||path==="api"||path.startsWith("api/"))return;
  if(path===""||path==="index.html"){
   if(r.mode==="navigate")e.respondWith(shell(e,u));
   else e.respondWith(netFirst(e,r,SCOPE));
