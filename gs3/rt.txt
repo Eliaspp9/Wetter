@@ -1,7 +1,7 @@
-{"n":0,"st":[]}
-sk 200 12569ms
-e undefined
-b undefined
-r undefined
-t undefined
-main ERR TypeError: fetch failed
+{"t":{"dwd_icon_d2_ruc_native":0.183,"geosphere_claef_austria":0.089,"dwd_icon_d2_native":0.158,"meteoswiss_icon_ch1":0.16,"meteoswiss_icon_ch2":0.135,"chmi_aladin_central_europe_2km":0.071,"italia_meteo_arpae_icon_2i":0.086,"ecmwf_ifs":0.117},"w":{"dwd_icon_d2_ruc_native":0.113,"geosphere_claef_aus
+sk 200 23556ms
+e {"dwd_icon_d2_ruc_native":0.44,"geosphere_claef_austria":0.77,"dwd_icon_d2_native":0.5,"meteoswiss_icon_ch1":0.5,"meteoswiss_icon_ch2":0.57,"chmi_aladin_central_europe_2km":0.9,"italia_meteo_arpae_icon_2i":0.78,"ecmwf_ifs":0.63}
+b {"dwd_icon_d2_ruc_native":0.19,"geosphere_claef_austria":-0.44,"dwd_icon_d2_native":0.23,"meteoswiss_icon_ch1":0.25,"meteoswiss_icon_ch2":0.29,"chmi_aladin_central_europe_2km":-0.42,"italia_meteo_arpae_icon_2i":0.29,"ecmwf_ifs":-0.04}
+r {"dwd_icon_d2_ruc_native":1,"geosphere_claef_austria":0.938,"dwd_icon_d2_native":0.979,"meteoswiss_icon_ch1":0.938,"meteoswiss_icon_ch2":0.938,"chmi_aladin_central_europe_2km":0.875,"italia_meteo_arpae_icon_2i":0.979,"ecmwf_ifs":0.938}
+t {"dwd_icon_d2_ruc_native":0.183,"geosphere_claef_austria":0.089,"dwd_icon_d2_native":0.158,"meteoswiss_icon_ch1":0.16,"meteoswiss_icon_ch2":0.135,"chmi_aladin_central_europe_2km":0.071,"italia_meteo_arpae_icon_2i":0.086,"ecmwf_ifs":0.117}
+main 200 583ms 94446 {"latitude":48.169,"longitude":14.234256,"generationtime_ms":514.3139362335205,"utc_offset_seconds":3600,"timezone":"Europe/Vienna","timezone_abbreviation":"GMT+1","elevation":290.0,"current_units":{"time":"iso8601","interval":"seconds","temperature_2m":"°C","apparent_temperature":"°C","relative_hum
