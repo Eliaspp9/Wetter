@@ -1,3 +1,6 @@
-const ms=["dwd_icon_d2","dwd_icon_d2_ruc","dwd_icon_d2_ruc_native","dwd_icon_eu","dwd_icon","ecmwf_ifs","ecmwf_ifs025","ecmwf_ifs_hres_9km","ecmwf_aifs025_single","geosphere_arome_austria","geosphere_claef_austria","meteoswiss_icon_ch1","ncep_gfs025","ncep_hrrr_conus","ncep_aigfs025","dwd_aicon_global"];
-for(const m of ms){for(const h of ["https://api.open-meteo.com/data/"]){try{const r=await fetch(h+m+"/static/meta.json");const t=await r.text();let j=null;try{j=JSON.parse(t)}catch(e){}
-console.log(m,r.status,j&&j.last_run_initialisation_time?["init "+new Date(j.last_run_initialisation_time*1000).toISOString().slice(5,16),"avail "+new Date(j.last_run_availability_time*1000).toISOString().slice(5,16),"int "+j.update_interval_seconds/3600+"h"].join(" | "):t.slice(0,60))}catch(e){console.log(m,"ERR",e.cause&&e.cause.code||e.message)}}}
+const r=await fetch("https://open-meteo.com/en/docs/model-updates");const t=await r.text();
+const m=[...new Set(t.match(/https?:\/\/[a-z.-]*open-meteo\.com\/[^"'\s<>]*meta[^"'\s<>]*/g)||[])];console.log(r.status,t.length,m.slice(0,80).join("\n"));
+const m2=[...new Set(t.match(/[a-z0-9_\/-]*meta\.json/g)||[])];console.log(m2.slice(0,40).join("\n"));
+// look for JS chunk that builds the URL
+const js=[...new Set(t.match(/\/_app\/[^"']+\.js/g)||[])];console.log("js",js.length);
+for(const u of js.slice(0,40)){try{const s=await (await fetch("https://open-meteo.com"+u)).text();const k=s.match(/.{0,80}meta\.json.{0,80}/g);if(k)console.log(u,k.slice(0,4).join(" || "))}catch(e){}}
