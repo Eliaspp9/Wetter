@@ -1,4 +1,5 @@
-`chmi_aladin_central_europe_2km` `cz` `chmi_aladin_cz_1km`
-chmi 400 {"reason":"Invalid value: Cannot initialize MultiDomains from invalid String value chmi","error":tru
-chmi_aladin_central_europe_2km 200 96/48 96/48 96/48
-chmi_aladin_cz_1km 400 {"error":true,"reason":"No data is available for this location"}
+sk 502 10801ms
+e undefined
+b undefined
+r undefined
+t undefined
