@@ -1,2 +1,21 @@
-Noestlbach 200 5584ms r {"dwd_icon_d2_ruc_native":1,"geosphere_claef_austria":0.918,"dwd_icon_d2_native":0.98,"ecmwf_ifs":0.939} pe {"dwd_icon_d2_ruc_native":0.13,"geosphere_claef_austria":0.17,"dwd_icon_d2_native":0.15,"ecmwf_ifs":0.08} ri 1 e {"dwd_icon_d2_ruc_native":0.45,"geosphere_claef_austria":0.76,"dwd_icon_d2_native":0.51,"ecmwf_ifs":0.62,"geosphere_1km":0.76}
-Innsbruck 200 8040ms r {"dwd_icon_d2_ruc_native":0.98,"geosphere_claef_austria":0.898,"dwd_icon_d2_native":0.959,"ecmwf_ifs":0.755} pe {"dwd_icon_d2_ruc_native":0.08,"geosphere_claef_austria":0.2,"dwd_icon_d2_native":0.11,"ecmwf_ifs":0.2} ri 1 e {"dwd_icon_d2_ruc_native":0.82,"geosphere_claef_austria":0.98,"dwd_icon_d2_native":0.95,"ecmwf_ifs":1.49,"geosphere_1km":1.07}
+== lx256 200 image/png cors=null 18595 170ms
+== lx512 200 image/png cors=null 41707 406ms
+== lx512z10 200 image/png cors=null 23004 341ms
+lx keys [ 'version', 'generated', 'host', 'radar', 'satellite' ] nowcast 6
+== kachel-doc 200 application/json cors=* 145878 1188ms
+"/station/{stationId}/observations/latest": "/current/{lat}/{lon}": "/forecast/{lat}/{lon}/3day": "/forecast/{lat}/{lon}/trend14days": "/forecast/{lat}/{lon}/standard/{timeSteps}": "/forecast/{lat}/{lon}/advanced/{timeSteps}": "/station/search/{lat}/{lon}": "/station/{stationId}/observations/{timeSteps}": "/tools/astronomy/{lat}/{lon}": "/tools/weatherSymbol/{weatherSymbol}.{format}":
+== ch-wms 200 text/xml; charset=UTF-8 cors=* 2680465 2324ms
+<Name>ch.meteoschweiz.klimanormwerte-niederschlag_1961_1990</Name> <Name>ch.meteoschweiz.klimanormwerte-niederschlag_aktuelle_periode</Name> <Name>ch.blw.niederschlagshaushalt</Name> <Name>ch.bafu.niederschlagserosivitaet-apr</Name> <Name>ch.bafu.niederschlagserosivitaet-aug</Name> <Name>ch.bafu.niederschlagserosivitaet-dez</Name> <Name>ch.bafu.niederschlagserosivitaet-feb</Name> <Name>ch.bafu.niederschlagserosivitaet-jan</Name> <Name>ch.bafu.niederschlagserosivitaet-jul</Name> <Name>ch.bafu.niederschlagserosivitaet-jun</Name> <Name>ch.bafu.niederschlagserosivitaet-mai</Name> <Name>ch.bafu.niederschlagserosivitaet-mrz</Name> <Name>ch.bafu.niederschlagserosivitaet-nov</Name> <Name>ch.bafu.niederschlagserosivitaet-okt</Name> <Name>ch.bafu.niederschlagserosivitaet-sep</Name> <Name>ch.bafu.wal
+== it-dpc 403 text/html cors=null 432 259ms
+<HTML><HEAD>
+<TITLE>Access Denied</TITLE>
+</HEAD><BODY>
+<H1>Access Denied</H1>
+ 
+You don't have permission to access "http&#58;&#47;&#47;radar&#45;api&#46;protezionecivile&#46;it&#47;wide&#47;product&#47;findLastProductByType&#63;" on this server.<P>
+Reference&#32;&#35;18&#46;51951eb8&#46;1794606266
+== si-arso 200 image/gif cors=null 16200 2144ms
+== pl-imgw 404 application/json; charset=utf-8 cors=* 69 1446ms
+{"status":false,"message":"Brak plik\u00f3w dla wskazanego produktu"}
+== hu-met 404 text/html; charset=iso-8859-1 cors=null 305 1113ms
+== fr-mf 401 application/json; charset=UTF-8 cors=* 234 778ms
