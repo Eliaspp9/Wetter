@@ -1,7 +1,6 @@
 import fs from "fs";
-const r=await fetch("https://maps.dwd.de/geoserver/dwd/Icon-eu_reg00625_fd_sl_TOTPREC01H/wms?service=WMS&version=1.3.0&request=GetCapabilities");const t=await r.text();
-const i=t.indexOf("<Name>Icon-eu_reg00625_fd_sl_TOTPREC01H</Name>");const b=t.slice(i,i+6000);
-console.log((b.match(/<Dimension[^>]*>[^<]{0,400}/g)||[]).join("\n"));console.log((b.match(/<Style>[\s\S]*?<\/Style>/g)||[]).map(s=>s.replace(/\s+/g," ").slice(0,400)).join("\n"));
-const u="https://maps.dwd.de/geoserver/dwd/wms?service=WMS&version=1.1.1&request=GetMap&layers=dwd:Icon-eu_reg00625_fd_sl_TOTPREC01H&styles=&format=image/png&transparent=true&srs=EPSG:3857&bbox=-1000000,4500000,3500000,8000000&width=512&height=400";
-const g=await fetch(u);const buf=Buffer.from(await g.arrayBuffer());console.log("getmap",g.status,g.headers.get("content-type"),g.headers.get("access-control-allow-origin"),buf.length);fs.writeFileSync("gs3/dwdpr.png",buf);
-const lg=await fetch("https://maps.dwd.de/geoserver/dwd/wms?request=GetLegendGraphic&format=application/json&layer=dwd:Icon-eu_reg00625_fd_sl_TOTPREC01H");console.log("legend",lg.status,(await lg.text()).slice(0,1500));
+const sld=`<?xml version="1.0" encoding="UTF-8"?><StyledLayerDescriptor version="1.0.0" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc"><NamedLayer><Name>dwd:Icon-eu_reg00625_fd_sl_TOTPREC01H</Name><UserStyle><FeatureTypeStyle><Rule><RasterSymbolizer><ColorMap type="ramp"><ColorMapEntry color="#000000" quantity="0" opacity="0"/><ColorMapEntry color="#010101" quantity="0.0999" opacity="0"/><ColorMapEntry color="#020202" quantity="0.1" opacity="1"/><ColorMapEntry color="#FFFFFF" quantity="50.9" opacity="1"/></ColorMap></RasterSymbolizer></Rule></FeatureTypeStyle></UserStyle></NamedLayer></StyledLayerDescriptor>`;
+const t=new Date(Math.ceil(Date.now()/3600000)*3600000+3*3600000).toISOString().slice(0,19)+".000Z";
+const base="https://maps.dwd.de/geoserver/dwd/wms?service=WMS&version=1.1.1&request=GetMap&layers=dwd:Icon-eu_reg00625_fd_sl_TOTPREC01H&format=image/png&transparent=true&srs=EPSG:3857&bbox=-1000000,4500000,3500000,8000000&width=512&height=400&time="+t;
+for(const [n,u] of [["sld",base+"&styles=&SLD_BODY="+encodeURIComponent(sld)],["def",base+"&styles="]]){const g=await fetch(u);const buf=Buffer.from(await g.arrayBuffer());console.log(n,g.status,g.headers.get("content-type"),buf.length,buf.slice(0,200).toString().replace(/[^\x20-\x7e]/g,".").slice(0,200));fs.writeFileSync("gs3/dwd_"+n+".png",buf)}
+console.log("time",t);
