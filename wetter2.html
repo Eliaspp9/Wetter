@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-285fPEGby2/4TzKj3HOSc+oCkSuBOCI84QI8y2jN46U=' 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-TccR0BgCco5MD/t1RF/FQtkgVajH7Z95LiMwvg88QBo=' 'sha256-piXJvOSV4e0yYvuvUJ0YrjqrBF98QjMC4B76z0+akBI=' 'sha256-RuxfNxmpjp4A0o44t73N+6O4m9ajjPnJ8Ah9hbvLASk=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src 'self'; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://s3.amazonaws.com https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-285fPEGby2/4TzKj3HOSc+oCkSuBOCI84QI8y2jN46U=' 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-TccR0BgCco5MD/t1RF/FQtkgVajH7Z95LiMwvg88QBo=' 'sha256-bjT1cJd7C/USxPVIxrxoD0L2i3pxpffSXVoCfaOJIto=' 'sha256-RuxfNxmpjp4A0o44t73N+6O4m9ajjPnJ8Ah9hbvLASk=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src 'self'; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://s3.amazonaws.com https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -14,7 +14,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/favicon-64.png">
-<meta name="app-build" content="84">
+<meta name="app-build" content="85">
 <meta name="app-version" content="1.0">
 <meta name="app-notes" content="Neue Adresse: Die App liegt jetzt bei Cloudflare (wetter.elias-ziegler.workers.dev). Version 1.0 (Build 1): Alles durchgesehen, Fehler behoben und schneller gemacht. Die App startet viel schneller: Das Wetter steht beim Öffnen fast sofort da, weil der letzte Stand gleich gezeigt wird und alle Daten gleichzeitig geholt werden. Das Regenradar Österreich lädt jetzt immer ganz Österreich auf einmal (etwa 1 MB, 1 bis 2 Sekunden statt viele Stücke zu je 6 MB), egal wohin du zoomst, ohne Lücken, und holt neue Daten gleich, wenn du die App aus dem Hintergrund zurückholst. Die Regen-Vorschau für die nächsten 2 Stunden war eine Viertelstunde zu spät und stimmt jetzt. Benachrichtigungen kommen zuverlässiger, die Schrift lädt ohne Google, dazu viele Kleinigkeiten.">
 <script>/* Umzug von GitHub (eliaspp9.github.io/Wetter) hierher: die alte Seite gibt Einstellungen und Lieblingsorte in der Adresse
@@ -2489,7 +2489,9 @@ async function loadRadar(){
   layers.forEach(l=>{try{map.removeLayer(l)}catch(e){}l._wOn=0});
   const nat=src.id==="lx"?lxNat:7;
   /* Farbschema 0 (Graustufen = dBZ + 32) holen und in den Farben der App neu malen, wie GeoSphere und DWD */
-  layers=frames.map(f=>rcLayer("tile",host+f.path+"/256/{z}/{x}/{y}/0/1_0.png",{opacity:0,maxNativeZoom:nat,maxZoom:19,zIndex:5,className:"rdr",attribution:src.att,crossOrigin:"anonymous"},"WX"));
+  /* LibreWXR: Kacheln mit 512 Bildpunkten (doppelt so scharf, auf Handys mit hochauflösendem Bildschirm sichtbar) */
+  const sh=src.id==="lx";
+  layers=frames.map(f=>rcLayer("tile",host+f.path+(sh?"/512/":"/256/")+"{z}/{x}/{y}/0/1_0.png",{rcPx:sh?512:256,opacity:0,maxNativeZoom:nat,maxZoom:19,zIndex:5,className:"rdr",attribution:src.att,crossOrigin:"anonymous"},"WX"));
   $("mnote").textContent=src.note;
   /* Lädt das aktuelle Bild von LibreWXR gar nicht, auf RainViewer wechseln */
   if(src.id==="lx"){const lj=layers[pastCount-1];if(lj){let ok=0,bad=0;lj.on("tileload",()=>{ok++});lj.on("tileerror",()=>{bad++;if(!ok&&bad===6&&layers.indexOf(lj)>=0)rvFail("tiles")})}}
@@ -2575,18 +2577,20 @@ function rcInit(){
 const radSnow=()=>!!(lastJ&&lastJ.current&&lastJ.current.temperature_2m<=0.5);
 /* Kachel lesen und in unseren Farben neu malen; geht das Auslesen nicht, bleibt das Original stehen */
 function rcPaint(cv,img,rc,co){
- const x=cv.getContext("2d",{willReadFrequently:true});x.drawImage(img,0,0,256,256);
- let d;try{d=x.getImageData(0,0,256,256)}catch(e){cv._orig=1;return}
- const p=d.data,V=new Float32Array(65536),snow0=rc.snow!=null?rc.snow:radSnow(),sm=rc.snow==null?snowTile(co):null,cc=new Map();
+ /* S: Bildpunkte je Kachelseite (256, bei scharfen Kacheln 512; angezeigt wird immer auf 256 Punkten) */
+ const S=cv.width,N=S*S,k=S/256,x=cv.getContext("2d",{willReadFrequently:true});x.drawImage(img,0,0,S,S);
+ let d;try{d=x.getImageData(0,0,S,S)}catch(e){cv._orig=1;return}
+ const p=d.data,V=new Float32Array(N),snow0=rc.snow!=null?rc.snow:radSnow(),sm=rc.snow==null?snowTile(co):null,cc=new Map();
  /* unter dem Radar Österreich: dort, wo GeoSphere Daten hat, durchsichtig lassen */
  const cr=rc.clip&&atRun?atRun:null,cg=cr&&cr.g,fd=cr&&atFade(cr),ns=256*Math.pow(2,co.z);
- for(let i=0,j=0;i<65536;i++,j+=4){
+ for(let i=0,j=0;i<N;i++,j+=4){
   V[i]=NaN;
   if(p[j+3]<90){p[j+3]=0;continue}
   let keep=1;
-  if(cg){const cx=Math.floor(((co.x*256+(i&255)+.5)/ns*360-180-cg.lo0)/AT_CS),cy=Math.floor((cg.yT-(180-(co.y*256+(i>>8)+.5)/ns*360))/AT_CS);
+  const px=(i%S)/k,py=Math.floor(i/S)/k;
+  if(cg){const cx=Math.floor(((co.x*256+px+.5/k)/ns*360-180-cg.lo0)/AT_CS),cy=Math.floor((cg.yT-(180-(co.y*256+py+.5/k)/ns*360))/AT_CS);
    if(cx>=0&&cy>=0&&cx<cg.W&&cy<cg.H&&cr.has[cy*cg.W+cx]){const f=fd[cy*cg.W+cx]/AT_FD;keep=1-f*f*(3-2*f);if(keep<=.01){p[j+3]=0;continue}}}
-  const snow=sm?sm[((i>>10)<<6)+((i&255)>>2)]===1:snow0;
+  const snow=sm?sm[((py|0)>>2)*64+((px|0)>>2)]===1:snow0;
   let v=rc.inv(p[j],p[j+1],p[j+2]);
   if(rc.mm&&v===v)v=rc.mm(v,snow);
   if(!(v>=rc.min)){p[j+3]=0;continue}
@@ -2595,13 +2599,13 @@ function rcPaint(cv,img,rc,co){
   if(!c){const a=ramp(snow?SNOWC:RAINC,v);c=[a[0],a[1],a[2],Math.round(Math.min(1,.35+v*.6)*.92*255)];cc.set(q,c)}
   p[j]=c[0];p[j+1]=c[1];p[j+2]=c[2];p[j+3]=keep<1?Math.round(c[3]*keep):c[3];
  }
- x.putImageData(d,0,0);cv._v=V;cv._snow=snow0;cv._sm=sm;cv._cls=!!rc.cls;
+ x.putImageData(d,0,0);cv._v=V;cv._k=k;cv._snow=snow0;cv._sm=sm;cv._cls=!!rc.cls;
 }
 let RcTile=null,RcWms=null;
 function rcLayer(kind,url,opt,rcKey){
  if(!RcTile){
   const ct=function(coords,done){
-   const c=document.createElement("canvas");c.width=c.height=256;c.complete=false;
+   const c=document.createElement("canvas");c.width=c.height=this.options.rcPx||256;c.complete=false;
    const im=new Image(),rc=rcInit()[this.options.rcKey];im.crossOrigin="anonymous";
    im.onload=()=>{try{rcPaint(c,im,rc,coords)}catch(e){console.error(e)}c.complete=true;done(null,c)};
    im.onerror=()=>{c.complete=true;done(new Error("Radarkachel"),c)};
@@ -2622,7 +2626,7 @@ function natVal(la,lo,L0){
   if(!el){res=res||{wait:1};continue}
   if(el._orig)return{none:"Dieses Radarbild ließ sich nicht auslesen."};
   if(!el._v){res=res||{wait:1};continue}
-  const ix=Math.floor(p.x-x*256),iy=Math.floor(p.y-y*256),v=el._v[iy*256+ix],sn=el._sm?el._sm[(iy>>2)*64+(ix>>2)]===1:el._snow;
+  const ix=Math.floor(p.x-x*256),iy=Math.floor(p.y-y*256),kk=el._k||1,v=el._v[Math.floor(iy*kk)*256*kk+Math.floor(ix*kk)],sn=el._sm?el._sm[(iy>>2)*64+(ix>>2)]===1:el._snow;
   if(v>=.05)return{r:v,snow:sn,t:tempAt(la,lo),cls:el._cls?JMA_CLS.find(c=>Math.abs(c[1]-v)<.01):null};
   if(!res||res.wait)res={r:0,snow:sn,t:tempAt(la,lo)};
  }
@@ -2735,7 +2739,7 @@ function lvAt(L,cp){
  let best=0;
  for(const t of subs){const z=t._tileZoom;if(z==null||!t._tiles)continue;
   const p=map.project(map.containerPointToLatLng(cp),z),x=Math.floor(p.x/256),y=Math.floor(p.y/256),tl=t._tiles[x+":"+y+":"+z],el=tl&&tl.el;
-  if(!el||!el._v)continue;const v=el._v[Math.floor(p.y-y*256)*256+Math.floor(p.x-x*256)];if(v>best)best=v}
+  if(!el||!el._v)continue;const kk=el._k||1,v=el._v[Math.floor((p.y-y*256)*kk)*256*kk+Math.floor((p.x-x*256)*kk)];if(v>best)best=v}
  return best;
 }
 function layerReady(L,ms){
@@ -3554,7 +3558,7 @@ async function atBgLoad(){
   const j=await getJt(RVSRC[0].url,9000);if(mode!=="at"||!map)return;
   const past=(j.radar&&j.radar.past)||[],nc=(j.radar&&j.radar.nowcast)||[];if(!past.length)return;
   atBgHide(true);
-  atBg=[...past.slice(-13),...nc].map(f=>({time:f.time,l:rcLayer("tile",j.host+f.path+"/256/{z}/{x}/{y}/0/1_0.png",{opacity:0,maxNativeZoom:lxNat,maxZoom:19,zIndex:4,className:"rdr",attribution:RVSRC[0].att,crossOrigin:"anonymous"},"WXA")}));
+  atBg=[...past.slice(-13),...nc].map(f=>({time:f.time,l:rcLayer("tile",j.host+f.path+"/512/{z}/{x}/{y}/0/1_0.png",{rcPx:512,opacity:0,maxNativeZoom:lxNat,maxZoom:19,zIndex:4,className:"rdr",attribution:RVSRC[0].att,crossOrigin:"anonymous"},"WXA")}));
   atBgMask=atRun;atBgK=-1;const f=frames[idx];if(f&&f.at!=null)atBgShow(f.time);
  }catch(e){}
 }
@@ -6902,7 +6906,7 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("shr").hidden)cl
 const meta=n=>{const m=document.querySelector('meta[name="'+n+'"]');return m?m.content:""};
 /* app-build zählt seit jeher einfach hoch; daran erkennen auch ältere Geräte ein Update (sie vergleichen diese Zahl).
    Angezeigt wird der Build seit Version 1.0: Build 1 ist app-build 57. */
-const BUILD=+meta("app-build")||0,BUILD0=83,verText=b=>meta("app-version")+" (Build "+(b-BUILD0)+")";
+const BUILD=+meta("app-build")||0,BUILD0=84,verText=b=>meta("app-version")+" (Build "+(b-BUILD0)+")";
 let remote=null,lastChk=0;
 $("ver").textContent=verText(BUILD);
 /* Anmeldung: bis wann sie gilt und ob sie sich von selbst verlängert */
