@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-285fPEGby2/4TzKj3HOSc+oCkSuBOCI84QI8y2jN46U=' 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-TccR0BgCco5MD/t1RF/FQtkgVajH7Z95LiMwvg88QBo=' 'sha256-h8YpjCMX70ahH38nevF+2CfN4y/DFXq+U0g5AKHCMlk=' 'sha256-RuxfNxmpjp4A0o44t73N+6O4m9ajjPnJ8Ah9hbvLASk=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src 'self'; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://s3.amazonaws.com https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-285fPEGby2/4TzKj3HOSc+oCkSuBOCI84QI8y2jN46U=' 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-TccR0BgCco5MD/t1RF/FQtkgVajH7Z95LiMwvg88QBo=' 'sha256-IwDq6tJF3EX52+BOrAd9LM6mVyMtjD8ixp6ILFDb/QY=' 'sha256-RuxfNxmpjp4A0o44t73N+6O4m9ajjPnJ8Ah9hbvLASk=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src 'self'; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://s3.amazonaws.com https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -14,7 +14,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/favicon-64.png">
-<meta name="app-build" content="79">
+<meta name="app-build" content="80">
 <meta name="app-version" content="1.0">
 <meta name="app-notes" content="Neue Adresse: Die App liegt jetzt bei Cloudflare (wetter.elias-ziegler.workers.dev). Version 1.0 (Build 1): Alles durchgesehen, Fehler behoben und schneller gemacht. Die App startet viel schneller: Das Wetter steht beim Öffnen fast sofort da, weil der letzte Stand gleich gezeigt wird und alle Daten gleichzeitig geholt werden. Das Regenradar Österreich lädt jetzt immer ganz Österreich auf einmal (etwa 1 MB, 1 bis 2 Sekunden statt viele Stücke zu je 6 MB), egal wohin du zoomst, ohne Lücken, und holt neue Daten gleich, wenn du die App aus dem Hintergrund zurückholst. Die Regen-Vorschau für die nächsten 2 Stunden war eine Viertelstunde zu spät und stimmt jetzt. Benachrichtigungen kommen zuverlässiger, die Schrift lädt ohne Google, dazu viele Kleinigkeiten.">
 <script>/* Umzug von GitHub (eliaspp9.github.io/Wetter) hierher: die alte Seite gibt Einstellungen und Lieblingsorte in der Adresse
@@ -626,6 +626,7 @@ html.srcopen .srcbtn::after{transform:rotate(180deg)}
 .dn span{font-size:12px;color:var(--muted)}
 .dp{font-size:13px;color:var(--rain);font-weight:600;text-align:right;line-height:1.2}
 .dp small.snow{color:var(--snow)}
+.dp small.dsun{color:#E8A317;font-weight:600}
 .dp small{display:block;font-size:11px;font-weight:500;color:var(--muted);font-variant-numeric:tabular-nums}
 .dlo{text-align:right;color:var(--muted);font-variant-numeric:tabular-nums}
 .dhi{font-weight:650;font-variant-numeric:tabular-nums}
@@ -1556,7 +1557,7 @@ async function loadWeather(auto){
   const base="https://api.open-meteo.com/v1/forecast?latitude="+place.lat+"&longitude="+place.lon+"&timezone=auto&forecast_days=7";
   const cur="temperature_2m,apparent_temperature,relative_humidity_2m,precipitation,weather_code,wind_speed_10m,wind_direction_10m,surface_pressure";
   const hr="temperature_2m,precipitation_probability,weather_code,precipitation,wind_speed_10m,wind_gusts_10m,snowfall,cloud_cover,cloud_cover_low,relative_humidity_2m";
-  const dl="weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max,sunrise,sunset";
+  const dl="weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max,sunrise,sunset,sunshine_duration,daylight_duration";
   const full="&current="+cur+",is_day,cloud_cover,wind_gusts_10m&hourly="+hr+",is_day&daily="+dl+",uv_index_max";
   let j;
   /* Heute und morgen das genaueste Modell vor Ort (Tabelle LOK, je Land), danach ECMWF IFS (9 km). Was beide nicht rechnen
@@ -1831,6 +1832,9 @@ function kiDaily(){
 function kiNow(){return kiD.k===kiKey()?kiD.o:null}
 /* Strich unter dem Temperaturbalken: Tiefst- bis Höchstwert laut KI-Modell, auf derselben Skala */
 function kiBarH(q,mn,span){if(!q)return"";const a=(q.lo-mn)/span*100,b=Math.max(4,(q.hi-q.lo)/span*100);return'<b class="ki" style="left:'+a.toFixed(1)+"%;width:"+Math.min(b,100-a).toFixed(1)+'%" title="KI-Modell: '+deg(q.lo)+" bis "+deg(q.hi)+(q.p!=null&&q.p>=0.1?", "+fmt(q.p)+" mm":"")+'"></b>'}
+/* Sonnenscheindauer (Sekunden aus dem Wettermodell) als „6 Std.“ bzw. „6 Std. 20 Min.“ */
+const sunH=s=>s==null||!isFinite(s)?null:Math.round(s/3600);
+function sunHM(s){if(s==null||!isFinite(s))return"";const m=Math.round(s/60),h=Math.floor(m/60),r=m%60;return h?h+" Std."+(r?" "+r+" Min.":""):r+" Min."}
 function renderDays(j){
  lastJ=j;
  const KI=kiNow(),kk=kiKey();
@@ -1843,7 +1847,7 @@ function renderDays(j){
   const l=(lo-mn)/span*100,wd=Math.max(8,(hi-lo)/span*100);
   const p=v.p==null?0:v.p;
   const mm=v.mm;
-  return'<div class="dw" data-i="'+i+'"><div class="day" role="button" tabindex="0" aria-expanded="false" aria-label="Details für '+esc(name)+' ein- oder ausklappen"><div class="dn"><b>'+name+'</b><span>'+dt.getDate()+"."+(dt.getMonth()+1)+".</span></div><div>"+ic(v.k,30)+'</div><div class="dp">'+(p>=10?"<span>"+Math.round(+p)+" %</span>":"")+(mm!=null&&mm>=0.1?"<small"+(isSnowDay(i)?' class="snow"':"")+">"+fmt(mm)+" mm</small>":"")+'</div><div class="dlo">'+deg(lo)+'</div><div class="dbar"><i style="left:'+l.toFixed(1)+"%;width:"+Math.min(wd,100-l).toFixed(1)+"%;background:linear-gradient(90deg,"+tcol(lo)+","+tcol(hi)+')"></i>'+kiBarH(KI&&KI[d],mn,span)+'</div><div class="dhi">'+deg(hi)+'</div><div class="dch">'+CHEV+'</div></div><div class="dd" hidden></div></div>';
+  return'<div class="dw" data-i="'+i+'"><div class="day" role="button" tabindex="0" aria-expanded="false" aria-label="Details für '+esc(name)+' ein- oder ausklappen"><div class="dn"><b>'+name+'</b><span>'+dt.getDate()+"."+(dt.getMonth()+1)+".</span></div><div>"+ic(v.k,30)+'</div><div class="dp">'+(p>=10?"<span>"+Math.round(+p)+" %</span>":"")+(mm!=null&&mm>=0.1?"<small"+(isSnowDay(i)?' class="snow"':"")+">"+fmt(mm)+" mm</small>":"")+(D.sunshine_duration&&sunH(D.sunshine_duration[i])!=null?'<small class="dsun">☀ '+sunH(D.sunshine_duration[i])+" Std.</small>":"")+'</div><div class="dlo">'+deg(lo)+'</div><div class="dbar"><i style="left:'+l.toFixed(1)+"%;width:"+Math.min(wd,100-l).toFixed(1)+"%;background:linear-gradient(90deg,"+tcol(lo)+","+tcol(hi)+')"></i>'+kiBarH(KI&&KI[d],mn,span)+'</div><div class="dhi">'+deg(hi)+'</div><div class="dch">'+CHEV+'</div></div><div class="dd" hidden></div></div>';
  }).join("");
  openDays.forEach(i=>setDay(i,true));
  $("days-src").innerHTML="Werte: "+(j.src==="lok"?lokText(j):j.src==="ecmwf"?"Wettermodell ECMWF IFS (über Open-Meteo)":"Wettermodelle über Open-Meteo")+"."+
@@ -1862,7 +1866,8 @@ $("days").addEventListener("click",e=>{const r=e.target.closest(".day");if(r)set
 $("days").addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&e.target.classList&&e.target.classList.contains("day")){e.preventDefault();setDay(+e.target.parentNode.dataset.i,!e.target.parentNode.classList.contains("open"))}});
 function dayDetail(i){
  const j=lastJ;if(!j)return"";
- const mdl=j.src==="lok"&&i<2?(lokName(j)||"DWD ICON-D2-RUC"):j.src==="ecmwf"||j.src==="lok"?"ECMWF":"Open-Meteo";
+ /* das 1-km-Modell liefert keinen Niederschlag, dann stammt er aus der Mischung der anderen Modelle */
+ const mdl=j.src==="lok"&&i<2?((n=>n&&/1 km/.test(n)?"Modellmischung":n)(lokName(j))||"DWD ICON-D2-RUC"):j.src==="ecmwf"||j.src==="lok"?"ECMWF":"Open-Meteo";
  const H=j.hourly||{time:[]},D=j.daily,date=D.time[i];
  const off=(+j.utc_offset_seconds||0)*1000;
  const hr=d=>new Date(d.getTime()+off).getUTCHours();
@@ -1895,6 +1900,7 @@ function dayDetail(i){
  if(st){const Ws=(kd&&kd.rows||[]).map(r=>r.W).filter(x=>x!=null),Gs=(kd&&kd.rows||[]).map(r=>r.G).filter(x=>x!=null);dayW.length=0;gu.length=0;dayW.push(...Ws);gu.push(...Gs)}
  if(dayW.length)parts.push("<span>Wind bis <b>"+Math.round(Math.max(...dayW))+" km/h</b>"+(gu.length?", Böen "+Math.round(Math.max(...gu)):"")+"</span>");
  if(D.sunrise&&D.sunset)parts.push("<span>Sonne <b>"+D.sunrise[i].slice(11,16)+"–"+D.sunset[i].slice(11,16)+"</b></span>");
+ if(D.sunshine_duration&&D.sunshine_duration[i]!=null)parts.push("<span>Sonnenschein <b>"+sunHM(D.sunshine_duration[i])+"</b>"+(D.daylight_duration&&D.daylight_duration[i]!=null?" von "+sunHM(D.daylight_duration[i])+" Tageslicht":"")+"</span>");
  if(D.uv_index_max&&D.uv_index_max[i]!=null)parts.push("<span>UV <b>"+fmt(D.uv_index_max[i])+"</b></span>");
  {const zl=alpDay(date,pmm);if(zl)parts.push(zl)}
  {const K=kiNow(),q=K&&K[date];if(q)parts.push('<span><i class="ki-key"></i>KI-Modell <b>'+deg(q.lo)+" / "+deg(q.hi)+"</b>"+(q.p!=null?", Niederschlag <b>"+(q.p<0.1?"keiner":fmt(q.p)+" mm")+"</b>":"")+"</span>")}
@@ -5991,9 +5997,9 @@ async function loadTrend(){
  const kiP=kiDaily();
  if(!rows){
   try{
-   const tu="https://api.open-meteo.com/v1/forecast?latitude="+(+place.lat).toFixed(3)+"&longitude="+(+place.lon).toFixed(3)+"&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max&forecast_days=14&timezone=auto";
+   const tu="https://api.open-meteo.com/v1/forecast?latitude="+(+place.lat).toFixed(3)+"&longitude="+(+place.lon).toFixed(3)+"&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max,sunshine_duration&forecast_days=14&timezone=auto";
    let j,ec=true;try{j=await getJc180(tu+"&models=ecmwf_ifs");if(!j.daily||j.daily.temperature_2m_max.filter(x=>x!=null).length<10)throw new Error("kurz")}catch(e){j=await getJc180(tu);ec=false}
-   const D=j.daily;rows=D.time.map((d,i)=>({date:d,hi:D.temperature_2m_max[i],lo:D.temperature_2m_min[i],p:D.precipitation_sum[i],pr:D.precipitation_probability_max?D.precipitation_probability_max[i]:null,code:D.weather_code[i]})).filter(r=>r.hi!=null&&r.lo!=null);src=ec?"ECMWF IFS (über Open-Meteo)":"Open-Meteo (Wettermodelle)";
+   const D=j.daily;rows=D.time.map((d,i)=>({date:d,hi:D.temperature_2m_max[i],lo:D.temperature_2m_min[i],p:D.precipitation_sum[i],pr:D.precipitation_probability_max?D.precipitation_probability_max[i]:null,code:D.weather_code[i],sun:D.sunshine_duration?D.sunshine_duration[i]:null})).filter(r=>r.hi!=null&&r.lo!=null);src=ec?"ECMWF IFS (über Open-Meteo)":"Open-Meteo (Wettermodelle)";
   }catch(e){if(q.ok()&&!q.keep())el.innerHTML='<p class="muted">Der 14-Tage-Trend konnte nicht geladen werden.</p>';return}
  }
  if(!q.ok())return;
@@ -6006,7 +6012,7 @@ async function loadTrend(){
  const kiBar=r=>kiBarH(ki&&ki[r.date],mn,span);
  el.innerHTML=R.map(r=>{const dt=new Date(r.date+"T12:00"),l=(r.lo-mn)/span*100,wd=Math.max(8,(r.hi-r.lo)/span*100);
   const k=r.code!=null?kind(r.code,true):r.p!=null&&r.p>=1?(r.hi<=1?"snow":"rain"):null;
-  return'<div class="dw"><div class="day" style="cursor:default"><div class="dn"><b>'+dt.toLocaleDateString("de-AT",{weekday:"short"}).replace(".","")+"</b><span>"+dt.getDate()+"."+(dt.getMonth()+1)+".</span></div><div>"+(k?ic(k,30):"")+'</div><div class="dp">'+(r.pr!=null&&r.pr>=10?"<span>"+Math.round(r.pr)+" %</span>":"")+(r.p!=null&&r.p>=0.1?"<small>"+fmt(r.p)+" mm</small>":"")+'</div><div class="dlo">'+deg(r.lo)+'</div><div class="dbar"><i style="left:'+l.toFixed(1)+"%;width:"+Math.min(wd,100-l).toFixed(1)+"%;background:linear-gradient(90deg,"+tcol(r.lo)+","+tcol(r.hi)+')"></i>'+kiBar(r)+'</div><div class="dhi">'+deg(r.hi)+"</div><div></div></div></div>"}).join("")+
+  return'<div class="dw"><div class="day" style="cursor:default"><div class="dn"><b>'+dt.toLocaleDateString("de-AT",{weekday:"short"}).replace(".","")+"</b><span>"+dt.getDate()+"."+(dt.getMonth()+1)+".</span></div><div>"+(k?ic(k,30):"")+'</div><div class="dp">'+(r.pr!=null&&r.pr>=10?"<span>"+Math.round(r.pr)+" %</span>":"")+(r.p!=null&&r.p>=0.1?"<small>"+fmt(r.p)+" mm</small>":"")+(sunH(r.sun)!=null?'<small class="dsun">☀ '+sunH(r.sun)+" Std.</small>":"")+'</div><div class="dlo">'+deg(r.lo)+'</div><div class="dbar"><i style="left:'+l.toFixed(1)+"%;width:"+Math.min(wd,100-l).toFixed(1)+"%;background:linear-gradient(90deg,"+tcol(r.lo)+","+tcol(r.hi)+')"></i>'+kiBar(r)+'</div><div class="dhi">'+deg(r.hi)+"</div><div></div></div></div>"}).join("")+
   '<button type="button" class="srcbtn" aria-label="Quellen der Daten zeigen oder verbergen">Quelle</button><p class="small srcf">Tag 8 bis 14. Quelle: '+esc(src)+". Je weiter weg, desto unsicherer."+(kv.length?'<br><span class="ki-key"></span>Strich darunter: KI-Modell AIFS des Europäischen Wetterzentrums (EZMW) zum Vergleich.':"")+"</p>";
 }
 
@@ -6852,7 +6858,7 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("shr").hidden)cl
 const meta=n=>{const m=document.querySelector('meta[name="'+n+'"]');return m?m.content:""};
 /* app-build zählt seit jeher einfach hoch; daran erkennen auch ältere Geräte ein Update (sie vergleichen diese Zahl).
    Angezeigt wird der Build seit Version 1.0: Build 1 ist app-build 57. */
-const BUILD=+meta("app-build")||0,BUILD0=78,verText=b=>meta("app-version")+" (Build "+(b-BUILD0)+")";
+const BUILD=+meta("app-build")||0,BUILD0=79,verText=b=>meta("app-version")+" (Build "+(b-BUILD0)+")";
 let remote=null,lastChk=0;
 $("ver").textContent=verText(BUILD);
 /* Anmeldung: bis wann sie gilt und ob sie sich von selbst verlängert */
