@@ -295,7 +295,7 @@ async function bfSK(la, lo, models, g) {
       for (const m of models) {
         const g = (n) => { const A = H[one ? n : n + "_" + m]; return A ? A[i] : null; }, q = acc[m];
         const T = g("temperature_2m"), W = g("wind_speed_10m"), P = g("precipitation");
-        if (T != null && ob.T != null) { q.tE += Math.abs(T - ob.T); q.tN++; }
+        if (T != null && ob.T != null) { q.tE += Math.abs(T - ob.T); q.tB = (q.tB || 0) + (T - ob.T); q.tN++; }
         if (W != null && ob.W != null) { q.wE += Math.abs(W - ob.W); q.wN++; }
         if (P != null) { q.rN++; if ((P >= 0.1) !== ob.R) q.rE++; }
       }
@@ -397,7 +397,7 @@ async function bfServe(req, env, url) {
   try {
     if (url.pathname === "/bf/pp") return await bfPP(la, lo);
     if (url.pathname === "/bf/sk") {
-      const models = String(url.searchParams.get("m") || "").split(",").filter((m) => BF_MOD.test(m)).slice(0, 6);
+      const models = String(url.searchParams.get("m") || "").split(",").filter((m) => BF_MOD.test(m)).slice(0, 10);
       if (!models.length) return bfJson({ error: "Ungültig" }, 400);
       return await bfSK(la, lo, models, url.searchParams.get("g") === "1");
     }
