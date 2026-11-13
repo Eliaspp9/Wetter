@@ -1,53 +1,57 @@
-status 200 986110
-Aicon_reg025_fd_sl_PMSL | Luftdruck (hPa) MSL aus AICON
-Aicon_reg025_fd_sl_T | Temperatur in 2m über Grund aus AICON.
-Aicon_reg025_fd_sl_TOTPREC | Niederschlag akkumuliert aus AICON
-Aicon_reg025_fd_sl_TOTPREC06H | Niederschlag 6h aus AICON.
-Aicon_reg025_fd_sl_UV10M | Mittelwind in 10m über Grund aus AICON
-Icon-eps_reg025_fd_pl_GH | Geopotential auf Druckflächen aus ICON-EPS
-Icon-eps_reg025_fd_pl_SP | Mittlere Windgeschwindigkeit auf Druckflächen aus ICON-EPS
-Icon-eps_reg025_fd_pl_SP10M | Mittlere Windgeschwindigkeit in 10m aus ICON-EPS
-Icon-eps_reg025_fd_pl_TA | Temperaturanomalie auf Druckflächen aus ICON-EPS
-Icon-eps_reg025_fd_sl_PMSL | Luftdruck MSL aus ICON-EPS
-Icon-eps_reg025_fd_sl_TOTPREC24H | Niederschlag 24h aus ICON-EPS
-Icon-eps_reg025_fd_sl_VMAX10M12H | Windböen (10m, 12h) aus ICON-EPS
-Icon-eu_reg00625_fd_gl_T | Temperatur auf Höhen über Grund in m aus ICON-EU
-Icon-eu_reg00625_fd_sl_QFF | QFF (Luftdruck Meeresspiegel) aus ICON-EU
-Icon_reg025_fd_pl_GH | Geopotential auf Druckflächen aus ICON
-Icon_reg025_fd_pl_OMEGA | Vertikalbewegung auf Druckflächen aus ICON
-Icon_reg025_fd_pl_RELHUM | Rel. Luftfeuchte auf Druckleveln in hPa aus ICON
-Icon_reg025_fd_pl_T | Lufttemperatur auf Druckleveln in hPa aus ICON
-Icon_reg025_fd_pl_UV | Wind auf Druckflächen aus ICON
-Icon_reg025_fd_sl_PMSL | Luftdruck MSL aus ICON
-Icon_reg025_fd_sl_T2M | Lufttemperatur in 2m aus ICON
-Icon_reg025_fd_sl_TOTPREC | Niederschlag akkumuliert aus ICON.
-Icon_reg025_fd_sl_TOTPREC06H | Niederschlag 6h aus ICON.
-Icon_reg025_fd_sl_TOTPREC24H | Niederschlag 24h aus ICON.
-Icon_reg025_fd_sl_UV10M | Wind in 10m aus ICON
-K3D_EVAL_current_cells | K3D_EVAL_current_cells
-RBSN_RR | Niederschlag an RBSN Stationen
-Cwam_reg0013x0008_fd_sl_MDWW | Mittlere Ausbreitungsrichtung (Windsee) aus CWAM
-Cwam_reg0013x0008_fd_sl_PPWW | Peak Periode (Windsee) aus CWAM
-Cwam_reg0013x0008_fd_sl_SHWW | Signifikante Wellenhöhe (Windsee) aus CWAM
-Ewam_reg005x010_fd_sl_MDWW | Mittlere Ausbreitungsrichtung (Windsee) aus EWAM
-Ewam_reg005x010_fd_sl_PPWW | Peak Periode (Windsee) aus EWAM
-Ewam_reg005x010_fd_sl_SHWW | Signifikante Wellenhöhe (Windsee) aus EWAM
-ICON-EPS_meteograms | ICON EPS Meteogramme für ausgewählte Orte. Dieses Produkt wurde für das Projekt WMC World Meteorological Center generiert.
-Icon-eu_reg00625_fd_sl_TOTPREC | Niederschlag akkumuliert aus ICON-EU
-Icon-eu_reg00625_fd_sl_TOTPREC01H | Niederschlag 1h aus ICON-EU
-Icon-eu_reg00625_fd_sl_TOTPREC03H | Niederschlag 3h aus ICON-EU
-Icon-eu_reg00625_fd_sl_TOTPREC12H | Niederschlag 12h aus Icon-EU
-Icon-eu_reg00625_fd_sl_TOTPREC24H | Niederschlag 24h aus ICON-EU
-Icon_reg025_fd_sl_TOTPREC12H | Niederschlag 12h aus Icon
-Niederschlagsradar | dwd:Niederschlagsradar
-icon-d2-eps_ecwarn_reg002_fd_sl_FP | icon-d2-eps_ecwarn_reg002_fd_sl_FP
-icon-d2-eps_ecwarn_reg002_fd_sl_FPW | icon-d2-eps_ecwarn_reg002_fd_sl_FPW
-icon-d2-eps_ecwarn_reg002_fd_sl_pVMAX10MgtX | icon-d2-eps_ecwarn_reg002_fd_sl_pVMAX10MgtX
-icon-eu-eps_ecwarn_reg0125_fd_sl_FP | icon-eu-eps_ecwarn_reg0125_fd_sl_FP
-icon-eu-eps_ecwarn_reg0125_fd_sl_FPW | icon-eu-eps_ecwarn_reg0125_fd_sl_FPW
-icon-eu-eps_ecwarn_reg0125_fd_sl_pVMAX10MgtX | icon-eu-eps_ecwarn_reg0125_fd_sl_pVMAX10MgtX
-RSMS_17_1961_30 | Niederschlag 1961-1990 (Jahresreferenzkarte)
-Hoehe_icon | Gitterpunkthöhen des ICON-Modells
-Icon-eu_Modelarea | Grenze ICON-EU Modellgebiet
-dominant_landuse | Vorherrschende Landnutzung
-g&amp;width=20&amp;height=20&amp;layer=Biowettervorhersage"/> </LegendURL> </Style> </Layer> <Layer queryable="1" opaque="0"> <Name>Icon-eps_reg025_fd_pl_GH</Name> <Title>Geopotential auf Druckflächen aus ICON-EPS</Title> <Abstract>Geopotential auf Druckflächen aus ICON-EPS.</Abstract> <KeywordList> <Keyword>Atmosphärische Druckfläche</Keyword> <Keyword>geopotentielle Höhe</Keyword> <Keyword>Gitterpunkt (reguläres geographisches Gitter)</Keyword> <Keyword>Gitterpunktsfeld</Keyword> <Keyword>GRIB</Keyword> <Keyword>Kurzfristvorhersage</Keyword> <Keyword>Meteorologie</Keyword> <Keyword>Numerische Wettervorhersagen</Keyword> <Keyword>Synoptische Meteorologie</Keyword> <Keyword>Vorhersage</Keyword> </KeywordList> <CRS>EPSG:4326</CRS> <BoundingBox CRS="EPSG:4326" minx="-90.125" miny="-180.125" maxx="90.125" maxy="179.875"/> <BoundingBox CRS="EPSG:3044" minx="-1.8551668730857778E8" miny="-6.913112109865229E7" maxx="1.8551668730857754E8" maxy="2.7481200945404786E8"/> <BoundingBox CRS="EPSG:3045" minx="-1.497228872744379E8" miny="-5.276920622596986E7" maxx="1.497228872744378E8" maxy="2.247679047670823E8"/> <BoundingBox CRS="EPSG:3413" minx="-1.0851803881655727E10" miny="-1.4174655218238593E23" maxx="1.4112941158544915E23" maxy="1.0839123899263226E10"/> <BoundingBox CRS="EPSG:3857" minx="-2.00514232791384E7" miny="-1.99
+<Dimension name="time" default="current" units="ISO8601">2026-11-12T13:00:00.000Z/2026-11-17T00:00:00.000Z/PT1H
+<Dimension name="REFERENCE_TIME" default="2026-11-13T18:00:00.000Z" units="ISO8601">2026-11-12T12:00:00.000Z,2026-11-12T18:00:00.000Z,2026-11-13T00:00:00.000Z,2026-11-13T06:00:00.000Z,2026-11-13T12:00:00.000Z,2026-11-13T18:00:00.000Z
+<Style> <Name>icon-eu_reg00625_fd_sl_totprec01h_lawa</Name> <Title>hourly precipitation (LAWA color scale)</Title> <Abstract>style for hourly precipitation using the LAWA color scale</Abstract> <LegendURL width="126" height="344"> <Format>image/png</Format> <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://maps.dwd.de/geoserver/dwd/Icon-eu_reg00625_
+getmap 200 image/png * 7844
+legend 200 {"Legend": [{
+  "layerName": "Icon-eu_reg00625_fd_sl_TOTPREC01H",
+  "title": "Niederschlag 1h aus ICON-EU",
+  "rules": [  {
+    "name": "Rule 0",
+    "title": "hourly precipitation in mm",
+    "symbolizers": [{"Raster":     {
+      "colormap":       {
+        "entries":         [
+                    {
+            "label": "mm / 1h",
+            "quantity": "0.09",
+            "color": "#FFFFFF",
+            "opacity": "0.0"
+          },
+                    {
+            "label": "[0,1 ... 2,0)",
+            "quantity": "1.99",
+            "color": "#C0C0C0"
+          },
+                    {
+            "label": "[2,0 ... 5,0)",
+            "quantity": "4.99",
+            "color": "#FEFEC0"
+          },
+                    {
+            "label": "[5,0 ... 10,0)",
+            "quantity": "9.99",
+            "color": "#FEFE5B"
+          },
+                    {
+            "label": "[10,0 ... 15,0)",
+            "quantity": "14.99",
+            "color": "#CFF200"
+          },
+                    {
+            "label": "[15,0 ... 20,0)",
+            "quantity": "19.99",
+            "color": "#A0D625"
+          },
+                    {
+            "label": "[20,0 ... 25,0)",
+            "quantity": "24.99",
+            "color": "#36C969"
+          },
+                    {
+            "label": "[25,0 ... 30,0)",
+            "quantity": "29.99",
+            "color": "#00D7D7"
+          },
+                    {
+            "label": "[30,0 ... 40,0)",
+            "quantity": "39.99",
