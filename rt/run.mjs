@@ -1,5 +1,4 @@
-const B="https://dataset.api.hub.geosphere.at/v1/";
-for(const d of ["timeseries/historical/inca-v1-1h-1km","timeseries/historical/inca-v1-15min-1km"]){const t0=Date.now();try{const r=await fetch(B+d+"/metadata");const j=await r.json();console.log(d,r.status,Date.now()-t0+"ms","end",j.end_time,"freq",j.frequency,"params",(j.parameters||[]).map(p=>p.name+"("+p.unit+")").join(" ").slice(0,300))}catch(e){console.log(d,"ERR",String(e))}}
-const st=new Date(Date.now()-20*3600e3).toISOString().slice(0,13)+":00";
-for(const d of ["timeseries/historical/inca-v1-1h-1km?parameters=RR","timeseries/historical/inca-v1-15min-1km?parameters=RR"]){const t0=Date.now();try{const r=await fetch(B+d+"&lat_lon=48.1627,14.2419&start="+st+"&end="+new Date().toISOString().slice(0,16));const t=await r.text();let j=null;try{j=JSON.parse(t)}catch(e){}
-console.log(d.slice(22,50),r.status,Date.now()-t0+"ms",j&&j.timestamps&&j.timestamps.slice(-2).join(" "),j&&j.timestamps&&j.timestamps.length,j?JSON.stringify(j.features&&j.features[0].properties.parameters).slice(0,300):t.slice(0,200))}catch(e){console.log("ERR",String(e))}}
+const r=await fetch("https://maps.dwd.de/geoserver/dwd/wms?service=WMS&version=1.3.0&request=GetCapabilities");const t=await r.text();console.log("status",r.status,t.length);
+const names=[...t.matchAll(/<Layer[^>]*>\s*<Name>([^<]+)<\/Name>\s*<Title>([^<]*)<\/Title>/g)].map(m=>m[1]+" | "+m[2]);
+console.log(names.filter(n=>/icon|Icon|ICON|RR|Nieder|prec|TOT_PREC|Wawe|ww/i.test(n)).slice(0,60).join("\n"));
+const i=t.indexOf("Icon");console.log(t.slice(i-200,i+1500).replace(/\s+/g," ").slice(0,1500));
