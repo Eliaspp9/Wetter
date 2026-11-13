@@ -1,3 +1,5 @@
-const mod=await import("./sw.mjs");const env={PROXY:{fetch:async()=>new Response("{}",{status:200})}};
-for(const [n,la,lo] of [["Noestlbach",48.163,14.242],["Innsbruck",47.26,11.39],["Wien",48.2,16.37]]){const t0=Date.now();
-const r=await mod.default.fetch(new Request("https://x/bf/sk?la="+la+"&lo="+lo+"&g=1&m=dwd_icon_d2_ruc_native,geosphere_claef_austria,dwd_icon_d2_native,ecmwf_ifs",{headers:{Cookie:"wt=a.b"}}),env);console.log(n,r.status,Date.now()-t0+"ms",(await r.text()).slice(0,600))}
+const B="https://dataset.api.hub.geosphere.at/v1/";
+for(const d of ["timeseries/historical/inca-v1-1h-1km","timeseries/historical/inca-v1-15min-1km"]){const t0=Date.now();try{const r=await fetch(B+d+"/metadata");const j=await r.json();console.log(d,r.status,Date.now()-t0+"ms","end",j.end_time,"freq",j.frequency,"params",(j.parameters||[]).map(p=>p.name+"("+p.unit+")").join(" ").slice(0,300))}catch(e){console.log(d,"ERR",String(e))}}
+const st=new Date(Date.now()-20*3600e3).toISOString().slice(0,13)+":00";
+for(const d of ["timeseries/historical/inca-v1-1h-1km?parameters=RR","timeseries/historical/inca-v1-15min-1km?parameters=RR"]){const t0=Date.now();try{const r=await fetch(B+d+"&lat_lon=48.1627,14.2419&start="+st+"&end="+new Date().toISOString().slice(0,16));const t=await r.text();let j=null;try{j=JSON.parse(t)}catch(e){}
+console.log(d.slice(22,50),r.status,Date.now()-t0+"ms",j&&j.timestamps&&j.timestamps.slice(-2).join(" "),j&&j.timestamps&&j.timestamps.length,j?JSON.stringify(j.features&&j.features[0].properties.parameters).slice(0,300):t.slice(0,200))}catch(e){console.log("ERR",String(e))}}
