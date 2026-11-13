@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-285fPEGby2/4TzKj3HOSc+oCkSuBOCI84QI8y2jN46U=' 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-TccR0BgCco5MD/t1RF/FQtkgVajH7Z95LiMwvg88QBo=' 'sha256-bjT1cJd7C/USxPVIxrxoD0L2i3pxpffSXVoCfaOJIto=' 'sha256-RuxfNxmpjp4A0o44t73N+6O4m9ajjPnJ8Ah9hbvLASk=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src 'self'; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://s3.amazonaws.com https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-285fPEGby2/4TzKj3HOSc+oCkSuBOCI84QI8y2jN46U=' 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-TccR0BgCco5MD/t1RF/FQtkgVajH7Z95LiMwvg88QBo=' 'sha256-hSJ4ZBP5KtDvys8b8mCWziEgqyoGrMsm/YC/xRgpjlg=' 'sha256-RuxfNxmpjp4A0o44t73N+6O4m9ajjPnJ8Ah9hbvLASk=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src 'self'; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://s3.amazonaws.com https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -14,7 +14,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/favicon-64.png">
-<meta name="app-build" content="85">
+<meta name="app-build" content="86">
 <meta name="app-version" content="1.0">
 <meta name="app-notes" content="Neue Adresse: Die App liegt jetzt bei Cloudflare (wetter.elias-ziegler.workers.dev). Version 1.0 (Build 1): Alles durchgesehen, Fehler behoben und schneller gemacht. Die App startet viel schneller: Das Wetter steht beim Öffnen fast sofort da, weil der letzte Stand gleich gezeigt wird und alle Daten gleichzeitig geholt werden. Das Regenradar Österreich lädt jetzt immer ganz Österreich auf einmal (etwa 1 MB, 1 bis 2 Sekunden statt viele Stücke zu je 6 MB), egal wohin du zoomst, ohne Lücken, und holt neue Daten gleich, wenn du die App aus dem Hintergrund zurückholst. Die Regen-Vorschau für die nächsten 2 Stunden war eine Viertelstunde zu spät und stimmt jetzt. Benachrichtigungen kommen zuverlässiger, die Schrift lädt ohne Google, dazu viele Kleinigkeiten.">
 <script>/* Umzug von GitHub (eliaspp9.github.io/Wetter) hierher: die alte Seite gibt Einstellungen und Lieblingsorte in der Adresse
@@ -626,6 +626,8 @@ html.srcopen .srcbtn::after{transform:rotate(180deg)}
 .dn span{font-size:12px;color:var(--muted)}
 .dp{font-size:13px;color:var(--rain);font-weight:600;text-align:right;line-height:1.2}
 .dp small.snow{color:var(--snow)}
+.runs{font-size:12px;color:var(--muted);line-height:1.5;margin:-2px 0 8px}
+.runs b{font-weight:600}
 /* Mengen: Schnee violett, Regen blau */
 .am-s{color:var(--snow);font-weight:600}.am-r{color:var(--rain);font-weight:600}
 .dp small.dsun{color:#E8A317;font-weight:600}
@@ -1042,6 +1044,7 @@ html.locked body>*:not(#gate):not(.moved){display:none!important}
 
   <section class="card s-days" id="sec-days" aria-labelledby="h-days">
    <div class="ch"><h2 id="h-days">7 Tage</h2></div>
+   <div id="runs" class="runs" hidden></div>
    <div id="days"></div>
    <button type="button" class="srcbtn" aria-label="Quellen der Daten zeigen oder verbergen">Quelle</button><p class="small srcf" id="days-src"></p>
    <p class="small klnote" id="kl-d" hidden></p>
@@ -1472,7 +1475,7 @@ function omChain(j,lok,ruc,sk){
   if(od.precipitation_sum&&oh.precipitation){const pp=ix.map(i=>oh.precipitation[i]);if(pp.every(v=>v!=null))od.precipitation_sum[d]=Math.round(pp.reduce((a,b)=>a+b,0)*10)/10}});
  ["current_units","hourly_units","daily_units"].forEach(sec=>{const[u,ur]=split(j[sec]);Object.keys(u).forEach(n=>{for(const m of late.concat(lok))if(u[n][m]!=null&&u[n][m]!=="undefined"){ur[n]=u[n][m];break}});j[sec]=ur});
  j.hourly=oh;j.current=oc;j.daily=od;j._src=src;
- j.lok=nL?Object.keys(lu).sort((a,b)=>lu[b]-lu[a])[0]:null;j.ruc=nR>0;
+ j.lok=nL?Object.keys(lu).sort((a,b)=>lu[b]-lu[a])[0]:null;j.ruc=nR>0;j.loks=Object.keys(lu).sort((a,b)=>lu[b]-lu[a]);
  return j;
 }
 const lokName=j=>j&&j.lok?LOKN[j.lok]||j.lok:"";
@@ -1845,6 +1848,35 @@ function kiBarH(q,mn,span){if(!q)return"";const a=(q.lo-mn)/span*100,b=Math.max(
 /* Sonnenscheindauer (Sekunden aus dem Wettermodell) als „6 Std.“ bzw. „6 Std. 20 Min.“ */
 const sunH=s=>s==null||!isFinite(s)?null:Math.round(s/3600);
 function sunHM(s){if(s==null||!isFinite(s))return"";const m=Math.round(s/60),h=Math.floor(m/60),r=m%60;return h?h+" Std."+(r?" "+r+" Min.":""):r+" Min."}
+/* ============ Modellläufe: welcher Lauf steckt drin, wann kommt der nächste ============
+   Open-Meteo: /data/<modell>/static/meta.json (Startzeit des Laufs, wann er abrufbar war, Abstand der Läufe), GeoSphere 1 km:
+   Metadaten von GeoSphere (alle 3 Stunden). Nächster Lauf ≈ letzte Verfügbarkeit + Abstand. Gemerkt 20 Minuten. */
+let runSeq=0;
+async function renderRuns(j){
+ const el=$("runs"),my=++runSeq;if(!el||!j)return;
+ /* alle Modelle der Vorhersage für diesen Ort, die meistgenutzten zuerst */
+ const ms=[];if(j.ruc||rucOn())ms.push(RUC);(j.loks||[]).concat(lokModels()).forEach(m=>{if(m&&!ms.includes(m))ms.push(m)});ms.push("ecmwf_ifs");
+ const nm=m=>m===RUC?"ICON-D2-RUC":m==="ecmwf_ifs"?"ECMWF":m===GS1?"GeoSphere 1 km":(LOKN[m]||m);
+ const hm=t=>new Date(t*1000).toLocaleTimeString("de-AT",{hour:"2-digit",minute:"2-digit"});
+ const hh=t=>new Date(t*1000).getHours()+" Uhr";
+ const now=Date.now()/1000,stamp=Math.floor(Date.now()/1200000);
+ const rows=await Promise.all(ms.map(async m=>{
+  try{
+   if(m===GS1){const g=await getJc("https://dataset.api.hub.geosphere.at/v1/timeseries/forecast/nwp-v2-1h-1km/metadata?c="+stamp,20*60000,10000);
+    /* GeoSphere stellt einen Lauf etwa 6 Stunden nach seinem Start bereit, neue Läufe alle 3 Stunden */
+    const ref=Date.parse(g.last_forecast_reftime)/1000;return ref?[nm(m),hh(ref),Math.max(ref+9*3600,0)]:null}
+   const k=await getJc("https://api.open-meteo.com/data/"+m+"/static/meta.json?cache_buster="+stamp,20*60000,10000);
+   if(!k||!k.last_run_initialisation_time)return null;
+   const nx=k.last_run_availability_time+(k.update_interval_seconds||3600)+600;
+   return[nm(m),hh(k.last_run_initialisation_time),nx];
+  }catch(e){return null}
+ }));
+ if(my!==runSeq)return;
+ const R=rows.filter(Boolean);
+ if(!R.length){el.hidden=true;return}
+ el.innerHTML=R.map(r=>"<b>"+esc(r[0])+"</b>: Lauf von "+r[1]+(r[2]?" · nächster "+(r[2]<=now?"jeden Moment":"etwa "+hm(r[2])):r[3]?" · nächster Lauf "+hh(r[3]):"")).join("<br>");
+ el.hidden=false;
+}
 function renderDays(j){
  lastJ=j;
  const KI=kiNow(),kk=kiKey();
@@ -1860,6 +1892,7 @@ function renderDays(j){
   return'<div class="dw" data-i="'+i+'"><div class="day" role="button" tabindex="0" aria-expanded="false" aria-label="Details für '+esc(name)+' ein- oder ausklappen"><div class="dn"><b>'+name+'</b><span>'+dt.getDate()+"."+(dt.getMonth()+1)+".</span></div><div>"+ic(v.k,30)+'</div><div class="dp">'+(p>=10?"<span>"+Math.round(+p)+" %</span>":"")+(mm!=null&&mm>=0.1?"<small"+(isSnowDay(i)||v.cm>=.1?' class="snow"':"")+">"+pAmt(mm,v.cm)+"</small>":"")+(D.sunshine_duration&&sunH(D.sunshine_duration[i])!=null?'<small class="dsun">☀ '+sunH(D.sunshine_duration[i])+" Std.</small>":"")+'</div><div class="dlo">'+deg(lo)+'</div><div class="dbar"><i style="left:'+l.toFixed(1)+"%;width:"+Math.min(wd,100-l).toFixed(1)+"%;background:linear-gradient(90deg,"+tcol(lo)+","+tcol(hi)+')"></i>'+kiBarH(KI&&KI[d],mn,span)+'</div><div class="dhi">'+deg(hi)+'</div><div class="dch">'+CHEV+'</div></div><div class="dd" hidden></div></div>';
  }).join("");
  openDays.forEach(i=>setDay(i,true));
+ renderRuns(j).catch(()=>{});
  $("days-src").innerHTML="Werte: "+(j.src==="lok"?lokText(j):j.src==="ecmwf"?"Wettermodell ECMWF IFS (über Open-Meteo)":"Wettermodelle über Open-Meteo")+"."+
   (j.bfSt?" Temperatur und Wind gemischt aus allen Modellen, gewichtet danach, wie genau sie zuletzt an "+(j.bfSt.length===1?"der Messstation ":"den Messstationen ")+esc(j.bfSt.join(", "))+" lagen; Regen aus dem treffsichersten.":"")+
   (j.gs1b!=null?" GeoSphere 1 km lag zuletzt im Schnitt "+String(Math.abs(Math.round(j.gs1b*10)/10)).replace(".",",")+" °C zu "+(j.gs1b>0?"warm":"kalt")+", das wird ausgebessert.":"")+
@@ -6906,7 +6939,7 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("shr").hidden)cl
 const meta=n=>{const m=document.querySelector('meta[name="'+n+'"]');return m?m.content:""};
 /* app-build zählt seit jeher einfach hoch; daran erkennen auch ältere Geräte ein Update (sie vergleichen diese Zahl).
    Angezeigt wird der Build seit Version 1.0: Build 1 ist app-build 57. */
-const BUILD=+meta("app-build")||0,BUILD0=84,verText=b=>meta("app-version")+" (Build "+(b-BUILD0)+")";
+const BUILD=+meta("app-build")||0,BUILD0=85,verText=b=>meta("app-version")+" (Build "+(b-BUILD0)+")";
 let remote=null,lastChk=0;
 $("ver").textContent=verText(BUILD);
 /* Anmeldung: bis wann sie gilt und ob sie sich von selbst verlängert */
