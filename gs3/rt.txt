@@ -1,16 +1,4 @@
-dwd_icon_d2 404 {"error":true,"reason":"Not Found"}
-dwd_icon_d2_ruc 404 {"error":true,"reason":"Not Found"}
-dwd_icon_d2_ruc_native 404 {"reason":"Not Found","error":true}
-dwd_icon_eu 404 {"error":true,"reason":"Not Found"}
-dwd_icon 404 {"error":true,"reason":"Not Found"}
-ecmwf_ifs 404 {"error":true,"reason":"Not Found"}
-ecmwf_ifs025 404 {"reason":"Not Found","error":true}
-ecmwf_ifs_hres_9km 404 {"reason":"Not Found","error":true}
-ecmwf_aifs025_single 404 {"reason":"Not Found","error":true}
-geosphere_arome_austria 404 {"reason":"Not Found","error":true}
-geosphere_claef_austria 404 {"error":true,"reason":"Not Found"}
-meteoswiss_icon_ch1 404 {"error":true,"reason":"Not Found"}
-ncep_gfs025 404 {"error":true,"reason":"Not Found"}
-ncep_hrrr_conus 404 {"error":true,"reason":"Not Found"}
-ncep_aigfs025 404 {"error":true,"reason":"Not Found"}
-dwd_aicon_global 404 {"error":true,"reason":"Not Found"}
+200 51367 
+
+js 38
+/_app/immutable/nodes/73.sT-EGFx_.js .use){case`commercial`:a=`https://customer-${i}.open-meteo.com/data/${e}/static/meta.json`;break;case`self_hosted`:a=`${n.self_host_server}/data/${e}/static/meta.json`;b || reak;default:a=`https://${i}.open-meteo.com/data/${e}/static/meta.json`}let o=await fetch(`${a}?cache_buster=${r.getTime()}`);if(!o.ok)throw Error(awa
