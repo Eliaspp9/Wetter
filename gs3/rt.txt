@@ -1,6 +1,16 @@
-ecmwf_ifs ERR
-ecmwf_ifs025 ERR
-ecmwf_ifs_hres_9km ERR
-ecmwf_aifs025_single ERR
-ecmwf_aifs025 ERR
-ecmwf_ifs025_ensemble ERR
+dwd_icon_d2 404 {"error":true,"reason":"Not Found"}
+dwd_icon_d2_ruc 404 {"error":true,"reason":"Not Found"}
+dwd_icon_d2_ruc_native 404 {"reason":"Not Found","error":true}
+dwd_icon_eu 404 {"error":true,"reason":"Not Found"}
+dwd_icon 404 {"error":true,"reason":"Not Found"}
+ecmwf_ifs 404 {"error":true,"reason":"Not Found"}
+ecmwf_ifs025 404 {"reason":"Not Found","error":true}
+ecmwf_ifs_hres_9km 404 {"reason":"Not Found","error":true}
+ecmwf_aifs025_single 404 {"reason":"Not Found","error":true}
+geosphere_arome_austria 404 {"reason":"Not Found","error":true}
+geosphere_claef_austria 404 {"error":true,"reason":"Not Found"}
+meteoswiss_icon_ch1 404 {"error":true,"reason":"Not Found"}
+ncep_gfs025 404 {"error":true,"reason":"Not Found"}
+ncep_hrrr_conus 404 {"error":true,"reason":"Not Found"}
+ncep_aigfs025 404 {"error":true,"reason":"Not Found"}
+dwd_aicon_global 404 {"error":true,"reason":"Not Found"}
