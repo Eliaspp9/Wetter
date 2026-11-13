@@ -67,7 +67,7 @@ async function api(req, env, url) {
 /* Wettermodell von GeoSphere (1 km) für das Regenradar, vorab geholt und zwischengespeichert.
    GeoSphere braucht für ein einzelnes Modellbild oft 30 bis 60 Sekunden, mehrere Bilder auf einmal brechen ab (gemessen am
    12.11.2026). Darum holt dieser Worker alle 10 Minuten im Hintergrund die fehlenden Bilder (stündlich bis 12 Stunden,
-   danach alle 3 Stunden bis 2 Tage) und legt sie im KV-Speicher ab (gm:…, 3 Tage). Die App lädt sie dann in Sekunden:
+   danach alle 3 Stunden bis 2 Tage) und legt sie im KV-Speicher ab (gm:…, 26 Stunden). Die App lädt sie dann in Sekunden:
    /gm = Liste {ref, t}, /gm/<ref>/<t> = ein Bild als NetCDF (offene Daten von GeoSphere, keine Anmeldung nötig). */
 const GM_URL = "https://dataset.api.hub.geosphere.at/v1/grid/forecast/nwp-v2-1h-1km",
   GM_Q = "?parameters=tp,sf&output_format=netcdf&bbox=45.50,8.10,49.48,17.74";
@@ -119,7 +119,7 @@ async function gmRun(env) {
       let o = 0;
       nx.p = nx.p || {};
       for (const [t, b] of got) { all.set(new Uint8Array(b), o); nx.p[t] = [key, o, b.byteLength]; o += b.byteLength; }
-      await kv.put(key, all, { expirationTtl: 3 * 86400 });
+      await kv.put(key, all, { expirationTtl: 26 * 3600 });
     }
     nx.t = [...have].filter((t) => t > now - 3600).sort((a, b) => a - b);
     for (const k of Object.keys(nx.p || {})) if (!nx.t.includes(+k)) delete nx.p[k];
