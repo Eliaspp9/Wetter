@@ -195,7 +195,7 @@ async function sendPush(env, sub, msg) {
    die die Messstationen in der Nähe ergeben. Daraus lernt er, wie weit die Vorhersage dort je nach Tageszeit, Bewölkung, Wind
    und Vorlaufzeit danebenliegt (lineares Modell, das sich mit jeder Stunde ein Stück anpasst: NLMS). Er vergisst langsam,
    lernt also auch neue Jahreszeiten. Gespeichert wird im KV-Speicher SUBS: je Ort ein Eintrag kl:p:<id>, Kachelmann-Vorhersage kl:s:<id>. */
-const KL_MAX = 6, KL_MU = 0.06, KL_A = 0.01;
+const KL_MAX = 15, KL_MU = 0.06, KL_A = 0.01;
 const klDist = (a, b, c, d) => Math.hypot((a - c) * 111.2, (b - d) * 111.2 * Math.cos((a * Math.PI) / 180));
 // Merkmale (gleich wie in der App): Grundwert, Tageszeit (8 × 3 h), Bewölkung (3), Vorlauf (ECMWF 5 / Kachelmann 3), Windstille
 function klX(m, hour, cloud, wind, leadH) {
@@ -771,7 +771,7 @@ async function route(req, env, ctx, h, json) {
       // Früher entstand je 0,01 Grad ein eigener Ort; zwei Nachbarn belegten dann zwei der sechs Plätze.
       const old = await klNear(env, la, lo, 2);
       if (old) { if (Date.now() - (old.seen || 0) > 86400000) { old.seen = Date.now(); await env.SUBS.put("kl:p:" + old.id, JSON.stringify(old)); } return json({ ok: true, id: old.id, st: (old.st || []).length }); }
-      // neuer Ort: Messstationen suchen; sind schon 6 Orte da, fällt der am längsten nicht mehr geöffnete heraus
+      // neuer Ort: Messstationen suchen; sind schon 15 Orte da, fällt der am längsten nicht mehr geöffnete heraus
       const all = await klAll(env);
       if (all.length >= KL_MAX) {
         const oldest = all.reduce((a, p) => ((p.seen || 0) < (a.seen || 0) ? p : a));

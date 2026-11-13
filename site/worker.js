@@ -97,7 +97,7 @@ async function gmRun(env) {
     const ix = JSON.parse((await kv.get("gm:idx")) || "null") || { ref: 0, t: [] };
     const nx = ref > ix.ref ? JSON.parse((await kv.get("gm:nx")) || "null") || { ref, t: [] } : ix;
     if (nx.ref !== ref) { nx.ref = ref; nx.t = []; }
-    const want = gmWanted(ref, now), have = new Set(nx.t);
+    const want = gmWanted(ref, now), have = new Set(nx.t), got = [];
     let n = 0;
     for (const t of want) {
       if (have.has(t)) continue;
@@ -107,12 +107,22 @@ async function gmRun(env) {
         if (!r.ok) { if (r.status === 429) break; continue; }
         const b = await r.arrayBuffer();
         if (b.byteLength < 2000) continue;
-        await kv.put("gm:" + ref + ":" + t, b, { expirationTtl: 3 * 86400 });
+        got.push([t, b]);
         have.add(t); n++;
       } catch (e) { break; }
     }
     if (!n) return;
+    /* alle neuen Bilder dieses Durchgangs in EINEM Eintrag (spart Schreibvorgänge): gm:b:<ref>:<erste Zeit>,
+       wo welches Bild liegt, steht in nx.p[t] = [Schlüssel, Anfang, Länge] */
+    {
+      const key = "gm:b:" + ref + ":" + got[0][0], tot = got.reduce((a, x) => a + x[1].byteLength, 0), all = new Uint8Array(tot);
+      let o = 0;
+      nx.p = nx.p || {};
+      for (const [t, b] of got) { all.set(new Uint8Array(b), o); nx.p[t] = [key, o, b.byteLength]; o += b.byteLength; }
+      await kv.put(key, all, { expirationTtl: 3 * 86400 });
+    }
     nx.t = [...have].filter((t) => t > now - 3600).sort((a, b) => a - b);
+    for (const k of Object.keys(nx.p || {})) if (!nx.t.includes(+k)) delete nx.p[k];
     if (nx === ix) await kv.put("gm:idx", JSON.stringify(nx));
     else {
       /* neuer Modelllauf: erst zeigen, wenn die nächsten 12 Stunden da sind; bis dahin bleibt der alte */
@@ -164,6 +174,15 @@ async function gmServe(env, url) {
   }
   const m = url.pathname.match(/^\/gm\/(\d{9,11})\/(\d{9,11})$/), g = url.pathname.match(/^\/gr\/(rr|a|t)\/(\d{9,11})$/);
   if (!m && !g) return new Response("Nicht gefunden", { status: 404 });
+  if (m) {
+    /* gebündelt (siehe gmRun), sonst der alte Einzeleintrag */
+    for (const ik of ["gm:idx", "gm:nx"]) {
+      const ix = JSON.parse((await kv.get(ik)) || "null"), e = ix && String(ix.ref) === m[1] && ix.p && ix.p[m[2]];
+      if (!e) continue;
+      const all = await kv.get(e[0], { type: "arrayBuffer" });
+      if (all && all.byteLength >= e[1] + e[2]) return new Response(all.slice(e[1], e[1] + e[2]), { headers: { "Content-Type": "application/x-netcdf", "Cache-Control": "private, max-age=86400, immutable" } });
+    }
+  }
   const b = await kv.get(m ? "gm:" + m[1] + ":" + m[2] : "gr:" + g[1] + ":" + g[2], { type: "arrayBuffer" });
   if (!b) return new Response("Nicht gefunden", { status: 404 });
   return new Response(b, { headers: { "Content-Type": "application/x-netcdf", "Cache-Control": "private, max-age=86400, immutable" } });
