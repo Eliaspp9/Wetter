@@ -270,8 +270,12 @@ async function bfSK(la, lo, models, g) {
   }
   const S = [...st.values()].filter((o) => o.ob.length >= 20 && o.h != null).sort((x, y) => x.d - y.d).slice(0, 3);
   if (!S.length) return bfJson({ n: 0, st: [] });
-  const r = await tfetch("https://api.open-meteo.com/v1/forecast?latitude=" + S.map((o) => o.la.toFixed(3)).join(",") + "&longitude=" + S.map((o) => o.lo.toFixed(3)).join(",") +
-    "&elevation=" + S.map((o) => Math.round(o.h)).join(",") + "&past_days=2&forecast_days=1&hourly=temperature_2m,wind_speed_10m,precipitation&models=" + models.join(",") + "&timezone=GMT&timeformat=unixtime", 15000);
+  /* in Österreich zusätzlich der Ort selbst (letzter Punkt), für den Vergleich mit dem gemessenen Niederschlag von INCA */
+  const PL = g ? [{ la, lo, h: null }] : [], P2 = S.concat(PL);
+  const incaP = g ? tfetch("https://dataset.api.hub.geosphere.at/v1/timeseries/historical/inca-v1-1h-1km?parameters=RR&lat_lon=" + la.toFixed(4) + "," + lo.toFixed(4) +
+    "&start=" + isoM(Math.floor(Date.now() / 3600000) * 3600 - 48 * 3600) + "&end=" + isoM(Math.floor(Date.now() / 3600000) * 3600), 15000).then((x) => (x.ok ? x.json() : null)).catch(() => null) : Promise.resolve(null);
+  const r = await tfetch("https://api.open-meteo.com/v1/forecast?latitude=" + P2.map((o) => o.la.toFixed(3)).join(",") + "&longitude=" + P2.map((o) => o.lo.toFixed(3)).join(",") +
+    "&elevation=" + S.map((o) => Math.round(o.h)).concat(PL.map(() => "nan")).join(",") + "&past_days=2&forecast_days=1&hourly=temperature_2m,wind_speed_10m,precipitation&models=" + models.join(",") + "&timezone=GMT&timeformat=unixtime", 15000);
   if (!r.ok) return bfJson({ error: "forecast " + r.status }, 502);
   let L = await r.json();
   if (!Array.isArray(L)) L = [L];
@@ -297,6 +301,20 @@ async function bfSK(la, lo, models, g) {
       }
     }
   });
+  /* Regen in Österreich: Modelle am Ort gegen INCA (Radar und Regenmesser, 1 km), Stunde für Stunde der letzten 2 Tage.
+     Trefferquote nass/trocken (ab 0,1 mm) ersetzt dann die der Flughäfen; dazu der mittlere Mengenfehler pe. */
+  const inca = await incaP, pr = {}, pe = {};
+  if (inca && L[S.length] && L[S.length].hourly) {
+    const H = L[S.length].hourly, ix = new Map(H.time.map((t, i) => [t, i])), one = models.length === 1;
+    const ts = (inca.timestamps || []).map((x) => Date.parse(x) / 1000), RR = inca.features && inca.features[0] && inca.features[0].properties.parameters.RR && inca.features[0].properties.parameters.RR.data;
+    if (RR) for (const m of models) {
+      const A = H[one ? "precipitation" : "precipitation_" + m];
+      if (!A) continue;
+      let n = 0, e = 0, ae = 0;
+      ts.forEach((t, k) => { const i = ix.get(t), o = RR[k]; if (i == null || o == null || A[i] == null || t > now) return; n++; if ((A[i] >= 0.1) !== (o >= 0.1)) e++; ae += Math.abs(A[i] - o); });
+      if (n >= 24) { pr[m] = Math.round((1 - e / n) * 1000) / 1000; pe[m] = Math.round((ae / n) * 100) / 100; }
+    }
+  }
   const all = models.slice();
   if (g) {
     const P = await gs1Past(S), q = (acc[GS1] = { tE: 0, tN: 0, wE: 0, wN: 0, rE: 0, rN: 0, tB: 0 });
@@ -318,13 +336,14 @@ async function bfSK(la, lo, models, g) {
     }
     all.push(GS1);
   }
-  const out = { t: {}, w: {}, r: {}, e: {}, b: {}, n: 0, st: S.map((o) => o.id) };
+  const out = { t: {}, w: {}, r: {}, e: {}, b: {}, n: 0, st: S.map((o) => o.id), ri: Object.keys(pr).length ? 1 : 0, pe };
   for (const m of all) {
     const q = acc[m];
     if (q.tN >= 20 && q.tB != null) out.b[m] = Math.round((q.tB / q.tN) * 100) / 100;
     if (q.tN >= 20) { out.e[m] = Math.round((q.tE / q.tN) * 100) / 100; out.t[m] = 1 / Math.pow(q.tE / q.tN + 0.3, 2); out.n = Math.max(out.n, q.tN); }
     if (q.wN >= 20) out.w[m] = 1 / Math.pow(q.wE / q.wN + 1.5, 2);
-    if (q.rN >= 20) out.r[m] = Math.round((1 - q.rE / q.rN) * 1000) / 1000;
+    if (pr[m] != null) out.r[m] = pr[m];
+    else if (q.rN >= 20) out.r[m] = Math.round((1 - q.rE / q.rN) * 1000) / 1000;
   }
   for (const k of ["t", "w"]) { const s = Object.values(out[k]).reduce((x, y) => x + y, 0); if (s) for (const m in out[k]) out[k][m] = Math.round((out[k][m] / s) * 1000) / 1000; }
   return bfJson(out);
