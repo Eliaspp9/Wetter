@@ -1,9 +1,4 @@
-meteoswiss_icon_ch2 Bregenz:120/48 Innsbruck:120/48 Lienz:120/48 Salzburg:120/48 Linz:120/48 Nöstlbach:120/48 Wien:120/48 Graz:120/48 Klagenfurt:120/48 Eisenstadt:120/48 Zwettl:120/48 len 120
-meteoswiss_icon_ch1 Bregenz:103/48 Innsbruck:103/48 Lienz:103/48 Salzburg:103/48 Linz:103/48 Nöstlbach:103/48 Wien:103/48 Graz:103/48 Klagenfurt:103/48 Eisenstadt:103/48 Zwettl:103/48 len 120
-meteofrance_arome_france_hd 400 {"error":true,"reason":"No data is available for this location"}
-meteofrance_arome_france 400 {"reason":"No data is available for this location","error":true}
-chmi_aladin_europe 400 {"error":true,"reason":"Invalid value: Cannot initialize MultiDomains from invalid String value chmi_aladin_europe"}
-chmi_aladin 400 {"error":true,"reason":"Invalid value: Cannot initialize MultiDomains from invalid String value chmi_aladin"}
-chmi_aladin_central_europe 400 {"reason":"Invalid value: Cannot initialize MultiDomains from invalid String value chmi_aladin_central_europe","error":t
-italia_meteo_arpae_icon_2i Bregenz:120/48 Innsbruck:120/48 Lienz:120/48 Salzburg:120/48 Linz:120/48 Nöstlbach:120/48 Wien:120/48 Graz:120/48 Klagenfurt:120/48 Eisenstadt:120/48 Zwettl:120/48 len 120
-dwd_icon_eu Bregenz:120/48 Innsbruck:120/48 Lienz:120/48 Salzburg:120/48 Linz:120/48 Nöstlbach:120/48 Wien:120/48 Graz:120/48 Klagenfurt:120/48 Eisenstadt:120/48 Zwettl:120/48 len 120
+`chmi_aladin_central_europe_2km` `cz` `chmi_aladin_cz_1km`
+chmi 400 {"reason":"Invalid value: Cannot initialize MultiDomains from invalid String value chmi","error":tru
+chmi_aladin_central_europe_2km 200 96/48 96/48 96/48
+chmi_aladin_cz_1km 400 {"error":true,"reason":"No data is available for this location"}
