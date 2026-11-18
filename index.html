@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-285fPEGby2/4TzKj3HOSc+oCkSuBOCI84QI8y2jN46U=' 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-TccR0BgCco5MD/t1RF/FQtkgVajH7Z95LiMwvg88QBo=' 'sha256-1EAjIWnz6KEEgkkVlzKvQxKPOr3n/X/Vk0SAaih/Vbo=' 'sha256-RuxfNxmpjp4A0o44t73N+6O4m9ajjPnJ8Ah9hbvLASk=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src 'self'; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://s3.amazonaws.com https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-285fPEGby2/4TzKj3HOSc+oCkSuBOCI84QI8y2jN46U=' 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-TccR0BgCco5MD/t1RF/FQtkgVajH7Z95LiMwvg88QBo=' 'sha256-ysFBBnXfzrKucmo+UX3bJsci5Eiu7t+X8qN7AZIeY84=' 'sha256-RuxfNxmpjp4A0o44t73N+6O4m9ajjPnJ8Ah9hbvLASk=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src 'self'; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://s3.amazonaws.com https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -14,7 +14,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/favicon-64.png">
-<meta name="app-build" content="88">
+<meta name="app-build" content="89">
 <meta name="app-version" content="1.0">
 <meta name="app-notes" content="Neue Adresse: Die App liegt jetzt bei Cloudflare (wetter.elias-ziegler.workers.dev). Version 1.0 (Build 1): Alles durchgesehen, Fehler behoben und schneller gemacht. Die App startet viel schneller: Das Wetter steht beim Öffnen fast sofort da, weil der letzte Stand gleich gezeigt wird und alle Daten gleichzeitig geholt werden. Das Regenradar Österreich lädt jetzt immer ganz Österreich auf einmal (etwa 1 MB, 1 bis 2 Sekunden statt viele Stücke zu je 6 MB), egal wohin du zoomst, ohne Lücken, und holt neue Daten gleich, wenn du die App aus dem Hintergrund zurückholst. Die Regen-Vorschau für die nächsten 2 Stunden war eine Viertelstunde zu spät und stimmt jetzt. Benachrichtigungen kommen zuverlässiger, die Schrift lädt ohne Google, dazu viele Kleinigkeiten.">
 <script>/* Umzug von GitHub (eliaspp9.github.io/Wetter) hierher: die alte Seite gibt Einstellungen und Lieblingsorte in der Adresse
@@ -547,6 +547,8 @@ html.srcopen .srcbtn::after{transform:rotate(180deg)}
 .favs button.on{background:#fff;color:rgb(var(--a));border-color:#fff}
 
 /* Messwerte, Luft, Rückblick, Trend, Modelle, Benachrichtigungen */
+.rk{width:100%;border-collapse:collapse;font-size:14px}.rk th,.rk td{padding:6px 4px;text-align:right;border-bottom:1px solid var(--line,rgba(127,127,127,.18))}.rk th:first-child,.rk td:first-child{text-align:left}.rk th{font-weight:600;font-size:12px;color:var(--muted)}.rk b{color:var(--acc,#3B82F6)}
+.o24{margin-top:12px}.o24 svg{width:100%;height:auto;display:block}.o24 .lg{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--muted);margin:4px 0}.o24 .lg i{display:inline-block;width:18px;height:0;border-top:3px solid;vertical-align:middle;margin-right:5px}
 .obs{display:grid;grid-template-columns:repeat(auto-fit,minmax(92px,1fr));gap:8px}
 .ob{background:var(--tile);border-radius:12px;padding:10px 12px}
 .ob span{display:block;font-size:12px;color:var(--muted)}
@@ -1080,13 +1082,18 @@ html.locked body>*:not(#gate):not(.moved){display:none!important}
   </section>
 
   <section class="card s-fans" id="sec-fans" aria-labelledby="h-fans">
-   <div class="ch"><h2 id="h-fans">Für Wetter-Fans</h2><button class="cbtn" id="fans-t" type="button" aria-expanded="false" aria-controls="sec-models sec-ki sec-past">Einblenden</button></div>
+   <div class="ch"><h2 id="h-fans">Für Wetter-Fans</h2><button class="cbtn" id="fans-t" type="button" aria-expanded="false" aria-controls="sec-models sec-rank sec-ki sec-past">Einblenden</button></div>
    <p class="small fans-s">Modellvergleich, KI-Korrektur und Rückblick auf die letzten 7 Tage. Geladen wird erst, wenn du sie einblendest.</p>
   </section>
 
   <section class="card fan s-models" id="sec-models" aria-labelledby="h-models">
    <div class="ch"><h2 id="h-models">Modellvergleich</h2><button class="cbtn" id="mind" type="button" aria-pressed="false">Einzelne Modelle</button></div>
    <div class="mc" id="models"><p class="muted">Wird geladen …</p></div>
+  </section>
+
+  <section class="card fan s-rank" id="sec-rank" aria-labelledby="h-rank" hidden>
+   <div class="ch"><h2 id="h-rank">Welches Modell liegt hier am besten?</h2></div>
+   <div id="rank"></div>
   </section>
 
   <section class="card fan s-ki" id="sec-ki" aria-labelledby="h-ki" hidden>
@@ -1632,6 +1639,7 @@ async function loadWeather(auto){
    let gs=null;
    [sk,pp,gs]=await Promise.all([bfW(bfSK),bfW(bfPP),bfW(gsP)]);
    if(sk)bfSkLast={k:PK(),sk};
+   renderRank(sk);
    /* typische Fehler jedes Modells an den Stationen (Vorhersage minus Messung, letzte 2 Tage) ausbessern, höchstens 3 °C */
    if(sk&&sk.b&&raw.hourly){let nb=0;for(const m in sk.b){if(m===GS1)continue;const A=raw.hourly["temperature_2m_"+m],b=Math.max(-3,Math.min(3,+sk.b[m]||0));if(!A||Math.abs(b)<.1)continue;raw.hourly["temperature_2m_"+m]=A.map(v=>v==null?v:Math.round((v-b)*10)/10);nb++}raw._bfb=nb}
    const lokX=gs&&gs1Put(raw,gs,sk&&sk.b&&sk.b[GS1])?[GS1].concat(lok):lok;
@@ -1825,6 +1833,26 @@ let hoursHtml="",hoursNow="";
    Mischung). Gewicht je 1/(Fehler+0,3)². Weiß man über Kachelmann noch nichts: halb-halb; weiß man über die Modelle nichts:
    ganz Kachelmann (wie bisher). */
 let bfSkLast=null;
+/* ============ Rangliste der Modelle am Ort (aus /bf/sk: Vergleich mit den Messstationen) ============
+   Temperatur: mittlere Abweichung in °C (kleiner ist besser), Regen: wie oft „Regen ja/nein“ stimmte, Wolken: wie gut die
+   Bewölkung zu den Flughäfen passte (Prozent). Seit dem Ausbau mit Gedächtnis: halb die letzten 2 Tage, halb die letzten
+   Wochen. Das beste Modell je Spalte ist hervorgehoben; es bekommt in der Mischung das meiste Gewicht. */
+const MODN={ecmwf_ifs:"ECMWF IFS",dwd_icon_d2_ruc_native:"DWD ICON-D2-RUC",best_match:"Open-Meteo",geosphere_1km:"GeoSphere Austria (1 km)"};
+function renderRank(sk){
+ const sec=$("sec-rank"),el=$("rank");if(!sec||!el)return;
+ const E=sk&&sk.e||{},R=sk&&sk.r||{},C=sk&&sk.c||{},ms=[...new Set([...Object.keys(E),...Object.keys(R),...Object.keys(C)])];
+ if(ms.length<2){sec.hidden=true;return}
+ const nm=m=>LOKN[m]||MODN[m]||m;
+ const best=(O,lo)=>{const v=Object.values(O).filter(x=>x!=null);return v.length?(lo?Math.min(...v):Math.max(...v)):null};
+ const bE=best(E,true),bR=best(R,false),bC=best(C,false);
+ ms.sort((a,b)=>(E[a]!=null?E[a]:99)-(E[b]!=null?E[b]:99)||(R[b]||0)-(R[a]||0));
+ const cell=(v,b,f)=>v==null?"<td>–</td>":"<td>"+(v===b?"<b>"+f(v)+"</b>":f(v))+"</td>";
+ let h='<table class="rk"><thead><tr><th>Modell</th><th>Temperatur</th><th>Regen</th><th>Wolken</th></tr></thead><tbody>';
+ for(const m of ms)h+="<tr><td>"+esc(nm(m))+"</td>"+cell(E[m],bE,v=>"± "+fmt(v)+"°")+cell(R[m],bR,v=>Math.round(v*100)+" %")+cell(C[m],bC,v=>Math.round(v*100)+" %")+"</tr>";
+ const days=sk.hl?Math.round(sk.hl/2):0;
+ h+="</tbody></table><p class='small'>Verglichen mit "+(sk.st&&sk.st.length?sk.st.length+" Messstation"+(sk.st.length>1?"en":""):"den Messstationen")+" in der Nähe"+(sk.ri?", Regen in Österreich mit INCA genau am Ort":"")+". "+(days>=2?"Mit Gedächtnis über etwa "+days+" Tage.":"Das Gedächtnis über mehrere Wochen baut sich gerade auf.")+" Hervorgehoben: das beste Modell je Spalte, es zählt in der Vorhersage am meisten.</p>";
+ el.innerHTML=h;sec.hidden=false;
+}
 function kcShare(){
  const sk=bfSkLast&&bfSkLast.k===PK()?bfSkLast.sk:null,E=sk&&sk.e;
  if(!E||Object.keys(E).length<2)return 1;
@@ -5719,13 +5747,60 @@ async function obsAT(){
  const v=k=>{const x=P[k];return x&&x.data&&x.data.length?x.data[x.data.length-1]:null};
  const ms=k=>{const x=v(k);if(x==null)return null;return P[k].unit&&/m\/s/.test(P[k].unit)?x*3.6:x};
  const ts=(j.timestamps||[]).slice(-1)[0];
- return{name:best[1],dist:bd,src:"GeoSphere Austria",t:ts?new Date(ts):null,T:v("TL"),H:v("RF"),W:ms("FF"),G:ms("FFX"),R:v("RR"),Rl:"letzte 10 Min.",Pa:v("P")};
+ return{id:best[0],name:best[1],dist:bd,src:"GeoSphere Austria",t:ts?new Date(ts):null,T:v("TL"),H:v("RF"),W:ms("FF"),G:ms("FFX"),R:v("RR"),Rl:"letzte 10 Min.",Pa:v("P")};
 }
 async function obsDE(){
  const j=await getJ("https://api.brightsky.dev/current_weather?lat="+place.lat+"&lon="+place.lon);
  const w=j.weather;if(!w)return null;
  const so=(j.sources||[])[0]||{};
  return{name:so.station_name||"DWD-Station",dist:so.distance!=null?so.distance/1000:null,src:"Deutscher Wetterdienst",t:w.timestamp?new Date(w.timestamp):null,T:w.temperature,H:w.relative_humidity,W:w.wind_speed_10,G:w.wind_gust_speed_10,R:w.precipitation_10,Rl:"letzte 10 Min.",Pa:w.pressure_msl};
+}
+/* ============ Gemessen: die letzten 24 Stunden ============
+   Kurve der Station (Österreich: GeoSphere TAWES, 10-Minuten-Werte; Deutschland: DWD über Bright Sky, Stundenwerte)
+   neben dem, was die Vorhersage vom Vortag für diese Stunden gesagt hat (Open-Meteo, frühere Läufe, „previous_day1“).
+   So sieht man selbst, wie gut die Vorhersage war. Balken: gemessener Niederschlag je Stunde. */
+async function obsSeries(o){
+ const now=Date.now(),t0=Math.floor(now/3600000)*3600000-24*3600000,iso=ms=>new Date(ms).toISOString().slice(0,16);
+ const H=new Map(),slot=t=>Math.round(t/3600000)*3600000;
+ if(o.src==="GeoSphere Austria"&&o.id){
+  const j=await getJ("https://dataset.api.hub.geosphere.at/v1/station/historical/tawes-v1-10min?station_ids="+o.id+"&parameters=TL,RR&start="+iso(t0-3600000)+"&end="+iso(now),15000);
+  const P=(j.features&&j.features[0]&&j.features[0].properties.parameters)||{},TL=P.TL&&P.TL.data||[],RR=P.RR&&P.RR.data||[];
+  const get=t=>{let e=H.get(t);if(!e){e={T:null,R:0,n:0};H.set(t,e)}return e};
+  /* Temperatur zur vollen Stunde; Regen der 10 Minuten bis t zählt zur Stunde, die mit der nächsten vollen Stunde endet */
+  (j.timestamps||[]).forEach((ts,i)=>{const t=Date.parse(ts);if(t%3600000===0&&TL[i]!=null)get(t).T=+TL[i];if(RR[i]!=null){const e=get(Math.ceil(t/3600000)*3600000);e.R+=+RR[i];e.n++}});
+ }else{
+  const j=await getJ("https://api.brightsky.dev/weather?lat="+place.lat+"&lon="+place.lon+"&date="+new Date(t0).toISOString()+"&last_date="+new Date(now).toISOString(),15000);
+  (j.weather||[]).forEach(w=>{const t=Date.parse(w.timestamp);H.set(slot(t),{T:w.temperature,R:w.precipitation||0,n:w.precipitation!=null?1:0})});
+ }
+ const T=[];for(let t=t0;t<=now;t+=3600000)T.push(t);
+ return{T,obsT:T.map(t=>H.has(t)?H.get(t).T:null),obsR:T.map(t=>H.has(t)&&H.get(t).n?H.get(t).R:null)};
+}
+async function obs24(o,q){
+ const el=$("o24");if(!el)return;
+ const s=await obsSeries(o);
+ if(s.obsT.filter(x=>x!=null).length<6)return;
+ let fc=s.T.map(()=>null);
+ try{
+  const p=await getJc60("https://previous-runs-api.open-meteo.com/v1/forecast?latitude="+(+place.lat).toFixed(3)+"&longitude="+(+place.lon).toFixed(3)+"&hourly=temperature_2m_previous_day1&past_days=2&forecast_days=1&timezone=GMT");
+  const m=new Map();(p.hourly&&p.hourly.time||[]).forEach((t,i)=>m.set(Date.parse(t+":00Z"),p.hourly.temperature_2m_previous_day1[i]));
+  fc=s.T.map(t=>m.has(t)?m.get(t):null);
+ }catch(e){}
+ if(!q.ok()||!$("o24"))return;
+ const W=340,Hh=150,pl=28,pr=8,pt=10,pb=22,all=s.obsT.concat(fc).filter(x=>x!=null);
+ let lo=Math.floor(Math.min(...all)-1),hi=Math.ceil(Math.max(...all)+1);if(hi-lo<4){hi+=2;lo-=2}
+ const n=s.T.length,X=i=>pl+(W-pl-pr)*i/(n-1),Y=v=>pt+(Hh-pt-pb)*(hi-v)/(hi-lo);
+ const path=a=>{let d="",up=false;a.forEach((v,i)=>{if(v==null){up=false;return}d+=(up?"L":"M")+X(i).toFixed(1)+" "+Y(v).toFixed(1);up=true});return d};
+ const rmax=Math.max(1,...s.obsR.filter(x=>x!=null)),bw=(W-pl-pr)/(n-1)*.7;
+ let g="";
+ for(let v=Math.ceil(lo/2)*2;v<=hi;v+=hi-lo>12?4:2)g+='<line x1="'+pl+'" x2="'+(W-pr)+'" y1="'+Y(v)+'" y2="'+Y(v)+'" stroke="currentColor" stroke-opacity=".12"/><text x="'+(pl-4)+'" y="'+(Y(v)+4)+'" text-anchor="end" font-size="10" fill="currentColor" fill-opacity=".6">'+String(v).replace("-","−")+'°</text>';
+ s.T.forEach((t,i)=>{const d=new Date(t);if(d.getHours()%6===0)g+='<text x="'+X(i)+'" y="'+(Hh-6)+'" text-anchor="middle" font-size="10" fill="currentColor" fill-opacity=".6">'+d.getHours()+' Uhr</text>'});
+ s.obsR.forEach((r,i)=>{if(r>0.05){const h=(Hh-pt-pb)*.45*Math.min(1,r/rmax);g+='<rect x="'+(X(i)-bw/2).toFixed(1)+'" y="'+(Hh-pb-h).toFixed(1)+'" width="'+bw.toFixed(1)+'" height="'+h.toFixed(1)+'" fill="#3B82F6" fill-opacity=".55"/>'}});
+ g+='<path d="'+path(fc)+'" fill="none" stroke="#F59E0B" stroke-width="2" stroke-dasharray="5 4"/><path d="'+path(s.obsT)+'" fill="none" stroke="#E5484D" stroke-width="2.4"/>';
+ let e=0,k=0;s.obsT.forEach((v,i)=>{if(v!=null&&fc[i]!=null){e+=Math.abs(v-fc[i]);k++}});
+ const rs=s.obsR.reduce((a,b)=>a+(b||0),0);
+ el.innerHTML='<h3 class="small" style="margin:0 0 4px">Die letzten 24 Stunden</h3><svg viewBox="0 0 '+W+' '+Hh+'" role="img" aria-label="Gemessene Temperatur der letzten 24 Stunden und Vorhersage vom Vortag">'+g+'</svg>'+
+  '<div class="lg"><span><i style="border-color:#E5484D"></i>gemessen</span>'+(k?'<span><i style="border-color:#F59E0B;border-top-style:dashed"></i>Vorhersage vom Vortag</span>':"")+(rs>0.05?'<span><i style="border-color:#3B82F6;border-top-width:8px;opacity:.6"></i>Niederschlag</span>':"")+'</div>'+
+  '<p class="small">'+(k>=6?"Die Vorhersage vom Vortag lag im Schnitt "+fmt(e/k)+"° daneben. ":"")+(rs>0.05?"Niederschlag gemessen: "+fmt(rs)+" mm in 24 Stunden.":"Kein Niederschlag in den letzten 24 Stunden.")+'</p>';
 }
 async function loadObs(){
  const sec=$("sec-obs"),el=$("obs"),q=seq("obs");
@@ -5739,7 +5814,8 @@ async function loadObs(){
  let h='<div class="obs">'+cell("Temperatur",deg(o.T),"")+(nm(o.H)?cell("Luftfeuchte",Math.round(o.H),"%"):"")+(nm(o.W)?cell("Wind",Math.round(o.W),"km/h"):"")+(nm(o.G)?cell("Böen",Math.round(o.G),"km/h"):"")+(nm(o.R)?cell("Niederschlag",fmt(o.R),"mm"):"")+(nm(o.Pa)?cell("Luftdruck",Math.round(o.Pa),"hPa"):"")+"</div>";
  const age=o.t?Math.round((Date.now()-o.t.getTime())/60000):null;
  h+='<p class="small">Station '+esc(prettySt(o.name))+(o.dist!=null?" ("+Math.round(o.dist)+" km entfernt)":"")+", "+esc(o.src)+(o.t?", Stand "+o.t.toLocaleTimeString("de-AT",{hour:"2-digit",minute:"2-digit"})+" Uhr"+(age!=null&&age>=0?" (vor "+age+" Min.)":""):"")+". Niederschlag der letzten 10 Minuten.</p>";
- el.innerHTML=h;sec.hidden=false;q.done();
+ el.innerHTML=h+'<div class="o24" id="o24"></div>';sec.hidden=false;q.done();
+ obs24(o,q).catch(e=>console.warn("Messwerte 24 h:",e.message));
  /* im Kopf eine Zeile: so viel zeigt die Station gerade */
  const ho=$("hobs");if(ho){const fresh=age==null||age<=90;ho.hidden=!fresh;if(fresh)ho.textContent="Gemessen: "+deg(o.T)+" in "+prettySt(o.name)+(o.dist!=null&&o.dist>=15?" ("+Math.round(o.dist)+" km)":"")}
 }
@@ -6725,7 +6801,7 @@ async function pushSync(){
   if(Date.now()-(+pr.qs||0)<86400000)return;
   const q=quietHours(),u=q?qhUTC(q):[];if(JSON.stringify(u)===JSON.stringify(pr.qh||[])){pr.qs=Date.now();localStorage.setItem("wetter-push",JSON.stringify(pr));return}
   const reg=await navigator.serviceWorker.ready,sub=await reg.pushManager.getSubscription();if(!sub)return;
-  await wapi("/push/sub",{sub:sub.toJSON(),lat:+pr.lat||+place.lat,lon:+pr.lon||+place.lon,name:pr.name,rain:pr.rain!==false,warn:pr.warn!==false,qh:u});
+  await wapi("/push/sub",{sub:sub.toJSON(),lat:+pr.lat||+place.lat,lon:+pr.lon||+place.lon,name:pr.name,rain:pr.rain!==false,warn:pr.warn!==false,ltg:pr.ltg!==false,ice:pr.ice!==false,qh:u});
   pr.qh=u;pr.qs=Date.now();localStorage.setItem("wetter-push",JSON.stringify(pr));
  }catch(e){}
 }
@@ -6756,16 +6832,18 @@ async function renderPush(){
  if(!pushKey){try{pushKey=(await wapi("/push/key")).key;if(pushKey)localStorage.setItem("wetter-pkey",pushKey)}catch(e){if(e.status===503){el.innerHTML='<p class="muted">Im Cloudflare-Worker fehlt noch die Einrichtung für Benachrichtigungen (Speicher und Zeitplan). Die Anleitung dazu bekommst du im Chat.</p>';return}}}
  const pr=pushPrefs(),rain=pr.rain!==false,warn=pr.warn!==false;
  const on=!!pushSub&&!!pr.name;
- el.innerHTML='<div class="pushbox">'+(on?"<p>Aktiv für <b>"+esc(pr.name)+"</b>.</p>":"<p>Lass dich benachrichtigen, kurz bevor es regnet oder wenn eine amtliche Wetterwarnung kommt.</p>")+
+ el.innerHTML='<div class="pushbox">'+(on?"<p>Aktiv für <b>"+esc(pr.name)+"</b>.</p>":"<p>Lass dich benachrichtigen, kurz bevor es regnet, bei Blitzen in der Nähe, Glätte oder einer amtlichen Wetterwarnung.</p>")+
   '<label><input type="checkbox" id="pu-rain"'+(rain?" checked":"")+'> Regen oder Schnee in der nächsten Stunde</label>'+
   '<label><input type="checkbox" id="pu-warn"'+(warn?" checked":"")+'> Neue amtliche Wetterwarnungen</label>'+
+  '<label><input type="checkbox" id="pu-ltg"'+(pr.ltg!==false?" checked":"")+'> Blitze näher als 15 km</label>'+
+  '<label><input type="checkbox" id="pu-ice"'+(pr.ice!==false?" checked":"")+'> Glättegefahr in der Nacht (Hinweis am Abend)</label>'+
   '<label><input type="checkbox" id="pu-ql"'+(pr.ql!==false?" checked":"")+'> Ruhezeiten aus meinem Alltag lernen</label>'+
-  (pr.ql!==false?'<p class="small">'+(quietHours()&&quietHours().length?"Gelernt: zwischen "+qhText(quietHours())+" kommen keine Regen-Hinweise, amtliche Warnungen schon.":quietHours()?"Gelernt: du nutzt die App auch abends und nachts, deshalb keine Ruhezeiten.":"Die App lernt noch, wann du schläfst (ab 7 Tagen).")+"</p>":"")+
-  '<div class="row">'+(on?'<button type="button" class="cbtn pri" id="pu-save">Für '+esc(place.name)+' verwenden</button><button type="button" class="cbtn" id="pu-test">Test senden</button><button type="button" class="cbtn" id="pu-off">Ausschalten</button>':'<button type="button" class="cbtn pri" id="pu-on">Für '+esc(place.name)+" einschalten</button>")+'</div><p class="small" id="pu-msg">Geprüft wird alle 10 Minuten. Grundlage für Regen ist die 15-Minuten-Vorhersage, nicht das Radar.</p></div>';
+  (pr.ql!==false?'<p class="small">'+(quietHours()&&quietHours().length?"Gelernt: zwischen "+qhText(quietHours())+" kommen keine Regen- und Blitz-Hinweise, amtliche Warnungen schon.":quietHours()?"Gelernt: du nutzt die App auch abends und nachts, deshalb keine Ruhezeiten.":"Die App lernt noch, wann du schläfst (ab 7 Tagen).")+"</p>":"")+
+  '<div class="row">'+(on?'<button type="button" class="cbtn pri" id="pu-save">Für '+esc(place.name)+' verwenden</button><button type="button" class="cbtn" id="pu-test">Test senden</button><button type="button" class="cbtn" id="pu-off">Ausschalten</button>':'<button type="button" class="cbtn pri" id="pu-on">Für '+esc(place.name)+" einschalten</button>")+'</div><p class="small" id="pu-msg">Geprüft wird alle 5 Minuten. Grundlage für Regen ist die 15-Minuten-Vorhersage, für Blitze der Wettersatellit MTG von EUMETSAT.</p></div>';
  const msg=t=>{$("pu-msg").textContent=t};
- const save=async sub=>{const r=$("pu-rain").checked,w=$("pu-warn").checked,ql=$("pu-ql")?$("pu-ql").checked:true,q=ql?quietHours():null,qh=q?qhUTC(q):[];
-  await wapi("/push/sub",{sub:sub.toJSON(),lat:+place.lat,lon:+place.lon,name:place.name,rain:r,warn:w,qh});
-  try{localStorage.setItem("wetter-push",JSON.stringify({name:place.name,lat:+place.lat,lon:+place.lon,rain:r,warn:w,ql,qh,qs:Date.now()}))}catch(e){}};
+ const save=async sub=>{const r=$("pu-rain").checked,w=$("pu-warn").checked,lt=$("pu-ltg").checked,ic=$("pu-ice").checked,ql=$("pu-ql")?$("pu-ql").checked:true,q=ql?quietHours():null,qh=q?qhUTC(q):[];
+  await wapi("/push/sub",{sub:sub.toJSON(),lat:+place.lat,lon:+place.lon,name:place.name,rain:r,warn:w,ltg:lt,ice:ic,qh});
+  try{localStorage.setItem("wetter-push",JSON.stringify({name:place.name,lat:+place.lat,lon:+place.lon,rain:r,warn:w,ltg:lt,ice:ic,ql,qh,qs:Date.now()}))}catch(e){}};
  if($("pu-on"))$("pu-on").onclick=async()=>{
   try{
    const perm=await Notification.requestPermission();
@@ -7003,7 +7081,7 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("shr").hidden)cl
 const meta=n=>{const m=document.querySelector('meta[name="'+n+'"]');return m?m.content:""};
 /* app-build zählt seit jeher einfach hoch; daran erkennen auch ältere Geräte ein Update (sie vergleichen diese Zahl).
    Angezeigt wird der Build seit Version 1.0: Build 1 ist app-build 57. */
-const BUILD=+meta("app-build")||0,BUILD0=87,verText=b=>meta("app-version")+" (Build "+(b-BUILD0)+")";
+const BUILD=+meta("app-build")||0,BUILD0=88,verText=b=>meta("app-version")+" (Build "+(b-BUILD0)+")";
 let remote=null,lastChk=0;
 $("ver").textContent=verText(BUILD);
 /* Anmeldung: bis wann sie gilt und ob sie sich von selbst verlängert */

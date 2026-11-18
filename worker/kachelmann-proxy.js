@@ -12,7 +12,7 @@
 // Für die KI (Übersetzen der Warnungen anderer Länder, Push-Texte in ganzen Sätzen), ab Version 1.6:
 //   Bindung AI      (Workers AI, Variablenname AI). Ohne sie läuft alles wie vorher, nur ohne KI.
 const enc = new TextEncoder();
-const VERSION = "1.0", BUILD = 5;
+const VERSION = "1.0", BUILD = 6;
 /* Abrufe mit Zeitlimit: ein hängender Dienst soll weder eine Anfrage noch den Zeitplan aufhalten.
    tf: Limit bis die Antwort beginnt (für durchgereichte Antworten); jf: Limit bis das JSON ganz gelesen ist. */
 async function tf(u, o, ms) {
@@ -598,6 +598,86 @@ async function warnings(lat, lon) {
   }
   return { list: out, ok };
 }
+/* ============ Blitze in der Nähe (Wettersatellit MTG von EUMETSAT, Lightning Imager, wie die Blitze im Radar der App) ============
+   Ein kleines Bild rund um den Ort (30 x 30 km, etwa 2,3 km je Bildpunkt). Jeder sichtbare Bildpunkt ist eine Blitzfläche
+   der letzten Minuten. Ergebnis: Entfernung des nächsten Blitzes in km, oder null. */
+const LTG_KM = 15;
+async function pngPixels(buf) {
+  const u = new Uint8Array(buf), dv = new DataView(buf);
+  if (u[0] !== 0x89 || u[1] !== 0x50) throw new Error("kein PNG");
+  let o = 8, W = 0, H = 0, bd = 8, ct = 0, trns = null;
+  const idat = [];
+  while (o < u.length) {
+    const len = dv.getUint32(o), type = String.fromCharCode(u[o + 4], u[o + 5], u[o + 6], u[o + 7]), d = u.subarray(o + 8, o + 8 + len);
+    if (type === "IHDR") { W = dv.getUint32(o + 8); H = dv.getUint32(o + 12); bd = u[o + 16]; ct = u[o + 17]; if (u[o + 20]) throw new Error("interlaced"); }
+    else if (type === "tRNS") trns = d.slice();
+    else if (type === "IDAT") idat.push(d.slice());
+    else if (type === "IEND") break;
+    o += 12 + len;
+  }
+  const raw = new Uint8Array(await new Response(new Blob(idat).stream().pipeThrough(new DecompressionStream("deflate"))).arrayBuffer());
+  const ch = { 0: 1, 2: 3, 3: 1, 4: 2, 6: 4 }[ct], bpp = Math.max(1, (ch * bd) >> 3), stride = (W * ch * bd + 7) >> 3;
+  const out = new Uint8Array(W * H), cur = new Uint8Array(stride), prev = new Uint8Array(stride);
+  for (let y = 0, p = 0; y < H; y++) {
+    const f = raw[p++];
+    for (let i = 0; i < stride; i++) {
+      const x = raw[p++], a = i >= bpp ? cur[i - bpp] : 0, b = prev[i], c = i >= bpp ? prev[i - bpp] : 0;
+      let v = x;
+      if (f === 1) v = x + a; else if (f === 2) v = x + b; else if (f === 3) v = x + ((a + b) >> 1);
+      else if (f === 4) { const q = a + b - c, pa = Math.abs(q - a), pb = Math.abs(q - b), pc = Math.abs(q - c); v = x + (pa <= pb && pa <= pc ? a : pb <= pc ? b : c); }
+      cur[i] = v & 255;
+    }
+    for (let xq = 0; xq < W; xq++) {
+      let al = 255;
+      if (ct === 6) al = cur[xq * 4 + 3];
+      else if (ct === 4) al = cur[xq * 2 + 1];
+      else if (ct === 3) { const idx = bd === 8 ? cur[xq] : (cur[(xq * bd) >> 3] >> (8 - bd - ((xq * bd) & 7))) & ((1 << bd) - 1); al = trns && idx < trns.length ? trns[idx] : 255; }
+      else if (ct === 2 && trns && trns.length >= 6) { const r = cur[xq * 3], g = cur[xq * 3 + 1], bl = cur[xq * 3 + 2]; if (r === trns[1] && g === trns[3] && bl === trns[5]) al = 0; }
+      out[y * W + xq] = al;
+    }
+    prev.set(cur);
+  }
+  return { W, H, a: out };
+}
+async function lightningNear(lat, lon) {
+  const R = 6378137, x = lon * Math.PI / 180 * R, y = Math.log(Math.tan(Math.PI / 4 + lat * Math.PI / 360)) * R, k = 1 / Math.cos(lat * Math.PI / 180);
+  const half = (LTG_KM + 2) * 1000 * k, N = 15;
+  const u = "https://view.eumetsat.int/geoserver/wms?service=WMS&version=1.3.0&request=GetMap&layers=mtg_fd:li_afa&styles=&crs=EPSG:3857&bbox=" +
+    [x - half, y - half, x + half, y + half].map((v) => v.toFixed(0)).join(",") + "&width=" + N + "&height=" + N + "&format=image/png&transparent=true&v=" + Math.floor(Date.now() / 60000);
+  const r = await tf(u, {}, 15000);
+  if (!r.ok) throw new Error("EUMETSAT " + r.status);
+  const px = await pngPixels(await r.arrayBuffer()), cell = (2 * (LTG_KM + 2)) / N;
+  let best = null;
+  for (let j = 0; j < px.H; j++) for (let i = 0; i < px.W; i++) {
+    if (px.a[j * px.W + i] < 40) continue;
+    const dx = (i + 0.5 - px.W / 2) * cell, dy = (j + 0.5 - px.H / 2) * cell, d = Math.hypot(dx, dy);
+    if (d <= LTG_KM && (best == null || d < best)) best = d;
+  }
+  return best;
+}
+/* ============ Glätte in der Nacht (Open-Meteo, bestes Modell am Ort) ============
+   Geprüft am Abend (18 bis 21 Uhr Ortszeit), einmal pro Tag: von 18 bis 9 Uhr am nächsten Morgen. Glätte, wenn
+   - gefrierender Regen oder Nieselregen vorhergesagt ist, oder
+   - Schnee fällt und es höchstens 1 °C hat, oder
+   - es bis 0,5 °C abkühlt und in den 6 Stunden davor Regen gefallen ist (nasse Straßen frieren).
+   Ergebnis: { h: Stunde (Ortszeit), art } oder null. */
+async function iceNight(lat, lon) {
+  const j = await getJ("https://api.open-meteo.com/v1/forecast?latitude=" + lat + "&longitude=" + lon + "&hourly=temperature_2m,precipitation,rain,snowfall,weather_code&forecast_hours=18&timezone=auto");
+  const H = j.hourly || {}, T = H.temperature_2m || [], P = H.precipitation || [], S = H.snowfall || [], W = H.weather_code || [], tm = H.time || [];
+  for (let i = 0; i < tm.length; i++) {
+    const t = T[i];
+    if (t == null) continue;
+    const hr = +String(tm[i]).slice(11, 13);
+    if ([56, 57, 66, 67].includes(W[i])) return { h: hr, art: "gefrierender Regen" };
+    if ((S[i] || 0) > 0.05 && t <= 1) return { h: hr, art: "Schnee" };
+    let wet = 0;
+    for (let k = Math.max(0, i - 6); k < i; k++) wet += P[k] || 0;
+    if (t <= 0.5 && wet >= 0.3) return { h: hr, art: "überfrierende Nässe" };
+  }
+  return null;
+}
+const viennaHour = () => +new Intl.DateTimeFormat("de-AT", { hour: "numeric", hour12: false, timeZone: "Europe/Vienna" }).format(new Date());
+const viennaDay = () => new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Vienna" }).format(new Date());
 /* Ein Abo prüfen. once(k, f) merkt sich Abrufe innerhalb eines Durchlaufs: zwei Geräte am selben Ort fragen nur einmal an. */
 async function alertOne(env, name, once) {
   const rec = await env.SUBS.get(name, "json");
@@ -638,6 +718,29 @@ async function alertOne(env, name, once) {
       msgs.push({ title: w.title, body: ai || (ort ? ort + ": " : "") + w.body, tag: "warn-" + w.id, url: SITE + "#sec-warn" });
     }
     if (ids.join() !== seen.join()) { rec.st.w = ids; changed = true; }
+  }
+  const quietNow = Array.isArray(rec.qh) && rec.qh.includes(new Date().getUTCHours());
+  /* Blitze näher als 15 km: höchstens alle 60 Minuten ein Hinweis (Ruhezeiten gelten) */
+  if (rec.ltg !== false) {
+    try {
+      const d = await once("l:" + pos, () => lightningNear(rec.lat, rec.lon));
+      if (d != null && !quietNow && now - (rec.st.lt || 0) > 60 * 60000) {
+        const km = Math.max(1, Math.round(d));
+        msgs.push({ title: "Blitze in der Nähe", body: (ort ? ort + ": " : "") + (d < 5 ? "Blitze ganz in der Nähe (unter 5 km). Bleib drinnen." : "Blitze etwa " + km + " km entfernt. Bei Donner drinnen bleiben.") + " Tippe für das Radar.", tag: "ltg", url: SITE + "#sec-radar" });
+        rec.st.lt = now; changed = true;
+      }
+    } catch (e) {}
+  }
+  /* Glätte in der Nacht: am Abend einmal pro Tag */
+  if (rec.ice !== false) {
+    const vh = viennaHour(), day = viennaDay();
+    if (vh >= 18 && vh <= 21 && rec.st.ice !== day) {
+      try {
+        const g = await once("g:" + pos, () => iceNight(rec.lat, rec.lon));
+        if (g) msgs.push({ title: "Glättegefahr heute Nacht", body: (ort ? ort + ": " : "") + "Ab etwa " + g.h + " Uhr " + (g.art === "Schnee" ? "Schnee bei Temperaturen um 0 °C" : g.art) + ", Straßen und Wege können glatt werden.", tag: "ice", url: SITE });
+        rec.st.ice = day; changed = true;
+      } catch (e) {}
+    }
   }
   /* Erst den Zustand speichern, dann senden. Lässt er sich nicht speichern (etwa weil das Tageslimit des Speichers erreicht ist),
      wird nichts gesendet: sonst käme dieselbe Nachricht alle 5 Minuten wieder. */
@@ -825,7 +928,7 @@ async function route(req, env, ctx, h, json) {
       if (!isFinite(lat) || !isFinite(lon)) return json({ error: "Ungültig" }, 400);
       const old = await env.SUBS.get(id, "json");
       const qh = Array.isArray(b.qh) ? [...new Set(b.qh.map(Number).filter((h) => Number.isInteger(h) && h >= 0 && h < 24))].slice(0, 16) : [];
-      await env.SUBS.put(id, JSON.stringify({ sub: { endpoint: ep, keys: s.keys }, lat: +lat.toFixed(3), lon: +lon.toFixed(3), name: String(b.name || "").slice(0, 60), rain: !!b.rain, warn: !!b.warn, qh, st: (old && old.st) || { rain: false, w: [] } }));
+      await env.SUBS.put(id, JSON.stringify({ sub: { endpoint: ep, keys: s.keys }, lat: +lat.toFixed(3), lon: +lon.toFixed(3), name: String(b.name || "").slice(0, 60), rain: !!b.rain, warn: !!b.warn, ltg: b.ltg !== false, ice: b.ice !== false, qh, st: (old && old.st) || { rain: false, w: [] } }));
       return json({ ok: true });
     }
     if (url.pathname === "/push/unsub") { await env.SUBS.delete(id); return json({ ok: true }); }
