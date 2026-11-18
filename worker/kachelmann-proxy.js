@@ -8,7 +8,7 @@
 //   KEY_HEADER      (Text, optional)  Name des Schlüssel-Headers, Standard: X-API-Key
 // Für Benachrichtigungen zusätzlich:
 //   Bindung SUBS    (KV-Namespace, z. B. "wetter-push")
-//   Cron-Trigger    */10 * * * *   (alle 10 Minuten)
+//   Cron-Trigger    */5 * * * *    (alle 5 Minuten)
 // Für die KI (Übersetzen der Warnungen anderer Länder, Push-Texte in ganzen Sätzen), ab Version 1.6:
 //   Bindung AI      (Workers AI, Variablenname AI). Ohne sie läuft alles wie vorher, nur ohne KI.
 const enc = new TextEncoder();
@@ -543,7 +543,7 @@ async function aiTr(env, text, from) {
   return t;
 }
 
-/* ---------- Prüfung alle 10 Minuten: Regen und Warnungen ---------- */
+/* ---------- Prüfung alle 5 Minuten: Regen und Warnungen ---------- */
 const AT_TYPES = { 1: "Sturm", 2: "Regen", 3: "Schnee", 4: "Glatteis", 5: "Gewitter", 6: "Hitze", 7: "Kälte" };
 const getJ = (u) => jf(u, { headers: { Accept: "application/json" } }, 15000);
 /* Open-Meteo zählt den Niederschlag je Viertelstunde rückwärts: der Wert zur Zeit t gilt für die 15 Minuten davor.
@@ -640,7 +640,7 @@ async function alertOne(env, name, once) {
     if (ids.join() !== seen.join()) { rec.st.w = ids; changed = true; }
   }
   /* Erst den Zustand speichern, dann senden. Lässt er sich nicht speichern (etwa weil das Tageslimit des Speichers erreicht ist),
-     wird nichts gesendet: sonst käme dieselbe Nachricht alle 10 Minuten wieder. */
+     wird nichts gesendet: sonst käme dieselbe Nachricht alle 5 Minuten wieder. */
   if (changed) await env.SUBS.put(name, JSON.stringify(rec));
   for (const m of msgs) {
     let res = null;
@@ -863,7 +863,7 @@ export default {
   },
   async scheduled(event, env, ctx) {
     ctx.waitUntil(runAlerts(env).catch((e) => console.error("runAlerts", e && e.message)));
-    // einmal pro Stunde (in den ersten 10 Minuten) lernen
-    if (new Date(event.scheduledTime || Date.now()).getUTCMinutes() < 10) ctx.waitUntil(klRun(env).catch((e) => console.error("klRun", e && e.message)));
+    // einmal pro Stunde (in den ersten 5 Minuten) lernen; die Regen-Hinweise werden alle 5 Minuten geprüft
+    if (new Date(event.scheduledTime || Date.now()).getUTCMinutes() < 5) ctx.waitUntil(klRun(env).catch((e) => console.error("klRun", e && e.message)));
   },
 };
