@@ -407,14 +407,66 @@ async function bfTip(req, env) {
    erlaubt 10.000 Abfragen pro Anschluss und Tag). Nur für Angemeldete, nur die Open-Meteo-Server, nur GET, ohne
    Cookies; die Antwort wird unverändert durchgereicht (kaum Rechenzeit). */
 const OM_HOSTS = new Set(["api.open-meteo.com", "air-quality-api.open-meteo.com", "previous-runs-api.open-meteo.com", "ensemble-api.open-meteo.com", "geocoding-api.open-meteo.com"]);
+/* Open-Meteo über unseren Server, mit Zwischenspeicher im KV (gilt für alle Nutzer zusammen):
+   - frisch genug (Vorhersage 15 Minuten, Ensembles und Luft 30, frühere Läufe 60, Ortssuche 1 Tag): sofort aus dem Speicher,
+     ohne Abfrage bei Open-Meteo. Spart Abfragen (Open-Meteo erlaubt nur eine bestimmte Zahl am Tag) und ist schneller.
+   - antwortet Open-Meteo nicht oder ist das Limit erreicht: der letzte Stand (bis 1 Tag alt) statt „Keine Verbindung“.
+   - Vorrechnen: was in den letzten 6 Stunden gebraucht wurde (om:hot), holt der Server alle 5 Minuten rechtzeitig neu,
+     so ist beim Öffnen der App schon alles da. */
+const omTtl = (host, path) => (host.startsWith("geocoding") ? 86400 : path.endsWith("meta.json") ? 300 : host.startsWith("previous") ? 3600 : host.startsWith("api.") ? 900 : 1800);
+const omPre = (u) => /^https:\/\/(api|ensemble-api|air-quality-api)\.open-meteo\.com\/v1\//.test(u);
+async function sha(s) { const b = await crypto.subtle.digest("SHA-1", new TextEncoder().encode(s)); return [...new Uint8Array(b)].map((x) => x.toString(16).padStart(2, "0")).join(""); }
+async function omFetch(env, u, h, ttl) {
+  const r = await tfetch(u, 25000);
+  if (!r.ok) return { r };
+  const body = await r.arrayBuffer(), ct = r.headers.get("Content-Type") || "application/json";
+  if (env.GM && body.byteLength < 20e6) { try { await env.GM.put("om:" + h, body, { expirationTtl: 26 * 3600, metadata: { at: Math.round(Date.now() / 1000), ct } }); } catch (e) {} }
+  return { body, ct };
+}
+async function omHot(env, h, u, ttl) {
+  if (!env.GM || !omPre(u)) return;
+  try {
+    const hot = JSON.parse((await env.GM.get("om:hot")) || "{}"), now = Math.round(Date.now() / 1000), e = hot[h];
+    if (e && now - e.used < 3 * 3600) return;
+    hot[h] = { u, ttl, used: now };
+    for (const k of Object.keys(hot)) if (now - hot[k].used > 86400) delete hot[k];
+    await env.GM.put("om:hot", JSON.stringify(hot));
+  } catch (e) {}
+}
+async function omPrewarm(env) {
+  if (!env.GM) return;
+  const hot = JSON.parse((await env.GM.get("om:hot")) || "{}"), now = Date.now() / 1000, t0 = Date.now();
+  let n = 0;
+  for (const [h, e] of Object.entries(hot)) {
+    if (now - e.used > 6 * 3600 || n >= 30 || Date.now() - t0 > 4 * 60000) continue;
+    const old = await env.GM.getWithMetadata("om:" + h, { type: "stream" });
+    try { if (old.value) await old.value.cancel(); } catch (x) {}
+    const at = old.metadata && old.metadata.at || 0;
+    if (now - at < e.ttl - 150) continue;
+    n++;
+    try { const x = await omFetch(env, e.u, h, e.ttl); if (x.r && x.r.status === 429) break; } catch (x) {}
+  }
+}
 async function omServe(req, env, url) {
   if (!(await valid(env, getCookie(req, COOKIE)))) return bfJson({ error: "Nicht angemeldet" }, 401);
   const m = /^\/om\/([a-z.-]+)(\/[A-Za-z0-9_\/.-]*)$/.exec(url.pathname);
   if (!m || !OM_HOSTS.has(m[1]) || req.method !== "GET") return bfJson({ error: "Ungültig" }, 400);
+  const u = "https://" + m[1] + m[2] + url.search, ttl = omTtl(m[1], m[2]), h = await sha(u), now = Date.now() / 1000;
+  const out = (body, ct, age) => new Response(body, { headers: { "Content-Type": ct || "application/json", "Cache-Control": "no-store", "X-Alter": String(Math.round(age)) } });
+  let old = null;
+  if (env.GM) { try { old = await env.GM.getWithMetadata("om:" + h, { type: "arrayBuffer" }); } catch (e) {} }
+  const age = old && old.value && old.metadata ? now - old.metadata.at : Infinity;
+  await omHot(env, h, u, ttl);
+  if (age < ttl) return out(old.value, old.metadata.ct, age);
   try {
-    const r = await tfetch("https://" + m[1] + m[2] + url.search, 25000);
-    return new Response(r.body, { status: r.status, headers: { "Content-Type": r.headers.get("Content-Type") || "application/json", "Cache-Control": "no-store" } });
-  } catch (e) { return bfJson({ error: "Open-Meteo nicht erreichbar" }, 502); }
+    const x = await omFetch(env, u, h, ttl);
+    if (x.body) return out(x.body, x.ct, 0);
+    if (age < 86400) return out(old.value, old.metadata.ct, age);
+    return new Response(x.r.body, { status: x.r.status, headers: { "Content-Type": x.r.headers.get("Content-Type") || "application/json", "Cache-Control": "no-store" } });
+  } catch (e) {
+    if (age < 86400) return out(old.value, old.metadata.ct, age);
+    return bfJson({ error: "Open-Meteo nicht erreichbar" }, 502);
+  }
 }
 async function bfServe(req, env, url) {
   if (!(await valid(env, getCookie(req, COOKIE)))) return bfJson({ error: "Nicht angemeldet" }, 401);
@@ -455,6 +507,9 @@ export default {
   async scheduled(event, env, ctx) {
     ctx.waitUntil(grRun(env).catch((e) => console.error("grRun", e && e.message)));
     /* das Wettermodell nur alle 10 Minuten */
-    if (new Date(event.scheduledTime || Date.now()).getUTCMinutes() % 10 === 0) ctx.waitUntil(gmRun(env).catch((e) => console.error("gmRun", e && e.message)));
+    const mi = new Date(event.scheduledTime || Date.now()).getUTCMinutes();
+    /* Vorrechnen: Open-Meteo-Abfragen, die gebraucht werden, alle 5 Minuten rechtzeitig erneuern */
+    if (mi % 5 === 2) ctx.waitUntil(omPrewarm(env).catch((e) => console.error("omPrewarm", e && e.message)));
+    if (mi % 10 === 0) ctx.waitUntil(gmRun(env).catch((e) => console.error("gmRun", e && e.message)));
   },
 };
