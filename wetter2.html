@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-285fPEGby2/4TzKj3HOSc+oCkSuBOCI84QI8y2jN46U=' 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-TccR0BgCco5MD/t1RF/FQtkgVajH7Z95LiMwvg88QBo=' 'sha256-ysFBBnXfzrKucmo+UX3bJsci5Eiu7t+X8qN7AZIeY84=' 'sha256-RuxfNxmpjp4A0o44t73N+6O4m9ajjPnJ8Ah9hbvLASk=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src 'self'; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://s3.amazonaws.com https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-285fPEGby2/4TzKj3HOSc+oCkSuBOCI84QI8y2jN46U=' 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-TccR0BgCco5MD/t1RF/FQtkgVajH7Z95LiMwvg88QBo=' 'sha256-xRLG9mMqwk3zdfISUNIafg0lYlJevGAR4PDqQ3L7X/Y=' 'sha256-RuxfNxmpjp4A0o44t73N+6O4m9ajjPnJ8Ah9hbvLASk=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src 'self'; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://s3.amazonaws.com https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -14,7 +14,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/favicon-64.png">
-<meta name="app-build" content="89">
+<meta name="app-build" content="90">
 <meta name="app-version" content="1.0">
 <meta name="app-notes" content="Neue Adresse: Die App liegt jetzt bei Cloudflare (wetter.elias-ziegler.workers.dev). Version 1.0 (Build 1): Alles durchgesehen, Fehler behoben und schneller gemacht. Die App startet viel schneller: Das Wetter steht beim Öffnen fast sofort da, weil der letzte Stand gleich gezeigt wird und alle Daten gleichzeitig geholt werden. Das Regenradar Österreich lädt jetzt immer ganz Österreich auf einmal (etwa 1 MB, 1 bis 2 Sekunden statt viele Stücke zu je 6 MB), egal wohin du zoomst, ohne Lücken, und holt neue Daten gleich, wenn du die App aus dem Hintergrund zurückholst. Die Regen-Vorschau für die nächsten 2 Stunden war eine Viertelstunde zu spät und stimmt jetzt. Benachrichtigungen kommen zuverlässiger, die Schrift lädt ohne Google, dazu viele Kleinigkeiten.">
 <script>/* Umzug von GitHub (eliaspp9.github.io/Wetter) hierher: die alte Seite gibt Einstellungen und Lieblingsorte in der Adresse
@@ -6801,7 +6801,7 @@ async function pushSync(){
   if(Date.now()-(+pr.qs||0)<86400000)return;
   const q=quietHours(),u=q?qhUTC(q):[];if(JSON.stringify(u)===JSON.stringify(pr.qh||[])){pr.qs=Date.now();localStorage.setItem("wetter-push",JSON.stringify(pr));return}
   const reg=await navigator.serviceWorker.ready,sub=await reg.pushManager.getSubscription();if(!sub)return;
-  await wapi("/push/sub",{sub:sub.toJSON(),lat:+pr.lat||+place.lat,lon:+pr.lon||+place.lon,name:pr.name,rain:pr.rain!==false,warn:pr.warn!==false,ltg:pr.ltg!==false,ice:pr.ice!==false,qh:u});
+  await wapi("/push/sub",{sub:sub.toJSON(),lat:+pr.lat||+place.lat,lon:+pr.lon||+place.lon,name:pr.name,rain:pr.rain!==false,warn:pr.warn!==false,ltg:pr.ltg!==false,ice:pr.ice!==false,frost:pr.frost!==false,storm:pr.storm!==false,rend:pr.rend!==false,more:pr.more||[],qh:u});
   pr.qh=u;pr.qs=Date.now();localStorage.setItem("wetter-push",JSON.stringify(pr));
  }catch(e){}
 }
@@ -6832,18 +6832,28 @@ async function renderPush(){
  if(!pushKey){try{pushKey=(await wapi("/push/key")).key;if(pushKey)localStorage.setItem("wetter-pkey",pushKey)}catch(e){if(e.status===503){el.innerHTML='<p class="muted">Im Cloudflare-Worker fehlt noch die Einrichtung für Benachrichtigungen (Speicher und Zeitplan). Die Anleitung dazu bekommst du im Chat.</p>';return}}}
  const pr=pushPrefs(),rain=pr.rain!==false,warn=pr.warn!==false;
  const on=!!pushSub&&!!pr.name;
- el.innerHTML='<div class="pushbox">'+(on?"<p>Aktiv für <b>"+esc(pr.name)+"</b>.</p>":"<p>Lass dich benachrichtigen, kurz bevor es regnet, bei Blitzen in der Nähe, Glätte oder einer amtlichen Wetterwarnung.</p>")+
+ el.innerHTML='<div class="pushbox">'+(on?"<p>Aktiv für <b>"+esc(pr.name)+"</b>.</p>":"<p>Lass dich benachrichtigen, kurz bevor es regnet oder wenn er aufhört, bei Blitzen, Sturm, Glätte, Bodenfrost oder einer amtlichen Wetterwarnung.</p>")+
   '<label><input type="checkbox" id="pu-rain"'+(rain?" checked":"")+'> Regen oder Schnee in der nächsten Stunde</label>'+
   '<label><input type="checkbox" id="pu-warn"'+(warn?" checked":"")+'> Neue amtliche Wetterwarnungen</label>'+
   '<label><input type="checkbox" id="pu-ltg"'+(pr.ltg!==false?" checked":"")+'> Blitze näher als 15 km</label>'+
+  '<label><input type="checkbox" id="pu-rend"'+(pr.rend!==false?" checked":"")+'> Wenn der Regen bald aufhört</label>'+
   '<label><input type="checkbox" id="pu-ice"'+(pr.ice!==false?" checked":"")+'> Glättegefahr in der Nacht (Hinweis am Abend)</label>'+
+  '<label><input type="checkbox" id="pu-frost"'+(pr.frost!==false?" checked":"")+'> Bodenfrost in der Nacht (Hinweis am Abend, für Pflanzen und Auto)</label>'+
+  '<label><input type="checkbox" id="pu-storm"'+(pr.storm!==false?" checked":"")+'> Sturmböen ab 60 km/h, auch ohne amtliche Warnung</label>'+
+  (()=>{const mo=pr.more||[],fl=favs.filter(f=>km(f.lat,f.lon,+place.lat,+place.lon)>=1);if(!fl.length)return'<p class="small">Weitere Orte: speichere Orte als Favorit (Stern), dann kannst du hier bis zu 2 zusätzlich auswählen, z. B. Arbeit oder Schule.</p>';
+   return'<p class="small" style="margin:10px 0 2px"><b>Auch für diese Orte</b> (höchstens 2):</p>'+fl.map((f,i)=>'<label><input type="checkbox" class="pu-m" data-i="'+i+'"'+(mo.some(m=>km(m.lat,m.lon,f.lat,f.lon)<1)?" checked":"")+"> "+esc(f.name)+"</label>").join("")})()+
   '<label><input type="checkbox" id="pu-ql"'+(pr.ql!==false?" checked":"")+'> Ruhezeiten aus meinem Alltag lernen</label>'+
-  (pr.ql!==false?'<p class="small">'+(quietHours()&&quietHours().length?"Gelernt: zwischen "+qhText(quietHours())+" kommen keine Regen- und Blitz-Hinweise, amtliche Warnungen schon.":quietHours()?"Gelernt: du nutzt die App auch abends und nachts, deshalb keine Ruhezeiten.":"Die App lernt noch, wann du schläfst (ab 7 Tagen).")+"</p>":"")+
+  (pr.ql!==false?'<p class="small">'+(quietHours()&&quietHours().length?"Gelernt: zwischen "+qhText(quietHours())+" kommen keine Regen-, Blitz-, Sturm- und Frost-Hinweise, amtliche Warnungen schon.":quietHours()?"Gelernt: du nutzt die App auch abends und nachts, deshalb keine Ruhezeiten.":"Die App lernt noch, wann du schläfst (ab 7 Tagen).")+"</p>":"")+
   '<div class="row">'+(on?'<button type="button" class="cbtn pri" id="pu-save">Für '+esc(place.name)+' verwenden</button><button type="button" class="cbtn" id="pu-test">Test senden</button><button type="button" class="cbtn" id="pu-off">Ausschalten</button>':'<button type="button" class="cbtn pri" id="pu-on">Für '+esc(place.name)+" einschalten</button>")+'</div><p class="small" id="pu-msg">Geprüft wird alle 5 Minuten. Grundlage für Regen ist die 15-Minuten-Vorhersage, für Blitze der Wettersatellit MTG von EUMETSAT.</p></div>';
  const msg=t=>{$("pu-msg").textContent=t};
- const save=async sub=>{const r=$("pu-rain").checked,w=$("pu-warn").checked,lt=$("pu-ltg").checked,ic=$("pu-ice").checked,ql=$("pu-ql")?$("pu-ql").checked:true,q=ql?quietHours():null,qh=q?qhUTC(q):[];
-  await wapi("/push/sub",{sub:sub.toJSON(),lat:+place.lat,lon:+place.lon,name:place.name,rain:r,warn:w,ltg:lt,ice:ic,qh});
-  try{localStorage.setItem("wetter-push",JSON.stringify({name:place.name,lat:+place.lat,lon:+place.lon,rain:r,warn:w,ltg:lt,ice:ic,ql,qh,qs:Date.now()}))}catch(e){}};
+ const fl=favs.filter(f=>km(f.lat,f.lon,+place.lat,+place.lon)>=1);
+ const save=async sub=>{const c=id=>!!($(id)&&$(id).checked),o={rain:c("pu-rain"),warn:c("pu-warn"),ltg:c("pu-ltg"),ice:c("pu-ice"),frost:c("pu-frost"),storm:c("pu-storm"),rend:c("pu-rend")};
+  const more=[...document.querySelectorAll(".pu-m")].filter(x=>x.checked).slice(0,2).map(x=>{const f=fl[+x.dataset.i];return{lat:+f.lat,lon:+f.lon,name:f.name}});
+  const ql=$("pu-ql")?$("pu-ql").checked:true,q=ql?quietHours():null,qh=q?qhUTC(q):[];
+  await wapi("/push/sub",Object.assign({sub:sub.toJSON(),lat:+place.lat,lon:+place.lon,name:place.name,more,qh},o));
+  try{localStorage.setItem("wetter-push",JSON.stringify(Object.assign({name:place.name,lat:+place.lat,lon:+place.lon,more,ql,qh,qs:Date.now()},o)))}catch(e){}};
+ /* höchstens 2 weitere Orte */
+ document.querySelectorAll(".pu-m").forEach(x=>x.onchange=()=>{const on=[...document.querySelectorAll(".pu-m")].filter(y=>y.checked);if(on.length>2){x.checked=false;msg("Höchstens 2 weitere Orte.");return}if(pushSub&&pushPrefs().name)save(pushSub).then(()=>msg("Gespeichert."),()=>msg("Speichern hat nicht geklappt."))});
  if($("pu-on"))$("pu-on").onclick=async()=>{
   try{
    const perm=await Notification.requestPermission();
@@ -7081,7 +7091,7 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("shr").hidden)cl
 const meta=n=>{const m=document.querySelector('meta[name="'+n+'"]');return m?m.content:""};
 /* app-build zählt seit jeher einfach hoch; daran erkennen auch ältere Geräte ein Update (sie vergleichen diese Zahl).
    Angezeigt wird der Build seit Version 1.0: Build 1 ist app-build 57. */
-const BUILD=+meta("app-build")||0,BUILD0=88,verText=b=>meta("app-version")+" (Build "+(b-BUILD0)+")";
+const BUILD=+meta("app-build")||0,BUILD0=89,verText=b=>meta("app-version")+" (Build "+(b-BUILD0)+")";
 let remote=null,lastChk=0;
 $("ver").textContent=verText(BUILD);
 /* Anmeldung: bis wann sie gilt und ob sie sich von selbst verlängert */

@@ -12,7 +12,7 @@
 // Für die KI (Übersetzen der Warnungen anderer Länder, Push-Texte in ganzen Sätzen), ab Version 1.6:
 //   Bindung AI      (Workers AI, Variablenname AI). Ohne sie läuft alles wie vorher, nur ohne KI.
 const enc = new TextEncoder();
-const VERSION = "1.0", BUILD = 6;
+const VERSION = "1.0", BUILD = 7;
 /* Abrufe mit Zeitlimit: ein hängender Dienst soll weder eine Anfrage noch den Zeitplan aufhalten.
    tf: Limit bis die Antwort beginnt (für durchgereichte Antworten); jf: Limit bis das JSON ganz gelesen ist. */
 async function tf(u, o, ms) {
@@ -573,7 +573,9 @@ function soonOf(T, P, isSnow) {
   if (i < 0) return { i };
   let n = 0, mx = 0;
   for (let k = i; k < P.length && wet(k); k++) { n++; mx = Math.max(mx, P[k]); }
-  return { i, min: Math.max(0, Math.round((T[i] - 900000 - now) / 60000)), snow: !!isSnow(i), dur: n * 15, mx };
+  /* end: Minuten bis zum Ende (erstes trockenes Intervall), wenn es innerhalb der Reihe aufhört */
+  const k2 = i + n, end = k2 < P.length && P[k2] != null && T[k2] ? Math.max(0, Math.round((T[k2] - 900000 - now) / 60000)) : null;
+  return { i, min: Math.max(0, Math.round((T[i] - 900000 - now) / 60000)), snow: !!isSnow(i), dur: n * 15, mx, end };
 }
 async function warnings(lat, lon) {
   const out = [];
@@ -655,15 +657,18 @@ async function lightningNear(lat, lon) {
   }
   return best;
 }
-/* ============ Glätte in der Nacht (Open-Meteo, bestes Modell am Ort) ============
-   Geprüft am Abend (18 bis 21 Uhr Ortszeit), einmal pro Tag: von 18 bis 9 Uhr am nächsten Morgen. Glätte, wenn
+/* ============ Vorhersage für die Hinweise Glätte, Bodenfrost, Sturm (Open-Meteo, bestes Modell am Ort, 18 Stunden) ============ */
+async function wxNext(lat, lon) {
+  const j = await getJ("https://api.open-meteo.com/v1/forecast?latitude=" + lat + "&longitude=" + lon + "&hourly=temperature_2m,precipitation,snowfall,weather_code,soil_temperature_0cm,wind_gusts_10m&forecast_hours=18&timezone=auto");
+  return j.hourly || {};
+}
+/* Glätte in der Nacht. Geprüft am Abend (18 bis 21 Uhr), einmal pro Tag, bis 9 Uhr früh. Glätte, wenn
    - gefrierender Regen oder Nieselregen vorhergesagt ist, oder
    - Schnee fällt und es höchstens 1 °C hat, oder
    - es bis 0,5 °C abkühlt und in den 6 Stunden davor Regen gefallen ist (nasse Straßen frieren).
    Ergebnis: { h: Stunde (Ortszeit), art } oder null. */
-async function iceNight(lat, lon) {
-  const j = await getJ("https://api.open-meteo.com/v1/forecast?latitude=" + lat + "&longitude=" + lon + "&hourly=temperature_2m,precipitation,rain,snowfall,weather_code&forecast_hours=18&timezone=auto");
-  const H = j.hourly || {}, T = H.temperature_2m || [], P = H.precipitation || [], S = H.snowfall || [], W = H.weather_code || [], tm = H.time || [];
+function iceOf(H) {
+  const T = H.temperature_2m || [], P = H.precipitation || [], S = H.snowfall || [], W = H.weather_code || [], tm = H.time || [];
   for (let i = 0; i < tm.length; i++) {
     const t = T[i];
     if (t == null) continue;
@@ -676,74 +681,134 @@ async function iceNight(lat, lon) {
   }
   return null;
 }
+/* Bodenfrost in der Nacht: Temperatur am Boden (0 cm) bis 9 Uhr früh höchstens 0 °C. Ergebnis { tb: tiefster Wert am Boden,
+   tl: tiefste Lufttemperatur, h: ab wann } oder null. Damit im Winter nicht jeden Abend dieselbe Nachricht kommt: nur, wenn
+   in den 3 Nächten davor kein Frost-Hinweis kam (die erste Frostnacht nach milden Tagen ist die, die überrascht). */
+function frostOf(H) {
+  const B = H.soil_temperature_0cm || [], T = H.temperature_2m || [], tm = H.time || [];
+  let tb = null, tl = null, h = null;
+  for (let i = 0; i < tm.length; i++) {
+    const hr = +String(tm[i]).slice(11, 13);
+    if (i > 0 && hr === 10) break;
+    if (B[i] != null && (tb == null || B[i] < tb)) tb = B[i];
+    if (T[i] != null && (tl == null || T[i] < tl)) tl = T[i];
+    if (h == null && B[i] != null && B[i] <= 0) h = hr;
+  }
+  return tb != null && tb <= 0 ? { tb, tl, h } : null;
+}
+/* Sturm: Böen ab 60 km/h in den nächsten 12 Stunden. Ergebnis { g: stärkste Böe, h: ab wann } oder null. */
+function stormOf(H) {
+  const G = H.wind_gusts_10m || [], tm = H.time || [];
+  let g = 0, h = null;
+  for (let i = 0; i < Math.min(12, tm.length); i++) { if (G[i] >= 60 && h == null) h = +String(tm[i]).slice(11, 13); if (G[i] > g) g = G[i]; }
+  return h != null ? { g: Math.round(g), h } : null;
+}
 const viennaHour = () => +new Intl.DateTimeFormat("de-AT", { hour: "numeric", hour12: false, timeZone: "Europe/Vienna" }).format(new Date());
 const viennaDay = () => new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Vienna" }).format(new Date());
-/* Ein Abo prüfen. once(k, f) merkt sich Abrufe innerhalb eines Durchlaufs: zwei Geräte am selben Ort fragen nur einmal an. */
-async function alertOne(env, name, once) {
-  const rec = await env.SUBS.get(name, "json");
-  if (!rec || !rec.sub) return;
-  rec.st = rec.st || { rain: false, w: [] };
-  const msgs = [], pos = rec.lat + "," + rec.lon, now = Date.now(), ort = rec.name || "";
+
+/* Ein Ort eines Abos prüfen. P = { lat, lon, name, st }, st ist der Zustand dieses Ortes. Hängt Nachrichten an msgs an.
+   Gibt true zurück, wenn sich der Zustand geändert hat. */
+async function alertPlace(env, rec, P, once, msgs, multi) {
+  const st = P.st, pos = P.lat + "," + P.lon, now = Date.now(), ort = P.name || "", tagx = multi ? "-" + pos : "";
+  const pre = ort ? ort + ": " : "";
+  // Ruhezeiten (von der App aus deinem Alltag gelernt): nachts keine Regen-, Blitz-, Frost- und Sturm-Hinweise; amtliche Warnungen kommen trotzdem
+  const quietNow = Array.isArray(rec.qh) && rec.qh.includes(new Date().getUTCHours());
   let changed = false;
   if (rec.rain) {
     try {
-      const r = await once("r:" + pos, () => rainSoon(rec.lat, rec.lon));
-      if (r.i >= 0 && !rec.st.rain) {
+      const r = await once("r:" + pos, () => rainSoon(P.lat, P.lon));
+      if (r.i >= 0 && !st.rain) {
         const what = r.snow ? "Schnee" : "Regen";
-        // Ruhezeiten (von der App aus deinem Alltag gelernt): nachts keine Regen-Hinweise, Warnungen kommen trotzdem
-        const quiet = Array.isArray(rec.qh) && rec.qh.includes(new Date().getUTCHours());
         // nach einem Hinweis 90 Minuten Pause: springt die Vorhersage um die Schwelle herum, kommt nicht jedes Mal ein neuer
-        const pause = now - (rec.st.rt || 0) < 90 * 60000;
-        if (!quiet && !pause) {
+        const pause = now - (st.rt || 0) < 90 * 60000;
+        if (!quietNow && !pause) {
           const soon = r.min <= 5, mins = Math.round(r.min / 5) * 5;
           const title = soon ? (r.snow ? "Es beginnt zu schneien" : "Es beginnt zu regnen") : what + " in etwa " + mins + " Minuten";
-          const st = r.snow ? (r.mx < 0.5 ? "leicht" : r.mx < 2 ? "mäßig" : "stark") : (r.mx < 0.6 ? "leicht" : r.mx < 2.5 ? "mäßig" : "stark");
-          const facts = "Ort: " + (ort || "dein Ort") + ". " + (soon ? "Der " + what + " beginnt jetzt." : "Der " + what + " beginnt in etwa " + mins + " Minuten.") + " Stärke: " + st + "." + (r.dur >= 30 ? " Dauer: mindestens " + r.dur + " Minuten." : " Dauer: kurz.");
+          const sk = r.snow ? (r.mx < 0.5 ? "leicht" : r.mx < 2 ? "mäßig" : "stark") : (r.mx < 0.6 ? "leicht" : r.mx < 2.5 ? "mäßig" : "stark");
+          const facts = "Ort: " + (ort || "dein Ort") + ". " + (soon ? "Der " + what + " beginnt jetzt." : "Der " + what + " beginnt in etwa " + mins + " Minuten.") + " Stärke: " + sk + "." + (r.dur >= 30 ? " Dauer: mindestens " + r.dur + " Minuten." : " Dauer: kurz.");
           const ai = await once("a:" + facts, () => aiText(env, facts, ort, 140));
-          msgs.push({ title, body: ai || (ort ? ort + ". " : "") + "Tippe für das Regenradar.", tag: "rain", url: SITE + "#sec-radar" });
-          rec.st.rt = now;
+          msgs.push({ title: (multi && ort ? ort + ": " : "") + title, body: ai || (ort ? ort + ". " : "") + "Tippe für das Regenradar.", tag: "rain" + tagx, url: SITE + "#sec-radar" });
+          st.rt = now;
         }
-        rec.st.rain = true; changed = true;
-      } else if (r.i < 0 && rec.st.rain) { rec.st.rain = false; changed = true; }
+        st.rain = true; st.re = false; changed = true;
+      } else if (r.i < 0 && st.rain) { st.rain = false; st.re = false; changed = true; }
+      /* Regen hört auf: es regnet gerade (seit mindestens 15 Minuten) und hört laut Vorhersage in höchstens 20 Minuten auf */
+      if (rec.rend !== false && st.rain && !st.re && r.i >= 0 && r.min === 0 && r.end != null && r.end <= 20 && r.dur >= 15 && now - (st.rt || 0) > 15 * 60000) {
+        if (!quietNow) {
+          const what = r.snow ? "Schnee" : "Regen", m = Math.max(5, Math.round(r.end / 5) * 5);
+          msgs.push({ title: (multi && ort ? ort + ": " : "") + (r.end <= 5 ? "Der " + what + " hört gleich auf" : "Der " + what + " hört in etwa " + m + " Minuten auf"), body: pre + "Danach bleibt es laut Radar-Vorhersage mindestens eine Viertelstunde trocken. Tippe für das Radar.", tag: "rain" + tagx, url: SITE + "#sec-radar" });
+        }
+        st.re = true; changed = true;
+      }
     } catch (e) {}
   }
+  let warnW = [];
   if (rec.warn) {
-    const res = await once("w:" + pos, () => warnings(rec.lat, rec.lon)), ws = res.list;
-    const seen = rec.st.w || [];
+    const res = await once("w:" + pos, () => warnings(P.lat, P.lon)), ws = res.list;
+    warnW = ws;
+    const seen = st.w || [];
     // Ist ein Warndienst gerade nicht erreichbar, bekannte Warnungen behalten (sonst käme dieselbe Warnung später noch einmal)
     const ids = res.ok ? ws.map((w) => w.id) : Array.from(new Set([...seen, ...ws.map((w) => w.id)]));
     for (const w of ws) if (!seen.includes(w.id)) {
       const facts = "Ort: " + (ort || "dein Ort") + ". Amtliche Warnung: " + w.title + ". " + w.body;
       const ai = w.body ? await once("a:" + facts, () => aiText(env, facts, ort, 170)) : null;
-      msgs.push({ title: w.title, body: ai || (ort ? ort + ": " : "") + w.body, tag: "warn-" + w.id, url: SITE + "#sec-warn" });
+      msgs.push({ title: (multi && ort ? ort + ": " : "") + w.title, body: ai || pre + w.body, tag: "warn-" + w.id, url: SITE + "#sec-warn" });
     }
-    if (ids.join() !== seen.join()) { rec.st.w = ids; changed = true; }
+    if (ids.join() !== seen.join()) { st.w = ids; changed = true; }
   }
-  const quietNow = Array.isArray(rec.qh) && rec.qh.includes(new Date().getUTCHours());
-  /* Blitze näher als 15 km: höchstens alle 60 Minuten ein Hinweis (Ruhezeiten gelten) */
+  /* Blitze näher als 15 km: höchstens alle 60 Minuten ein Hinweis */
   if (rec.ltg !== false) {
     try {
-      const d = await once("l:" + pos, () => lightningNear(rec.lat, rec.lon));
-      if (d != null && !quietNow && now - (rec.st.lt || 0) > 60 * 60000) {
+      const d = await once("l:" + pos, () => lightningNear(P.lat, P.lon));
+      if (d != null && !quietNow && now - (st.lt || 0) > 60 * 60000) {
         const km = Math.max(1, Math.round(d));
-        msgs.push({ title: "Blitze in der Nähe", body: (ort ? ort + ": " : "") + (d < 5 ? "Blitze ganz in der Nähe (unter 5 km). Bleib drinnen." : "Blitze etwa " + km + " km entfernt. Bei Donner drinnen bleiben.") + " Tippe für das Radar.", tag: "ltg", url: SITE + "#sec-radar" });
-        rec.st.lt = now; changed = true;
+        msgs.push({ title: (multi && ort ? ort + ": " : "") + "Blitze in der Nähe", body: pre + (d < 5 ? "Blitze ganz in der Nähe (unter 5 km). Bleib drinnen." : "Blitze etwa " + km + " km entfernt. Bei Donner drinnen bleiben.") + " Tippe für das Radar.", tag: "ltg" + tagx, url: SITE + "#sec-radar" });
+        st.lt = now; changed = true;
       }
     } catch (e) {}
   }
-  /* Glätte in der Nacht: am Abend einmal pro Tag */
-  if (rec.ice !== false) {
-    const vh = viennaHour(), day = viennaDay();
-    if (vh >= 18 && vh <= 21 && rec.st.ice !== day) {
-      try {
-        const g = await once("g:" + pos, () => iceNight(rec.lat, rec.lon));
-        if (g) msgs.push({ title: "Glättegefahr heute Nacht", body: (ort ? ort + ": " : "") + "Ab etwa " + g.h + " Uhr " + (g.art === "Schnee" ? "Schnee bei Temperaturen um 0 °C" : g.art) + ", Straßen und Wege können glatt werden.", tag: "ice", url: SITE });
-        rec.st.ice = day; changed = true;
-      } catch (e) {}
-    }
+  /* Sturm ohne amtliche Warnung: Böen ab 60 km/h in den nächsten 12 Stunden. Vorhersage höchstens alle 30 Minuten neu,
+     danach 12 Stunden Pause. Gibt es schon eine amtliche Wind- oder Sturmwarnung, kommt kein zweiter Hinweis. */
+  if (rec.storm !== false && now - (st.sc || 0) > 30 * 60000 && now - (st.sg || 0) > 12 * 3600000) {
+    try {
+      const H = await once("x:" + pos, () => wxNext(P.lat, P.lon)), g = stormOf(H);
+      st.sc = now; changed = true;
+      const official = warnW.some((w) => /sturm|wind|orkan/i.test(w.title));
+      if (g && !official && !quietNow) {
+        msgs.push({ title: (multi && ort ? ort + ": " : "") + "Sturmböen bis " + g.g + " km/h", body: pre + "Ab etwa " + g.h + " Uhr Böen bis " + g.g + " km/h. Lose Gegenstände sichern, Vorsicht unter Bäumen.", tag: "storm" + tagx, url: SITE });
+        st.sg = now;
+      }
+    } catch (e) {}
   }
-  /* Erst den Zustand speichern, dann senden. Lässt er sich nicht speichern (etwa weil das Tageslimit des Speichers erreicht ist),
-     wird nichts gesendet: sonst käme dieselbe Nachricht alle 5 Minuten wieder. */
+  /* Am Abend (18 bis 21 Uhr), einmal pro Tag: Glätte und Bodenfrost in der Nacht */
+  const vh = viennaHour(), day = viennaDay();
+  if ((rec.ice !== false || rec.frost !== false) && vh >= 18 && vh <= 21 && st.ice !== day) {
+    try {
+      const H = await once("x:" + pos, () => wxNext(P.lat, P.lon));
+      const g = rec.ice !== false ? iceOf(H) : null;
+      if (g) msgs.push({ title: (multi && ort ? ort + ": " : "") + "Glättegefahr heute Nacht", body: pre + "Ab etwa " + g.h + " Uhr " + (g.art === "Schnee" ? "Schnee bei Temperaturen um 0 °C" : g.art) + ", Straßen und Wege können glatt werden.", tag: "ice" + tagx, url: SITE });
+      const f = rec.frost !== false ? frostOf(H) : null;
+      if (f && !g && now - (st.fr || 0) > 3.5 * 86400000) {
+        const tb = Math.round(f.tb), tl = Math.round(f.tl);
+        msgs.push({ title: (multi && ort ? ort + ": " : "") + (tl <= 0 ? "Frost heute Nacht" : "Bodenfrost heute Nacht"), body: pre + (tl <= 0 ? "Bis " + String(tl).replace("-", "−") + " °C, am Boden bis " + String(tb).replace("-", "−") + " °C." : "Die Luft bleibt bei etwa " + tl + " °C, am Boden aber bis " + String(tb).replace("-", "−") + " °C.") + " Empfindliche Pflanzen abdecken, Autoscheiben können morgen vereist sein.", tag: "frost" + tagx, url: SITE });
+      }
+      if (f) st.fr = now;
+      st.ice = day; changed = true;
+    } catch (e) {}
+  }
+  return changed;
+}
+/* Ein Abo prüfen: der Hauptort und bis zu 2 weitere Orte (z. B. Arbeit, Schule). once(k, f) merkt sich Abrufe innerhalb
+   eines Durchlaufs: mehrere Geräte am selben Ort fragen nur einmal an. */
+async function alertOne(env, name, once) {
+  const rec = await env.SUBS.get(name, "json");
+  if (!rec || !rec.sub) return;
+  rec.st = rec.st || { rain: false, w: [] };
+  const msgs = [], places = [{ lat: rec.lat, lon: rec.lon, name: rec.name, st: rec.st }].concat((Array.isArray(rec.more) ? rec.more : []).slice(0, 2).map((p) => { p.st = p.st || { rain: false, w: [] }; return p; }));
+  let changed = false;
+  for (const P of places) { try { if (await alertPlace(env, rec, P, once, msgs, places.length > 1)) changed = true; } catch (e) { console.error("alert place", e && e.message); } }
+  /* Erst den Zustand speichern, dann senden. Lässt er sich nicht speichern, wird nichts gesendet: sonst käme dieselbe
+     Nachricht alle 5 Minuten wieder. */
   if (changed) await env.SUBS.put(name, JSON.stringify(rec));
   for (const m of msgs) {
     let res = null;
@@ -927,8 +992,13 @@ async function route(req, env, ctx, h, json) {
       const lat = Number(b.lat), lon = Number(b.lon);
       if (!isFinite(lat) || !isFinite(lon)) return json({ error: "Ungültig" }, 400);
       const old = await env.SUBS.get(id, "json");
+      /* weitere Orte (höchstens 2): bekannte behalten ihren Zustand */
+      const om = (old && Array.isArray(old.more)) ? old.more : [];
+      const more = (Array.isArray(b.more) ? b.more : []).slice(0, 2).map((p) => ({ lat: +Number(p.lat).toFixed(3), lon: +Number(p.lon).toFixed(3), name: String(p.name || "").slice(0, 60) }))
+        .filter((p) => isFinite(p.lat) && isFinite(p.lon) && Math.abs(p.lat) <= 90 && Math.abs(p.lon) <= 180)
+        .map((p) => { const o = om.find((x) => x.lat === p.lat && x.lon === p.lon); if (o && o.st) p.st = o.st; return p; });
       const qh = Array.isArray(b.qh) ? [...new Set(b.qh.map(Number).filter((h) => Number.isInteger(h) && h >= 0 && h < 24))].slice(0, 16) : [];
-      await env.SUBS.put(id, JSON.stringify({ sub: { endpoint: ep, keys: s.keys }, lat: +lat.toFixed(3), lon: +lon.toFixed(3), name: String(b.name || "").slice(0, 60), rain: !!b.rain, warn: !!b.warn, ltg: b.ltg !== false, ice: b.ice !== false, qh, st: (old && old.st) || { rain: false, w: [] } }));
+      await env.SUBS.put(id, JSON.stringify({ sub: { endpoint: ep, keys: s.keys }, lat: +lat.toFixed(3), lon: +lon.toFixed(3), name: String(b.name || "").slice(0, 60), rain: !!b.rain, warn: !!b.warn, ltg: b.ltg !== false, ice: b.ice !== false, frost: b.frost !== false, storm: b.storm !== false, rend: b.rend !== false, more, qh, st: (old && old.st) || { rain: false, w: [] } }));
       return json({ ok: true });
     }
     if (url.pathname === "/push/unsub") { await env.SUBS.delete(id); return json({ ok: true }); }
