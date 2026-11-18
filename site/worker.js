@@ -278,7 +278,19 @@ async function gs1Past(S) {
   };
   return (await Promise.all([one(2), one(5)])).filter((j) => j && Array.isArray(j.timestamps) && Array.isArray(j.features));
 }
-async function bfSK(la, lo, models, g) {
+/* Bewölkung aus der Wettermeldung in Prozent (tiefe und mittlere Wolken; FEW 1-2, SCT 3-4, BKN 5-7, OVC 8 Achtel).
+   CAVOK, NSC, NCD, CLR, SKC: keine Wolken bis in mittlere Höhe. Nebel ohne Wolkenangabe (VV): bedeckt. */
+const CLC = { SKC: 0, CLR: 0, NSC: 0, NCD: 0, CAVOK: 0, FEW: 19, SCT: 44, BKN: 75, OVC: 100, OVX: 100, VV: 100 };
+function metarCover(x) {
+  const L = Array.isArray(x.clouds) ? x.clouds : [];
+  let c = null;
+  for (const k of L) { const v = CLC[k && k.cover]; if (v == null) continue; if (k.base != null && k.base > 20000) continue; c = Math.max(c == null ? 0 : c, v); }
+  if (c == null && x.cover != null && CLC[x.cover] != null) c = CLC[x.cover];
+  if (c == null && /CAVOK/.test(String(x.rawOb || ""))) c = 0;
+  return c;
+}
+async function bfSK(la, lo, models, g, env) {
+  const SK_KV = env && env.GM;
   const dla = 0.55, dlo = Math.min(2.5, 0.8 / Math.max(0.2, Math.cos((la * Math.PI) / 180)));
   const bb = [la - dla, lo - dlo, la + dla, lo + dlo].map((x) => x.toFixed(2)).join(",");
   let a = [];
@@ -294,7 +306,7 @@ async function bfSK(la, lo, models, g) {
     if (km(x) > 60) continue;
     let o = st.get(x.icaoId);
     if (!o) st.set(x.icaoId, (o = { id: x.icaoId, la: x.lat, lo: x.lon, h: typeof x.elev === "number" ? x.elev : null, d: km(x), ob: [] }));
-    o.ob.push({ t: x.obsTime, T: typeof x.temp === "number" ? x.temp : null, W: typeof x.wspd === "number" ? x.wspd * 1.852 : null, R: /(^|\s)[-+]?(VC)?(SH|TS)?(RA|DZ|SN|SG|PL|GR|GS)/.test(String(x.wxString || "")) });
+    o.ob.push({ t: x.obsTime, T: typeof x.temp === "number" ? x.temp : null, W: typeof x.wspd === "number" ? x.wspd * 1.852 : null, R: /(^|\s)[-+]?(VC)?(SH|TS)?(RA|DZ|SN|SG|PL|GR|GS)/.test(String(x.wxString || "")), C: metarCover(x) });
   }
   const S = [...st.values()].filter((o) => o.ob.length >= 20 && o.h != null).sort((x, y) => x.d - y.d).slice(0, 3);
   if (!S.length) return bfJson({ n: 0, st: [] });
@@ -303,12 +315,12 @@ async function bfSK(la, lo, models, g) {
   const incaP = g ? tfetch("https://dataset.api.hub.geosphere.at/v1/timeseries/historical/inca-v1-1h-1km?parameters=RR&lat_lon=" + la.toFixed(4) + "," + lo.toFixed(4) +
     "&start=" + isoM(Math.floor(Date.now() / 3600000) * 3600 - 48 * 3600) + "&end=" + isoM(Math.floor(Date.now() / 3600000) * 3600), 15000).then((x) => (x.ok ? x.json() : null)).catch(() => null) : Promise.resolve(null);
   const r = await tfetch("https://api.open-meteo.com/v1/forecast?latitude=" + P2.map((o) => o.la.toFixed(3)).join(",") + "&longitude=" + P2.map((o) => o.lo.toFixed(3)).join(",") +
-    "&elevation=" + S.map((o) => Math.round(o.h)).concat(PL.map(() => "nan")).join(",") + "&past_days=2&forecast_days=1&hourly=temperature_2m,wind_speed_10m,precipitation&models=" + models.join(",") + "&timezone=GMT&timeformat=unixtime", 15000);
+    "&elevation=" + S.map((o) => Math.round(o.h)).concat(PL.map(() => "nan")).join(",") + "&past_days=2&forecast_days=1&hourly=temperature_2m,wind_speed_10m,precipitation,cloud_cover_low,cloud_cover_mid&models=" + models.join(",") + "&timezone=GMT&timeformat=unixtime", 15000);
   if (!r.ok) return bfJson({ error: "forecast " + r.status }, 502);
   let L = await r.json();
   if (!Array.isArray(L)) L = [L];
   const now = Date.now() / 1000, acc = {};
-  models.forEach((m) => (acc[m] = { tE: 0, tN: 0, wE: 0, wN: 0, rE: 0, rN: 0 }));
+  models.forEach((m) => (acc[m] = { tE: 0, tN: 0, wE: 0, wN: 0, rE: 0, rN: 0, cE: 0, cN: 0 }));
   S.forEach((o, si) => {
     const H = L[si] && L[si].hourly;
     if (!H || !H.time) return;
@@ -326,6 +338,8 @@ async function bfSK(la, lo, models, g) {
         if (T != null && ob.T != null) { q.tE += Math.abs(T - ob.T); q.tB = (q.tB || 0) + (T - ob.T); q.tN++; }
         if (W != null && ob.W != null) { q.wE += Math.abs(W - ob.W); q.wN++; }
         if (P != null) { q.rN++; if ((P >= 0.1) !== ob.R) q.rE++; }
+        const CLo = g("cloud_cover_low"), CMi = g("cloud_cover_mid");
+        if (ob.C != null && CLo != null && CMi != null) { q.cE += Math.abs(Math.max(CLo, CMi) - ob.C); q.cN++; }
       }
     }
   });
@@ -364,15 +378,50 @@ async function bfSK(la, lo, models, g) {
     }
     all.push(GS1);
   }
-  const out = { t: {}, w: {}, r: {}, e: {}, b: {}, n: 0, st: S.map((o) => o.id), ri: Object.keys(pr).length ? 1 : 0, pe };
+  const out = { t: {}, w: {}, r: {}, c: {}, e: {}, b: {}, n: 0, st: S.map((o) => o.id), ri: Object.keys(pr).length ? 1 : 0, pe };
+  /* Werte der letzten 2 Tage je Modell */
+  const cur = {};
   for (const m of all) {
-    const q = acc[m];
-    if (q.tN >= 20 && q.tB != null) out.b[m] = Math.round((q.tB / q.tN) * 100) / 100;
-    if (q.tN >= 20) { out.e[m] = Math.round((q.tE / q.tN) * 100) / 100; out.t[m] = 1 / Math.pow(q.tE / q.tN + 0.3, 2); out.n = Math.max(out.n, q.tN); }
-    if (q.wN >= 20) out.w[m] = 1 / Math.pow(q.wE / q.wN + 1.5, 2);
-    if (pr[m] != null) out.r[m] = pr[m];
-    else if (q.rN >= 20) out.r[m] = Math.round((1 - q.rE / q.rN) * 1000) / 1000;
+    const q = acc[m], x = (cur[m] = {});
+    if (q.tN >= 20) { x.t = q.tE / q.tN; if (q.tB != null) x.b = q.tB / q.tN; out.n = Math.max(out.n, q.tN); }
+    if (q.wN >= 20) x.w = q.wE / q.wN;
+    if (pr[m] != null) x.r = pr[m];
+    else if (q.rN >= 20) x.r = 1 - q.rE / q.rN;
+    if (q.cN >= 20) x.c = q.cE / q.cN;
   }
+  /* Gedächtnis über Wochen (KV sk:<Ort>): höchstens alle 12 Stunden wird der Stand der letzten 2 Tage eingerechnet
+     (gleitender Mittelwert, ältere Tage zählen langsam immer weniger, etwa 3 Wochen). Bewertet wird zur Hälfte nach den
+     letzten 2 Tagen, zur Hälfte nach dem Langzeitwert, sobald es den gibt (mindestens 4 Einträge). Eine kurze Glückssträhne
+     eines Modells kippt die Auswahl so nicht mehr gleich. */
+  let hist = null;
+  const hk = "sk:" + la.toFixed(2) + ":" + lo.toFixed(2);
+  if (SK_KV) {
+    try { hist = JSON.parse((await SK_KV.get(hk)) || "null"); } catch (e) {}
+    const nowS = Math.round(Date.now() / 1000);
+    if (!hist || nowS - (hist.at || 0) > 12 * 3600) {
+      const h = hist || { m: {} };
+      for (const m of all) for (const k of ["t", "w", "r", "c", "b"]) {
+        const v = cur[m][k];
+        if (v == null) continue;
+        const o = (h.m[m] = h.m[m] || {}), n = (o["n" + k] || 0) + 1;
+        o[k] = o[k] == null ? v : o[k] + (v - o[k]) * Math.max(0.12, 1 / n);
+        o["n" + k] = Math.min(n, 99);
+      }
+      h.at = nowS;
+      try { await SK_KV.put(hk, JSON.stringify(h), { expirationTtl: 60 * 86400 }); } catch (e) {}
+      hist = h;
+    }
+  }
+  const bl = (m, k) => { const v = cur[m][k], o = hist && hist.m[m]; if (o && o[k] != null && (o["n" + k] || 0) >= 4) return v == null ? o[k] : (v + o[k]) / 2; return v; };
+  for (const m of all) {
+    const T = bl(m, "t"), Wd = bl(m, "w"), R = bl(m, "r"), C = bl(m, "c"), B = bl(m, "b");
+    if (B != null && T != null) out.b[m] = Math.round(B * 100) / 100;
+    if (T != null) { out.e[m] = Math.round(T * 100) / 100; out.t[m] = 1 / Math.pow(T + 0.3, 2); }
+    if (Wd != null) out.w[m] = 1 / Math.pow(Wd + 1.5, 2);
+    if (R != null) out.r[m] = Math.round(R * 1000) / 1000;
+    if (C != null) out.c[m] = Math.round((1 - C / 100) * 1000) / 1000;
+  }
+  if (hist) out.hl = Math.max(0, ...Object.values(hist.m).map((o) => o.nt || 0));
   for (const k of ["t", "w"]) { const s = Object.values(out[k]).reduce((x, y) => x + y, 0); if (s) for (const m in out[k]) out[k][m] = Math.round((out[k][m] / s) * 1000) / 1000; }
   return bfJson(out);
 }
@@ -479,7 +528,7 @@ async function bfServe(req, env, url) {
     if (url.pathname === "/bf/sk") {
       const models = String(url.searchParams.get("m") || "").split(",").filter((m) => BF_MOD.test(m)).slice(0, 10);
       if (!models.length) return bfJson({ error: "Ungültig" }, 400);
-      return await bfSK(la, lo, models, url.searchParams.get("g") === "1");
+      return await bfSK(la, lo, models, url.searchParams.get("g") === "1", env);
     }
   } catch (e) { return bfJson({ error: String((e && e.message) || e).slice(0, 80) }, 502); }
   return bfJson({ error: "Nicht gefunden" }, 404);

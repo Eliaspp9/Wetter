@@ -1455,8 +1455,14 @@ function omChain(j,lok,ruc,sk){
  const rk=sk&&sk.r&&Object.keys(sk.r).length>=2?sk.r:null,rmax=rk?Math.max(...Object.values(rk)):0;
  const rsort=L=>rk?L.map((m,i)=>({m,i,v:rk[m]!=null?rk[m]:rmax})).sort((a,b)=>b.v-a.v||a.i-b.i).map(x=>x.m):L;
  let all=lok.concat(late),withR=ruc?[RUC].concat(all):all;
- const RG=new Set(["precipitation","weather_code","snowfall","cloud_cover","cloud_cover_low","precipitation_probability"]);
+ const RG=new Set(["precipitation","weather_code","snowfall","precipitation_probability"]);
  const allR=rsort(lok.concat(["ecmwf_ifs"])).concat(["best_match"]),withRR=ruc?rsort([RUC].concat(lok,["ecmwf_ifs"])).concat(["best_match"]):allR;
+ /* Wolken und Sonnenschein: nach der Trefferquote bei den Wolken (Flughäfen, sk.c), sonst wie der Regen. Alle Wolkenwerte
+    und die Sonnenstunden kommen so je Stunde aus demselben Modell, damit Symbol und Sonnenstunden zusammenpassen. */
+ const CG=new Set(["cloud_cover","cloud_cover_low","cloud_cover_mid","cloud_cover_high","sunshine_duration"]);
+ const ck=sk&&sk.c&&Object.keys(sk.c).length>=2?sk.c:null,cmax=ck?Math.max(...Object.values(ck)):0;
+ const csort=L=>ck?L.map((m,i)=>({m,i,v:ck[m]!=null?ck[m]:cmax})).sort((a,b)=>b.v-a.v||a.i-b.i).map(x=>x.m):rsort(L);
+ const allC=csort(lok.concat(["ecmwf_ifs"])).concat(["best_match"]),withRC=ruc?csort([RUC].concat(lok,["ecmwf_ifs"])).concat(["best_match"]):allC;
  const BW={temperature_2m:sk&&sk.t,wind_speed_10m:sk&&sk.w,wind_gusts_10m:sk&&sk.w};
  const mix=(n,W,L,i,s)=>{let sw=0,sv=0,best=null,bw=-1;const wm=Math.max(0,...Object.values(W));
   for(const m of L){if(m==="best_match")continue;const a=hv[n][m],v=a&&a[i];if(v==null)continue;const w=W[m]!=null?W[m]:wm||1;sw+=w;sv+=w*v;if(w>bw){bw=w;best=m}}
@@ -1467,7 +1473,8 @@ function omChain(j,lok,ruc,sk){
  const [hv,hr]=split(H),oh=hr;
  Object.keys(hv).forEach(n=>{const s=src[n]=new Array(T.length).fill(null);
   const W=BW[n]&&Object.keys(BW[n]).length>=2?BW[n]:null,rg=RG.has(n);
-  oh[n]=T.map((t,i)=>{const L=t<rcut?(rg?withRR:withR):t<cut?(rg?allR:all):late;
+  const cg=CG.has(n);
+  oh[n]=T.map((t,i)=>{const L=t<rcut?(cg?withRC:rg?withRR:withR):t<cut?(cg?allC:rg?allR:all):late;
    if(W&&t<cut){const v=mix(n,W,L,i,s);if(v!==undefined){if(n==="temperature_2m"){if(s[i]==="L"){const m=lok.find(x=>code(x)==="L"&&hv[n][x]&&hv[n][x][i]!=null);if(m)lu[m]=(lu[m]||0)+1;nL++}else if(s[i]==="R")nR++}return v}}
    for(const m of L){const a=hv[n][m];if(a&&a[i]!=null){s[i]=code(m);if(n==="temperature_2m"){if(s[i]==="L"){nL++;lu[m]=(lu[m]||0)+1}else if(s[i]==="R")nR++}return a[i]}}return null})});
  /* „jetzt“ liefert Open-Meteo ohne Modell-Endung, vom ersten Modell der Liste (also dem vor Ort); Lücken aus der Stunde */
@@ -1485,6 +1492,34 @@ function omChain(j,lok,ruc,sk){
  j.hourly=oh;j.current=oc;j.daily=od;j._src=src;
  j.lok=nL?Object.keys(lu).sort((a,b)=>lu[b]-lu[a])[0]:null;j.ruc=nR>0;j.loks=Object.keys(lu).sort((a,b)=>lu[b]-lu[a]);
  return j;
+}
+/* Symbol und Sonnenstunden passend machen:
+   - je Stunde: ob „sonnig“, „heiter“, „wolkig“ oder „bedeckt“ nach den tiefen und mittleren Wolken; hohe, dünne
+     Schleierwolken zählen nur halb (die Sonne scheint meist durch). Regen, Schnee, Nebel bleiben, wie das Modell sagt.
+   - je Tag: Sonnenstunden = Summe der Stunden (dasselbe Modell wie Wolken und Symbol), und das Tagessymbol nach dem
+     Anteil Sonnenschein am Tageslicht, wenn tagsüber kein Niederschlag fällt. */
+function honest(j){
+ const H=j.hourly,D=j.daily;if(!H||!H.time||!D||!D.time)return;
+ const lo=H.cloud_cover_low,mi=H.cloud_cover_mid,hi=H.cloud_cover_high,wc=H.weather_code;
+ if(wc&&lo&&mi)H.weather_code=wc.map((c,i)=>{if(c==null||c>3)return c;const l=lo[i],m=mi[i];if(l==null||m==null)return c;const e=Math.max(l,m,(hi&&hi[i]||0)*.5);return e<20?0:e<45?1:e<75?2:3});
+ const C=j.current;if(C&&C.weather_code!=null&&C.weather_code<=3&&C.time){const ci=H.time.indexOf(String(C.time).slice(0,13)+":00");if(ci>=0&&H.weather_code[ci]!=null&&H.weather_code[ci]<=3)C.weather_code=H.weather_code[ci]}
+ const W=H.weather_code,SD=H.sunshine_duration,by={};
+ H.time.forEach((t,i)=>{const d=t.slice(0,10);(by[d]||(by[d]=[])).push(i)});
+ const sunCode=f=>f>=.75?0:f>=.5?1:f>=.2?2:3;
+ D.time.forEach((d,k)=>{
+  const ix=by[d]||[];
+  if(SD&&ix.length>=24&&D.sunshine_duration){const v=ix.map(i=>SD[i]);if(v.every(x=>x!=null))D.sunshine_duration[k]=v.reduce((a,b)=>a+b,0)}
+  if(!D.weather_code)return;
+  const dc=D.weather_code[k],sun=D.sunshine_duration?D.sunshine_duration[k]:null,dl=D.daylight_duration?D.daylight_duration[k]:null;
+  const day=ix.filter(i=>H.is_day?H.is_day[i]===1:(+H.time[i].slice(11,13)>=7&&+H.time[i].slice(11,13)<=17));
+  const wet=W?day.filter(i=>W[i]!=null&&W[i]>=51):[];
+  if(wet.length>=2){if(dc==null||dc<51){const n={};wet.forEach(i=>n[W[i]]=(n[W[i]]||0)+1);D.weather_code[k]=+Object.keys(n).sort((a,b)=>n[b]-n[a]||b-a)[0]}return}
+  if(dc!=null&&dc>=51&&D.precipitation_sum&&D.precipitation_sum[k]>=1)return;
+  if(sun==null||!(dl>0))return;
+  const f=sun/dl;
+  if((dc===45||dc===48)&&f<.2)return;
+  D.weather_code[k]=sunCode(f);
+ });
 }
 const lokName=j=>j&&j.lok?LOKN[j.lok]||j.lok:"";
 const lokText=j=>(j.ruc?"die nächsten 12 Stunden DWD ICON-D2-RUC, ":"")+(j.lok?"heute und morgen "+lokName(j)+", ":"")+"danach ECMWF IFS (über Open-Meteo)";
@@ -1577,7 +1612,7 @@ async function loadWeather(auto){
  else try{
   const base="https://api.open-meteo.com/v1/forecast?latitude="+place.lat+"&longitude="+place.lon+"&timezone=auto&forecast_days=7";
   const cur="temperature_2m,apparent_temperature,relative_humidity_2m,precipitation,weather_code,wind_speed_10m,wind_direction_10m,surface_pressure";
-  const hr="temperature_2m,precipitation_probability,weather_code,precipitation,wind_speed_10m,wind_gusts_10m,snowfall,cloud_cover,cloud_cover_low,relative_humidity_2m";
+  const hr="temperature_2m,precipitation_probability,weather_code,precipitation,wind_speed_10m,wind_gusts_10m,snowfall,cloud_cover,cloud_cover_low,cloud_cover_mid,cloud_cover_high,sunshine_duration,relative_humidity_2m";
   const dl="weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max,sunrise,sunset,sunshine_duration,daylight_duration";
   const full="&current="+cur+",is_day,cloud_cover,wind_gusts_10m&hourly="+hr+",is_day&daily="+dl+",uv_index_max";
   let j;
@@ -1607,6 +1642,7 @@ async function loadWeather(auto){
    try{j=await getJ(base+full)}catch(e2){j=await getJ(base+"&current="+cur+"&hourly="+hr+"&daily="+dl)}
    j.src="om";
   }}
+  try{honest(j)}catch(e){console.error(e)}
   j.cc=usedCC;
   if(!pp)pp=await bfW(bfPP);
   if(pp)try{bfProb(j,pp)}catch(e){console.error(e)}
