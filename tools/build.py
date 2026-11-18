@@ -30,6 +30,10 @@ check_js((root / "radar-at.js").read_text(encoding="utf-8"), "radar-at.js")
 check_js((root / "login.js").read_text(encoding="utf-8"), "login.js")
 check_js((root / "site" / "worker.js").read_text(encoding="utf-8"), "site/worker.js", module=True)
 if not (root / "hdf5.min.js").exists(): sys.exit("FEHLER: hdf5.min.js fehlt (radar-at.js braucht es)")
+# derselbe Leser für den Server (site/pack.js bereitet dort die Radarbilder auf), als Modul
+_h5 = (root / "hdf5.min.js").read_text(encoding="utf-8") + "\nexport default hdf5;\n"
+if not (root / "site" / "hdf5.mjs").exists() or (root / "site" / "hdf5.mjs").read_text(encoding="utf-8") != _h5: (root / "site" / "hdf5.mjs").write_text(_h5, encoding="utf-8")
+check_js((root / "site" / "pack.js").read_text(encoding="utf-8"), "site/pack.js", module=True)
 check_js((root / "worker" / "kachelmann-proxy.js").read_text(encoding="utf-8"), "worker/kachelmann-proxy.js", module=True)
 
 def lint():

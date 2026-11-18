@@ -3207,7 +3207,9 @@ function atReq(kind,url,o){
    c({ok:false,net:true,abort:true,err:"Zeit"})},ms+20000);
   const cb=m=>{clearTimeout(tm);if(!m.ok)return fail(m.err,{net:!!m.net,abort:!!m.abort,status:m.status||0});m.g=g;res(m)};cb.w=w;
   atWq.set(id,cb);
-  w.postMessage({id,kind,url,g:{lo0:g.lo0,yT:g.yT,W:g.W,H:g.H},cs:AT_CS,rcMin:RC_MIN,rcL:RC_L,ms,tw:SN_TW,fc0:o.fc0!=null?o.fc0:Infinity,faint:AT_FAINT});
+  /* von unserem Server: zuerst das fertig aufbereitete Paket (site/pack.js), sonst die NetCDF-Datei */
+  const pk=url.startsWith(location.origin+"/gr/")||url.startsWith(location.origin+"/gm/")?url.replace(/\/(gr|gm)\//,"/$1/p/"):null;
+  w.postMessage({id,kind,url,pk,g:{lo0:g.lo0,yT:g.yT,W:g.W,H:g.H},cs:AT_CS,rcMin:RC_MIN,rcL:RC_L,ms,tw:SN_TW,fc0:o.fc0!=null?o.fc0:Infinity,faint:AT_FAINT});
  });
 }
 /* ganz Österreich auf einmal (siehe oben). Fehler: e.net = Netz oder GeoSphere, sonst ließ sich die Datei nicht lesen */

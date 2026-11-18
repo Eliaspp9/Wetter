@@ -4,6 +4,7 @@
      Handy nicht vor jeder Anfrage erst nachfragen, ob es darf (keine CORS-Vorabanfragen).
    - Die App selbst (index.html) bekommt nur, wer angemeldet ist: Dafür setzt er bei Anmeldung und Verlängerung ein Cookie
      (HttpOnly, nur für diese Seite). Ohne gültiges Cookie kommt login.html. Geprüft wird das Token beim wetter-proxy (/auth). */
+import { packed } from "./pack.js";
 const COOKIE = "wt";
 const PAGE = new Set(["/", "/index.html"]);
 const SEC = {
@@ -162,12 +163,31 @@ async function grRun(env) {
   const opt = { expirationTtl: 3 * 3600 }, q = "&start=" + isoM(ref);
   const rr = await grGet(GR_URL + "?parameters=rr" + GR_BB + q, 150000);
   await kv.put("gr:rr:" + ref, rr, opt);
+  /* gleich fertig für die App aufbereiten (siehe site/pack.js) */
+  const pk = async (k, b, f, ttl) => { try { await kv.put("gr:p:" + k + ":" + ref, await packed(b, k === "t" ? "t2m" : "rr", f), { expirationTtl: ttl }); } catch (e) { console.error("pack", k, e && e.message); } };
+  await pk("rr", rr, ref + 60, 3 * 3600);
   let a = null, t2 = null;
-  try { a = await grGet(GR_URL + "?parameters=rr" + GR_BB + q + "&end=" + isoM(ref), 90000); await kv.put("gr:a:" + ref, a, { expirationTtl: 3.6 * 3600 }); } catch (e) {}
-  if (ref - (ix.t2 || 0) >= 3300) { try { t2 = await grGet(GR_URL + "?parameters=t2m" + GR_BB + q + "&end=" + isoM(ref), 90000); await kv.put("gr:t:" + ref, t2, opt); } catch (e) {} }
+  try { a = await grGet(GR_URL + "?parameters=rr" + GR_BB + q + "&end=" + isoM(ref), 90000); await kv.put("gr:a:" + ref, a, { expirationTtl: 3.6 * 3600 }); await pk("a", a, ref + 60, 3.6 * 3600); } catch (e) {}
+  if (ref - (ix.t2 || 0) >= 3300) { try { t2 = await grGet(GR_URL + "?parameters=t2m" + GR_BB + q + "&end=" + isoM(ref), 90000); await kv.put("gr:t:" + ref, t2, opt); await pk("t", t2, null, 3 * 3600); } catch (e) {} }
   const now = Date.now() / 1000;
   await kv.put("gr:idx", JSON.stringify({ ref, at: Math.round(now), a: [...(ix.a || []), ...(a ? [ref] : [])].filter((t) => t > now - 3.4 * 3600).slice(-14), t2: t2 ? ref : ix.t2 || 0 }));
 }
+/* die NetCDF-Datei eines Bildes aus dem KV-Speicher: m = ["gm", ref, t] oder ["rr"|"a"|"t", ref] */
+async function ncBytes(kv, m) {
+  if (m[0] === "gm") {
+    /* gebündelt (siehe gmRun), sonst der alte Einzeleintrag */
+    for (const ik of ["gm:idx", "gm:nx"]) {
+      const ix = JSON.parse((await kv.get(ik)) || "null"), e = ix && String(ix.ref) === m[1] && ix.p && ix.p[m[2]];
+      if (!e) continue;
+      const all = await kv.get(e[0], { type: "arrayBuffer" });
+      if (all && all.byteLength >= e[1] + e[2]) return all.slice(e[1], e[1] + e[2]);
+    }
+    return kv.get("gm:" + m[1] + ":" + m[2], { type: "arrayBuffer" });
+  }
+  return kv.get("gr:" + m[0] + ":" + m[1], { type: "arrayBuffer" });
+}
+const NC_HDR = { "Content-Type": "application/x-netcdf", "Cache-Control": "private, max-age=86400, immutable" },
+  PK_HDR = { "Content-Type": "application/octet-stream", "Cache-Control": "private, max-age=86400, immutable" };
 async function gmServe(env, url) {
   const kv = env.GM;
   if (!kv) return new Response("{}", { status: 503, headers: { "Content-Type": "application/json" } });
@@ -175,20 +195,25 @@ async function gmServe(env, url) {
     const ix = (await kv.get(url.pathname.slice(1) + ":idx")) || "{}";
     return new Response(ix, { headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" } });
   }
-  const m = url.pathname.match(/^\/gm\/(\d{9,11})\/(\d{9,11})$/), g = url.pathname.match(/^\/gr\/(rr|a|t)\/(\d{9,11})$/);
+  const P = url.pathname, m = P.match(/^\/gm\/(?:p\/)?(\d{9,11})\/(\d{9,11})$/), g = P.match(/^\/gr\/(?:p\/)?(rr|a|t)\/(\d{9,11})$/);
   if (!m && !g) return new Response("Nicht gefunden", { status: 404 });
-  if (m) {
-    /* gebündelt (siehe gmRun), sonst der alte Einzeleintrag */
-    for (const ik of ["gm:idx", "gm:nx"]) {
-      const ix = JSON.parse((await kv.get(ik)) || "null"), e = ix && String(ix.ref) === m[1] && ix.p && ix.p[m[2]];
-      if (!e) continue;
-      const all = await kv.get(e[0], { type: "arrayBuffer" });
-      if (all && all.byteLength >= e[1] + e[2]) return new Response(all.slice(e[1], e[1] + e[2]), { headers: { "Content-Type": "application/x-netcdf", "Cache-Control": "private, max-age=86400, immutable" } });
-    }
+  const key = m ? ["gm", m[1], m[2]] : [g[1], g[2]];
+  /* fertig aufbereitet für die App (siehe site/pack.js): Radar schon beim Holen vorbereitet, sonst jetzt und dann im
+     Zwischenspeicher von Cloudflare (1 Tag) */
+  if (P.includes("/p/")) {
+    if (g) { const b = await kv.get("gr:p:" + g[1] + ":" + g[2], { type: "arrayBuffer" }); if (b) return new Response(b, { headers: PK_HDR }); }
+    const ck = new Request(url.origin + P), cache = caches.default;
+    const hit = await cache.match(ck);
+    if (hit) return hit;
+    const nc = await ncBytes(kv, key);
+    if (!nc) return new Response("Nicht gefunden", { status: 404 });
+    const out = new Response(await packed(nc, m ? "tp" : g[1] === "t" ? "t2m" : "rr", m ? null : +g[2] + 60), { headers: PK_HDR });
+    try { await cache.put(ck, out.clone()); } catch (e) {}
+    return out;
   }
-  const b = await kv.get(m ? "gm:" + m[1] + ":" + m[2] : "gr:" + g[1] + ":" + g[2], { type: "arrayBuffer" });
+  const b = await ncBytes(kv, key);
   if (!b) return new Response("Nicht gefunden", { status: 404 });
-  return new Response(b, { headers: { "Content-Type": "application/x-netcdf", "Cache-Control": "private, max-age=86400, immutable" } });
+  return new Response(b, { headers: NC_HDR });
 }
 /* ============ Beste Vorhersage je Ort (/bf/pp und /bf/sk), nur für Angemeldete ============
    /bf/pp: echte Regenwahrscheinlichkeit aus Ensembles. Jedes Ensemble rechnet das Wetter 20 bis 50 Mal mit leicht

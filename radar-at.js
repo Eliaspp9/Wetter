@@ -23,8 +23,32 @@ async function load(url, ms) {
     } finally { clearTimeout(tm); }
   }
 }
+/* fertig aufbereitetes Paket von unserem Server (site/pack.js): nur noch auspacken. null, wenn es nicht passt */
+async function unpack(buf, g) {
+  const raw = new Uint8Array(await new Response(new Blob([buf]).stream().pipeThrough(new DecompressionStream("gzip"))).arrayBuffer());
+  const hl = new DataView(raw.buffer).getUint32(0), h = JSON.parse(new TextDecoder().decode(raw.subarray(4, 4 + hl)));
+  if (h.v !== 1 || h.W !== g.W || h.H !== g.H) return null;
+  const WH = h.W * h.H;
+  let o = 4 + hl;
+  const take = () => { const a = raw.slice(o, o + WH); o += WH; return a; };
+  if (raw.length < o + WH * (1 + h.nV + (h.S ? 1 : 0) + h.SM)) return null;
+  const has = take(), V = Array.from({ length: h.nV }, take), S = h.S ? take() : null, SM = h.SM ? Array.from({ length: h.SM }, take) : null;
+  return { t: h.t, base: h.base, V, has, S, SM, n: h.n };
+}
 self.onmessage = async (ev) => {
   const m = ev.data, kind = m.kind || "rr";
+  if (m.pk && typeof DecompressionStream === "function") {
+    try {
+      const t0 = Date.now(), buf = await load(m.pk, Math.min(m.ms, 30000)), d = await unpack(buf, m.g);
+      if (d) {
+        const tr = [...d.V.map((a) => a.buffer), d.has.buffer];
+        if (d.S) tr.push(d.S.buffer);
+        if (d.SM) d.SM.forEach((a) => tr.push(a.buffer));
+        self.postMessage(Object.assign({ id: m.id, ok: true, bytes: buf.byteLength, ms: Date.now() - t0, pk: 1 }, d), tr);
+        return;
+      }
+    } catch (e) { /* dann wie bisher die NetCDF-Datei */ }
+  }
   try {
     const buf = await load(m.url, m.ms), t0 = Date.now();
     let T, R, C, v, fill, la, lo, tv, units, sfv = null, grid1d = false;
