@@ -132,7 +132,7 @@ async function gmRun(env) {
     }
   }
 }
-/* Radar Österreich (INCA-Nowcast von GeoSphere), ebenso vorab geholt: alle 5 Minuten wird nachgesehen, ob es einen neuen
+/* Radar Österreich (INCA-Nowcast von GeoSphere), ebenso vorab geholt: jede Minute wird nachgesehen, ob es einen neuen
    Lauf gibt (alle 15 Minuten). Dann werden geholt und abgelegt (3 Stunden):
    - gr:rr:<ref> ganz Österreich, Messbild und 3 Stunden Vorhersage (etwa 1 MB)
    - gr:a:<ref>  nur das Messbild (für den Rückblick der App)
@@ -151,19 +151,22 @@ async function grGet(u, ms) {
 async function grRun(env) {
   const kv = env.GM;
   if (!kv) return;
-  let ref;
-  try { const r = await tfetch(GR_URL + "/metadata?t=" + Math.floor(Date.now() / 60000), 60000), j = await r.json(); ref = Date.parse(j.last_forecast_reftime) / 1000; } catch (e) { return; }
-  if (!ref) return;
+  /* jede Minute aufgerufen: bei GeoSphere nur nachfragen, wenn ein neuer Lauf da sein kann (frühestens 16 Minuten nach
+     seiner Startzeit, ein Lauf alle 15 Minuten), das schont das Limit von GeoSphere (240 Abfragen pro Stunde) */
   const ix = JSON.parse((await kv.get("gr:idx")) || "null") || { ref: 0, a: [], t2: 0 };
+  if (ix.ref && Date.now() / 1000 < ix.ref + 900 + 16 * 60) return;
+  let ref;
+  try { const r = await tfetch(GR_URL + "/metadata?t=" + Math.floor(Date.now() / 60000), 50000), j = await r.json(); ref = Date.parse(j.last_forecast_reftime) / 1000; } catch (e) { return; }
+  if (!ref) return;
   if (ref <= ix.ref) return;
   const opt = { expirationTtl: 3 * 3600 }, q = "&start=" + isoM(ref);
   const rr = await grGet(GR_URL + "?parameters=rr" + GR_BB + q, 150000);
   await kv.put("gr:rr:" + ref, rr, opt);
   let a = null, t2 = null;
-  try { a = await grGet(GR_URL + "?parameters=rr" + GR_BB + q + "&end=" + isoM(ref), 90000); await kv.put("gr:a:" + ref, a, opt); } catch (e) {}
+  try { a = await grGet(GR_URL + "?parameters=rr" + GR_BB + q + "&end=" + isoM(ref), 90000); await kv.put("gr:a:" + ref, a, { expirationTtl: 3.6 * 3600 }); } catch (e) {}
   if (ref - (ix.t2 || 0) >= 3300) { try { t2 = await grGet(GR_URL + "?parameters=t2m" + GR_BB + q + "&end=" + isoM(ref), 90000); await kv.put("gr:t:" + ref, t2, opt); } catch (e) {} }
   const now = Date.now() / 1000;
-  await kv.put("gr:idx", JSON.stringify({ ref, at: Math.round(now), a: [...(ix.a || []), ...(a ? [ref] : [])].filter((t) => t > now - 2.5 * 3600).slice(-8), t2: t2 ? ref : ix.t2 || 0 }));
+  await kv.put("gr:idx", JSON.stringify({ ref, at: Math.round(now), a: [...(ix.a || []), ...(a ? [ref] : [])].filter((t) => t > now - 3.4 * 3600).slice(-14), t2: t2 ? ref : ix.t2 || 0 }));
 }
 async function gmServe(env, url) {
   const kv = env.GM;
@@ -427,6 +430,6 @@ export default {
   async scheduled(event, env, ctx) {
     ctx.waitUntil(grRun(env).catch((e) => console.error("grRun", e && e.message)));
     /* das Wettermodell nur alle 10 Minuten */
-    if (new Date(event.scheduledTime || Date.now()).getUTCMinutes() % 10 < 5) ctx.waitUntil(gmRun(env).catch((e) => console.error("gmRun", e && e.message)));
+    if (new Date(event.scheduledTime || Date.now()).getUTCMinutes() % 10 === 0) ctx.waitUntil(gmRun(env).catch((e) => console.error("gmRun", e && e.message)));
   },
 };

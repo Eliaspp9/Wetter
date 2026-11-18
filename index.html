@@ -273,6 +273,7 @@ body.follow #geo svg,.favs button.on svg{fill:currentColor}
 /* Schatten auf jeder Ebene: wird einmal gezeichnet und beim Bewegen nur mitgeschoben */
 .hicon .hl{position:absolute;inset:0;filter:drop-shadow(0 6px 12px rgba(0,0,0,.16));will-change:transform;backface-visibility:hidden}
 .hicon .h-dr,.hicon .h-fl,.hicon .h-bt{filter:none;will-change:transform,opacity}
+.temp .tdec{font-size:.5em;letter-spacing:0;font-weight:300}
 .temp{font-size:104px;font-weight:200;line-height:1;letter-spacing:-.05em;font-variant-numeric:tabular-nums;text-shadow:0 2px 16px rgba(0,0,0,.2),0 8px 34px rgba(0,0,0,.14)}
 .deg{font-size:48px;font-weight:200;line-height:1;align-self:flex-start;margin-top:10px;opacity:.92}
 .cond{font-size:19px;font-weight:600;margin-top:2px;letter-spacing:-.01em}
@@ -1137,6 +1138,10 @@ const $=id=>document.getElementById(id);
 const root=document.documentElement;
 const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const deg=n=>String(Math.round(n)).replace("-","−")+"°";
+/* aktuelle Temperatur mit einer Kommastelle (oben und in der Kopfzeile) */
+const t1=n=>{let v=Math.round(n*10)/10;if(Object.is(v,-0)||v===0)v=0;return v.toFixed(1).replace(".",",").replace("-","−")};
+const deg1=n=>t1(n)+"°";
+function tempSet(n){const s=t1(n),i=s.lastIndexOf(","),e=$("temp");e.textContent=s.slice(0,i);const d=document.createElement("span");d.className="tdec";d.textContent=s.slice(i);e.appendChild(d)}
 const fmt=n=>String(Math.round(n*10)/10).replace(".",",");
 /* Niederschlag als Text: Schnee in cm (Neuschnee), Regen in mm; fällt beides, beides („❄ 3 cm · 1,2 mm“).
    mm = gesamter Niederschlag als Wasser, cm = Schneefall. Wie bei Open-Meteo: 7 cm Schnee entsprechen 10 mm Wasser. */
@@ -1695,9 +1700,9 @@ function renderAll(j,at){
  const d=new Date(c.time);
  const lt=new Date((at||Date.now())+(+j.utc_offset_seconds||0)*1000),p2=x=>(x<10?"0":"")+x;
  $("when").textContent=d.toLocaleDateString("de-AT",{weekday:"long",day:"numeric",month:"long"})+" · Stand "+p2(lt.getUTCHours())+":"+p2(lt.getUTCMinutes())+" Uhr";
- $("temp").textContent=String(Math.round(c.temperature_2m)).replace("-","−");
+ tempSet(c.temperature_2m);
  setHeroIcon(k);
- $("micon").innerHTML=ic(k);$("mname").textContent=place.name;$("mtemp").textContent=deg(c.temperature_2m);
+ $("micon").innerHTML=ic(k);$("mname").textContent=place.name;$("mtemp").textContent=deg1(c.temperature_2m);
  $("desc").textContent=DESC[c.weather_code]||"Unbekannt";
  $("range").innerHTML=rangeHtml(j.daily.temperature_2m_max[0],j.daily.temperature_2m_min[0],"Höchstens","Tiefstens");
  $("hsrc").textContent=j.src==="lok"?"Werte: "+lokText(j):j.src==="ecmwf"?"Werte: Wettermodell ECMWF IFS, 9 km (über Open-Meteo)":"Werte: Wettermodelle über Open-Meteo";
@@ -3225,7 +3230,7 @@ async function atNc(){
 }
 /* ============ Radar Österreich: Rückblick, Schnee je Zelle, Wettermodell danach ============
    Zusammengesetzt aus dem neuesten Lauf (atRun) und:
-   - Rückblick: die Messbilder der 5 Läufe davor (je 15 Minuten, also bis 90 Minuten zurück). Jeder neue Lauf bringt sein
+   - Rückblick: die Messbilder der 12 Läufe davor (je 15 Minuten, also bis 3 Stunden zurück). Jeder neue Lauf bringt sein
      Messbild mit, die älteren werden einmal einzeln nachgeholt (forecast_offset).
    - Schnee oder Regen je Zelle aus der INCA-Temperatur (1 km, mit dem echten Gelände): Schnee bei höchstens SN_TW °C,
      stündlich neu.
@@ -3235,7 +3240,7 @@ let atRun=null,atT2=null,atVer=0,atXSeq=0,atXBusy=false,atMod={ref:0,chk:0,f:new
 function atCompose(){
  const r=atRun;if(!r)return null;
  if(Math.abs(r.t[0]-r.ref)<60)atHist.set(r.t[0],r.V[0]);
- for(const k of [...atHist.keys()])if(k<r.ref-5400)atHist.delete(k);
+ for(const k of [...atHist.keys()])if(k<r.ref-10800)atHist.delete(k);
  const hk=[...atHist.keys()].filter(k=>k<r.t[0]-60).sort((a,b)=>a-b),tEnd=r.t[r.t.length-1];
  const mk=[...atMod.f.keys()].filter(k=>k>tEnd+60).sort((a,b)=>a-b);
  return Object.assign({},r,{t:[...hk,...r.t,...mk],V:[...hk.map(k=>atHist.get(k)),...r.V,...mk.map(k=>atMod.f.get(k).V)],
@@ -3258,7 +3263,9 @@ async function atExtras(){
    try{const m=await atReq("t2m",sv?location.origin+"/gr/t/"+sv:GS_T+"&start="+isoM(r.ref)+"&end="+isoM(r.ref));atT2={S:m.S,at:Date.now()};if(live())atRedo()}catch(e){console.warn("GeoSphere Temperatur:",e.message)}
   }
   let got=0;
-  for(let k=1;k<=5&&live();k++){
+  /* Rückblick 3 Stunden: erst die letzten 90 Minuten, dann das Modell, dann der Rest */
+  for(const [k0,k1] of [[1,5],[6,12]])for(let k=k0;k<=k1&&live();k++){
+   if(k===6){if(got&&live()){atRedo();got=0}if(live())await atModel(r,live)}
    const tk=r.ref-900*k;if(atHist.has(tk))continue;
    const sv=atSrv&&atSrv.a&&atSrv.a.indexOf(tk)>=0;
    /* der Server hat das Bild nicht: nicht auf das langsame GeoSphere warten, sonst kommt das Modell erst viel später */
@@ -3575,14 +3582,16 @@ function atUse(d){
 }
 function atFresh(d){
  const min=Math.round(Date.now()/60000-d.ref/60);
- $("fresh").textContent="Letzte Messung: "+hmT(d.ref)+" Uhr"+(min>=0?" (vor "+min+" Min.)":"")+", danach Vorhersage";
+ const lx=atLxT>d.ref+60&&atBg.some(b=>b.lf),m2=Math.round(Date.now()/60000-atLxT/60);
+ $("fresh").textContent=lx?"Letzte Messung: "+hmT(atLxT)+" Uhr (vor "+Math.max(0,m2)+" Min., Europa-Radar), GeoSphere "+hmT(d.ref)+" Uhr, danach Vorhersage":
+  "Letzte Messung: "+hmT(d.ref)+" Uhr"+(min>=0?" (vor "+min+" Min.)":"")+", danach Vorhersage";
 }
 /* Jede Minute: „Jetzt“ rückt auf das Bild der aktuellen Viertelstunde weiter, auch bevor ein neuer Lauf da ist */
 function atTick(){
  const d=atData;if(!d||mode!=="at"||lay!=="rain"||!frames.length||frames[0].at==null)return;
  const now=Date.now()/1000,pc=Math.max(1,frames.filter(f=>f.time<=now+60).length);
  if(pc!==pastCount){const was=idx===pastCount-1;pastCount=pc;placeTick();if(was&&!timer)show(pc-1)}
- atFresh(d);
+ atFresh(d);atBgLoad();
 }
 function atHide(){rgClear();atBgHide()}
 /* Radar Österreich: außerhalb des Gebiets von GeoSphere läuft „Weltweit“ darunter mit, in den gleichen Farben, damit am
@@ -3597,7 +3606,12 @@ async function atBgLoad(){
   const j=await getJt(RVSRC[0].url,9000);if(mode!=="at"||!map)return;
   const past=(j.radar&&j.radar.past)||[],nc=(j.radar&&j.radar.nowcast)||[];if(!past.length)return;
   atBgHide(true);
-  atBg=[...past.slice(-13),...nc].map(f=>({time:f.time,l:rcLayer("tile",j.host+f.path+"/512/{z}/{x}/{y}/0/1_0.png",{rcPx:512,opacity:0,maxNativeZoom:lxNat,maxZoom:19,zIndex:4,className:"rdr",attribution:RVSRC[0].att,crossOrigin:"anonymous"},"WXA")}));
+  /* Messbilder von LibreWXR, die neuer sind als die letzte Messung von GeoSphere (GeoSphere stellt sie erst 17 bis 21
+     Minuten später bereit, das Europa-Radar meist schon nach 5 bis 10): zusätzlich ohne Aussparung, die zeigen dann auch
+     über Österreich die echte Messung statt der Vorhersage */
+  const r0=atRun?atRun.ref:Infinity,mk=(f,k)=>rcLayer("tile",j.host+f.path+"/512/{z}/{x}/{y}/0/1_0.png",{rcPx:512,opacity:0,maxNativeZoom:lxNat,maxZoom:19,zIndex:k==="WX"?6:4,className:"rdr",attribution:RVSRC[0].att,crossOrigin:"anonymous"},k);
+  atBg=[...past.slice(-13).map(f=>Object.assign({ms:1},f)),...nc].map(f=>({time:f.time,l:mk(f,"WXA"),lf:f.ms&&f.time>r0+60?mk(f,"WX"):null}));
+  atLxT=past.length?past[past.length-1].time:0;if(atData)atFresh(atData);
   atBgMask=atRun;atBgK=-1;const f=frames[idx];if(f&&f.at!=null)atBgShow(f.time);
  }catch(e){}
 }
@@ -3632,7 +3646,11 @@ function atBgShow(t){
  if(atRun&&atBgMask!==atRun&&(!atBgMask||atBgMask.g.W!==atRun.g.W)){atBgMask=atRun;atBg.forEach(b=>{if(b.l._map)b.l.redraw()})}
  let best=null,bd=1e9;for(const b of atBg){const d=Math.abs(b.time-t);if(d<bd){bd=d;best=b}}
  if(bd>600)best=null;
- for(const b of atBg){if(b===best){if(!map.hasLayer(b.l))b.l.addTo(map);b.l.setOpacity(.78)}else if(map.hasLayer(b.l))b.l.setOpacity(0)}
+ /* zwischen der letzten Messung von GeoSphere und jetzt: neuere Messung vom Europa-Radar, wenn es eine gibt */
+ const lf=best&&best.lf&&atData&&t>atData.ref+60&&t<=Date.now()/1000+60?best.lf:null;
+ for(const b of atBg){if(b===best){if(!map.hasLayer(b.l))b.l.addTo(map);b.l.setOpacity(.78)}else if(map.hasLayer(b.l))b.l.setOpacity(0);
+  if(b.lf){if(b.lf===lf){if(!map.hasLayer(b.lf))b.lf.addTo(map);b.lf.setOpacity(.78)}else if(map.hasLayer(b.lf))b.lf.setOpacity(0)}}
+ atLxUse(!!lf);
  /* nach der Radar-Vorhersage: Wettermodell */
  let k=-1;
  const fut=!best&&t>Date.now()/1000;
@@ -3642,7 +3660,9 @@ function atBgShow(t){
  atFcShow(k);
  atFcLoad();
 }
-function atBgHide(drop){for(const b of atBg){try{map.removeLayer(b.l)}catch(e){}}if(drop)atBg=[];atBgK=-1;atFcShow(-1);for(const l of icxL.values()){try{map.removeLayer(l)}catch(e){}}icxL.clear()}
+let atLxT=0,atLxOn=false;
+function atLxUse(on){atLxOn=on;if(rg&&rg.cv)rg.cv.style.opacity=on?"0":""}
+function atBgHide(drop){atLxUse(false);for(const b of atBg){try{map.removeLayer(b.l)}catch(e){}try{if(b.lf)map.removeLayer(b.lf)}catch(e){}}if(drop)atBg=[];atBgK=-1;atFcShow(-1);for(const l of icxL.values()){try{map.removeLayer(l)}catch(e){}}icxL.clear()}
 let atFcD=null,atFcBusy=false,atFcT=0,atFcOv=null,atFcK=-1,atFcHook=false;const atFcImg=new Map();
 async function atFcLoad(){
  if(!map||mode!=="at"||lay!=="rain"||atFcBusy||document.hidden)return;
@@ -5088,8 +5108,8 @@ function kcApplyHeader(){
  const j=lastJ;if(!j||!kcActive())return;
  const c=j.current,x=kcAt(Date.now());if(!x||x.T==null)return;
  const day=x.D!=null?x.D:!!(c.is_day==null?1:c.is_day),k=kcKind(x,c.weather_code,day);
- $("temp").textContent=String(Math.round(x.T)).replace("-","−");
- setHeroIcon(k);$("micon").innerHTML=ic(k);$("mtemp").textContent=deg(x.T);
+ tempSet(x.T);
+ setHeroIcon(k);$("micon").innerHTML=ic(k);$("mtemp").textContent=deg1(x.T);
  $("desc").textContent=kcDescOf(x,c.weather_code,day);
  setSky(skyKey(k,day));$("top").dataset.fx=k==="rain"?"rain":k==="snow"?"snow":"";
  const off=(+j.utc_offset_seconds||0)*1000,today=j.daily.time[0],now=Date.now();
@@ -5286,7 +5306,7 @@ const tnT=()=>{const g=tnNow();return g&&g.T!=null?g:null};
 function tnApply(fromLoad){
  const g=tnNow();if(!g||!lastJ)return;
  if(g.T!=null){
-  $("temp").textContent=String(Math.round(g.T)).replace("-","−");$("mtemp").textContent=deg(g.T);
+  tempSet(g.T);$("mtemp").textContent=deg1(g.T);
   /* „Jetzt“ in den nächsten 24 Stunden zeigt denselben Wert wie oben */
   const hb=document.querySelector("#hours .hc.now b");if(hb)hb.textContent=deg(g.T);
  }
