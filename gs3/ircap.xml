@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?><WMS_Capabilities xmlns:inspire_vs="http://inspire.ec.europa.eu/schemas/inspire_vs/1.0" xmlns:inspire_common="http://inspire.ec.europa.eu/schemas/common/1.0" version="1.3.0" updateSequence="29689" xmlns="http://www.opengis.net/wms" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/wms https://maps.dwd.de/geoserver/schemas/wms/1.3.0/capabilities_1_3_0.xsd http://inspire.ec.europa.eu/schemas/inspire_vs/1.0 https://inspire.ec.europa.eu/schemas/inspire_vs/1.0/inspire_vs.xsd">
+  <Service>
+    <Name>WMS</Name>
+    <Title>DWD GeoServer WMS</Title>
+    <Abstract>This is the Web Map Server of DWD.</Abstract>
+    <KeywordList>
+      <Keyword>meteorology</Keyword>
+      <Keyword>climatology</Keyword>
+    </KeywordList>
+    <OnlineResource xlink:type="simple" xlink:href="https://maps.dwd.de/geoserver/"/>
+    <ContactInformation>
+      <ContactPersonPrimary>
+        <ContactPerson/>
+        <ContactOrganization>Deutscher Wetterdienst</ContactOrganization>
+      </ContactPersonPrimary>
+      <ContactPosition/>
+      <ContactAddress>
+        <AddressType>postal</AddressType>
+        <Address>Frankfurter Strasse 135</Address>
+        <City>Offenbach</City>
+        <StateOrProvince>Hessen</StateOrProvince>
+        <PostCode>63067</PostCode>
+        <Country>Germany</Country>
+      </ContactAddress>
+      <ContactVoiceTelephone/>
+      <ContactFacsimileTelephone/>
+      <ContactElectronicMailAddress>info@dwd.de</ContactElectronicMailAddress>
+    </ContactInformation>
+    <Fees>none</Fees>
+    <AccessConstraints>https://www.dwd.de/copyright</AccessConstraints>
+  </Service>
+  <Capability>
+    <Request>
+      <GetCapabilities>
+        <Format>text/xml</Format>
+        <DCPType>
+          <HTTP>
+            <Get>
+              <OnlineResource xlink:type="simple" xlink:href="https://maps.dwd.de/geoserver/dwd/Satellite_worldmosaic_3km_world_ir108_3h/ows?SERVICE=WMS&amp;"/>
+            </Get>
+            <Post>
+              <OnlineResource xlink:type="simple" xlink:href="https://maps.dwd.de/geoserver/dwd/Satellite_worldmosaic_3km_world_ir108_3h/ows?SERVICE=WMS&amp;"/>
+            </Post>
+          </HTTP>
+        </DCPType>
+      </GetCapabilities>
+      <GetMap>
+        <Format>image/png</Format>
+        <Format>application/atom+xml</Format>
+        <Format>application/json;type=utfgrid</Format>
+        <Format>application/pdf</Format>
+        <Format>application/rss+xml</Format>
+        <Format>application/vnd.google-earth.kml+xml</Format>
+        <Format>application/vnd.google-earth.kml+xml;mode=networklink</Format>
+        <Format>application/vnd.google-earth.kmz</Format>
+        <Format>image/geotiff</Format>
+        <Format>image/geotiff8</Format>
+        <Format>image/gif</Format>
+        <Format>image/jpeg</Format>
+        <Format>image/png; mode=8bit</Format>
+        <Format>image/svg+xml</Format>
+        <Format>image/tiff</Format>
+        <Format>image/tiff8</Format>
+        <Format>image/vnd.jpeg-png</Format>
+        <Format>image/vnd.jpeg-png8</Format>
+        <Format>text/html; subtype=openlayers</Format>
+        <Format>text/html; subtype=openlayers2</Format>
+        <Format>text/html; subtype=openlayers3</Format>
+        <DCPType>
+          <HTTP>
+            <Get>
+              <OnlineResource xlink:type="simple" xlink:href="https://maps.dwd.de/geoserver/dwd/Satellite_worldmosaic_3km_world_ir108_3h/ows?SERVICE=WMS&amp;"/>
+            </Get>
+          </HTTP>
+        </DCPType>
+      </GetMap>
+      <GetFeatureInfo>
+        <Format>text/plain</Format>
+        <Format>application/vnd.ogc.gml</Format>
+        <Format>text/xml</Format>
+        <Format>application/vnd.ogc.gml/3.1.1</Format>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+        <Format>text/html</Format>
+        <Format>text/javascript</Format>
+        <Format>application/json</Format>
+        <DCPType>
+          <HTTP>
+            <Get>
+              <OnlineResource xlink:type="simple" xlink:href="https://maps.dwd.de/geoserver/dwd/Satellite_worldmosaic_3km_world_ir108_3h/ows?SERVICE=WMS&amp;"/>
+            </Get>
+          </HTTP>
+        </DCPType>
+      </GetFeatureInfo>
+    </Request>
+    <Exception>
+      <Format>XML</Format>
+      <Format>INIMAGE</Format>
+      <Format>BLANK</Format>
+      <Format>JSON</Format>
+      <Format>JSONP</Format>
+    </Exception>
+    <inspire_vs:ExtendedCapabilities>
+      <inspire_common:MetadataUrl>
+        <inspire_common:URL>https://gdk.gdi-de.org/gdi-de/srv/eng/csw?request=GetRecordById&amp;version=2.0.2&amp;service=CSW&amp;outputSchema=http://www.isotc211.org/2005/gmd&amp;elementSetName=full&amp;id=de.dwd.services.wms</inspire_common:URL>
+        <inspire_common:MediaType>application/vnd.iso.19139+xml</inspire_common:MediaType>
+      </inspire_common:MetadataUrl>
+      <inspire_common:SupportedLanguages>
+        <inspire_common:DefaultLanguage>
+          <inspire_common:Language>ger</inspire_common:Language>
+        </inspire_common:DefaultLanguage>
+      </inspire_common:SupportedLanguages>
+      <inspire_common:ResponseLanguage>
+        <inspire_common:Language>ger</inspire_common:Language>
+      </inspire_common:ResponseLanguage>
+    </inspire_vs:ExtendedCapabilities>
+    <Layer>
+      <Title>DWD GeoServer WMS</Title>
+      <Abstract>This is the Web Map Server of DWD.</Abstract>
+      <!--Limited list of EPSG projections:-->
+      <CRS>EPSG:3044</CRS>
+      <CRS>EPSG:3045</CRS>
+      <CRS>EPSG:3413</CRS>
+      <CRS>EPSG:3857</CRS>
+      <CRS>EPSG:4258</CRS>
+      <CRS>EPSG:4326</CRS>
+      <CRS>EPSG:4839</CRS>
+      <CRS>EPSG:25832</CRS>
+      <CRS>EPSG:25833</CRS>
+      <CRS>EPSG:31467</CRS>
+      <CRS>EPSG:31468</CRS>
+      <CRS>EPSG:900913</CRS>
+      <CRS>EPSG:1000001</CRS>
+      <EX_GeographicBoundingBox>
+        <westBoundLongitude>-179.86289999999997</westBoundLongitude>
+        <eastBoundLongitude>179.88989000000004</eastBoundLongitude>
+        <southBoundLatitude>-89.92471</southBoundLatitude>
+        <northBoundLatitude>89.92471</northBoundLatitude>
+      </EX_GeographicBoundingBox>
+      <BoundingBox CRS="EPSG:3044" minx="-1.885959794710981E8" miny="-7.030617467148195E7" maxx="1.8859597947109842E8" maxy="2.760686850379853E8"/>
+      <BoundingBox CRS="EPSG:3045" minx="-1.5216019707239354E8" miny="-5.3701613059661224E7" maxx="1.521601970723938E8" maxy="2.258090547368011E8"/>
+      <BoundingBox CRS="EPSG:3413" minx="-1.799809599589693E10" miny="-1.801079426663512E10" maxx="1.800852760091155E10" maxy="1.8000380958359257E10"/>
+      <BoundingBox CRS="EPSG:3857" minx="-2.0022246440601483E7" miny="-4.673759722675856E7" maxx="2.0025250953658E7" maxy="4.673759722675797E7"/>
+      <BoundingBox CRS="EPSG:4258" minx="-89.92471000000248" miny="-179.86289999999997" maxx="89.92471000000248" maxy="179.88989000000004"/>
+      <BoundingBox CRS="EPSG:4326" minx="-89.92471" miny="-179.86289999999997" maxx="89.92471" maxy="179.88989000000004"/>
+      <BoundingBox CRS="EPSG:4839" minx="-3.422792809686808E9" miny="-3.3922062406813493E9" maxx="2.3307357326554036E9" maxy="3.4513210207005897E9"/>
+      <BoundingBox CRS="EPSG:25832" minx="-7.030617467148195E7" miny="-1.885959794710981E8" maxx="2.760686850379853E8" maxy="1.8859597947109842E8"/>
+      <BoundingBox CRS="EPSG:25833" minx="-5.3701613059661224E7" miny="-1.5216019707239354E8" maxx="2.258090547368011E8" maxy="1.521601970723938E8"/>
+      <BoundingBox CRS="EPSG:31467" minx="-1.8865131521780583E8" miny="-6.735821970057982E7" maxx="1.8879063866889724E8" maxy="2.7915617884154004E8"/>
+      <BoundingBox CRS="EPSG:31468" minx="-1.6950331411517757E8" miny="-5.763212528487588E7" maxx="1.696248870904116E8" maxy="2.5383733848624375E8"/>
+      <BoundingBox CRS="EPSG:900913" minx="-2.0022246440601483E7" miny="-4.673759722675856E7" maxx="2.0025250953658E7" maxy="4.673759722675797E7"/>
+      <BoundingBox CRS="EPSG:1000001" minx="-1.782077922352984E7" miny="-1.781740545116764E7" maxx="1.7816666007138055E7" maxy="1.78241322613967E7"/>
+      <Layer>
+        <Name>Fachlayer</Name>
+        <Title>Fachlayer</Title>
+        <Layer>
+          <Name>Wetter</Name>
+          <Title>Wetter</Title>
+          <Layer>
+            <Name>Satellit</Name>
+            <Title>Satellit</Title>
+            <Layer queryable="1" opaque="0">
+              <Name>Satellite_worldmosaic_3km_world_ir108_3h</Name>
+              <Title>Satellitenbild Weltkomposit IR 10.8 3h</Title>
+              <Abstract>Satellitenbild Weltkomposit IR 10.8 mit Datenbereitstellung alle 3 Stunden zu den Zeitpunkten 00, 03, 06, 09, 12, 15, 21 UTC, da Opendata-Abgabe</Abstract>
+              <KeywordList>
+                <Keyword>Atmosphärische Bedingungen</Keyword>
+                <Keyword>Beobachtungssystem</Keyword>
+                <Keyword>Satellitenbeobachtung</Keyword>
+              </KeywordList>
+              <CRS>EPSG:4326</CRS>
+              <BoundingBox CRS="EPSG:4326" minx="-89.92471" miny="-179.86289999999997" maxx="89.92471" maxy="179.88989000000004"/>
+              <BoundingBox CRS="EPSG:3044" minx="-1.885959794710981E8" miny="-7.030617467148195E7" maxx="1.8859597947109842E8" maxy="2.760686850379853E8"/>
+              <BoundingBox CRS="EPSG:3045" minx="-1.5216019707239354E8" miny="-5.3701613059661224E7" maxx="1.521601970723938E8" maxy="2.258090547368011E8"/>
+              <BoundingBox CRS="EPSG:3413" minx="-1.799809599589693E10" miny="-1.801079426663512E10" maxx="1.800852760091155E10" maxy="1.8000380958359257E10"/>
+              <BoundingBox CRS="EPSG:3857" minx="-2.0022246440601483E7" miny="-4.673759722675856E7" maxx="2.0025250953658E7" maxy="4.673759722675797E7"/>
+              <BoundingBox CRS="EPSG:4258" minx="-89.92471000000248" miny="-179.86289999999997" maxx="89.92471000000248" maxy="179.88989000000004"/>
+              <BoundingBox CRS="EPSG:4839" minx="-3.422792809686808E9" miny="-3.3922062406813493E9" maxx="2.3307357326554036E9" maxy="3.4513210207005897E9"/>
+              <BoundingBox CRS="EPSG:25832" minx="-7.030617467148195E7" miny="-1.885959794710981E8" maxx="2.760686850379853E8" maxy="1.8859597947109842E8"/>
+              <BoundingBox CRS="EPSG:25833" minx="-5.3701613059661224E7" miny="-1.5216019707239354E8" maxx="2.258090547368011E8" maxy="1.521601970723938E8"/>
+              <BoundingBox CRS="EPSG:31467" minx="-1.8865131521780583E8" miny="-6.735821970057982E7" maxx="1.8879063866889724E8" maxy="2.7915617884154004E8"/>
+              <BoundingBox CRS="EPSG:31468" minx="-1.6950331411517757E8" miny="-5.763212528487588E7" maxx="1.696248870904116E8" maxy="2.5383733848624375E8"/>
+              <BoundingBox CRS="EPSG:900913" minx="-2.0022246440601483E7" miny="-4.673759722675856E7" maxx="2.0025250953658E7" maxy="4.673759722675797E7"/>
+              <BoundingBox CRS="EPSG:1000001" minx="-1.782077922352984E7" miny="-1.781740545116764E7" maxx="1.7816666007138055E7" maxy="1.78241322613967E7"/>
+              <Dimension name="time" default="current" units="ISO8601">2026-11-18T03:00:00.000Z/2026-11-19T12:00:00.000Z/PT3H</Dimension>
+              <Style>
+                <Name>satellite_worldmosaic_3km_world_ir108_3h</Name>
+                <Title>temperature</Title>
+                <Abstract>style temperature for sat images ir 10.8</Abstract>
+                <LegendURL width="52" height="782">
+                  <Format>image/png</Format>
+                  <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://maps.dwd.de/geoserver/dwd/Satellite_worldmosaic_3km_world_ir108_3h/ows?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=Satellite_worldmosaic_3km_world_ir108_3h"/>
+                </LegendURL>
+              </Style>
+              <Style>
+                <Name>satellite_worldmosaic_3km_world_ir108_3h_isoarea_tbw</Name>
+                <Title>temperature</Title>
+                <Abstract>style temperature for sat images ir 10.8</Abstract>
+                <LegendURL width="52" height="782">
+                  <Format>image/png</Format>
+                  <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://maps.dwd.de/geoserver/dwd/Satellite_worldmosaic_3km_world_ir108_3h/ows?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=Satellite_worldmosaic_3km_world_ir108_3h&amp;style=satellite_worldmosaic_3km_world_ir108_3h_isoarea_tbw"/>
+                </LegendURL>
+              </Style>
+            </Layer>
+          </Layer>
+        </Layer>
+      </Layer>
+    </Layer>
+  </Capability>
+</WMS_Capabilities>
