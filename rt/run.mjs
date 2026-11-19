@@ -1,6 +1,9 @@
-const mod=await import("./sw.mjs");const env={PROXY:{fetch:async()=>new Response("{}",{status:200})}};
-const ms="dwd_icon_d2_ruc_native,geosphere_claef_austria,dwd_icon_d2_native,meteoswiss_icon_ch1,meteoswiss_icon_ch2,chmi_aladin_central_europe_2km,italia_meteo_arpae_icon_2i,ecmwf_ifs";
-const t0=Date.now();const r=await mod.default.fetch(new Request("https://x/bf/sk?la=48.163&lo=14.242&g=1&m="+ms,{headers:{Cookie:"wt=a.b"}}),env);const j=await r.json();console.log(JSON.stringify(j).slice(0,300));
-console.log("sk",r.status,Date.now()-t0+"ms");for(const k of ["e","b","r","t"])console.log(k,JSON.stringify(j[k]));
-const full="&current=temperature_2m,apparent_temperature,relative_humidity_2m,precipitation,weather_code,wind_speed_10m,wind_direction_10m,surface_pressure,is_day,cloud_cover,wind_gusts_10m&hourly=temperature_2m,precipitation_probability,weather_code,precipitation,wind_speed_10m,wind_gusts_10m,snowfall,cloud_cover,cloud_cover_low,relative_humidity_2m,is_day&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max,sunrise,sunset,sunshine_duration,daylight_duration,uv_index_max";
-try{const t1=Date.now();const m=await fetch("https://api.open-meteo.com/v1/forecast?latitude=48.1627&longitude=14.2419&timezone=auto&forecast_days=7"+full+"&models="+ms+",best_match");const tx=await m.text();console.log("main",m.status,Date.now()-t1+"ms",tx.length,tx.slice(0,300))}catch(e){console.log("main ERR",String(e))}
+import fs from "fs";
+const get=async(n,u)=>{try{const r=await fetch(u);const b=Buffer.from(await r.arrayBuffer());fs.writeFileSync("gs3/"+n,b);console.log(n,r.status,r.headers.get("content-type"),b.length)}catch(e){console.log(n,"ERR",String(e))}};
+const bb="1000000,5700000,1900000,6400000";
+await get("ir.png","https://maps.dwd.de/geoserver/dwd/wms?service=WMS&version=1.3.0&request=GetMap&layers=dwd:Satellite_worldmosaic_3km_world_ir108_3h&styles=&crs=EPSG:3857&bbox="+bb+"&width=256&height=256&format=image/png&transparent=true");
+await get("rgb.png","https://maps.dwd.de/geoserver/dwd/wms?service=WMS&version=1.3.0&request=GetMap&layers=dwd:Satellite_meteosat_1km_euat_rgb_day_hrv_and_night_ir108_3h&styles=&crs=EPSG:3857&bbox="+bb+"&width=256&height=256&format=image/png&transparent=true");
+await get("ircap.xml","https://maps.dwd.de/geoserver/dwd/Satellite_worldmosaic_3km_world_ir108_3h/wms?service=WMS&version=1.3.0&request=GetCapabilities");
+await get("ltg.png","https://view.eumetsat.int/geoserver/wms?service=WMS&version=1.3.0&request=GetMap&layers=mtg_fd:li_afa&styles=&crs=EPSG:3857&bbox=-2000000,4000000,4000000,8000000&width=256&height=256&format=image/png&transparent=true");
+await get("clm.png","https://view.eumetsat.int/geoserver/wms?service=WMS&version=1.3.0&request=GetMap&layers=mtg_fd:clm&styles=&crs=EPSG:3857&bbox="+bb+"&width=256&height=256&format=image/png&transparent=true");
+await get("eucap.xml","https://view.eumetsat.int/geoserver/mtg_fd/wms?service=WMS&version=1.3.0&request=GetCapabilities");
