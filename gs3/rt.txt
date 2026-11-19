@@ -1,2 +1,2 @@
-tcc.nc 503 application/json; charset=utf-8 113
-om 200 true [{"latitude":48.205967,"longitude":16.351799,"generationtime_ms":2.876758575439453,"utc_offset_seconds":0,"timezone":"GMT","timezone_abbreviation":"GMT","elevation":194,"hourly_units":{"time":"iso8601
+nwpmeta.json 200 application/json 2968
+tcc.nc 200 application/x-netcdf 532421
