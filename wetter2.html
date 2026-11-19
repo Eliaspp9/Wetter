@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-285fPEGby2/4TzKj3HOSc+oCkSuBOCI84QI8y2jN46U=' 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-TccR0BgCco5MD/t1RF/FQtkgVajH7Z95LiMwvg88QBo=' 'sha256-1cblodng6eW6T9oPw5lVt2wOGIn+IRbQzSVDQ+EsjdI=' 'sha256-RuxfNxmpjp4A0o44t73N+6O4m9ajjPnJ8Ah9hbvLASk=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src 'self'; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://s3.amazonaws.com https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-285fPEGby2/4TzKj3HOSc+oCkSuBOCI84QI8y2jN46U=' 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-TccR0BgCco5MD/t1RF/FQtkgVajH7Z95LiMwvg88QBo=' 'sha256-3LovBbvKX41vfit+92S0eHfUL1HuKUXKZp7ck6nPq+g=' 'sha256-RuxfNxmpjp4A0o44t73N+6O4m9ajjPnJ8Ah9hbvLASk=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src 'self'; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://s3.amazonaws.com https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -14,7 +14,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/favicon-64.png">
-<meta name="app-build" content="91">
+<meta name="app-build" content="92">
 <meta name="app-version" content="1.0">
 <meta name="app-notes" content="Neue Adresse: Die App liegt jetzt bei Cloudflare (wetter.elias-ziegler.workers.dev). Version 1.0 (Build 1): Alles durchgesehen, Fehler behoben und schneller gemacht. Die App startet viel schneller: Das Wetter steht beim Öffnen fast sofort da, weil der letzte Stand gleich gezeigt wird und alle Daten gleichzeitig geholt werden. Das Regenradar Österreich lädt jetzt immer ganz Österreich auf einmal (etwa 1 MB, 1 bis 2 Sekunden statt viele Stücke zu je 6 MB), egal wohin du zoomst, ohne Lücken, und holt neue Daten gleich, wenn du die App aus dem Hintergrund zurückholst. Die Regen-Vorschau für die nächsten 2 Stunden war eine Viertelstunde zu spät und stimmt jetzt. Benachrichtigungen kommen zuverlässiger, die Schrift lädt ohne Google, dazu viele Kleinigkeiten.">
 <script>/* Umzug von GitHub (eliaspp9.github.io/Wetter) hierher: die alte Seite gibt Einstellungen und Lieblingsorte in der Adresse
@@ -3784,7 +3784,7 @@ async function atBgLoad(){
      Minuten später bereit, das Europa-Radar meist schon nach 5 bis 10): zusätzlich ohne Aussparung, die zeigen dann auch
      über Österreich die echte Messung statt der Vorhersage */
   const r0=atRun?atRun.ref:Infinity,mk=(f,k)=>rcLayer("tile",j.host+f.path+"/512/{z}/{x}/{y}/0/1_0.png",{rcPx:512,opacity:0,maxNativeZoom:lxNat,maxZoom:19,zIndex:k==="WX"?6:4,className:"rdr",attribution:RVSRC[0].att,crossOrigin:"anonymous"},k);
-  atBg=[...past.slice(-13).map(f=>Object.assign({ms:1},f)),...nc].map(f=>({time:f.time,l:mk(f,"WXA"),lf:f.ms&&f.time>r0+60?mk(f,"WX"):null}));
+  atBg=[...past.slice(-13).map(f=>Object.assign({ms:1},f)),...nc].map(f=>({time:f.time,l:mk(f,"WXA"),lf:(f.ms&&f.time>r0+60)||(!f.ms&&isFinite(r0))?mk(f,"WX"):null}));
   atLxT=past.length?past[past.length-1].time:0;if(atData)atFresh(atData);
   atBgMask=atRun;atBgK=-1;const f=frames[idx];if(f&&f.at!=null)atBgShow(f.time);
  }catch(e){}
@@ -3821,10 +3821,15 @@ function atBgShow(t){
  let best=null,bd=1e9;for(const b of atBg){const d=Math.abs(b.time-t);if(d<bd){bd=d;best=b}}
  if(bd>600)best=null;
  /* zwischen der letzten Messung von GeoSphere und jetzt: neuere Messung vom Europa-Radar, wenn es eine gibt */
- const lf=best&&best.lf&&atData&&t>atData.ref+60&&t<=Date.now()/1000+60?best.lf:null;
+ /* weicher Übergang nach „jetzt“: zuerst läuft die Vorhersage des Europa-Radars weiter (sie beginnt bei derselben
+    Messung, darum kein Sprung) und wird in 45 Minuten nach und nach in die Vorhersage von GeoSphere übergeblendet */
+ const nw=Date.now()/1000,fill=atBg.some(b=>b.lf&&b.time<=nw+60);
+ let w=0;
+ if(best&&best.lf&&atData&&t>atData.ref+60){if(t<=nw+60)w=1;else if(fill)w=Math.max(0,Math.min(1,1-(t-nw)/2700))}
+ const lf=w>0?best.lf:null;
  for(const b of atBg){if(b===best){if(!map.hasLayer(b.l))b.l.addTo(map);b.l.setOpacity(RLO)}else if(map.hasLayer(b.l))b.l.setOpacity(0);
-  if(b.lf){if(b.lf===lf){if(!map.hasLayer(b.lf))b.lf.addTo(map);b.lf.setOpacity(RLO)}else if(map.hasLayer(b.lf))b.lf.setOpacity(0)}}
- atLxUse(!!lf);
+  if(b.lf){if(b.lf===lf){if(!map.hasLayer(b.lf))b.lf.addTo(map);b.lf.setOpacity(RLO*w)}else if(map.hasLayer(b.lf))b.lf.setOpacity(0)}}
+ atLxUse(w);
  /* nach der Radar-Vorhersage: Wettermodell */
  let k=-1;
  const fut=!best&&t>Date.now()/1000;
@@ -3835,7 +3840,8 @@ function atBgShow(t){
  atFcLoad();
 }
 let atLxT=0;
-function atLxUse(on){if(rg&&rg.cv)rg.cv.style.opacity=on?"0":""}
+/* w: Anteil Europa-Radar (0 bis 1); das GeoSphere-Bild bekommt den Rest */
+function atLxUse(w){if(rg&&rg.cv)rg.cv.style.opacity=w>=1?"0":w>0?(1-w).toFixed(2):""}
 function atBgHide(drop){atLxUse(false);for(const b of atBg){try{map.removeLayer(b.l)}catch(e){}try{if(b.lf)map.removeLayer(b.lf)}catch(e){}}if(drop)atBg=[];atBgK=-1;atFcShow(-1);for(const l of icxL.values()){try{map.removeLayer(l)}catch(e){}}icxL.clear()}
 let atFcD=null,atFcBusy=false,atFcT=0,atFcOv=null,atFcK=-1,atFcHook=false;const atFcImg=new Map();
 async function atFcLoad(){
@@ -7290,7 +7296,7 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("shr").hidden)cl
 const meta=n=>{const m=document.querySelector('meta[name="'+n+'"]');return m?m.content:""};
 /* app-build zählt seit jeher einfach hoch; daran erkennen auch ältere Geräte ein Update (sie vergleichen diese Zahl).
    Angezeigt wird der Build seit Version 1.0: Build 1 ist app-build 57. */
-const BUILD=+meta("app-build")||0,BUILD0=90,verText=b=>meta("app-version")+" (Build "+(b-BUILD0)+")";
+const BUILD=+meta("app-build")||0,BUILD0=91,verText=b=>meta("app-version")+" (Build "+(b-BUILD0)+")";
 let remote=null,lastChk=0;
 $("ver").textContent=verText(BUILD);
 /* Anmeldung: bis wann sie gilt und ob sie sich von selbst verlängert */
