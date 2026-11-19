@@ -1,6 +1,4 @@
-ir.png 200 image/png 18461
-rgb.png 200 image/png 106971
-ircap.xml 200 text/xml 12685
-ltg.png 200 image/png 3221
-clm.png 200 text/xml;charset=UTF-8 434
-eucap.xml 200 text/xml 34742
+irg.png 200 image/png 28084
+irg2.png 200 image/png 28084
+geo.png 200 image/png 151763
+dim <Dimension name="time" default="2026-11-19T12:10:00Z" units="ISO8601" nearestValue="1">2024-09-23T00:00:00.000Z/2026-11-19T12:10:00.000Z/PT10M
