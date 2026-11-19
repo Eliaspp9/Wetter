@@ -21,6 +21,12 @@ export function convert(buf, kind, fc0) {
   const [T, R, C] = main.shape, v = main.value, fill = main.fillvalue == null ? -999 : main.fillvalue;
   const LA = f.get("lat"), LO = f.get("lon"), la = LA.value, lo = LO.value, grid1d = LA.shape.length === 1;
   const sfv = kind === "tp" && f.keys.indexOf("sf") >= 0 ? f.get("sf").value : null;
+  /* Bewölkung (nur Wettermodell): 0 bis 100 % je Zelle, für die grauen Wolken unter dem Radar */
+  const tcv = kind === "tp" && f.keys.indexOf("tcc") >= 0 ? f.get("tcc").value : null;
+  /* gepackte Werte (scale_factor, add_offset) umrechnen; Anteil 0 bis 1 oder Prozent */
+  const tA = tcv ? f.get("tcc").attrs || {} : {}, tcS = +tA.scale_factor || 1, tcO = +tA.add_offset || 0, tcFill = tcv ? f.get("tcc").fillvalue : null;
+  let tcMul = 100;
+  if (tcv) { let mx = 0; for (let i = 0; i < tcv.length; i += 97) { const x = tcv[i] * tcS + tcO; if (tcv[i] !== tcFill && x > mx && x < 1000) mx = x; } if (mx > 101) tcMul = 0.01; else if (mx > 1.5) tcMul = 1; }
   const tm = f.get("time"), tv = tm.value, units = String(tm.attrs.units || "");
   const mt = /^(days|hours|minutes|seconds) since (\d{4}-\d\d-\d\d)[ T](\d\d:\d\d)(:\d\d)?/.exec(units);
   if (!mt || !T || !R || !C) throw new Error("Zeitangabe");
@@ -32,6 +38,7 @@ export function convert(buf, kind, fc0) {
   const lim = Array.from({ length: T }, (_, k) => (kind === "tp" || t[k] > (fc0 == null ? Infinity : fc0) ? AT_FAINT : 0));
   const V = Array.from({ length: nV }, () => new Uint8Array(W * H)), has = new Uint8Array(W * H);
   const S = kind === "t2m" ? new Uint8Array(W * H) : null, SM = sfv ? Array.from({ length: T }, () => new Uint8Array(W * H)) : null;
+  const CC = tcv ? Array.from({ length: T }, () => new Uint8Array(W * H)) : null;
   let n = 0, r0 = H, r1 = -1, c0 = W, c1 = -1;
   const XC = grid1d ? Int32Array.from(lo, (b) => Math.floor((b - G.lo0) / cs)) : null, YR = grid1d ? Int32Array.from(la, (a) => Math.floor((G.yT - merc(a)) / cs)) : null;
   for (let i = 0; i < N; i++) {
@@ -48,6 +55,7 @@ export function convert(buf, kind, fc0) {
       if (q / 100 <= SN_TW) S[o] = 1;
     } else {
       for (let k = 0; k < T; k++) {
+        if (CC) { const c0 = tcv[k * N + i]; if (c0 !== tcFill && c0 === c0) { const cc = Math.max(0, Math.min(100, Math.round((c0 * tcS + tcO) * tcMul))); if (cc > CC[k][o]) CC[k][o] = cc; any = true; } }
         const q = v[k * N + i];
         if (q === fill || !(q >= 0)) continue;
         any = true;
@@ -74,16 +82,17 @@ export function convert(buf, kind, fc0) {
     for (let k = 0; k < nV; k++) { const A = V[k]; let s = 0, c = 0; for (const q of nb(o)) if (has[q] === 1 && A[q]) { s += A[q]; c++; } A[o] = c ? Math.round(s / c) : 0; }
     if (S) { let s = 0, c = 0; for (const q of nb(o)) if (has[q] === 1) { s += S[q]; c++; } S[o] = c && s * 2 >= c ? 1 : 0; }
     if (SM) for (let k = 0; k < T; k++) { let s = 0; for (const q of nb(o)) if (has[q] === 1) s += SM[k][q]; SM[k][o] = s >= 2 ? 1 : 0; }
+    if (CC) for (let k = 0; k < T; k++) { let s = 0, c = 0; for (const q of nb(o)) if (has[q] === 1) { s += CC[k][q]; c++; } CC[k][o] = c ? Math.round(s / c) : 0; }
     has[o] = 2;
   }
-  return { t, base, n, W, H, has, V, S, SM };
+  return { t, base, n, W, H, has, V, S, SM, CC };
 }
 
 /* in ein gepacktes Paket schreiben */
 export async function packed(buf, kind, fc0) {
   const d = convert(buf, kind, fc0), WH = d.W * d.H;
-  const head = new TextEncoder().encode(JSON.stringify({ v: 1, t: d.t, base: d.base, n: d.n, W: d.W, H: d.H, nV: d.V.length, S: !!d.S, SM: d.SM ? d.SM.length : 0 }));
-  const parts = [d.has, ...d.V, ...(d.S ? [d.S] : []), ...(d.SM || [])];
+  const head = new TextEncoder().encode(JSON.stringify({ v: 1, t: d.t, base: d.base, n: d.n, W: d.W, H: d.H, nV: d.V.length, S: !!d.S, SM: d.SM ? d.SM.length : 0, CC: d.CC ? d.CC.length : 0 }));
+  const parts = [d.has, ...d.V, ...(d.S ? [d.S] : []), ...(d.SM || []), ...(d.CC || [])];
   const out = new Uint8Array(4 + head.length + parts.length * WH);
   new DataView(out.buffer).setUint32(0, head.length);
   out.set(head, 4);

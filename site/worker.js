@@ -71,7 +71,7 @@ async function api(req, env, url) {
    danach alle 3 Stunden bis 2 Tage) und legt sie im KV-Speicher ab (gm:…, 26 Stunden). Die App lädt sie dann in Sekunden:
    /gm = Liste {ref, t}, /gm/<ref>/<t> = ein Bild als NetCDF (offene Daten von GeoSphere, keine Anmeldung nötig). */
 const GM_URL = "https://dataset.api.hub.geosphere.at/v1/grid/forecast/nwp-v2-1h-1km",
-  GM_Q = "?parameters=tp,sf&output_format=netcdf&bbox=45.50,8.10,49.48,17.74";
+  GM_Q = "?parameters=tp,sf,tcc&output_format=netcdf&bbox=45.50,8.10,49.48,17.74";
 const isoM = (t) => new Date(t * 1000).toISOString().slice(0, 16);
 async function tfetch(u, ms) {
   const ac = new AbortController(), tm = setTimeout(() => ac.abort(), ms);
@@ -79,7 +79,8 @@ async function tfetch(u, ms) {
 }
 function gmWanted(ref, now) {
   const end = Math.min(ref + 60 * 3600, now + 48 * 3600), out = [];
-  for (let t = Math.ceil(now / 3600) * 3600 + 3600; t <= end; t += 3600) {
+  /* ab der Stunde vor jetzt: die Bewölkung (tcc) braucht die App auch für das Radar von jetzt (graue Wolken) */
+  for (let t = Math.floor(now / 3600) * 3600 - 3600; t <= end; t += 3600) {
     if (t <= ref) continue;
     if (t > now + 12 * 3600 && t % 10800) continue;
     out.push(t);
@@ -167,10 +168,10 @@ async function grRun(env) {
   const pk = async (k, b, f, ttl) => { try { await kv.put("gr:p:" + k + ":" + ref, await packed(b, k === "t" ? "t2m" : "rr", f), { expirationTtl: ttl }); } catch (e) { console.error("pack", k, e && e.message); } };
   await pk("rr", rr, ref + 60, 3 * 3600);
   let a = null, t2 = null;
-  try { a = await grGet(GR_URL + "?parameters=rr" + GR_BB + q + "&end=" + isoM(ref), 90000); await kv.put("gr:a:" + ref, a, { expirationTtl: 3.6 * 3600 }); await pk("a", a, ref + 60, 3.6 * 3600); } catch (e) {}
+  try { a = await grGet(GR_URL + "?parameters=rr" + GR_BB + q + "&end=" + isoM(ref), 90000); await kv.put("gr:a:" + ref, a, { expirationTtl: 25 * 3600 }); await pk("a", a, ref + 60, 25 * 3600); } catch (e) {}
   if (ref - (ix.t2 || 0) >= 3300) { try { t2 = await grGet(GR_URL + "?parameters=t2m" + GR_BB + q + "&end=" + isoM(ref), 90000); await kv.put("gr:t:" + ref, t2, opt); await pk("t", t2, null, 3 * 3600); } catch (e) {} }
   const now = Date.now() / 1000;
-  await kv.put("gr:idx", JSON.stringify({ ref, at: Math.round(now), a: [...(ix.a || []), ...(a ? [ref] : [])].filter((t) => t > now - 3.4 * 3600).slice(-14), t2: t2 ? ref : ix.t2 || 0 }));
+  await kv.put("gr:idx", JSON.stringify({ ref, at: Math.round(now), a: [...(ix.a || []), ...(a ? [ref] : [])].filter((t) => t > now - 24.6 * 3600).slice(-100), t2: t2 ? ref : ix.t2 || 0 }));
 }
 /* die NetCDF-Datei eines Bildes aus dem KV-Speicher: m = ["gm", ref, t] oder ["rr"|"a"|"t", ref] */
 async function ncBytes(kv, m) {
@@ -463,7 +464,10 @@ const OM_HOSTS = new Set(["api.open-meteo.com", "air-quality-api.open-meteo.com"
    - Vorrechnen: was in den letzten 6 Stunden gebraucht wurde (om:hot), holt der Server alle 5 Minuten rechtzeitig neu,
      so ist beim Öffnen der App schon alles da. */
 const omTtl = (host, path) => (host.startsWith("geocoding") ? 86400 : path.endsWith("meta.json") ? 300 : host.startsWith("previous") ? 3600 : host.startsWith("api.") ? 900 : 1800);
-const omPre = (u) => /^https:\/\/(api|ensemble-api|air-quality-api)\.open-meteo\.com\/v1\//.test(u);
+/* viele Orte in einer Abfrage (Temperaturen auf der Radarkarte): zählt bei Open-Meteo je Ort, darum nicht vorrechnen und
+   eine Stunde merken */
+const omMany = (u) => { const m = /[?&]latitude=([^&]*)/.exec(u); return !!m && decodeURIComponent(m[1]).split(",").length > 5; };
+const omPre = (u) => /^https:\/\/(api|ensemble-api|air-quality-api)\.open-meteo\.com\/v1\//.test(u) && !omMany(u);
 async function sha(s) { const b = await crypto.subtle.digest("SHA-1", new TextEncoder().encode(s)); return [...new Uint8Array(b)].map((x) => x.toString(16).padStart(2, "0")).join(""); }
 async function omFetch(env, u, h, ttl) {
   const r = await tfetch(u, 25000);
@@ -500,7 +504,7 @@ async function omServe(req, env, url) {
   if (!(await valid(env, getCookie(req, COOKIE)))) return bfJson({ error: "Nicht angemeldet" }, 401);
   const m = /^\/om\/([a-z.-]+)(\/[A-Za-z0-9_\/.-]*)$/.exec(url.pathname);
   if (!m || !OM_HOSTS.has(m[1]) || req.method !== "GET") return bfJson({ error: "Ungültig" }, 400);
-  const u = "https://" + m[1] + m[2] + url.search, ttl = omTtl(m[1], m[2]), h = await sha(u), now = Date.now() / 1000;
+  const u = "https://" + m[1] + m[2] + url.search, ttl = omMany("https://x/?" + url.search.slice(1)) ? 3600 : omTtl(m[1], m[2]), h = await sha(u), now = Date.now() / 1000;
   const out = (body, ct, age) => new Response(body, { headers: { "Content-Type": ct || "application/json", "Cache-Control": "no-store", "X-Alter": String(Math.round(age)) } });
   let old = null;
   if (env.GM) { try { old = await env.GM.getWithMetadata("om:" + h, { type: "arrayBuffer" }); } catch (e) {} }

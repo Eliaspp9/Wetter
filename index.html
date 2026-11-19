@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-285fPEGby2/4TzKj3HOSc+oCkSuBOCI84QI8y2jN46U=' 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-TccR0BgCco5MD/t1RF/FQtkgVajH7Z95LiMwvg88QBo=' 'sha256-xRLG9mMqwk3zdfISUNIafg0lYlJevGAR4PDqQ3L7X/Y=' 'sha256-RuxfNxmpjp4A0o44t73N+6O4m9ajjPnJ8Ah9hbvLASk=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src 'self'; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://s3.amazonaws.com https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-285fPEGby2/4TzKj3HOSc+oCkSuBOCI84QI8y2jN46U=' 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-TccR0BgCco5MD/t1RF/FQtkgVajH7Z95LiMwvg88QBo=' 'sha256-1cblodng6eW6T9oPw5lVt2wOGIn+IRbQzSVDQ+EsjdI=' 'sha256-RuxfNxmpjp4A0o44t73N+6O4m9ajjPnJ8Ah9hbvLASk=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src 'self'; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://s3.amazonaws.com https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -14,7 +14,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/favicon-64.png">
-<meta name="app-build" content="90">
+<meta name="app-build" content="91">
 <meta name="app-version" content="1.0">
 <meta name="app-notes" content="Neue Adresse: Die App liegt jetzt bei Cloudflare (wetter.elias-ziegler.workers.dev). Version 1.0 (Build 1): Alles durchgesehen, Fehler behoben und schneller gemacht. Die App startet viel schneller: Das Wetter steht beim Öffnen fast sofort da, weil der letzte Stand gleich gezeigt wird und alle Daten gleichzeitig geholt werden. Das Regenradar Österreich lädt jetzt immer ganz Österreich auf einmal (etwa 1 MB, 1 bis 2 Sekunden statt viele Stücke zu je 6 MB), egal wohin du zoomst, ohne Lücken, und holt neue Daten gleich, wenn du die App aus dem Hintergrund zurückholst. Die Regen-Vorschau für die nächsten 2 Stunden war eine Viertelstunde zu spät und stimmt jetzt. Benachrichtigungen kommen zuverlässiger, die Schrift lädt ohne Google, dazu viele Kleinigkeiten.">
 <script>/* Umzug von GitHub (eliaspp9.github.io/Wetter) hierher: die alte Seite gibt Einstellungen und Lieblingsorte in der Adresse
@@ -748,6 +748,42 @@ html.noscroll .mini,html.noscroll .tabs{display:none}
 .legend .lgu{flex:0 0 100%;min-width:0;display:block}
 @media (max-width:420px){.mctl .seg button{padding:6px 8px;font-size:12px}}
 .fcv{position:absolute;left:0;top:0;pointer-events:none}
+/* Radar wie bei WetterOnline: große Karte, Ebenen-Knöpfe rechts, Tage-Leiste unten */
+#map{height:clamp(420px,calc(100svh - 230px),1000px)}
+.rail{position:absolute;right:10px;top:10px;z-index:6;display:flex;flex-direction:column;gap:8px;max-height:calc(100% - 200px);overflow-y:auto;scrollbar-width:none}
+.rail::-webkit-scrollbar{display:none}
+.rail button{flex:none;width:46px;height:46px;min-height:0;padding:0;display:grid;place-items:center;border:0;border-radius:12px;background:rgba(14,40,72,.82);color:#fff;font-size:0;box-shadow:0 1px 5px rgba(0,0,0,.25);cursor:pointer}
+.rail button svg{width:24px;height:24px;opacity:1}
+.rail button.on{background:#fff;color:#0E2848}
+.rail button[hidden]{display:none}
+.mctl{right:66px}
+.touch .mctl{right:66px}
+.mctl:not(.open) #basemode,.mctl:not(.open) #lblseg,.mctl:not(.open) .lay{display:none}
+.mctl.open{background:rgba(10,16,28,.55);padding:8px;border-radius:14px;backdrop-filter:blur(4px)}
+.mctl .lay{flex-wrap:wrap;overflow:visible}
+.daybar{position:absolute;left:10px;right:10px;bottom:10px;z-index:5;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+.daybar::-webkit-scrollbar{display:none}
+.daybar:empty{display:none}
+.daybar button{flex:1 0 auto;min-height:38px;padding:6px 12px;border:0;border-radius:10px;background:rgba(14,40,72,.82);color:#fff;font:inherit;font-size:14px;font-weight:600;white-space:nowrap}
+.daybar button.on{background:#fff;color:#0E2848}
+.daybar button:disabled{opacity:.7}
+.scrub{bottom:56px}
+.stepseg{position:absolute;left:10px;bottom:118px;z-index:5}
+.stepseg button{min-height:32px;padding:5px 12px}
+#ctr{bottom:118px}
+.lockb{left:auto;right:58px;bottom:118px}
+.mapwrap .leaflet-top.leaflet-right{top:auto;bottom:166px}
+#sec-radar.fld .daybar,#sec-radar.fld .stepseg,#sec-radar.fld .rx-cld,#sec-radar.fld .rx-wrn{display:none}
+#sec-radar.fld #fplay{bottom:10px}
+.full .rail{top:calc(env(safe-area-inset-top,0px) + 58px)}
+.full .mctl{right:66px}
+.full .daybar{bottom:calc(env(safe-area-inset-bottom,0px) + 10px)}
+.full .scrub{bottom:calc(env(safe-area-inset-bottom,0px) + 56px)}
+.full .stepseg{bottom:calc(env(safe-area-inset-bottom,0px) + 118px)}
+.full #ctr{bottom:calc(env(safe-area-inset-bottom,0px) + 118px)}
+.full #fplay{bottom:calc(env(safe-area-inset-bottom,0px) + 10px)}
+
+.tmk{background:none;border:0}.tmk b{display:block;text-align:center;font:800 15px/18px var(--font);color:#7BEA3C;text-shadow:0 0 2px #0B1A05,0 0 3px #0B1A05,0 1px 2px rgba(0,0,0,.6)}.tmk b.tc{color:#6FD3FF;text-shadow:0 0 2px #04182A,0 0 3px #04182A}
 .medot{box-sizing:border-box;border-radius:50%;background:#E5484D;border:3px solid #fff;box-shadow:0 1px 5px rgba(0,0,0,.45)}
 #fplay,#fldnote{display:none}
 #sec-radar.fld #fplay{display:flex}
@@ -1003,6 +1039,8 @@ html.locked body>*:not(#gate):not(.moved){display:none!important}
      <div class="slw"><input id="sl" type="range" min="0" max="0" step="any" value="0" aria-label="Zeitpunkt des Radars"><i id="nowline" aria-hidden="true"></i><i id="fcline" aria-hidden="true"></i><button type="button" id="nowtick" aria-label="Zum aktuellen Radarbild springen">Jetzt</button></div>
      <span id="ts"></span>
     </div>
+    <div class="seg stepseg" id="stepseg" role="group" aria-label="Schritte beim Abspielen"><button type="button" data-s="5">5 min</button><button type="button" data-s="15">15 min</button></div>
+    <div class="daybar" id="daybar" role="group" aria-label="Zu einem Tag springen"></div>
     <div class="scrub" id="fplay">
      <button id="fpp" type="button" aria-label="Abspielen oder anhalten"></button>
      <div class="slw"><input id="fsl" type="range" min="0" max="0" value="0" aria-label="Uhrzeit der Vorhersage"></div>
@@ -2488,7 +2526,8 @@ function setLabels(){
 function updLab(){try{if(lab&&map)lab.setOpacity(map.getZoom()>13?0:1)}catch(e){}}
 /* Wolken: Meteosat-Satellitenbild des DWD (1 km), unter dem Regenradar */
 let cld=null,cldOn=false;
-try{cldOn=localStorage.getItem("wetter-cld")==="1"}catch(e){}
+/* Wolken: jetzt standardmäßig an (graue Wolken wie bei WetterOnline); eine frühere Wahl „aus“ zählt nur, wenn sie neu ist */
+cldOn=true;try{const v=localStorage.getItem("wetter-cld2");if(v)cldOn=v==="1"}catch(e){}
 const CLD_LAYER="dwd:Satellite_meteosat_1km_euat_rgb_day_hrv_and_night_ir108_3h";
 /* Nebel und tiefe Wolken (Hochnebel) aus dem Wettersatelliten MTG: „Fog / Low Clouds RGB“ von EUMETSAT.
    Nachts erscheinen Nebel und Hochnebel hellblau bis türkis, tagsüber gelblich-weiß; höhere Wolken sind rötlich oder dunkel. */
@@ -2507,6 +2546,8 @@ function setClouds(){
  if(!map)return;
  $("cld").classList.toggle("on",cldOn);$("cld").setAttribute("aria-pressed",cldOn?"true":"false");
  try{
+  /* in „Österreich“ graue Wolken aus dem Modell statt Satellitenbild */
+  if(mode==="at"){if(cld){map.removeLayer(cld);cld=null}$("cnote").textContent=cldOn?"Wolken: Bewölkung aus dem Wettermodell von GeoSphere Austria (1 km), grau unter dem Niederschlag.":"";return}
   if(!cldOn){if(cld){map.removeLayer(cld);cld=null}$("cnote").textContent="";return}
   if(cld)return;
   let ok=0,bad=0;
@@ -2704,7 +2745,7 @@ function rcPaint(cv,img,rc,co){
   if(!(v>=rc.min)){p[j+3]=0;continue}
   V[i]=v;
   const q=Math.round(v*20)*2+(snow?1:0);let c=cc.get(q);
-  if(!c){const a=ramp(snow?SNOWC:RAINC,v);c=[a[0],a[1],a[2],Math.round(Math.min(1,.35+v*.6)*.92*255)];cc.set(q,c)}
+  if(!c){const a=ramp(snow?SNOWC:RAINC,v);c=[a[0],a[1],a[2],Math.round(pA(v)*255)];cc.set(q,c)}
   p[j]=c[0];p[j+1]=c[1];p[j+2]=c[2];p[j+3]=keep<1?Math.round(c[3]*keep):c[3];
  }
  x.putImageData(d,0,0);cv._v=V;cv._k=k;cv._snow=snow0;cv._sm=sm;cv._cls=!!rc.cls;
@@ -3302,11 +3343,11 @@ async function atNc(){
      stündlich neu.
    - nach der Radar-Vorhersage (3 Stunden) das Wettermodell von GeoSphere (1 km, alle 3 Stunden neu): stündlich bis etwa
      12 Stunden ab jetzt, danach alle 3 Stunden bis 48 Stunden; Schnee je Zelle und Bild aus dem Modell (Schneeanteil). */
-let atRun=null,atT2=null,atVer=0,atXSeq=0,atXBusy=false,atMod={ref:0,chk:0,f:new Map()};const atHist=new Map();
+let atRun=null,atT2=null,atVer=0,atXSeq=0,atXBusy=false,atMod={ref:0,chk:0,f:new Map()};const atHist=new Map();let atLongOn=false;
 function atCompose(){
  const r=atRun;if(!r)return null;
  if(Math.abs(r.t[0]-r.ref)<60)atHist.set(r.t[0],r.V[0]);
- for(const k of [...atHist.keys()])if(k<r.ref-10800)atHist.delete(k);
+ for(const k of [...atHist.keys()])if(k<r.ref-(atLongOn?88200:10800))atHist.delete(k);
  const hk=[...atHist.keys()].filter(k=>k<r.t[0]-60).sort((a,b)=>a-b),tEnd=r.t[r.t.length-1];
  const mk=[...atMod.f.keys()].filter(k=>k>tEnd+60).sort((a,b)=>a-b);
  return Object.assign({},r,{t:[...hk,...r.t,...mk],V:[...hk.map(k=>atHist.get(k)),...r.V,...mk.map(k=>atMod.f.get(k).V)],
@@ -3357,7 +3398,8 @@ async function atModel(r,live){
  }
  if(!atMod.ref)return;
  const tEnd=r.t[r.t.length-1],now=Date.now()/1000,ref=atMod.ref;
- const add=m=>{m.t.forEach((t,k)=>{if(m.V[k])atMod.f.set(t,{V:m.V[k],S:m.SM?m.SM[k]:null})})};
+ const add=m=>{m.t.forEach((t,k)=>{if(m.V[k])atMod.f.set(t,{V:m.V[k],S:m.SM?m.SM[k]:null});if(m.CC&&m.CC[k])atCld.set(t,m.CC[k])})};
+ for(const k of [...atCld.keys()])if(k<now-3*3600)atCld.delete(k);
  let list,url,ms;
  if(atMod.ix){list=atMod.ix;url=t=>location.origin+"/gm/"+ref+"/"+t;ms=30000}
  else{list=[];for(let t=Math.ceil((tEnd+60)/3600)*3600;t<=Math.min(ref+60*3600,now+6*3600);t+=3600)list.push(t);url=t=>GS_M+"&start="+isoM(t)+"&end="+isoM(t);ms=120000}
@@ -3365,7 +3407,10 @@ async function atModel(r,live){
  let n=0;
  for(const t of list){
   if(!live())return;
-  if(t<=tEnd+60||t>now+48*3600||atMod.f.has(t))continue;
+  /* Stunden bis zum Ende der Radar-Vorhersage: nur für die grauen Wolken (vom Server, mit Bewölkung) */
+  const early=t<=tEnd+60;
+  if(early&&(!atMod.ix||atCld.has(t)||t<now-5400))continue;
+  if(t>now+48*3600||(!early&&atMod.f.has(t)))continue;
   try{add(await atReq("tp",url(t),{ms}));n++}catch(e){console.warn("GeoSphere Modell:",e.message);if(e.net&&!atMod.ix)break}
   if((n===1||n%4===0)&&live())atRedo();
  }
@@ -3659,7 +3704,70 @@ function atTick(){
  if(pc!==pastCount){const was=idx===pastCount-1;pastCount=pc;placeTick();if(was&&!timer)show(pc-1)}
  atFresh(d);atBgLoad();
 }
-function atHide(){rgClear();atBgHide()}
+function atHide(){rgClear();atBgHide();atCldHide()}
+/* ============ Temperaturen bei den Orten (wie bei WetterOnline: grüne Zahlen auf der Karte) ============
+   Orte mit Rang: 1 große Städte (immer), 2 Bezirksstädte und mittlere Städte (ab Zoom 7), 3 kleinere Orte (ab Zoom 9).
+   Temperatur je Stunde von Open-Meteo (bestes Modell am Ort, 24 Stunden zurück bis 3 Tage voraus), passend zur Zeit
+   des gezeigten Radarbildes. Eine Abfrage je Gruppe (Rang 1+2 bzw. Rang 3), eine Stunde gemerkt. Schalter: „Grenzen &amp; Orte“. */
+const TOWNS="Wien|48.208|16.373|1;Graz|47.071|15.439|1;Linz|48.306|14.286|1;Salzburg|47.800|13.045|1;Innsbruck|47.269|11.404|1;Klagenfurt|46.624|14.308|1;Bregenz|47.503|9.747|1;St. Pölten|48.204|15.626|1;Eisenstadt|47.846|16.527|1;Villach|46.611|13.856|2;Wels|48.157|14.025|2;Steyr|48.039|14.421|2;Wiener Neustadt|47.814|16.244|2;Dornbirn|47.413|9.744|2;Feldkirch|47.237|9.598|2;Leoben|47.381|15.097|2;Krems|48.410|15.614|2;Amstetten|48.123|14.872|2;Braunau|48.256|13.034|2;Ried im Innkreis|48.211|13.489|2;Vöcklabruck|48.004|13.656|2;Gmunden|47.918|13.799|2;Bad Ischl|47.711|13.623|2;Freistadt|48.511|14.504|2;Zwettl|48.604|15.169|2;Horn|48.663|15.656|2;Liezen|47.567|14.240|2;Bruck an der Mur|47.410|15.270|2;Judenburg|47.172|14.661|2;Murau|47.111|14.172|2;Spittal an der Drau|46.800|13.495|2;Lienz|46.830|12.769|2;Zell am See|47.325|12.797|2;Bischofshofen|47.417|13.219|2;Kufstein|47.583|12.170|2;Wörgl|47.489|12.061|2;Schwaz|47.352|11.709|2;Landeck|47.140|10.567|2;Imst|47.245|10.740|2;Reutte|47.484|10.719|2;Bludenz|47.155|9.822|2;Wolfsberg|46.841|14.844|2;St. Veit an der Glan|46.768|14.360|2;Völkermarkt|46.662|14.635|2;Hermagor|46.627|13.367|2;Leibnitz|46.781|15.539|2;Deutschlandsberg|46.815|15.222|2;Weiz|47.218|15.625|2;Hartberg|47.282|15.970|2;Feldbach|46.953|15.889|2;Oberwart|47.288|16.204|2;Güssing|47.058|16.324|2;Neusiedl am See|47.949|16.842|2;Mistelbach|48.570|16.577|2;Hollabrunn|48.564|16.080|2;Gänserndorf|48.339|16.721|2;Tulln|48.330|16.054|2;Baden|48.006|16.234|2;Mödling|48.086|16.289|2;Melk|48.227|15.332|2;Scheibbs|48.004|15.166|2;Lilienfeld|48.013|15.596|2;Waidhofen an der Ybbs|47.960|14.774|2;Gmünd|48.769|14.982|2;Mürzzuschlag|47.607|15.672|2;Schladming|47.393|13.687|2;Kirchdorf an der Krems|47.906|14.123|2;Perg|48.250|14.633|2;Rohrbach|48.573|13.988|2;Schärding|48.457|13.432|2;Mattighofen|48.106|13.150|2;Hallein|47.683|13.097|2;Saalfelden|47.426|12.848|2;St. Johann im Pongau|47.349|13.203|2;Tamsweg|47.128|13.811|2;Mariazell|47.773|15.318|3;Windischgarsten|47.722|14.327|3;Grieskirchen|48.235|13.831|3;Eferding|48.309|14.022|3;Enns|48.213|14.475|3;Traun|48.226|14.234|3;Ansfelden|48.209|14.289|3;Leonding|48.279|14.253|3;Marchtrenk|48.192|14.111|3;Kremsmünster|48.053|14.130|3;Bad Hall|48.035|14.209|3;Sierning|48.044|14.310|3;St. Valentin|48.175|14.533|3;Ybbs|48.177|15.083|3;Pöchlarn|48.212|15.208|3;Ternitz|47.716|16.040|3;Neunkirchen|47.721|16.081|3;Stockerau|48.383|16.211|3;Korneuburg|48.345|16.333|3;Schwechat|48.141|16.477|3;Bruck an der Leitha|48.025|16.779|3;Kapfenberg|47.444|15.293|3;Knittelfeld|47.215|14.829|3;Köflach|47.064|15.089|3;Gleisdorf|47.106|15.708|3;Telfs|47.307|11.073|3;Hall in Tirol|47.283|11.508|3;Kitzbühel|47.446|12.392|3;St. Anton am Arlberg|47.127|10.268|3;Bad Gastein|47.115|13.134|3;Obertauern|47.250|13.560|3;Lustenau|47.428|9.659|3;Hohenems|47.363|9.688|3;Feldkirchen in Kärnten|46.722|14.093|3;Ferlach|46.527|14.302|3;München|48.137|11.575|1;Passau|48.575|13.465|1;Regensburg|49.013|12.102|2;Nürnberg|49.452|11.077|1;Augsburg|48.371|10.898|2;Rosenheim|47.857|12.128|2;Landshut|48.537|12.152|2;Straubing|48.884|12.573|2;Deggendorf|48.840|12.961|2;Traunstein|47.868|12.643|2;Bad Reichenhall|47.725|12.877|3;Garmisch-Partenkirchen|47.492|11.096|2;Kempten|47.726|10.315|2;Ingolstadt|48.766|11.426|2;Stuttgart|48.776|9.183|1;Ulm|48.402|9.988|2;Konstanz|47.660|9.175|2;Frankfurt|50.110|8.682|1;Berlin|52.520|13.405|1;Hamburg|53.551|9.994|1;Köln|50.938|6.960|1;Dresden|51.050|13.737|1;Leipzig|51.340|12.375|1;Hannover|52.376|9.732|1;Prag|50.075|14.438|1;Brünn|49.195|16.607|1;Budweis|48.975|14.480|1;Pilsen|49.738|13.374|2;Tábor|49.414|14.658|2;Písek|49.309|14.147|2;Jihlava|49.396|15.591|2;Krumau|48.811|14.315|3;Znaim|48.856|16.049|2;Ostrava|49.821|18.262|1;Bratislava|48.149|17.107|1;Trnava|48.377|17.588|2;Budapest|47.498|19.040|1;Győr|47.687|17.650|2;Sopron|47.685|16.590|2;Szombathely|47.231|16.621|2;Ljubljana|46.057|14.506|1;Maribor|46.555|15.646|2;Kranj|46.239|14.356|3;Zagreb|45.815|15.982|1;Zürich|47.377|8.541|1;Bern|46.948|7.448|1;Basel|47.560|7.588|2;St. Gallen|47.424|9.377|2;Chur|46.850|9.532|2;Lugano|46.004|8.951|2;Genf|46.204|6.143|1;Vaduz|47.141|9.521|2;Bozen|46.498|11.355|1;Meran|46.669|11.159|2;Brixen|46.715|11.656|3;Trient|46.067|11.122|2;Udine|46.063|13.243|2;Triest|45.650|13.777|2;Venedig|45.441|12.316|1;Verona|45.438|10.992|2;Mailand|45.464|9.190|1;Turin|45.070|7.687|2;Rom|41.903|12.496|1;Paris|48.857|2.352|1;Straßburg|48.573|7.752|2;Lyon|45.764|4.836|2;Warschau|52.230|21.012|1;Krakau|50.065|19.945|1;Breslau|51.108|17.039|2;Amsterdam|52.370|4.895|1;Brüssel|50.850|4.352|1;Kopenhagen|55.676|12.568|1;London|51.507|-0.128|1;Belgrad|44.787|20.457|1;Sarajevo|43.856|18.413|2".split(";").map(x=>{const a=x.split("|");return{n:a[0],la:+a[1],lo:+a[2],r:+a[3]}});
+let tmpL=null,tmpD={},tmpT=0,tmpKey="",tmpBusy={};
+async function tmpLoad(g){
+ if(tmpD[g]&&Date.now()-tmpD[g].at<3600000)return tmpD[g];
+ if(tmpBusy[g])return null;tmpBusy[g]=1;
+ try{
+  const L0=TOWNS.filter(t=>g===1?t.r<=2:t.r===3);
+  const j=await getJc60("https://api.open-meteo.com/v1/forecast?latitude="+L0.map(t=>t.la).join(",")+"&longitude="+L0.map(t=>t.lo).join(",")+"&hourly=temperature_2m&past_hours=24&forecast_hours=72&timezone=GMT");
+  const A=Array.isArray(j)?j:[j],m=new Map();
+  A.forEach((x,i)=>{const h=x&&x.hourly;if(h&&L0[i])m.set(L0[i].n,{t0:Date.parse(h.time[0]+":00Z")/1000,v:h.temperature_2m})});
+  tmpD[g]={at:Date.now(),m};return tmpD[g];
+ }catch(e){console.warn("Temperaturen Orte:",e.message);return null}finally{tmpBusy[g]=0}
+}
+function tmpHide(){tmpKey="";if(tmpL){try{map.removeLayer(tmpL)}catch(e){}tmpL=null}}
+async function tmpShow(t){
+ if(!map||!labOn||lay!=="rain"){tmpHide();return}
+ if(t)tmpT=t;const tt=tmpT||Date.now()/1000,z=map.getZoom(),B=map.getBounds().pad(.05);
+ const need=TOWNS.filter(x=>B.contains([x.la,x.lo])&&(x.r===1||(x.r===2&&z>=7)||(x.r===3&&z>=9)));
+ if(!need.length){tmpHide();return}
+ const d1=await tmpLoad(1),d3=need.some(x=>x.r===3)?await tmpLoad(3):null;
+ if(!labOn||lay!=="rain")return;
+ const val=x=>{const e=(x.r===3?d3:d1)&&(x.r===3?d3:d1).m.get(x.n);if(!e)return null;const i=Math.round((tt-e.t0)/3600);return i>=0&&i<e.v.length?e.v[i]:null};
+ /* nicht überlappen: zuerst die großen Städte */
+ const placed=[],out=[];
+ need.sort((a,b)=>a.r-b.r);
+ for(const x of need){const v=val(x);if(v==null)continue;const p=map.latLngToContainerPoint([x.la,x.lo]);if(placed.some(q=>Math.abs(q.x-p.x)<34&&Math.abs(q.y-p.y)<22))continue;placed.push(p);out.push([x,Math.round(v)])}
+ const key=Math.round(tt/3600)+"|"+out.map(o=>o[0].n+o[1]).join(",")+"|"+z;
+ if(key===tmpKey&&tmpL)return;tmpKey=key;
+ if(!map.getPane("tmpp")){const p=map.createPane("tmpp");p.style.zIndex=355;p.style.pointerEvents="none"}
+ const g=L.layerGroup();
+ for(const [x,v] of out)L.marker([x.la,x.lo],{pane:"tmpp",interactive:false,keyboard:false,icon:L.divIcon({className:"tmk",html:'<b class="'+(v<=0?"tc":"")+'">'+String(v).replace("-","−")+'</b>',iconSize:[34,18],iconAnchor:[17,24]})}).addTo(g);
+ if(tmpL)map.removeLayer(tmpL);tmpL=g.addTo(map);
+}
+let tmpHook=false;
+function tmpInit(){if(tmpHook||!map)return;tmpHook=true;map.on("moveend zoomend",()=>{clearTimeout(tmpInit.t);tmpInit.t=setTimeout(()=>tmpShow(),250)})}
+/* ============ Graue Wolken unter dem Radar (Österreich, wie bei WetterOnline) ============
+   Bewölkung aus dem Wettermodell von GeoSphere (1 km, stündlich, „tcc“), die unser Server mit dem Modell holt. Wo es
+   bewölkt ist, wird die Karte grau, je dichter, desto deckender; wo es klar ist, bleibt die Karte frei. Gezeigt wird die
+   Stunde, die dem Bild am nächsten liegt (bis 90 Minuten Abstand). Schalter: „Wolken“. */
+let atCld=new Map(),cldOv=null,cldK=-1;const cldUrl=new Map();
+function atCldHide(){cldK=-1;if(cldOv){try{map.removeLayer(cldOv)}catch(e){}cldOv=null}}
+function atCldShow(t){
+ if(!map||!cldOn||mode!=="at"||lay!=="rain"||!atRun||!atCld.size){atCldHide();return}
+ let bk=-1,bd=1e9;for(const k of atCld.keys()){const d=Math.abs(k-t);if(d<bd){bd=d;bk=k}}
+ if(bd>5400){atCldHide();return}
+ if(bk===cldK&&cldOv)return;
+ const g=atRun.g,C=atCld.get(bk);if(!g||!C||C.length!==g.W*g.H){atCldHide();return}
+ let url=cldUrl.get(bk);
+ if(!url){
+  const cv=document.createElement("canvas");cv.width=g.W;cv.height=g.H;
+  const x=cv.getContext("2d"),im=x.createImageData(g.W,g.H),d=im.data;
+  for(let i=0,j=0;i<C.length;i++,j+=4){const c=C[i];if(c<25)continue;d[j]=172;d[j+1]=177;d[j+2]=184;d[j+3]=Math.round(255*Math.min(1,(c-25)/55)*.62)}
+  x.putImageData(im,0,0);url=cv.toDataURL("image/png");cldUrl.set(bk,url);
+  while(cldUrl.size>8)cldUrl.delete(cldUrl.keys().next().value);
+ }
+ cldK=bk;
+ if(!map.getPane("atcp")){const p=map.createPane("atcp");p.style.zIndex=335;p.style.pointerEvents="none"}
+ if(cldOv)cldOv.setUrl(url);else cldOv=L.imageOverlay(url,g.bounds,{pane:"atcp",interactive:false,className:"cldg"}).addTo(map);
+}
 /* Radar Österreich: außerhalb des Gebiets von GeoSphere läuft „Weltweit“ darunter mit, in den gleichen Farben, damit am
    Rand keine Lücke und kein Kasten bleibt:
    - Messbilder und Radar-Vorhersage (etwa 60 Minuten) von LibreWXR, das Bild mit der nächsten Zeit (höchstens 10 Minuten daneben);
@@ -3702,7 +3810,7 @@ function icxLayer(th){
 function icxShow(th){
  for(const [k,l] of icxL){if(k!==th&&map.hasLayer(l))l.setOpacity(0)}
  if(th==null)return;
- icxLayer(th).setOpacity(.78);
+ icxLayer(th).setOpacity(RLO);
  /* die nächste Stunde schon unsichtbar laden, damit das Abspielen flüssig bleibt */
  if(th+3600<=Date.now()/1000+72*3600)icxLayer(th+3600);
 }
@@ -3714,8 +3822,8 @@ function atBgShow(t){
  if(bd>600)best=null;
  /* zwischen der letzten Messung von GeoSphere und jetzt: neuere Messung vom Europa-Radar, wenn es eine gibt */
  const lf=best&&best.lf&&atData&&t>atData.ref+60&&t<=Date.now()/1000+60?best.lf:null;
- for(const b of atBg){if(b===best){if(!map.hasLayer(b.l))b.l.addTo(map);b.l.setOpacity(.78)}else if(map.hasLayer(b.l))b.l.setOpacity(0);
-  if(b.lf){if(b.lf===lf){if(!map.hasLayer(b.lf))b.lf.addTo(map);b.lf.setOpacity(.78)}else if(map.hasLayer(b.lf))b.lf.setOpacity(0)}}
+ for(const b of atBg){if(b===best){if(!map.hasLayer(b.l))b.l.addTo(map);b.l.setOpacity(RLO)}else if(map.hasLayer(b.l))b.l.setOpacity(0);
+  if(b.lf){if(b.lf===lf){if(!map.hasLayer(b.lf))b.lf.addTo(map);b.lf.setOpacity(RLO)}else if(map.hasLayer(b.lf))b.lf.setOpacity(0)}}
  atLxUse(!!lf);
  /* nach der Radar-Vorhersage: Wettermodell */
  let k=-1;
@@ -3778,7 +3886,7 @@ function atFcPaint(k){
    if(cg&&cy>=0&&cy<cg.H){const cx=Math.floor((D.box[1]+(x+.5)/W*(D.box[3]-D.box[1])-cg.lo0)/AT_CS);
     if(cx>=0&&cx<cg.W&&cr.has[cy*cg.W+cx]){const f=fd[cy*cg.W+cx]/AT_FD;keep=1-f*f*(3-2*f);if(keep<=.01)continue}}
    const col=ramp(bl(S)>=v*.5?SNOWC:RAINC,v),o=(y*W+x)*4;
-   d[o]=col[0];d[o+1]=col[1];d[o+2]=col[2];d[o+3]=Math.round(Math.min(1,.35+v*.6)*.92*255*.78*keep);
+   d[o]=col[0];d[o+1]=col[1];d[o+2]=col[2];d[o+3]=Math.round(pA(v)*255*keep);
   }
  }
  g.putImageData(im,0,0);
@@ -3895,7 +4003,7 @@ function rgPal(){
   for(let q=0;q<256;q++){
    const o=(row*256+q)*4,r=RDEC[Math.max(2,q)],c=ramp(st,r);
    /* unter 0,1 mm/h (Niesel) zart einblenden, darüber wie bisher */
-   p[o]=c[0];p[o+1]=c[1];p[o+2]=c[2];p[o+3]=q<2?0:Math.round(255*(r<.1?.22+.16*(r-RC_MIN)/(.1-RC_MIN):Math.min(1,.35+r*.6)*.92));
+   p[o]=c[0];p[o+1]=c[1];p[o+2]=c[2];p[o+3]=q<2?0:Math.round(255*(r<.1?.3+.2*(r-RC_MIN)/(.1-RC_MIN):pA(r)));
   }
  });
  return p;
@@ -4171,8 +4279,14 @@ function exNote(){
 let fcData=null,fcOv=null,fcMk=null,fcTimer=0,fcLast=0,fcBusy=false;
 const STORM_ICO='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 4 14h6l-1 8 9-12h-6z" fill="#1B1B1B"/></svg>';
 /* ab 12 mm/h harter Wechsel auf Gelb, Orange, Rot (Starkregen soll sofort auffallen); Schnee ab 10 mm Wasser (7 cm/h) auf Rosa */
-const RAINC=[[.1,[178,214,255]],[.5,[110,170,255]],[1.5,[50,120,240]],[3,[25,85,210]],[6,[15,55,170]],[12,[10,30,120]],[12.001,[255,210,40]],[25,[250,130,20]],[50,[215,30,45]]];
-const SNOWC=[[.1,[226,205,255]],[.5,[196,160,255]],[1.5,[160,110,240]],[4,[125,70,210]],[10,[90,40,170]],[10.001,[255,150,215]],[15,[235,80,170]],[22,[175,20,115]]];
+/* Farben wie bei WetterOnline: schwacher Regen hell-türkis, dann Blau bis Dunkelblau; Schnee Rosa bis Magenta, sehr starker
+   Schnee Violett. Flächig und gut deckend (ab 0,1 mm/h). */
+const RAINC=[[.1,[175,243,255]],[.5,[105,212,255]],[1.5,[55,160,245]],[3,[30,110,225]],[6,[18,65,190]],[12,[12,35,130]],[12.001,[255,210,40]],[25,[250,130,20]],[50,[215,30,45]]];
+const SNOWC=[[.1,[255,214,247]],[.5,[255,168,234]],[1.5,[246,118,214]],[4,[226,68,186]],[10,[178,28,148]],[10.001,[125,45,205]],[15,[95,25,175]],[22,[60,10,125]]];
+/* Deckkraft je Stärke: fast gleichmäßig deckend, nur ganz schwacher Niederschlag etwas durchsichtiger */
+/* Deckkraft der Radar-Ebenen (vorher 0,78; jetzt kräftiger wie bei WetterOnline) */
+const RLO=.95;
+const pA=v=>v<.1?.5:v<.3?.72:.85;
 function ramp(st,v){
  if(v<=st[0][0])return st[0][1];
  for(let i=1;i<st.length;i++)if(v<=st[i][0]){const a=st[i-1],b=st[i],f=(v-a[0])/(b[0]-a[0]);return a[1].map((c,k)=>c+(b[1][k]-c)*f)}
@@ -4191,7 +4305,7 @@ function fcPaint(P,S,cols,rows){
    const r=bl(P);
    if(r<.08)continue;
    const col=ramp(bl(S)>=r*.5?SNOWC:RAINC,r),o=(y*W+x)*4;
-   d[o]=col[0];d[o+1]=col[1];d[o+2]=col[2];d[o+3]=Math.round(255*Math.min(1,.3+r*.9)*.9);
+   d[o]=col[0];d[o+1]=col[1];d[o+2]=col[2];d[o+3]=Math.round(255*pA(r));
   }
  }
  g.putImageData(im,0,0);
@@ -4264,6 +4378,7 @@ function edgeHint(on){
  else if(edgeNote!=null){if(n.textContent.indexOf("Ende der Radar-Vorhersage")===0)n.textContent=edgeNote;edgeNote=null}
 }
 function placeTick(){
+ try{dayBar()}catch(e){}
  {const e=fcEdge(),fl=$("fcline"),mx=+$("sl").max;fl.style.display=e>=0&&mx>0?"block":"none";if(e>=0&&mx>0)fl.style.left="calc(8px + (100% - 16px) * "+(e/mx).toFixed(4)+")"}
  const t=$("nowtick"),l=$("nowline"),max=+$("sl").max;
  const on=(mode==="rv"||mode==="dwd"||mode==="at"||mode==="nat")&&pastCount>=1&&max>=2&&pastCount-1<max;
@@ -4302,8 +4417,8 @@ function show(i){
  rvWindow(i);
  if(f.at!=null){hideFc();if(atData)rgShow(atDs(atData),f.at,0)}
  else if(f.dw!=null){hideFc();if(dwData){const ds=dwDs(dwData);rgShow(ds,f.dw,0);for(const n of [i+1,i+2]){const nx=frames[n];if(nx&&nx.dw!=null)ds.prep(nx.dw).catch(()=>{})}}}
- else if(f.ex!=null){hideFc();const L0=layers[pastCount-1];if(L0){L0.setOpacity(Math.max(.5,.78-f.ex*.03));exShift(f.ex)}}
- else if(f.fc!=null)showFc(f);else{hideFc();if(layers[idx])layers[idx].setOpacity(.78)}
+ else if(f.ex!=null){hideFc();const L0=layers[pastCount-1];if(L0){L0.setOpacity(Math.max(.5,RLO-f.ex*.03));exShift(f.ex)}}
+ else if(f.fc!=null)showFc(f);else{hideFc();if(layers[idx])layers[idx].setOpacity(RLO)}
  $("sl").value=i;playPos=i;
  tsSet(i,0);
  trkVis();
@@ -4326,7 +4441,8 @@ function tsSet(k,t){
  const md=f.at!=null&&atData&&atData.m0!=null&&f.at>=atData.m0&&mode==="at",ds=Math.floor(tm/86400)!==Math.floor(Date.now()/86400000)?new Date(tm*1000).toLocaleDateString("de-AT",{weekday:"short"})+" ":"";
  const s=(md?ds:"")+new Date(Math.round(tm/60)*60000).toLocaleTimeString("de-AT",{hour:"2-digit",minute:"2-digit"})+" Uhr"+(md?" (Modell)":fut?" (Prognose)":"");
  if(s!==tsLast||$("ts").textContent!==s){tsLast=s;$("ts").textContent=s}
- if(mode==="at"&&f.at!=null&&k!==atBgK){atBgK=k;atBgShow(f.time)}
+ if(Math.round(tm/3600)!==Math.round((tmpT||0)/3600)||!tmpL){tmpInit();tmpShow(tm)}
+ if(mode==="at"&&f.at!=null&&k!==atBgK){atBgK=k;atBgShow(f.time);atCldShow(f.time)}
 }
 /* Stelle p der Zeitleiste zeigen (k = ganzes Bild, t = Anteil zum nächsten) */
 function showPos(p){
@@ -4347,14 +4463,14 @@ function blend(k,t){
  if(f.ex!=null||(g.ex!=null&&k===pastCount-1)){
   const L0=layers[pastCount-1];if(!L0)return;
   const e0=f.ex!=null?f.ex:0,e=e0+((g.ex!=null?g.ex:e0)-e0)*t;
-  lOp(L0,e<=0?.78:Math.max(.5,.78-e*.03));exShift(e);return;
+  lOp(L0,e<=0?RLO:Math.max(.5,RLO-e*.03));exShift(e);return;
  }
  if(f.fc!=null||g.fc!=null)return;
  const A=layers[k],B=layers[k+1];if(!A||!B||!B._wOn)return;
  const v=mode==="nat"?natMv:ex,dm=(g.time-f.time)/60;let dx=0,dy=0;
  if(v&&dm>0&&dm<40){const mpp=156543.03392*Math.cos(map.getCenter().lat*Math.PI/180)/Math.pow(2,map.getZoom());dx=v.e*dm*1000/mpp;dy=-v.n*dm*1000/mpp}
  /* B liegt oben; A so, dass sich die Deckkraft dort, wo beide Regen zeigen, nicht ändert */
- const ob=.78*t,oa=.78*(1-t)/(1-ob);
+ const ob=RLO*t,oa=RLO*(1-t)/(1-ob);
  lOp(A,oa);lOp(B,ob);lTr(A,t*dx,t*dy,5);lTr(B,-(1-t)*dx,-(1-t)*dy,6);
  xf=[A,B];
 }
@@ -4365,7 +4481,10 @@ function playTick(ts){
  if(n<2||lay!=="rain"){timer=null;$("pp").innerHTML=PLAY;return}
  if(playHold>0){playHold-=dt;if(playHold<=0&&playEnd){playEnd=false;showPos(0)}}
  else{
-  let p=playPos+dt/FRAME_MS;const b=fcEdge();
+  /* 5 oder 15 Minuten je Schritt (wie bei WetterOnline): bei Radarbildern bis 20 Minuten Abstand nach der Zeit,
+     bei den Stundenbildern des Wettermodells ein Bild je Schritt */
+  const k0=Math.floor(playPos),fa=frames[k0],fb=frames[k0+1],iv=fa&&fb?(fb.time-fa.time)/60:15;
+  let p=playPos+(iv>20?dt/FRAME_MS:dt/FRAME_MS*stepMin/Math.max(1,iv));const b=fcEdge();
   /* an der Grenze zum Wettermodell anhalten; noch einmal ▶ läuft weiter */
   if(b>=0&&playPos<b&&p>=b){showPos(b);toggle();edgeHint(true);return}
   if(p>=n-1){p=n-1;playHold=1800;playEnd=true}showPos(p)}
@@ -4385,6 +4504,7 @@ function toggle(){
 }
 function setMode(m,user){
  mode=m;legRain();try{if(map)map.closePopup()}catch(e){}
+ try{setClouds();if(m!=="at")atCldHide()}catch(e){}
  if(user){try{localStorage.setItem("wetter-mode",m)}catch(e){}}
  document.querySelectorAll("#mode button").forEach(b=>b.classList.toggle("on",b.dataset.m===m));
  if(timer)toggle();
@@ -4550,7 +4670,7 @@ function fColor(l,k,la,lo,A){
  if(l==="prec"){
   if(v<.05)return null;
   const sn=fAt(fld.F[k].v.snowfall,la,lo)*10/7,c=ramp(sn>=v*.5?SNOWC:RAINC,v);
-  return[c[0],c[1],c[2],Math.round(255*Math.min(1,.35+v*.6)*.9)];
+  return[c[0],c[1],c[2],Math.round(255*pA(v))];
  }
  if(l==="snow"){if(v<.3)return null;const c=ramp(SNMAP,v);return[c[0],c[1],c[2],Math.round(255*Math.min(.9,.45+v*.08))]}
  const c=ramp(PMAP,v);return[c[0],c[1],c[2],100];
@@ -4736,7 +4856,7 @@ function lgRow(lab,grad,ticks,unit){
 /* Platz jeder Farbstufe auf dem Balken: gleiche Abstände; zwei fast gleiche Werte (harter Farbwechsel) teilen sich den Platz */
 function lgSlots(st){const p=[0];for(let i=1;i<st.length;i++)p.push(p[i-1]+(st[i][0]-st[i-1][0]<.01?0:1));const n=p[p.length-1]||1;return p.map(x=>x/n*100)}
 function lgPos(st,v){const P=lgSlots(st);if(v<=st[0][0])return 0;for(let i=1;i<st.length;i++)if(v<=st[i][0])return P[i-1]+(P[i]-P[i-1])*(v-st[i-1][0])/(st[i][0]-st[i-1][0]);return 100}
-function lgGrad(st){const P=lgSlots(st);return"linear-gradient(90deg,"+st.map((x,i)=>"rgba("+x[1].map(Math.round).join(",")+","+Math.max(.5,Math.min(1,.35+x[0]*.6)*.92).toFixed(2)+") "+P[i].toFixed(1)+"%").join(",")+")"}
+function lgGrad(st){const P=lgSlots(st);return"linear-gradient(90deg,"+st.map((x,i)=>"rgba("+x[1].map(Math.round).join(",")+","+pA(x[0]).toFixed(2)+") "+P[i].toFixed(1)+"%").join(",")+")"}
 function legOwn(){
  return lgRow("Regen",lgGrad(RAINC),[[.1,"0,1"],[.5,"0,5"],[1.5,"1,5"],[3,"3"],[6,"6"],[12,"12"],[25,"25"],[50,"50"]].map(t=>[lgPos(RAINC,t[0]),t[1]]),"mm/h")+
   lgRow("Schnee",lgGrad(SNOWC),[[.1,"0,1"],[.5,"0,5"],[1,"1"],[3,"3"],[7,"7"],[10,"10"],[15,"15"]].map(t=>[lgPos(SNOWC,t[0]/.7),t[1]]),"cm/h");
@@ -4883,8 +5003,9 @@ function setLay(l,user){
  if(LAYS.indexOf(l)<0)l="rain";
  const was=lay;lay=l;
  if(user){try{localStorage.setItem("wetter-lay",l)}catch(e){}}
+ try{if(l!=="rain"){tmpHide();atCldHide()}else setTimeout(()=>{tmpShow();const f=frames[idx];if(f&&mode==="at")atCldShow(f.time)},300)}catch(e){}
  const box=$("lay");
- box.querySelectorAll("button").forEach(b=>{const on=b.dataset.l===l;b.classList.toggle("on",on);b.setAttribute("aria-pressed",on?"true":"false")});
+ document.querySelectorAll("#sec-radar button[data-l]").forEach(b=>{const on=b.dataset.l===l;b.classList.toggle("on",on);b.setAttribute("aria-pressed",on?"true":"false")});
  try{const b=box.querySelector(".on");if(b&&box.scrollWidth>box.clientWidth+4){const x=b.offsetLeft-box.clientWidth/2+b.offsetWidth/2;box.scrollTo?box.scrollTo({left:x,behavior:reduced||!user?"auto":"smooth"}):box.scrollLeft=x}}catch(e){}
  $("sec-radar").classList.toggle("fld",l!=="rain");
  $("h-radar").textContent=FTITLE[l];
@@ -4908,7 +5029,7 @@ function setLay(l,user){
  if(fld){$("fsl").max=fld.F.length-1;fShow(fPickIdx(fld.F))}
  loadField();
 }
-$("lay").addEventListener("click",e=>{const b=e.target.closest("button[data-l]");if(b)setLay(b.dataset.l,true)});
+$("sec-radar").addEventListener("click",e=>{const b=e.target.closest("button[data-l]");if(b)setLay(b.dataset.l,true)});
 $("fpp").innerHTML=PLAY;
 $("fpp").onclick=()=>fToggle();
 $("fsl").oninput=e=>{if(fTimer)fToggle();fShow(+e.target.value)};
@@ -4981,9 +5102,9 @@ $("sl").onchange=e=>{const v=+e.target.value,r=Math.round(v);if(Math.abs(v-r)>.0
 $("nowtick").onclick=()=>{if(timer)toggle();show(Math.max(0,pastCount-1))};
 document.querySelectorAll("#mode button").forEach(b=>b.onclick=()=>setMode(b.dataset.m,true));
 document.querySelectorAll("#basemode button").forEach(b=>b.onclick=()=>setBase(b.dataset.b));
-$("cld").onclick=()=>{cldOn=!cldOn;try{localStorage.setItem("wetter-cld",cldOn?"1":"0")}catch(e){}setClouds()};
+$("cld").onclick=()=>{cldOn=!cldOn;try{localStorage.setItem("wetter-cld2",cldOn?"1":"0")}catch(e){}setClouds();const f=frames[idx];if(f)atCldShow(f.time)};
 $("fgl").onclick=()=>{fgOn=!fgOn;try{localStorage.setItem("wetter-fgl",fgOn?"1":"0")}catch(e){}setFogSat()};
-$("lbl").onclick=()=>{labOn=!labOn;try{localStorage.setItem("wetter-lbl",labOn?"1":"0")}catch(e){}setLabels()};
+$("lbl").onclick=()=>{labOn=!labOn;try{localStorage.setItem("wetter-lbl",labOn?"1":"0")}catch(e){}setLabels();tmpShow()};
 $("ctr").onclick=()=>{if(map)map.setView([place.lat,place.lon],8)};
 function saveState(){try{localStorage.setItem("wetter-ort",JSON.stringify(place));localStorage.setItem("wetter-follow",follow?"1":"0")}catch(e){}}
 const km=(a,b,c,d)=>Math.hypot((a-c)*111,(b-d)*111*Math.cos(a*Math.PI/180));
@@ -6914,13 +7035,91 @@ let calmTap=0;
  w.addEventListener("wheel",arm,{passive:true});
  arm();
 })();
+/* ============ Radar wie bei WetterOnline: Ebenen als Knöpfe rechts, Tage-Leiste unten, 5/15 Minuten ============ */
+var stepMin=15;try{stepMin=localStorage.getItem("wetter-step")==="5"?5:15}catch(e){}
+function stepSet(v){stepMin=v;try{localStorage.setItem("wetter-step",String(v))}catch(e){}document.querySelectorAll("#stepseg button").forEach(b=>b.classList.toggle("on",+b.dataset.s===v))}
+document.querySelectorAll("#stepseg button").forEach(b=>b.onclick=()=>stepSet(+b.dataset.s));stepSet(stepMin);
+(function radarRail(){
+ const w=document.querySelector(".mapwrap"),ly=$("lay"),mc=w&&w.querySelector(".mctl");if(!w||!ly||!mc)return;
+ const rail=document.createElement("div");rail.className="rail";rail.id="rail";rail.setAttribute("role","group");rail.setAttribute("aria-label","Ebenen der Karte");
+ /* Hauptebenen auf die Leiste, die übrigen ins Menü „Mehr“ */
+ ["rain","temp","wind"].forEach(k=>{const b=ly.querySelector('[data-l="'+k+'"]');if(b){b.title=b.textContent.trim();rail.append(b)}});
+ const ICO={cld:'<path d="M7 18h10a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.2 11.5 3.3 3.3 0 0 0 7 18z"/>',blz:'<path d="M13 2 5 13.5h6L10 22l8-11.5h-6z"/>',wrn:'<path d="M12 3.5 2.5 20h19z"/><path d="M12 10v4.5M12 17.2v.3"/>'};
+ for(const id of ["cld","blz","wrn"]){
+  const o=$(id);if(!o)continue;
+  const b=document.createElement("button");b.type="button";b.className="rx rx-"+id;b.title=o.textContent.trim();b.setAttribute("aria-label",o.textContent.trim());
+  b.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+ICO[id]+"</svg>";
+  b.onclick=()=>o.click();
+  const sync=()=>{const on=o.classList.contains("on");b.classList.toggle("on",on);b.setAttribute("aria-pressed",on?"true":"false");b.hidden=o.style.display==="none"};
+  new MutationObserver(sync).observe(o,{attributes:true,attributeFilter:["class","style"]});sync();
+  rail.append(b);
+ }
+ const more=document.createElement("button");more.type="button";more.className="rx rx-more";more.title="Mehr Ebenen und Einstellungen";more.setAttribute("aria-label","Mehr Ebenen und Einstellungen");more.setAttribute("aria-expanded","false");
+ more.innerHTML='<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>';
+ more.onclick=()=>{const on=!mc.classList.contains("open");mc.classList.toggle("open",on);more.classList.toggle("on",on);more.setAttribute("aria-expanded",on?"true":"false")};
+ rail.append(more);
+ w.append(rail);
+ /* restliche Ebenen (Böen, Bewölkung, Niederschlag, Neuschnee, Luftdruck) ins Menü */
+ mc.append(ly);
+})();
+/* Tage-Leiste: −24 Std. (nur „Österreich“), aktuell, heute, morgen und die folgenden Tage, so weit das Wettermodell reicht */
+let dbKey="";
+function dbJump(t){
+ if(!frames.length)return;if(timer)toggle();
+ let k=0,bd=1e18;frames.forEach((f,i)=>{const d=Math.abs(f.time-t);if(d<bd){bd=d;k=i}});
+ showPos(k);
+}
+function dayBar(){
+ const el=$("daybar");if(!el)return;
+ const n=frames.length,now=Date.now()/1000;
+ if(!n||lay!=="rain"){el.innerHTML="";dbKey="";return}
+ const tEnd=frames[n-1].time,day=t=>new Date(t*1000).toDateString(),dn=new Date();
+ const B=[];
+ if(mode==="at"&&AT_SRV)B.push({id:"h24",l:"−24 Std.",go:()=>atLong()});
+ B.push({id:"now",l:"aktuell",go:()=>{if(timer)toggle();show(Math.max(0,pastCount-1))}});
+ const at=(d,h)=>{const x=new Date(dn);x.setDate(dn.getDate()+d);x.setHours(h,0,0,0);return x.getTime()/1000};
+ const th=Math.max(now+3*3600,at(0,15));if(th<=tEnd+1800&&day(th)===day(now))B.push({id:"d0",l:"heute",t:th});
+ for(let d=1;d<=6;d++){const t=at(d,12);if(t>tEnd+3*3600)break;B.push({id:"d"+d,l:d===1?"morgen":new Date(t*1000).toLocaleDateString("de-AT",{weekday:"short"}).replace(".",""),t:Math.min(t,tEnd)})}
+ const key=B.map(b=>b.id+(b.t||"")).join("|");
+ if(key!==dbKey){
+  dbKey=key;el.innerHTML="";
+  for(const b of B){const x=document.createElement("button");x.type="button";x.dataset.id=b.id;x.textContent=b.l;x.onclick=()=>{b.go?b.go():dbJump(b.t)};el.append(x)}
+ }
+ const f=frames[idx],ft=f?f.time:now;
+ el.querySelectorAll("button").forEach(x=>{const id=x.dataset.id;let on=false;
+  if(id==="h24")on=ft<now-3.5*3600;
+  else if(id==="now")on=Math.abs(ft-now)<12*60||idx===pastCount-1;
+  else if(id==="d0")on=day(ft)===day(now)&&ft>now+12*60;
+  else{const d=+id.slice(1),t=at(d,12);on=day(ft)===day(t)}
+  x.classList.toggle("on",on)});
+}
+/* −24 Std.: Rückblick über 24 Stunden (Österreich, vom Server): stündliche Messbilder ab 3 Stunden zurück */
+let atLongBusy=false;
+async function atLong(){
+ if(atLongBusy)return;
+ if(atLongOn&&frames.length){dbJump(frames[0].time);return}
+ const r=atRun;if(!r||!atSrv)return;
+ atLongBusy=true;const b=document.querySelector('#daybar [data-id="h24"]');if(b){b.textContent="lädt …";b.disabled=true}
+ try{
+  atLongOn=true;let got=0;
+  for(let k=16;k<=96;k+=4){
+   const tk=r.ref-900*k;if(atHist.has(tk))continue;
+   if(!(atSrv.a&&atSrv.a.indexOf(tk)>=0))continue;
+   try{const m=await atReq("rr",location.origin+"/gr/a/"+tk);if(m.V[0]&&Math.abs(m.t[0]-tk)<60){atHist.set(tk,m.V[0]);got++}}catch(e){if(e.net)break}
+   if(got===4)atRedo();
+  }
+  atRedo();
+  if(frames.length)dbJump(frames[0].time);
+  if(!got)$("fnote").textContent="Der Rückblick über 24 Stunden baut sich am Server gerade erst auf (er speichert die Messbilder seit heute einen ganzen Tag lang).";
+ }finally{atLongBusy=false;dbKey="";dayBar()}
+}
 /* ============ Radar im Vollbild ============ */
 let fsOn=false,fsDrag=null;
 function setFs(on){
  const w=document.querySelector(".mapwrap");if(!w)return;
  fsOn=on;w.classList.toggle("full",on);root.classList.toggle("noscroll",on);
  /* Umschalter Regen/Temperatur/Wind im Vollbild auf die Karte holen */
- const ly=$("lay");if(ly){if(on)w.querySelector(".mctl").prepend(ly);else w.parentNode.insertBefore(ly,w)}
+ /* Ebenen liegen jetzt immer als Knöpfe rechts auf der Karte (siehe radarRail) */
  if(map){
   try{
    if(on){fsDrag=map.dragging.enabled();map.dragging.enable();if(map.scrollWheelZoom)map.scrollWheelZoom.enable()}
@@ -7091,7 +7290,7 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("shr").hidden)cl
 const meta=n=>{const m=document.querySelector('meta[name="'+n+'"]');return m?m.content:""};
 /* app-build zählt seit jeher einfach hoch; daran erkennen auch ältere Geräte ein Update (sie vergleichen diese Zahl).
    Angezeigt wird der Build seit Version 1.0: Build 1 ist app-build 57. */
-const BUILD=+meta("app-build")||0,BUILD0=89,verText=b=>meta("app-version")+" (Build "+(b-BUILD0)+")";
+const BUILD=+meta("app-build")||0,BUILD0=90,verText=b=>meta("app-version")+" (Build "+(b-BUILD0)+")";
 let remote=null,lastChk=0;
 $("ver").textContent=verText(BUILD);
 /* Anmeldung: bis wann sie gilt und ob sie sich von selbst verlängert */

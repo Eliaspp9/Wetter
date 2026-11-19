@@ -31,9 +31,10 @@ async function unpack(buf, g) {
   const WH = h.W * h.H;
   let o = 4 + hl;
   const take = () => { const a = raw.slice(o, o + WH); o += WH; return a; };
-  if (raw.length < o + WH * (1 + h.nV + (h.S ? 1 : 0) + h.SM)) return null;
+  if (raw.length < o + WH * (1 + h.nV + (h.S ? 1 : 0) + h.SM + (h.CC || 0))) return null;
   const has = take(), V = Array.from({ length: h.nV }, take), S = h.S ? take() : null, SM = h.SM ? Array.from({ length: h.SM }, take) : null;
-  return { t: h.t, base: h.base, V, has, S, SM, n: h.n };
+  const CC = h.CC ? Array.from({ length: h.CC }, take) : null;
+  return { t: h.t, base: h.base, V, has, S, SM, CC, n: h.n };
 }
 self.onmessage = async (ev) => {
   const m = ev.data, kind = m.kind || "rr";
@@ -44,6 +45,7 @@ self.onmessage = async (ev) => {
         const tr = [...d.V.map((a) => a.buffer), d.has.buffer];
         if (d.S) tr.push(d.S.buffer);
         if (d.SM) d.SM.forEach((a) => tr.push(a.buffer));
+        if (d.CC) d.CC.forEach((a) => tr.push(a.buffer));
         self.postMessage(Object.assign({ id: m.id, ok: true, bytes: buf.byteLength, ms: Date.now() - t0, pk: 1 }, d), tr);
         return;
       }
