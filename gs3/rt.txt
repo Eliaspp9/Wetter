@@ -1,5 +1,4 @@
-msgcap.xml 200 text/xml 50773
-clm.png 200 image/png 26849
-ctype.png 200 image/png 185155
-geo.png 200 image/png 151763
-allcap.xml 200 text/xml 282238
+gs1.json 200 application/json 4251
+clmt.png 200 image/png 3037
+dim <Dimension name="time" default="2026-11-22T11:30:00Z" units="ISO8601" nearestValue="1">2020-09-01T00:00:00.000Z/2026-11-22T11:30:00.000Z/PT15M 6552
+end SO8601" nearestValue="1">2020-09-01T00:00:00.000Z/2026-11-22T11:30:00.000Z/PT15M
