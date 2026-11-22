@@ -12,7 +12,7 @@
 // Für die KI (Übersetzen der Warnungen anderer Länder, Push-Texte in ganzen Sätzen), ab Version 1.6:
 //   Bindung AI      (Workers AI, Variablenname AI). Ohne sie läuft alles wie vorher, nur ohne KI.
 const enc = new TextEncoder();
-const VERSION = "1.0", BUILD = 7;
+const VERSION = "1.0", BUILD = 8;
 /* Abrufe mit Zeitlimit: ein hängender Dienst soll weder eine Anfrage noch den Zeitplan aufhalten.
    tf: Limit bis die Antwort beginnt (für durchgereichte Antworten); jf: Limit bis das JSON ganz gelesen ist. */
 async function tf(u, o, ms) {
@@ -603,7 +603,6 @@ async function warnings(lat, lon) {
 /* ============ Blitze in der Nähe (Wettersatellit MTG von EUMETSAT, Lightning Imager, wie die Blitze im Radar der App) ============
    Ein kleines Bild rund um den Ort (30 x 30 km, etwa 2,3 km je Bildpunkt). Jeder sichtbare Bildpunkt ist eine Blitzfläche
    der letzten Minuten. Ergebnis: Entfernung des nächsten Blitzes in km, oder null. */
-const LTG_KM = 15;
 async function pngPixels(buf) {
   const u = new Uint8Array(buf), dv = new DataView(buf);
   if (u[0] !== 0x89 || u[1] !== 0x50) throw new Error("kein PNG");
@@ -641,22 +640,31 @@ async function pngPixels(buf) {
   }
   return { W, H, a: out };
 }
-async function lightningNear(lat, lon) {
+/* Blitze im Umkreis von 45 km: d = Entfernung des nächsten Blitzes in km (oder null), b = Richtung, aus der die nächsten
+   Blitze kommen (Grad, 0 = Norden, 90 = Osten), n = Zahl der Blitzflächen. Bild 31 x 31 Punkte, etwa 3 km je Punkt. */
+const LTG_R = 45;
+async function lightningField(lat, lon) {
   const R = 6378137, x = lon * Math.PI / 180 * R, y = Math.log(Math.tan(Math.PI / 4 + lat * Math.PI / 360)) * R, k = 1 / Math.cos(lat * Math.PI / 180);
-  const half = (LTG_KM + 2) * 1000 * k, N = 15;
+  const half = (LTG_R + 2) * 1000 * k, N = 31;
   const u = "https://view.eumetsat.int/geoserver/wms?service=WMS&version=1.3.0&request=GetMap&layers=mtg_fd:li_afa&styles=&crs=EPSG:3857&bbox=" +
     [x - half, y - half, x + half, y + half].map((v) => v.toFixed(0)).join(",") + "&width=" + N + "&height=" + N + "&format=image/png&transparent=true&v=" + Math.floor(Date.now() / 60000);
   const r = await tf(u, {}, 15000);
   if (!r.ok) throw new Error("EUMETSAT " + r.status);
-  const px = await pngPixels(await r.arrayBuffer()), cell = (2 * (LTG_KM + 2)) / N;
-  let best = null;
+  const px = await pngPixels(await r.arrayBuffer()), cell = (2 * (LTG_R + 2)) / N, pts = [];
   for (let j = 0; j < px.H; j++) for (let i = 0; i < px.W; i++) {
     if (px.a[j * px.W + i] < 40) continue;
-    const dx = (i + 0.5 - px.W / 2) * cell, dy = (j + 0.5 - px.H / 2) * cell, d = Math.hypot(dx, dy);
-    if (d <= LTG_KM && (best == null || d < best)) best = d;
+    const dx = (i + 0.5 - px.W / 2) * cell, dy = (px.H / 2 - j - 0.5) * cell, d = Math.hypot(dx, dy);
+    if (d <= LTG_R) pts.push([d, dx, dy]);
   }
-  return best;
+  if (!pts.length) return { d: null, b: null, n: 0 };
+  pts.sort((a, b) => a[0] - b[0]);
+  /* Richtung: Schwerpunkt der nächsten Blitze (bis 10 km weiter weg als der nächste) */
+  const near = pts.filter((q) => q[0] <= pts[0][0] + 10);
+  const sx = near.reduce((a, q) => a + q[1], 0), sy = near.reduce((a, q) => a + q[2], 0);
+  return { d: pts[0][0], b: (Math.atan2(sx, sy) * 180 / Math.PI + 360) % 360, n: pts.length };
 }
+const dirWord = (b) => ["nördlich", "nordöstlich", "östlich", "südöstlich", "südlich", "südwestlich", "westlich", "nordwestlich"][Math.round(b / 45) % 8];
+const fromWord = (b) => ["Norden", "Nordosten", "Osten", "Südosten", "Süden", "Südwesten", "Westen", "Nordwesten"][Math.round(b / 45) % 8];
 /* ============ Vorhersage für die Hinweise Glätte, Bodenfrost, Sturm (Open-Meteo, bestes Modell am Ort, 18 Stunden) ============ */
 async function wxNext(lat, lon) {
   const j = await getJ("https://api.open-meteo.com/v1/forecast?latitude=" + lat + "&longitude=" + lon + "&hourly=temperature_2m,precipitation,snowfall,weather_code,soil_temperature_0cm,wind_gusts_10m&forecast_hours=18&timezone=auto");
@@ -756,10 +764,45 @@ async function alertPlace(env, rec, P, once, msgs, multi) {
     }
     if (ids.join() !== seen.join()) { st.w = ids; changed = true; }
   }
-  /* Blitze näher als 15 km: höchstens alle 60 Minuten ein Hinweis */
-  if (rec.ltg !== false) {
+  /* Blitze: näher als 15 km ein Hinweis (höchstens alle 60 Minuten); weiter weg (15 bis 45 km) wird verfolgt, ob das
+     Gewitter näher kommt (Entfernung jetzt gegen vor 10 bis 40 Minuten). Kommt es näher, Hinweis mit Richtung und
+     geschätzter Ankunft (höchstens alle 90 Minuten). Hagel: stärkster vorhergesagter Regen am Ort in der nächsten
+     Stunde ab 30 mm/h bei Blitzen in der Nähe (höchstens alle 3 Stunden). */
+  let LF = null;
+  if (rec.ltg !== false || rec.storm2 !== false || rec.hail !== false) {
+    try { LF = await once("l:" + pos, () => lightningField(P.lat, P.lon)); } catch (e) {}
+  }
+  if (LF) {
+    const hist = (st.lh || []).filter((h) => now - h.t < 45 * 60000);
+    if (rec.storm2 !== false && LF.d != null && LF.d > 15 && !quietNow && now - (st.ga || 0) > 90 * 60000) {
+      const old = hist.filter((h) => now - h.t >= 9 * 60000 && h.d != null).sort((a, b) => a.t - b.t)[0];
+      if (old && old.d - LF.d >= 3) {
+        const v = (old.d - LF.d) / ((now - old.t) / 60000), eta = Math.round(Math.max(5, (LF.d - 3) / v) / 5) * 5;
+        if (eta <= 75) {
+          msgs.push({ title: (multi && ort ? ort + ": " : "") + "Gewitter zieht heran", body: pre + "Gewitter etwa " + Math.round(LF.d) + " km " + dirWord(LF.b) + ", es kommt aus dem " + fromWord(LF.b) + " näher. Ankunft in etwa " + eta + " Minuten. Tippe für das Radar.", tag: "tsg" + tagx, url: SITE + "#sec-radar" });
+          st.ga = now;
+        }
+      }
+    }
+    /* nur speichern, wenn es Blitze gibt oder gerade noch gab (sonst würde alle 5 Minuten geschrieben) */
+    if (LF.d != null || hist.some((h) => h.d != null) || (st.lh && st.lh.length)) {
+      hist.push({ t: now, d: LF.d == null ? null : Math.round(LF.d * 10) / 10 });
+      const nh = hist.some((h) => h.d != null) ? hist.slice(-6) : [];
+      if (JSON.stringify(nh) !== JSON.stringify(st.lh || [])) { st.lh = nh; changed = true; }
+    }
+    if (rec.hail !== false && LF.d != null && LF.d <= 45 && !quietNow && now - (st.hl || 0) > 3 * 3600000) {
+      try {
+        const r = await once("r:" + pos, () => rainSoon(P.lat, P.lon));
+        if (r.i >= 0 && r.mx >= 7.5 && !r.snow) {
+          msgs.push({ title: (multi && ort ? ort + ": " : "") + "Achtung: möglicherweise Hagel", body: pre + "Sehr starker Regen mit Gewitter " + (r.min <= 5 ? "jetzt" : "in etwa " + Math.round(r.min / 5) * 5 + " Minuten") + ". Auto unterstellen, empfindliche Sachen hereinholen.", tag: "hail" + tagx, url: SITE + "#sec-radar" });
+          st.hl = now;
+        }
+      } catch (e) {}
+    }
+  }
+  if (rec.ltg !== false && LF) {
     try {
-      const d = await once("l:" + pos, () => lightningNear(P.lat, P.lon));
+      const d = LF.d != null && LF.d <= 15 ? LF.d : null;
       if (d != null && !quietNow && now - (st.lt || 0) > 60 * 60000) {
         const km = Math.max(1, Math.round(d));
         msgs.push({ title: (multi && ort ? ort + ": " : "") + "Blitze in der Nähe", body: pre + (d < 5 ? "Blitze ganz in der Nähe (unter 5 km). Bleib drinnen." : "Blitze etwa " + km + " km entfernt. Bei Donner drinnen bleiben.") + " Tippe für das Radar.", tag: "ltg" + tagx, url: SITE + "#sec-radar" });
@@ -998,7 +1041,7 @@ async function route(req, env, ctx, h, json) {
         .filter((p) => isFinite(p.lat) && isFinite(p.lon) && Math.abs(p.lat) <= 90 && Math.abs(p.lon) <= 180)
         .map((p) => { const o = om.find((x) => x.lat === p.lat && x.lon === p.lon); if (o && o.st) p.st = o.st; return p; });
       const qh = Array.isArray(b.qh) ? [...new Set(b.qh.map(Number).filter((h) => Number.isInteger(h) && h >= 0 && h < 24))].slice(0, 16) : [];
-      await env.SUBS.put(id, JSON.stringify({ sub: { endpoint: ep, keys: s.keys }, lat: +lat.toFixed(3), lon: +lon.toFixed(3), name: String(b.name || "").slice(0, 60), rain: !!b.rain, warn: !!b.warn, ltg: b.ltg !== false, ice: b.ice !== false, frost: b.frost !== false, storm: b.storm !== false, rend: b.rend !== false, more, qh, st: (old && old.st) || { rain: false, w: [] } }));
+      await env.SUBS.put(id, JSON.stringify({ sub: { endpoint: ep, keys: s.keys }, lat: +lat.toFixed(3), lon: +lon.toFixed(3), name: String(b.name || "").slice(0, 60), rain: !!b.rain, warn: !!b.warn, ltg: b.ltg !== false, ice: b.ice !== false, frost: b.frost !== false, storm: b.storm !== false, rend: b.rend !== false, storm2: b.storm2 !== false, hail: b.hail !== false, more, qh, st: (old && old.st) || { rain: false, w: [] } }));
       return json({ ok: true });
     }
     if (url.pathname === "/push/unsub") { await env.SUBS.delete(id); return json({ ok: true }); }

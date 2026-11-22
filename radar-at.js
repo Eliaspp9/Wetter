@@ -88,7 +88,8 @@ self.onmessage = async (ev) => {
         const q = v[i];
         if (q === fill || q === -999 || q !== q) continue;
         any = true;
-        if (q / 100 <= m.tw) S[o] = 1;
+        /* 1: bis zur Schneegrenze, 2: höchstens 0,3 °C (Glätte möglich, wenn es nass ist) */
+        if (q / 100 <= m.tw) S[o] = q / 100 <= 0.3 ? 2 : 1;
       } else {
         for (let k = 0; k < T; k++) {
           const q = v[k * N + i];

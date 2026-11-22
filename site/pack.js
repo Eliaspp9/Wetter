@@ -52,7 +52,8 @@ export function convert(buf, kind, fc0) {
       const q = v[i];
       if (q === fill || q === -999 || q !== q) continue;
       any = true;
-      if (q / 100 <= SN_TW) S[o] = 1;
+      /* 1: bis zur Schneegrenze, 2: höchstens 0,3 °C (Glätte möglich, wenn es nass ist) */
+      if (q / 100 <= SN_TW) S[o] = q / 100 <= 0.3 ? 2 : 1;
     } else {
       for (let k = 0; k < T; k++) {
         if (CC) { const c0 = tcv[k * N + i]; if (c0 !== tcFill && c0 === c0) { const cc = Math.max(0, Math.min(100, Math.round((c0 * tcS + tcO) * tcMul))); if (cc > CC[k][o]) CC[k][o] = cc; any = true; } }
