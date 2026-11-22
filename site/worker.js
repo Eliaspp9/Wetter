@@ -117,13 +117,16 @@ async function gmRun(env) {
     /* alle neuen Bilder dieses Durchgangs in EINEM Eintrag (spart Schreibvorgänge): gm:b:<ref>:<erste Zeit>,
        wo welches Bild liegt, steht in nx.p[t] = [Schlüssel, Anfang, Länge] */
     {
-      const key = "gm:b:" + ref + ":" + got[0][0], tot = got.reduce((a, x) => a + x[1].byteLength, 0), all = new Uint8Array(tot);
+      /* eindeutiger Name (mit Zeitpunkt des Holens): ein Bild, das später noch einmal geholt wird, darf kein älteres
+         Paket mit anderen Bildern überschreiben */
+      const key = "gm:b:" + ref + ":" + got[0][0] + ":" + Math.floor(now), tot = got.reduce((a, x) => a + x[1].byteLength, 0), all = new Uint8Array(tot);
       let o = 0;
       nx.p = nx.p || {};
       for (const [t, b] of got) { all.set(new Uint8Array(b), o); nx.p[t] = [key, o, b.byteLength]; o += b.byteLength; }
       await kv.put(key, all, { expirationTtl: 26 * 3600 });
     }
-    nx.t = [...have].filter((t) => t > now - 3600).sort((a, b) => a - b);
+    /* so lange behalten, wie gmWanted die Stunde noch will (ab der Stunde vor jetzt), sonst würde sie neu geholt */
+    nx.t = [...have].filter((t) => t >= Math.floor(now / 3600) * 3600 - 3600).sort((a, b) => a - b);
     for (const k of Object.keys(nx.p || {})) if (!nx.t.includes(+k)) delete nx.p[k];
     if (nx === ix) await kv.put("gm:idx", JSON.stringify(nx));
     else {
@@ -181,7 +184,8 @@ async function ncBytes(kv, m) {
       const ix = JSON.parse((await kv.get(ik)) || "null"), e = ix && String(ix.ref) === m[1] && ix.p && ix.p[m[2]];
       if (!e) continue;
       const all = await kv.get(e[0], { type: "arrayBuffer" });
-      if (all && all.byteLength >= e[1] + e[2]) return all.slice(e[1], e[1] + e[2]);
+      /* nur ein echtes NetCDF/HDF5-Bild ausliefern (beginnt mit \x89HDF); sonst nichts, dann holt die App es bei GeoSphere */
+      if (all && all.byteLength >= e[1] + e[2]) { const h = new Uint8Array(all, e[1], 4); if (h[0] === 0x89 && h[1] === 0x48 && h[2] === 0x44 && h[3] === 0x46) return all.slice(e[1], e[1] + e[2]); return null; }
     }
     return kv.get("gm:" + m[1] + ":" + m[2], { type: "arrayBuffer" });
   }
@@ -208,7 +212,9 @@ async function gmServe(env, url) {
     if (hit) return hit;
     const nc = await ncBytes(kv, key);
     if (!nc) return new Response("Nicht gefunden", { status: 404 });
-    const out = new Response(await packed(nc, m ? "tp" : g[1] === "t" ? "t2m" : "rr", m ? null : +g[2] + 60), { headers: PK_HDR });
+    let pb;
+    try { pb = await packed(nc, m ? "tp" : g[1] === "t" ? "t2m" : "rr", m ? null : +g[2] + 60); } catch (e) { console.error("pack", P, e && e.message); return new Response("Nicht lesbar", { status: 404 }); }
+    const out = new Response(pb, { headers: PK_HDR });
     try { await cache.put(ck, out.clone()); } catch (e) {}
     return out;
   }
