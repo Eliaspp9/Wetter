@@ -357,8 +357,10 @@ async function tpPrewarm(env) {
      der letzten 1½ Stunden mit Zeit */
   const CLM = "https://view.eumetsat.int/geoserver/wms?service=WMS&request=GetMap&version=1.1.1&layers=msg_fes:clm&styles=&format=image/png&transparent=true&srs=EPSG:3857";
   const mi = new Date().getUTCMinutes();
-  if (mi % 15 < 5) w += await tpBundle(env, (z, x, y) => wmsTile(CLM, z, x, y), [5, 6, 7, 8], 1800, true, budget);
-  for (let k = 4; k <= 6; k++) { const sl = Math.floor(now / 900) * 900 - k * 900; w += await tpBundle(env, (z, x, y) => wmsTile(CLM + "&time=" + iso(sl), z, x, y), [6, 7, 8], 7200, false, budget); }
+  /* dieselben Viertelstunden, die die App holt: etwa 45 Minuten zurück und die zwei davor. Ist die neueste noch nicht beim
+     Satelliten, fehlen Kacheln, dann wird es beim nächsten Durchgang wieder versucht */
+  const s0 = Math.floor((now - 45 * 60) / 900) * 900;
+  for (const sl of [s0, s0 - 900, s0 - 1800]) w += await tpBundle(env, (z, x, y) => wmsTile(CLM + "&time=" + iso(sl), z, x, y), [5, 6, 7, 8], 7200, false, budget);
   /* Europa-Radar (LibreWXR): die letzten 3 Messbilder und die Radar-Vorhersage */
   try {
     const j = await (await tfetch("https://api.librewxr.net/public/weather-maps.json", 10000)).json();
