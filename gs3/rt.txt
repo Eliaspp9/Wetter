@@ -1,2 +1,5 @@
-nwpmeta.json 200 application/json 2968
-tcc.nc 200 application/x-netcdf 532421
+msgcap.xml 200 text/xml 50773
+clm.png 200 image/png 26849
+ctype.png 200 image/png 185155
+geo.png 200 image/png 151763
+allcap.xml 200 text/xml 282238

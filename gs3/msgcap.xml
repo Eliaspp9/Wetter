@@ -1,0 +1,791 @@
+<?xml version="1.0" encoding="UTF-8"?><WMS_Capabilities version="1.3.0" updateSequence="5539" xmlns="http://www.opengis.net/wms" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/wms https://view.eumetsat.int/geoserver/schemas/wms/1.3.0/capabilities_1_3_0.xsd">
+  <Service>
+    <Name>WMS</Name>
+    <Title>EUMETSAT</Title>
+    <Abstract>EUMETSAT visualizations offering via WMS</Abstract>
+    <KeywordList/>
+    <OnlineResource xlink:type="simple" xlink:href="https://view.eumetsat.int/geoserver/"/>
+    <ContactInformation>
+      <ContactPersonPrimary>
+        <ContactPerson/>
+        <ContactOrganization/>
+      </ContactPersonPrimary>
+      <ContactPosition/>
+      <ContactAddress>
+        <AddressType/>
+        <Address/>
+        <City/>
+        <StateOrProvince/>
+        <PostCode/>
+        <Country/>
+      </ContactAddress>
+      <ContactVoiceTelephone/>
+      <ContactFacsimileTelephone/>
+      <ContactElectronicMailAddress/>
+    </ContactInformation>
+    <Fees>none</Fees>
+    <AccessConstraints>none</AccessConstraints>
+  </Service>
+  <Capability>
+    <Request>
+      <GetCapabilities>
+        <Format>text/xml</Format>
+        <DCPType>
+          <HTTP>
+            <Get>
+              <OnlineResource xlink:type="simple" xlink:href="https://view.eumetsat.int/geoserver/msg_fes/ows?SERVICE=WMS&amp;"/>
+            </Get>
+            <Post>
+              <OnlineResource xlink:type="simple" xlink:href="https://view.eumetsat.int/geoserver/msg_fes/ows?SERVICE=WMS&amp;"/>
+            </Post>
+          </HTTP>
+        </DCPType>
+      </GetCapabilities>
+      <GetMap>
+        <Format>image/png</Format>
+        <Format>application/atom+xml</Format>
+        <Format>application/json;type=utfgrid</Format>
+        <Format>application/pdf</Format>
+        <Format>application/rss+xml</Format>
+        <Format>application/vnd.google-earth.kml+xml</Format>
+        <Format>application/vnd.google-earth.kml+xml;mode=networklink</Format>
+        <Format>application/vnd.google-earth.kmz</Format>
+        <Format>image/geotiff</Format>
+        <Format>image/geotiff8</Format>
+        <Format>image/gif</Format>
+        <Format>image/jpeg</Format>
+        <Format>image/png; mode=8bit</Format>
+        <Format>image/svg+xml</Format>
+        <Format>image/tiff</Format>
+        <Format>image/tiff8</Format>
+        <Format>image/vnd.jpeg-png</Format>
+        <Format>image/vnd.jpeg-png8</Format>
+        <Format>text/html; subtype=openlayers</Format>
+        <Format>text/html; subtype=openlayers2</Format>
+        <Format>text/html; subtype=openlayers3</Format>
+        <DCPType>
+          <HTTP>
+            <Get>
+              <OnlineResource xlink:type="simple" xlink:href="https://view.eumetsat.int/geoserver/msg_fes/ows?SERVICE=WMS&amp;"/>
+            </Get>
+          </HTTP>
+        </DCPType>
+      </GetMap>
+      <GetFeatureInfo>
+        <Format>text/plain</Format>
+        <Format>application/vnd.ogc.gml</Format>
+        <Format>text/xml</Format>
+        <Format>application/vnd.ogc.gml/3.1.1</Format>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+        <Format>text/html</Format>
+        <Format>application/json</Format>
+        <DCPType>
+          <HTTP>
+            <Get>
+              <OnlineResource xlink:type="simple" xlink:href="https://view.eumetsat.int/geoserver/msg_fes/ows?SERVICE=WMS&amp;"/>
+            </Get>
+          </HTTP>
+        </DCPType>
+      </GetFeatureInfo>
+    </Request>
+    <Exception>
+      <Format>XML</Format>
+      <Format>INIMAGE</Format>
+      <Format>BLANK</Format>
+      <Format>JSON</Format>
+    </Exception>
+    <Layer>
+      <Title>EUMETSAT</Title>
+      <Abstract>EUMETSAT visualizations offering via WMS</Abstract>
+      <!--Limited list of EPSG projections:-->
+      <CRS>EPSG:4326</CRS>
+      <CRS>EPSG:3857</CRS>
+      <CRS>EPSG:3995</CRS>
+      <CRS>EPSG:70201</CRS>
+      <CRS>EPSG:70203</CRS>
+      <CRS>EPSG:70205</CRS>
+      <CRS>EPSG:70207</CRS>
+      <CRS>EPSG:70209</CRS>
+      <CRS>EPSG:70211</CRS>
+      <CRS>EPSG:70213</CRS>
+      <CRS>EPSG:3976</CRS>
+      <CRS>CRS:84</CRS>
+      <EX_GeographicBoundingBox>
+        <westBoundLongitude>-90.0</westBoundLongitude>
+        <eastBoundLongitude>90.0</eastBoundLongitude>
+        <southBoundLatitude>-90.0</southBoundLatitude>
+        <northBoundLatitude>90.0</northBoundLatitude>
+      </EX_GeographicBoundingBox>
+      <BoundingBox CRS="CRS:84" minx="-90.0" miny="-90.0" maxx="90.0" maxy="90.0"/>
+      <Layer queryable="1" opaque="0">
+        <Name>clm</Name>
+        <Title>Cloud Mask - MSG - 0 degree</Title>
+        <Abstract>The Cloud Mask product describes the scene type (either 'clear' or 'cloudy') on a pixel level. Each pixel is classified as one of the following four types: clear sky over water, clear sky over land, cloud, or not processed (off Earth disc). Applications &amp; Uses: The main use is in support of Nowcasting applications, where it frequently serves as a basis for other cloud products, and the remote sensing of continental and ocean surfaces.</Abstract>
+        <KeywordList>
+          <Keyword>msg_fes_clm</Keyword>
+          <Keyword>WCS</Keyword>
+          <Keyword>ImageMosaic</Keyword>
+        </KeywordList>
+        <CRS>EPSG:4326</CRS>
+        <CRS>CRS:84</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>-77.0</westBoundLongitude>
+          <eastBoundLongitude>77.0</eastBoundLongitude>
+          <southBoundLatitude>-77.0</southBoundLatitude>
+          <northBoundLatitude>77.0</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+        <BoundingBox CRS="CRS:84" minx="-77.0" miny="-77.0" maxx="77.0" maxy="77.0"/>
+        <BoundingBox CRS="EPSG:4326" minx="-77.0" miny="-77.0" maxx="77.0" maxy="77.0"/>
+        <Dimension name="time" default="2026-11-22T11:30:00Z" units="ISO8601" nearestValue="1">2020-09-01T00:00:00.000Z/2026-11-22T11:30:00.000Z/PT15M</Dimension>
+        <Style>
+          <Name>msg_clm</Name>
+          <Title>RGB with custom legend for msg_clm</Title>
+          <LegendURL width="640" height="80">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://view.eumetsat.int/geoserver/msg_fes/ows?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=640&amp;height=80&amp;layer=clm"/>
+          </LegendURL>
+        </Style>
+      </Layer>
+      <Layer queryable="1" opaque="0">
+        <Name>cth</Name>
+        <Title>Cloud Top Height - MSG - 0 degree</Title>
+        <Abstract>The product indicates the height of highest cloud. Based on a subset of the information derived during Scenes and Cloud Analysis, but also makes use of other external meteorological data. Applications and Users: Aviation meteorology.</Abstract>
+        <KeywordList>
+          <Keyword>msg_fes_cth</Keyword>
+          <Keyword>WCS</Keyword>
+          <Keyword>ImageMosaic</Keyword>
+        </KeywordList>
+        <CRS>EPSG:4326</CRS>
+        <CRS>CRS:84</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>-77.0</westBoundLongitude>
+          <eastBoundLongitude>77.0</eastBoundLongitude>
+          <southBoundLatitude>-77.0</southBoundLatitude>
+          <northBoundLatitude>77.0</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+        <BoundingBox CRS="CRS:84" minx="-77.0" miny="-77.0" maxx="77.0" maxy="77.0"/>
+        <BoundingBox CRS="EPSG:4326" minx="-77.0" miny="-77.0" maxx="77.0" maxy="77.0"/>
+        <Dimension name="time" default="2026-11-22T11:30:00Z" units="ISO8601" nearestValue="1">2020-09-01T00:00:00.000Z/2026-11-22T11:30:00.000Z/PT15M</Dimension>
+        <Style>
+          <Name>msg_cth</Name>
+          <Title>RGB with custom legend for msg_cth</Title>
+          <LegendURL width="640" height="80">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://view.eumetsat.int/geoserver/msg_fes/ows?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=640&amp;height=80&amp;layer=cth"/>
+          </LegendURL>
+        </Style>
+      </Layer>
+      <Layer queryable="1" opaque="0">
+        <Name>fire</Name>
+        <Title>Active Fire Monitoring (GRIB) - MSG - 0 degree</Title>
+        <Abstract>The active fire monitoring product is a fire detection product indicating the presence of fire within a pixel. The underlying concept of the algorithm takes advantage of the fact that SEVIRI channel IR3.9 is very sensitive to hot spots which are caused by fires. The algorithm distinguishes between potential fire and active fire. Applications and Users: Fire detection and monitoring.</Abstract>
+        <KeywordList>
+          <Keyword>msg_fes_fire</Keyword>
+          <Keyword>WCS</Keyword>
+          <Keyword>ImageMosaic</Keyword>
+        </KeywordList>
+        <CRS>EPSG:4326</CRS>
+        <CRS>CRS:84</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>-77.0</westBoundLongitude>
+          <eastBoundLongitude>77.0</eastBoundLongitude>
+          <southBoundLatitude>-77.0</southBoundLatitude>
+          <northBoundLatitude>77.0</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+        <BoundingBox CRS="CRS:84" minx="-77.0" miny="-77.0" maxx="77.0" maxy="77.0"/>
+        <BoundingBox CRS="EPSG:4326" minx="-77.0" miny="-77.0" maxx="77.0" maxy="77.0"/>
+        <Dimension name="time" default="2026-11-22T11:30:00Z" units="ISO8601" nearestValue="1">2020-09-01T00:00:00.000Z/2026-11-22T11:30:00.000Z/PT15M</Dimension>
+        <Style>
+          <Name>msg_fire</Name>
+          <Title>RGB with custom legend for msg_fire</Title>
+          <LegendURL width="640" height="80">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://view.eumetsat.int/geoserver/msg_fes/ows?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=640&amp;height=80&amp;layer=fire"/>
+          </LegendURL>
+        </Style>
+      </Layer>
+      <Layer queryable="1" opaque="0">
+        <Name>gii_kindex</Name>
+        <Title>GII K-Index – MSG – 0 degree</Title>
+        <Abstract/>
+        <KeywordList>
+          <Keyword>msg_fes_gii_kindex</Keyword>
+          <Keyword>WCS</Keyword>
+          <Keyword>ImageMosaic</Keyword>
+        </KeywordList>
+        <CRS>EPSG:4326</CRS>
+        <CRS>CRS:84</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>-77.0</westBoundLongitude>
+          <eastBoundLongitude>77.0</eastBoundLongitude>
+          <southBoundLatitude>-77.0</southBoundLatitude>
+          <northBoundLatitude>77.0</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+        <BoundingBox CRS="CRS:84" minx="-77.0" miny="-77.0" maxx="77.0" maxy="77.0"/>
+        <BoundingBox CRS="EPSG:4326" minx="-77.0" miny="-77.0" maxx="77.0" maxy="77.0"/>
+        <Dimension name="time" default="2026-11-22T11:30:00Z" units="ISO8601" nearestValue="1">2021-06-06T12:45:00.000Z/2026-11-22T11:30:00.000Z/PT15M</Dimension>
+        <Style>
+          <Name>msg_gii_ki</Name>
+          <Title>raster style for msg_gii_ki</Title>
+          <LegendURL width="640" height="80">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://view.eumetsat.int/geoserver/msg_fes/ows?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=640&amp;height=80&amp;layer=gii_kindex"/>
+          </LegendURL>
+        </Style>
+      </Layer>
+      <Layer queryable="1" opaque="0">
+        <Name>gii_liftedindex</Name>
+        <Title>GII Lifted-Index – MSG – 0 degree</Title>
+        <Abstract/>
+        <KeywordList>
+          <Keyword>msg_fes_gii_liftedindex</Keyword>
+          <Keyword>WCS</Keyword>
+          <Keyword>ImageMosaic</Keyword>
+        </KeywordList>
+        <CRS>EPSG:4326</CRS>
+        <CRS>CRS:84</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>-77.0</westBoundLongitude>
+          <eastBoundLongitude>77.0</eastBoundLongitude>
+          <southBoundLatitude>-77.0</southBoundLatitude>
+          <northBoundLatitude>77.0</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+        <BoundingBox CRS="CRS:84" minx="-77.0" miny="-77.0" maxx="77.0" maxy="77.0"/>
+        <BoundingBox CRS="EPSG:4326" minx="-77.0" miny="-77.0" maxx="77.0" maxy="77.0"/>
+        <Dimension name="time" default="2026-11-22T11:30:00Z" units="ISO8601" nearestValue="1">2021-06-06T12:45:00.000Z/2026-11-22T11:30:00.000Z/PT15M</Dimension>
+        <Style>
+          <Name>msg_gii_li</Name>
+          <Title>raster style for msg_gii_li</Title>
+          <LegendURL width="640" height="80">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://view.eumetsat.int/geoserver/msg_fes/ows?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=640&amp;height=80&amp;layer=gii_liftedindex"/>
+          </LegendURL>
+        </Style>
+      </Layer>
+      <Layer queryable="1" opaque="0">
+        <Name>h60b</Name>
+        <Title>Blended SEVIRI / LEO MW precipitation and morphologic information - MSG - 0 degree</Title>
+        <Abstract>Instantaneous precipitation maps generated combining geostationary (GEO) IR images from operational geostationary satellites 'calibrated' by precipitation measurements from MW images on Low Earth Orbit (LEO) satellites, processed soon after each acquisition of a new image from GEO. The blending algorithm ('Rapid Update’) generates precipitation estimates combining the equivalent blackbody temperatures (TBB) at 10.8 μm with rain rates from all available Passive MW measurements. A separate treatment is performed for convective precipitation: the morphologic information and the enhancement of precipitation estimate is done by the use of NEFODINA software.</Abstract>
+        <KeywordList>
+          <Keyword>msg_fes_h60b</Keyword>
+          <Keyword>WCS</Keyword>
+          <Keyword>ImageMosaic</Keyword>
+        </KeywordList>
+        <CRS>EPSG:4326</CRS>
+        <CRS>CRS:84</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>-77.0</westBoundLongitude>
+          <eastBoundLongitude>77.0</eastBoundLongitude>
+          <southBoundLatitude>-77.0</southBoundLatitude>
+          <northBoundLatitude>77.0</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+        <BoundingBox CRS="CRS:84" minx="-77.0" miny="-77.0" maxx="77.0" maxy="77.0"/>
+        <BoundingBox CRS="EPSG:4326" minx="-77.0" miny="-77.0" maxx="77.0" maxy="77.0"/>
+        <Dimension name="time" default="2026-11-22T11:15:00Z" units="ISO8601" nearestValue="1">2022-12-09T00:45:00.000Z/2026-11-22T11:15:00.000Z/PT15M</Dimension>
+        <Style>
+          <Name>msg_h60b_h63</Name>
+          <Title>RGB with custom legend for msg_h60b</Title>
+          <LegendURL width="640" height="80">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://view.eumetsat.int/geoserver/msg_fes/ows?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=640&amp;height=80&amp;layer=h60b"/>
+          </LegendURL>
+        </Style>
+      </Layer>
+      <Layer queryable="1" opaque="0">
+        <Name>ir039</Name>
+        <Title>High Rate SEVIRI IR3.9 μm Image - MSG - 0 degree</Title>
+        <Abstract>Rectified (level 1.5) Meteosat SEVIRI image data. The data is transmitted as High Rate transmissions in 12 spectral channels. Level 1.5 image data corresponds to the geolocated and radiometrically pre-processed image data, ready for further processing, e.g. the extraction of meteorological products. Any spacecraft specific effects have been removed, and in particular, linearisation and equalisation of the image radiometry has been performed for all SEVIRI channels. The on-board blackbody data has been processed. Both radiometric and geometric quality control information is included.&#13;
+To enhance the perception for areas which are on the night side of the Earth a different mapping with increased contrast is applied for IR3.9 product. The greyscale mapping is based on the EBBT which allows to map the ranges 200 K to 300 K for the night and 250 K to 330 K for the day.</Abstract>
+        <KeywordList>
+          <Keyword>msg_fes_ir039</Keyword>
+          <Keyword>WCS</Keyword>
+          <Keyword>ImageMosaic</Keyword>
+        </KeywordList>
+        <CRS>EPSG:4326</CRS>
+        <CRS>CRS:84</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>-77.0</westBoundLongitude>
+          <eastBoundLongitude>77.0</eastBoundLongitude>
+          <southBoundLatitude>-77.0</southBoundLatitude>
+          <northBoundLatitude>77.0</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+        <BoundingBox CRS="CRS:84" minx="-77.0" miny="-77.0" maxx="77.0" maxy="77.0"/>
+        <BoundingBox CRS="EPSG:4326" minx="-77.0" miny="-77.0" maxx="77.0" maxy="77.0"/>
+        <Dimension name="time" default="2026-11-22T11:30:00Z" units="ISO8601" nearestValue="1">2020-09-01T00:00:00.000Z/2026-11-22T11:30:00.000Z/PT15M</Dimension>
+        <Style>
+          <Name>raster</Name>
+          <Title>A simple default style</Title>
+          <Abstract>A sample style for rasters</Abstract>
+          <LegendURL width="20" height="20">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://view.eumetsat.int/geoserver/msg_fes/ows?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=ir039"/>
+          </LegendURL>
+        </Style>
+      </Layer>
+      <Layer queryable="1" opaque="0">
+        <Name>ir108</Name>
+        <Title>High Rate SEVIRI IR10.8 μm Image - MSG - 0 degree</Title>
+        <Abstract>Rectified (level 1.5) Meteosat SEVIRI image data. The data is transmitted as High Rate transmissions in 12 spectral channels. Level 1.5 image data corresponds to the geolocated and radiometrically pre-processed image data, ready for further processing, e.g. the extraction of meteorological products. Any spacecraft specific effects have been removed, and in particular, linearisation and equalisation of the image radiometry has been performed for all SEVIRI channels. The on-board blackbody data has been processed. Both radiometric and geometric quality control information is included.</Abstract>
+        <KeywordList>
+          <Keyword>msg_fes_ir108</Keyword>
+          <Keyword>WCS</Keyword>
+          <Keyword>ImageMosaic</Keyword>
+        </KeywordList>
+        <CRS>EPSG:4326</CRS>
+        <CRS>CRS:84</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>-77.0</westBoundLongitude>
+          <eastBoundLongitude>77.0</eastBoundLongitude>
+          <southBoundLatitude>-77.0</southBoundLatitude>
+          <northBoundLatitude>77.0</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+        <BoundingBox CRS="CRS:84" minx="-77.0" miny="-77.0" maxx="77.0" maxy="77.0"/>
+        <BoundingBox CRS="EPSG:4326" minx="-77.0" miny="-77.0" maxx="77.0" maxy="77.0"/>
+        <Dimension name="time" default="2026-11-22T11:30:00Z" units="ISO8601" nearestValue="1">2020-09-01T00:00:00.000Z/2026-11-22T11:30:00.000Z/PT15M</Dimension>
+        <Style>
+          <Name>raster</Name>
+          <Title>A simple default style</Title>
+          <Abstract>A sample style for rasters</Abstract>
+          <LegendURL width="20" height="20">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://view.eumetsat.int/geoserver/msg_fes/ows?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=ir108"/>
+          </LegendURL>
+        </Style>
+      </Layer>
+      <Layer queryable="1" opaque="0">
+        <Name>rdt</Name>
+        <Title>Rapidly Developing Thunderstorms - MSG - 0 degree</Title>
+        <Abstract>Rapidly Developing Thunderstorms - Convection Warning product is a geostationary meteorological product for nowcasting applications. It is produced with the NWC-SAF Geo 2018 software package.</Abstract>
+        <KeywordList>
+          <Keyword>features</Keyword>
+          <Keyword>msg_fes_rdt</Keyword>
+        </KeywordList>
+        <CRS>EPSG:4326</CRS>
+        <CRS>CRS:84</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>-90.0</westBoundLongitude>
+          <eastBoundLongitude>90.0</eastBoundLongitude>
+          <southBoundLatitude>-90.0</southBoundLatitude>
+          <northBoundLatitude>90.0</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+        <BoundingBox CRS="CRS:84" minx="-90.0" miny="-90.0" maxx="90.0" maxy="90.0"/>
+        <BoundingBox CRS="EPSG:4326" minx="-90.0" miny="-90.0" maxx="90.0" maxy="90.0"/>
+        <Dimension name="time" default="2026-11-22T11:15:00Z" units="ISO8601" nearestValue="1">2023-03-07T11:15:00.000Z/2026-11-22T11:15:00.000Z/PT15M</Dimension>
+        <Style>
+          <Name>rdt_red</Name>
+          <Title>Polygons and vectors</Title>
+          <LegendURL width="22" height="20">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://view.eumetsat.int/geoserver/msg_fes/ows?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=rdt"/>
+          </LegendURL>
+        </Style>
+        <Style>
+          <Name>rdt_white</Name>
+          <Title>Polygons and vectors</Title>
+          <LegendURL width="2" height="1">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://view.eumetsat.int/geoserver/msg_fes/ows?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=rdt&amp;style=rdt_white"/>
+          </LegendURL>
+        </Style>
+        <Style>
+          <Name>rdt_black</Name>
+          <Title>Polygons and vectors</Title>
+          <LegendURL width="22" height="20">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://view.eumetsat.int/geoserver/msg_fes/ows?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=rdt&amp;style=rdt_black"/>
+          </LegendURL>
+        </Style>
+      </Layer>
+      <Layer queryable="1" opaque="0">
+        <Name>rgb_airmass</Name>
+        <Title>Airmass RGB - MSG - 0 degree</Title>
+        <Abstract>The Airmass product is an RGB (Red, Green, Blue) composite based upon data from infrared and water vapour channels from the SEVIRI instrument. It is designed and tuned to monitor the distribution of different air masses and evolution of cyclones, in particular rapid cyclogenesis, jet streaks and PV (potential vorticity) anomalies. Due to the incorporation of the water vapour and ozone channels, its usage at highest satellite viewing angles is limited. The Airmass RGB is composed from data from a combination of the SEVIRI WV6.2, WV7.3, IR9.7 and IR10.8 channels.</Abstract>
+        <KeywordList>
+          <Keyword>msg_fes_rgb_airmass</Keyword>
+          <Keyword>WCS</Keyword>
+          <Keyword>ImageMosaic</Keyword>
+        </KeywordList>
+        <CRS>EPSG:4326</CRS>
+        <CRS>CRS:84</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>-77.0</westBoundLongitude>
+          <eastBoundLongitude>77.0</eastBoundLongitude>
+          <southBoundLatitude>-77.0</southBoundLatitude>
+          <northBoundLatitude>77.0</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+        <BoundingBox CRS="CRS:84" minx="-77.0" miny="-77.0" maxx="77.0" maxy="77.0"/>
+        <BoundingBox CRS="EPSG:4326" minx="-77.0" miny="-77.0" maxx="77.0" maxy="77.0"/>
+        <Dimension name="time" default="2026-11-22T11:15:00Z" units="ISO8601" nearestValue="1">2020-09-01T00:00:00.000Z/2026-11-22T11:15:00.000Z/PT15M</Dimension>
+        <Style>
+          <Name>raster</Name>
+          <Title>A simple default style</Title>
+          <Abstract>A sample style for rasters</Abstract>
+          <LegendURL width="20" height="20">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://view.eumetsat.int/geoserver/msg_fes/ows?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=rgb_airmass"/>
+          </LegendURL>
+        </Style>
+      </Layer>
+      <Layer queryable="1" opaque="0">
+        <Name>rgb_ash</Name>
+        <Title>Volcanic Ash RGB - MSG - 0 degree</Title>
+        <Abstract>The Ash product is an RGB (Red, Green, Blue) composite based upon infrared channel data from the Meteosat Second Generation satellite. It is designed to detect ash and sulphur dioxide (SO2) from volcanic eruptions which can be used for the provision of warnings to aviation authorities. The Ash RGB is composed from data from a combination of the SEVIRI IR8.7, IR10.8 and IR12.0 channels.</Abstract>
+        <KeywordList>
+          <Keyword>msg_fes_rgb_ash</Keyword>
+          <Keyword>WCS</Keyword>
+          <Keyword>ImageMosaic</Keyword>
+        </KeywordList>
+        <CRS>EPSG:4326</CRS>
+        <CRS>CRS:84</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>-77.0</westBoundLongitude>
+          <eastBoundLongitude>77.0</eastBoundLongitude>
+          <southBoundLatitude>-77.0</southBoundLatitude>
+          <northBoundLatitude>77.0</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+        <BoundingBox CRS="CRS:84" minx="-77.0" miny="-77.0" maxx="77.0" maxy="77.0"/>
+        <BoundingBox CRS="EPSG:4326" minx="-77.0" miny="-77.0" maxx="77.0" maxy="77.0"/>
+        <Dimension name="time" default="2026-11-22T11:15:00Z" units="ISO8601" nearestValue="1">2020-09-01T00:00:00.000Z/2026-11-22T11:15:00.000Z/PT15M</Dimension>
+        <Style>
+          <Name>raster</Name>
+          <Title>A simple default style</Title>
+          <Abstract>A sample style for rasters</Abstract>
+          <LegendURL width="20" height="20">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://view.eumetsat.int/geoserver/msg_fes/ows?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=rgb_ash"/>
+          </LegendURL>
+        </Style>
+      </Layer>
+      <Layer queryable="1" opaque="0">
+        <Name>rgb_convection</Name>
+        <Title>Convection RGB - MSG - 0 degree</Title>
+        <Abstract>The Convection RGB combines the brightness temperature difference (BTD) between the WV6.2 and WV7.3 channels (on red), the BTD between the IR3.9 and IR10.8 channels (on green) and the reflectance difference between the NIR1.6 and the VIS0.6 channels (on blue). Severe convective storms appear bright yellow in this color scheme because of the near zero BTD WV6.2-WV7.3 of overshooting Cb clouds (high red). The strong updrafts in these clouds produce small ice particles at cloud tops due to homogeneous freezing of cloud drops, resulting with large BTD IR3.9-IR10.8 (high green). Finally, large negative values of NIR1.6-VIS0.6 because of the large absorption at NIR1.6 by ice particles keeps the blue very low. Please note that small ice crystals of Cirrus clouds should not be confused with vigorous convection. Inferred small ice crystals that are not associated with anvils of Cb clouds must form by elevated strong updrafts, such as in high altitude orographic wave clouds.</Abstract>
+        <KeywordList>
+          <Keyword>msg_fes_rgb_convection</Keyword>
+          <Keyword>WCS</Keyword>
+          <Keyword>ImageMosaic</Keyword>
+        </KeywordList>
+        <CRS>EPSG:4326</CRS>
+        <CRS>CRS:84</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>-77.0</westBoundLongitude>
+          <eastBoundLongitude>77.0</eastBoundLongitude>
+          <southBoundLatitude>-77.0</southBoundLatitude>
+          <northBoundLatitude>77.0</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+        <BoundingBox CRS="CRS:84" minx="-77.0" miny="-77.0" maxx="77.0" maxy="77.0"/>
+        <BoundingBox CRS="EPSG:4326" minx="-77.0" miny="-77.0" maxx="77.0" maxy="77.0"/>
+        <Dimension name="time" default="2026-11-22T11:30:00Z" units="ISO8601" nearestValue="1">2020-09-01T00:00:00.000Z/2026-11-22T11:30:00.000Z/PT15M</Dimension>
+        <Style>
+          <Name>raster</Name>
+          <Title>A simple default style</Title>
+          <Abstract>A sample style for rasters</Abstract>
+          <LegendURL width="20" height="20">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://view.eumetsat.int/geoserver/msg_fes/ows?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=rgb_convection"/>
+          </LegendURL>
+        </Style>
+      </Layer>
+      <Layer queryable="1" opaque="0">
+        <Name>rgb_dust</Name>
+        <Title>Dust RGB - MSG - 0 degree</Title>
+        <Abstract>The Dust product is an RGB (Red, Green, Blue) composite based upon infrared channel data from the Meteosat Second Generation satellite. It is designed to monitor the evolution of dust storms during both day and night. But it is also useful for discrimination of cloud types (e.g. thin Cirrus detection) and detection of low level moisture. The Dust RGB is composed from data from a combination of the SEVIRI IR8.7, IR10.8 and IR12.0 channels.</Abstract>
+        <KeywordList>
+          <Keyword>msg_fes_rgb_dust</Keyword>
+          <Keyword>WCS</Keyword>
+          <Keyword>ImageMosaic</Keyword>
+        </KeywordList>
+        <CRS>EPSG:4326</CRS>
+        <CRS>CRS:84</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>-77.0</westBoundLongitude>
+          <eastBoundLongitude>77.0</eastBoundLongitude>
+          <southBoundLatitude>-77.0</southBoundLatitude>
+          <northBoundLatitude>77.0</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+        <BoundingBox CRS="CRS:84" minx="-77.0" miny="-77.0" maxx="77.0" maxy="77.0"/>
+        <BoundingBox CRS="EPSG:4326" minx="-77.0" miny="-77.0" maxx="77.0" maxy="77.0"/>
+        <Dimension name="time" default="2026-11-22T11:15:00Z" units="ISO8601" nearestValue="1">2020-09-01T00:00:00.000Z/2026-11-22T11:15:00.000Z/PT15M</Dimension>
+        <Style>
+          <Name>raster</Name>
+          <Title>A simple default style</Title>
+          <Abstract>A sample style for rasters</Abstract>
+          <LegendURL width="20" height="20">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://view.eumetsat.int/geoserver/msg_fes/ows?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=rgb_dust"/>
+          </LegendURL>
+        </Style>
+      </Layer>
+      <Layer queryable="1" opaque="0">
+        <Name>rgb_eview</Name>
+        <Title>European HRV RGB</Title>
+        <Abstract>The E-View product is an RGB (Red, Green, Blue) composite based upon data from the SEVIRI instrument. It is dedicated to detailed cloud monitoring of the European region. It is based on data from the SEVIRI High Resolution Visible channel combined with data from the IR10.8 channel that provides the temperature information (blue component).</Abstract>
+        <KeywordList>
+          <Keyword>msg_fes_rgb_eview</Keyword>
+          <Keyword>WCS</Keyword>
+          <Keyword>ImageMosaic</Keyword>
+        </KeywordList>
+        <CRS>EPSG:4326</CRS>
+        <CRS>CRS:84</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>-77.0</westBoundLongitude>
+          <eastBoundLongitude>77.0</eastBoundLongitude>
+          <southBoundLatitude>-77.0</southBoundLatitude>
+          <northBoundLatitude>77.0</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+        <BoundingBox CRS="CRS:84" minx="-77.0" miny="-77.0" maxx="77.0" maxy="77.0"/>
+        <BoundingBox CRS="EPSG:4326" minx="-77.0" miny="-77.0" maxx="77.0" maxy="77.0"/>
+        <Dimension name="time" default="2026-11-22T11:15:00Z" units="ISO8601" nearestValue="1">2022-03-29T00:00:00.000Z/2026-11-22T11:15:00.000Z/PT15M</Dimension>
+        <Style>
+          <Name>raster</Name>
+          <Title>A simple default style</Title>
+          <Abstract>A sample style for rasters</Abstract>
+          <LegendURL width="20" height="20">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://view.eumetsat.int/geoserver/msg_fes/ows?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=rgb_eview"/>
+          </LegendURL>
+        </Style>
+      </Layer>
+      <Layer queryable="1" opaque="0">
+        <Name>rgb_fog</Name>
+        <Title>Fog / Low Clouds RGB - MSG - 0 degree</Title>
+        <Abstract>The Fog / Low Clouds product is an RGB (Red, Green, Blue) composite based upon infrared channel data from the Meteosat Second Generation satellite. It is designed and tuned to monitor the evolution of night-time fog / low stratus. Other (secondary) applications are the detection of fires, low-level moisture boundaries and cloud classification in general. It should be noted that as the product is tuned for night-time conditions, its use during day-time is very limited. The Fog / Low Clouds RGB is composed from data from a combination of the SEVIRI IR3.9, IR10.8 and IR12.0 channels</Abstract>
+        <KeywordList>
+          <Keyword>msg_fes_rgb_fog</Keyword>
+          <Keyword>WCS</Keyword>
+          <Keyword>ImageMosaic</Keyword>
+        </KeywordList>
+        <CRS>EPSG:4326</CRS>
+        <CRS>CRS:84</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>-77.0</westBoundLongitude>
+          <eastBoundLongitude>77.0</eastBoundLongitude>
+          <southBoundLatitude>-77.0</southBoundLatitude>
+          <northBoundLatitude>77.0</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+        <BoundingBox CRS="CRS:84" minx="-77.0" miny="-77.0" maxx="77.0" maxy="77.0"/>
+        <BoundingBox CRS="EPSG:4326" minx="-77.0" miny="-77.0" maxx="77.0" maxy="77.0"/>
+        <Dimension name="time" default="2026-11-22T11:15:00Z" units="ISO8601" nearestValue="1">2020-09-01T00:00:00.000Z/2026-11-22T11:15:00.000Z/PT15M</Dimension>
+        <Style>
+          <Name>raster</Name>
+          <Title>A simple default style</Title>
+          <Abstract>A sample style for rasters</Abstract>
+          <LegendURL width="20" height="20">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://view.eumetsat.int/geoserver/msg_fes/ows?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=rgb_fog"/>
+          </LegendURL>
+        </Style>
+      </Layer>
+      <Layer queryable="1" opaque="0">
+        <Name>rgb_microphysics</Name>
+        <Title>Day Microphysics RGB - MSG - 0 degree</Title>
+        <Abstract>The Day Microphysics RGB (Red, Green, Blue) was inherited from Rosenfeld and Lensky (1998): the VIS0.8 reflectance in red approximates the cloud optical depth and amount of cloud water and ice; the IR3.9 solar reflectance in green is a qualitative measure for cloud particle size and phase, and the IR10.8 brightness temperature modulates the blue. This color scheme is useful for cloud analysis, convection, fog, snow, and fires. In this colour scheme water clouds that do not precipitate appear white because cloud drops are small, whereas large drops that are typical to precipitating clouds appear pink, because of the low reflectance at IR3.9 manifested as low green. Supercooled water clouds appear more yellow, because the lower temperature that modulate the blue component. Cold and thick clouds with tops composed of large ice particles, e.g., Cb tops, appear red. Optically thick clouds with small ice particles near their tops appear orange.</Abstract>
+        <KeywordList>
+          <Keyword>msg_fes_rgb_microphysics</Keyword>
+          <Keyword>WCS</Keyword>
+          <Keyword>ImageMosaic</Keyword>
+        </KeywordList>
+        <CRS>EPSG:4326</CRS>
+        <CRS>CRS:84</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>-77.0</westBoundLongitude>
+          <eastBoundLongitude>77.0</eastBoundLongitude>
+          <southBoundLatitude>-77.0</southBoundLatitude>
+          <northBoundLatitude>77.0</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+        <BoundingBox CRS="CRS:84" minx="-77.0" miny="-77.0" maxx="77.0" maxy="77.0"/>
+        <BoundingBox CRS="EPSG:4326" minx="-77.0" miny="-77.0" maxx="77.0" maxy="77.0"/>
+        <Dimension name="time" default="2026-11-22T11:15:00Z" units="ISO8601" nearestValue="1">2020-09-01T00:00:00.000Z/2026-11-22T11:15:00.000Z/PT15M</Dimension>
+        <Style>
+          <Name>raster</Name>
+          <Title>A simple default style</Title>
+          <Abstract>A sample style for rasters</Abstract>
+          <LegendURL width="20" height="20">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://view.eumetsat.int/geoserver/msg_fes/ows?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=rgb_microphysics"/>
+          </LegendURL>
+        </Style>
+      </Layer>
+      <Layer queryable="1" opaque="0">
+        <Name>rgb_natural</Name>
+        <Title>Natural Colour RGB - MSG - 0 degree</Title>
+        <Abstract>The Natural Colour RGB (Red, Green, Blue) makes use of three solar channels: NIR1.6, VIS0.8 and VIS0.6. In this colour scheme vegetation appears greenish because of its large reflectance in the VIS0.8 channel (the green beam) compared to the NIR1.6 (red beam) and VIS0.6 (blue beam) channels. Water clouds with small droplets have large reflectance at all three channels and hence appear whitish, while snow and ice clouds appears cyan because ice strongly absorbs in NIR1.6 (no red). Bare ground appears brown because of the larger reflectance in the NIR1.6 than at VIS0.6, and the ocean appears black because of the low reflectance in all three channels.</Abstract>
+        <KeywordList>
+          <Keyword>msg_fes_rgb_natural</Keyword>
+          <Keyword>WCS</Keyword>
+          <Keyword>ImageMosaic</Keyword>
+        </KeywordList>
+        <CRS>EPSG:4326</CRS>
+        <CRS>CRS:84</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>-77.0</westBoundLongitude>
+          <eastBoundLongitude>77.0</eastBoundLongitude>
+          <southBoundLatitude>-77.0</southBoundLatitude>
+          <northBoundLatitude>77.0</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+        <BoundingBox CRS="CRS:84" minx="-77.0" miny="-77.0" maxx="77.0" maxy="77.0"/>
+        <BoundingBox CRS="EPSG:4326" minx="-77.0" miny="-77.0" maxx="77.0" maxy="77.0"/>
+        <Dimension name="time" default="2026-11-22T11:15:00Z" units="ISO8601" nearestValue="1">2020-09-01T00:00:00.000Z/2026-11-22T11:15:00.000Z/PT15M</Dimension>
+        <Style>
+          <Name>raster</Name>
+          <Title>A simple default style</Title>
+          <Abstract>A sample style for rasters</Abstract>
+          <LegendURL width="20" height="20">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://view.eumetsat.int/geoserver/msg_fes/ows?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=rgb_natural"/>
+          </LegendURL>
+        </Style>
+      </Layer>
+      <Layer queryable="1" opaque="0">
+        <Name>rgb_naturalenhncd</Name>
+        <Title>Natural Colour Enhanced RGB - MSG - 0 degree</Title>
+        <Abstract>The Natural Colour Enhanced product is an RGB which utilises three SEVIRI solar channels: NIR1.6, VIS0.8 and VIS0.6. It is similar to a Natural Colour RGB product, with the difference that the ice-clouds and snow covered surfaces and clouds are not shown in typical cyan colour but in desaturated tones, i.e. in white shades, making it more natural for human perception.</Abstract>
+        <KeywordList>
+          <Keyword>msg_fes_rgb_naturalenhncd</Keyword>
+          <Keyword>WCS</Keyword>
+          <Keyword>ImageMosaic</Keyword>
+        </KeywordList>
+        <CRS>EPSG:4326</CRS>
+        <CRS>CRS:84</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>-77.0</westBoundLongitude>
+          <eastBoundLongitude>77.0</eastBoundLongitude>
+          <southBoundLatitude>-77.0</southBoundLatitude>
+          <northBoundLatitude>77.0</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+        <BoundingBox CRS="CRS:84" minx="-77.0" miny="-77.0" maxx="77.0" maxy="77.0"/>
+        <BoundingBox CRS="EPSG:4326" minx="-77.0" miny="-77.0" maxx="77.0" maxy="77.0"/>
+        <Dimension name="time" default="2026-11-22T11:15:00Z" units="ISO8601" nearestValue="1">2020-09-01T00:00:00.000Z/2026-11-22T11:15:00.000Z/PT15M</Dimension>
+        <Style>
+          <Name>raster</Name>
+          <Title>A simple default style</Title>
+          <Abstract>A sample style for rasters</Abstract>
+          <LegendURL width="20" height="20">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://view.eumetsat.int/geoserver/msg_fes/ows?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=rgb_naturalenhncd"/>
+          </LegendURL>
+        </Style>
+      </Layer>
+      <Layer queryable="1" opaque="0">
+        <Name>rgb_snow</Name>
+        <Title>rgb_snow</Title>
+        <Abstract/>
+        <KeywordList>
+          <Keyword>msg_fes_rgb_snow</Keyword>
+          <Keyword>WCS</Keyword>
+          <Keyword>ImageMosaic</Keyword>
+        </KeywordList>
+        <CRS>EPSG:4326</CRS>
+        <CRS>CRS:84</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>-77.0</westBoundLongitude>
+          <eastBoundLongitude>77.0</eastBoundLongitude>
+          <southBoundLatitude>-77.0</southBoundLatitude>
+          <northBoundLatitude>77.0</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+        <BoundingBox CRS="CRS:84" minx="-77.0" miny="-77.0" maxx="77.0" maxy="77.0"/>
+        <BoundingBox CRS="EPSG:4326" minx="-77.0" miny="-77.0" maxx="77.0" maxy="77.0"/>
+        <Dimension name="time" default="2026-11-22T11:15:00Z" units="ISO8601" nearestValue="1">2020-02-12T14:30:00.000Z/2026-11-22T11:15:00.000Z/PT15M</Dimension>
+        <Style>
+          <Name>raster</Name>
+          <Title>A simple default style</Title>
+          <Abstract>A sample style for rasters</Abstract>
+          <LegendURL width="20" height="20">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://view.eumetsat.int/geoserver/msg_fes/ows?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=rgb_snow"/>
+          </LegendURL>
+        </Style>
+      </Layer>
+      <Layer queryable="1" opaque="0">
+        <Name>rgb_tropicalairmass</Name>
+        <Title>Tropical Airmass RGB - MSG - 0 degree</Title>
+        <Abstract>The “Tropical Airmass” product is an RGB (Red, Green, Blue) composite derivate of the existing “Airmass RGB” visualisation. It is based upon data from infra-red channels (namely WV6.2, WV7.3, IR9.7 and IR10.8) of the SEVIRI instrument. The target of this product is an improved detection of over-shooting tops and cold, high-reaching clouds in general (typically found in the tropical regions). With the standard Airmass RGB these clouds are in a strong white colour with no gradients on their tops. The recipe is similar to the one of Airmass RGB with slight difference in colour range selection - in particular, for the green beam (IR9.7-IR10.8) it uses a range from -25 to +25 K (instead of -40 to +5 K).</Abstract>
+        <KeywordList>
+          <Keyword>msg_fes_rgb_tropicalairmass</Keyword>
+          <Keyword>WCS</Keyword>
+          <Keyword>ImageMosaic</Keyword>
+        </KeywordList>
+        <CRS>EPSG:4326</CRS>
+        <CRS>CRS:84</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>-77.0</westBoundLongitude>
+          <eastBoundLongitude>77.0</eastBoundLongitude>
+          <southBoundLatitude>-77.0</southBoundLatitude>
+          <northBoundLatitude>77.0</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+        <BoundingBox CRS="CRS:84" minx="-77.0" miny="-77.0" maxx="77.0" maxy="77.0"/>
+        <BoundingBox CRS="EPSG:4326" minx="-77.0" miny="-77.0" maxx="77.0" maxy="77.0"/>
+        <Dimension name="time" default="2026-11-22T11:15:00Z" units="ISO8601" nearestValue="1">2020-08-31T00:30:00.000Z/2026-11-22T11:15:00.000Z/PT15M</Dimension>
+        <Style>
+          <Name>raster</Name>
+          <Title>A simple default style</Title>
+          <Abstract>A sample style for rasters</Abstract>
+          <LegendURL width="20" height="20">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://view.eumetsat.int/geoserver/msg_fes/ows?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=rgb_tropicalairmass"/>
+          </LegendURL>
+        </Style>
+      </Layer>
+      <Layer queryable="1" opaque="0">
+        <Name>vis006</Name>
+        <Title>High Rate SEVIRI VIS0.6 μm Image - MSG - 0 degree</Title>
+        <Abstract>Rectified (level 1.5) Meteosat SEVIRI image data. The data is transmitted as High Rate transmissions in 12 spectral channels. Level 1.5 image data corresponds to the geolocated and radiometrically pre-processed image data, ready for further processing, e.g. the extraction of meteorological products. Any spacecraft specific effects have been removed, and in particular, linearisation and equalisation of the image radiometry has been performed for all SEVIRI channels. The on-board blackbody data has been processed. Both radiometric and geometric quality control information is included.</Abstract>
+        <KeywordList>
+          <Keyword>msg_fes_vis006</Keyword>
+          <Keyword>WCS</Keyword>
+          <Keyword>ImageMosaic</Keyword>
+        </KeywordList>
+        <CRS>EPSG:4326</CRS>
+        <CRS>CRS:84</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>-77.0</westBoundLongitude>
+          <eastBoundLongitude>77.0</eastBoundLongitude>
+          <southBoundLatitude>-77.0</southBoundLatitude>
+          <northBoundLatitude>77.0</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+        <BoundingBox CRS="CRS:84" minx="-77.0" miny="-77.0" maxx="77.0" maxy="77.0"/>
+        <BoundingBox CRS="EPSG:4326" minx="-77.0" miny="-77.0" maxx="77.0" maxy="77.0"/>
+        <Dimension name="time" default="2026-11-22T11:30:00Z" units="ISO8601" nearestValue="1">2020-08-01T00:00:00.000Z/2026-11-22T11:30:00.000Z/PT15M</Dimension>
+        <Style>
+          <Name>raster</Name>
+          <Title>A simple default style</Title>
+          <Abstract>A sample style for rasters</Abstract>
+          <LegendURL width="20" height="20">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://view.eumetsat.int/geoserver/msg_fes/ows?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=vis006"/>
+          </LegendURL>
+        </Style>
+      </Layer>
+      <Layer queryable="1" opaque="0">
+        <Name>wv062</Name>
+        <Title>High Rate SEVIRI WV6.2 μm Image - MSG - 0 degree</Title>
+        <Abstract>Rectified (level 1.5) Meteosat SEVIRI image data. The data is transmitted as High Rate transmissions in 12 spectral channels. Level 1.5 image data corresponds to the geolocated and radiometrically pre-processed image data, ready for further processing, e.g. the extraction of meteorological products. Any spacecraft specific effects have been removed, and in particular, linearisation and equalisation of the image radiometry has been performed for all SEVIRI channels. The on-board blackbody data has been processed. Both radiometric and geometric quality control information is included.</Abstract>
+        <KeywordList>
+          <Keyword>msg_fes_wv062</Keyword>
+          <Keyword>WCS</Keyword>
+          <Keyword>ImageMosaic</Keyword>
+        </KeywordList>
+        <CRS>EPSG:4326</CRS>
+        <CRS>CRS:84</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>-77.0</westBoundLongitude>
+          <eastBoundLongitude>77.0</eastBoundLongitude>
+          <southBoundLatitude>-77.0</southBoundLatitude>
+          <northBoundLatitude>77.0</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+        <BoundingBox CRS="CRS:84" minx="-77.0" miny="-77.0" maxx="77.0" maxy="77.0"/>
+        <BoundingBox CRS="EPSG:4326" minx="-77.0" miny="-77.0" maxx="77.0" maxy="77.0"/>
+        <Dimension name="time" default="2026-11-22T11:30:00Z" units="ISO8601" nearestValue="1">2020-08-01T00:00:00.000Z/2026-11-22T11:30:00.000Z/PT15M</Dimension>
+        <Style>
+          <Name>raster</Name>
+          <Title>A simple default style</Title>
+          <Abstract>A sample style for rasters</Abstract>
+          <LegendURL width="20" height="20">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://view.eumetsat.int/geoserver/msg_fes/ows?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=wv062"/>
+          </LegendURL>
+        </Style>
+      </Layer>
+    </Layer>
+  </Capability>
+</WMS_Capabilities>
