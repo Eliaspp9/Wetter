@@ -243,6 +243,136 @@ async function gmServe(env, url) {
   if (!b) return new Response("Nicht gefunden", { status: 404 });
   return new Response(b, { headers: NC_HDR });
 }
+/* ============ Kartenbilder des Radars: Zwischenspeicher und Vorladen (/tp) ============
+   Alle Kacheln, die das Radar von anderen Diensten lädt (Satelliten-Wolken und Blitze von EUMETSAT, Europa-Radar von
+   LibreWXR bzw. RainViewer, Radar und Modell vom DWD), gehen über /tp?u=<Adresse>.
+   1. Vorgeladen (Cron alle 5 Minuten): für Österreich und Umgebung in den Zoomstufen 5 bis 8 holt der Server die Kacheln
+      jedes neuen Bildes selbst und legt sie als ein Paket je Bild und Zoomstufe in den KV-Speicher (wenige Schreibvorgänge).
+   2. Sonst der Zwischenspeicher von Cloudflare (Cache), beim ersten Abruf gefüllt.
+   3. Sonst direkt beim Dienst.
+   Antwortet der Server nicht, holt die App die Kachel direkt. */
+const TP_HOSTS = /^(view\.eumetsat\.int|maps\.dwd\.de|[a-z0-9-]+\.librewxr\.net|librewxr\.net|tilecache\.rainviewer\.com)$/;
+const TP_E = 20037508.342789244;
+/* gleiche Kachel = gleicher Schlüssel, egal in welcher Reihenfolge die Parameter stehen: id (Bild), z, x, y */
+function tileKey(u) {
+  let U;
+  try { U = new URL(u); } catch (e) { return null; }
+  const m = U.pathname.match(/^(.*)\/(\d{1,2})\/(\d{1,6})\/(\d{1,6})(\/0\/1_0\.png|\.png)$/);
+  if (m && !U.search) return { id: U.origin + m[1] + "/Z/X/Y" + m[5], z: +m[2], x: +m[3], y: +m[4] };
+  const P = {};
+  for (const [k, v] of U.searchParams) P[k.toLowerCase()] = v;
+  if ((P.request || "").toLowerCase() !== "getmap" || !P.bbox) return null;
+  const crs = (P.crs || P.srs || "").toUpperCase();
+  if (crs !== "EPSG:3857" && crs !== "EPSG:900913") return null;
+  const b = P.bbox.split(",").map(Number);
+  if (b.length !== 4 || b.some((v) => !isFinite(v))) return null;
+  const w = b[2] - b[0], z = Math.round(Math.log2((2 * TP_E) / w));
+  if (!(z >= 0 && z <= 20)) return null;
+  const sz = (2 * TP_E) / Math.pow(2, z), x = Math.round((b[0] + TP_E) / sz), y = Math.round((TP_E - b[3]) / sz);
+  /* nur die Bild-Parameter zählen (Leaflet hängt eigene Optionen wie rcKey an) */
+  for (const k of ["bbox", "rckey", "rcpx", "v", "_"]) delete P[k];
+  const id = U.origin + U.pathname + "?" + Object.keys(P).sort().map((k) => k + "=" + P[k]).join("&");
+  return { id, z, x, y };
+}
+async function tpServe(req, env, url) {
+  if (!(await valid(env, getCookie(req, COOKIE)))) return new Response("Nicht angemeldet", { status: 401 });
+  const u = url.searchParams.get("u") || "";
+  let U;
+  try { U = new URL(u); } catch (e) { return new Response("Ungültig", { status: 400 }); }
+  if (U.protocol !== "https:" || !TP_HOSTS.test(U.hostname)) return new Response("Nicht erlaubt", { status: 400 });
+  const H = { "Content-Type": "image/png", "Cache-Control": "private, max-age=300" };
+  /* 1. vorgeladenes Paket */
+  const k = tileKey(u);
+  if (k && env.GM) {
+    try {
+      const b = await env.GM.get("tb:" + (await sha(k.id)) + ":" + k.z, { type: "arrayBuffer", cacheTtl: 300 });
+      if (b) {
+        const n = new DataView(b).getUint32(0), ix = JSON.parse(new TextDecoder().decode(new Uint8Array(b, 4, n))), e = ix[k.x + "_" + k.y];
+        if (e) return new Response(b.slice(4 + n + e[0], 4 + n + e[0] + e[1]), { headers: Object.assign({}, H, { "Content-Type": ix._ct || "image/png", "X-Vorgeladen": "1" }) });
+      }
+    } catch (e) {}
+  }
+  /* 2. Zwischenspeicher von Cloudflare */
+  const ck = new Request("https://tp.cache/" + (await sha(k ? k.id + "|" + k.z + "/" + k.x + "/" + k.y : u)));
+  const hit = await caches.default.match(ck);
+  if (hit) return new Response(hit.body, { headers: Object.assign({}, H, { "Content-Type": hit.headers.get("Content-Type") || "image/png" }) });
+  /* 3. beim Dienst */
+  let r;
+  try { r = await tfetch(u, 15000); } catch (e) { return new Response("Dienst nicht erreichbar", { status: 502 }); }
+  if (!r.ok) return new Response("Dienst " + r.status, { status: r.status === 404 ? 404 : 502 });
+  const ct = r.headers.get("Content-Type") || "image/png";
+  if (!/^image\//.test(ct)) return new Response("Kein Bild", { status: 502 });
+  const body = await r.arrayBuffer();
+  try { await caches.default.put(ck, new Response(body, { headers: { "Content-Type": ct, "Cache-Control": "public, max-age=900" } })); } catch (e) {}
+  return new Response(body, { headers: Object.assign({}, H, { "Content-Type": ct }) });
+}
+/* Kacheln eines Bildes für Österreich und Umgebung (46 bis 49,6° N, 8,8 bis 17,8° O) in den Zoomstufen zs holen und je
+   Zoomstufe als ein Paket speichern. tpl(z, x, y) liefert die Adresse einer Kachel. Schon vorhandene Pakete werden
+   nicht neu geholt (Bilder mit fester Zeit ändern sich nicht), außer fresh (das jeweils neueste Bild ohne Zeitangabe). */
+const TP_BOX = [46.0, 8.8, 49.6, 17.8];
+function tpRange(z) {
+  const n = Math.pow(2, z), tx = (lo) => Math.floor(((lo + 180) / 360) * n), ty = (la) => Math.floor(((1 - Math.log(Math.tan((la * Math.PI) / 180) + 1 / Math.cos((la * Math.PI) / 180)) / Math.PI) / 2) * n);
+  return { x0: tx(TP_BOX[1]), x1: tx(TP_BOX[3]), y0: ty(TP_BOX[2]), y1: ty(TP_BOX[0]) };
+}
+function wmsTile(base, z, x, y, px) {
+  const sz = (2 * TP_E) / Math.pow(2, z), x0 = -TP_E + x * sz, y1 = TP_E - y * sz;
+  return base + "&bbox=" + [x0, y1 - sz, x0 + sz, y1].join(",") + "&width=" + (px || 256) + "&height=" + (px || 256);
+}
+async function tpBundle(env, tpl, zs, ttl, fresh, budget) {
+  let writes = 0;
+  for (const z of zs) {
+    if (budget.t < Date.now()) return writes;
+    const R = tpRange(z), first = tileKey(tpl(z, R.x0, R.y0));
+    if (!first) continue;
+    const key = "tb:" + (await sha(first.id)) + ":" + z;
+    if (!fresh) { try { const m = await env.GM.getWithMetadata(key, { type: "stream" }); if (m.value) { try { await m.value.cancel(); } catch (e) {} continue; } } catch (e) {} }
+    const jobs = [];
+    for (let x = R.x0; x <= R.x1; x++) for (let y = R.y0; y <= R.y1; y++) jobs.push([x, y]);
+    const got = [];
+    let ct = "image/png";
+    for (let i = 0; i < jobs.length; i += 6) {
+      await Promise.all(jobs.slice(i, i + 6).map(async ([x, y]) => {
+        try { const r = await tfetch(tpl(z, x, y), 12000); if (r.ok && /^image\//.test(r.headers.get("Content-Type") || "")) { ct = r.headers.get("Content-Type"); got.push([x, y, new Uint8Array(await r.arrayBuffer())]); } } catch (e) {}
+      }));
+    }
+    if (got.length < jobs.length * 0.8) continue;
+    const ix = { _ct: ct };
+    let o = 0;
+    for (const [x, y, b] of got) { ix[x + "_" + y] = [o, b.length]; o += b.length; }
+    const head = new TextEncoder().encode(JSON.stringify(ix)), out = new Uint8Array(4 + head.length + o);
+    new DataView(out.buffer).setUint32(0, head.length);
+    out.set(head, 4);
+    let p = 4 + head.length;
+    for (const [, , b] of got) { out.set(b, p); p += b.length; }
+    await env.GM.put(key, out, { expirationTtl: ttl });
+    writes++;
+  }
+  return writes;
+}
+async function tpPrewarm(env) {
+  if (!env.GM) return;
+  const budget = { t: Date.now() + 4 * 60000 }, now = Date.now() / 1000, iso = (t) => new Date(t * 1000).toISOString().slice(0, 19) + "Z";
+  let w = 0;
+  /* Satelliten-Wolken (Meteosat-Wolkenmaske): das neueste Bild ohne Zeit (wie die App es für „jetzt“ holt) und die Viertelstunden
+     der letzten 1½ Stunden mit Zeit */
+  const CLM = "https://view.eumetsat.int/geoserver/wms?service=WMS&request=GetMap&version=1.1.1&layers=msg_fes:clm&styles=&format=image/png&transparent=true&srs=EPSG:3857";
+  const mi = new Date().getUTCMinutes();
+  if (mi % 15 < 5) w += await tpBundle(env, (z, x, y) => wmsTile(CLM, z, x, y), [5, 6, 7, 8], 1800, true, budget);
+  for (let k = 4; k <= 6; k++) { const sl = Math.floor(now / 900) * 900 - k * 900; w += await tpBundle(env, (z, x, y) => wmsTile(CLM + "&time=" + iso(sl), z, x, y), [6, 7, 8], 7200, false, budget); }
+  /* Europa-Radar (LibreWXR): die letzten 3 Messbilder und die Radar-Vorhersage */
+  try {
+    const j = await (await tfetch("https://api.librewxr.net/public/weather-maps.json", 10000)).json();
+    const past = (j.radar && j.radar.past) || [], nc = (j.radar && j.radar.nowcast) || [];
+    for (const f of past.slice(-3)) w += await tpBundle(env, (z, x, y) => j.host + f.path + "/512/" + z + "/" + x + "/" + y + "/0/1_0.png", [5, 6, 7, 8], 3 * 3600, false, budget);
+    for (const f of nc) w += await tpBundle(env, (z, x, y) => j.host + f.path + "/512/" + z + "/" + x + "/" + y + "/0/1_0.png", [6, 7], 3600, false, budget);
+  } catch (e) {}
+  /* DWD ICON-EU (Wettermodell im Radar außerhalb der GeoSphere-Fläche): die nächsten 12 Stunden */
+  if (mi % 30 < 5) {
+    const ICX = "https://maps.dwd.de/geoserver/dwd/wms?service=WMS&request=GetMap&version=1.1.1&layers=dwd:Icon-eu_reg00625_fd_sl_TOTPREC01H&styles=&format=image/png&transparent=true&srs=EPSG:3857";
+    for (let h = 1; h <= 12; h++) { const th = Math.floor(now / 3600) * 3600 + h * 3600; w += await tpBundle(env, (z, x, y) => wmsTile(ICX + "&time=" + new Date(th * 1000).toISOString(), z, x, y), [5, 6, 7], 6 * 3600, false, budget); }
+  }
+  if (w) console.log("tp: " + w + " Pakete vorgeladen");
+}
 /* ============ Beste Vorhersage je Ort (/bf/pp und /bf/sk), nur für Angemeldete ============
    /bf/pp: echte Regenwahrscheinlichkeit aus Ensembles. Jedes Ensemble rechnet das Wetter 20 bis 50 Mal mit leicht
      verschiedenen Anfangswerten. Wahrscheinlichkeit je Stunde = Anteil der Läufe mit mindestens 0,1 mm, gemittelt über die
@@ -582,6 +712,7 @@ export default {
     const url = new URL(req.url);
     try {
       if (url.pathname === "/api" || url.pathname.startsWith("/api/")) return secure(await api(req, env, url), { "Cache-Control": "no-store" });
+      if (url.pathname === "/tp") return await tpServe(req, env, url);
       if (url.pathname.startsWith("/om/")) return secure(await omServe(req, env, url));
       if (url.pathname.startsWith("/bf/")) return secure(await bfServe(req, env, url));
       if (url.pathname === "/gm" || url.pathname.startsWith("/gm/") || url.pathname === "/gr" || url.pathname.startsWith("/gr/")) return secure(await gmServe(env, url));
@@ -603,6 +734,8 @@ export default {
     const mi = new Date(event.scheduledTime || Date.now()).getUTCMinutes();
     /* Vorrechnen: Open-Meteo-Abfragen, die gebraucht werden, alle 5 Minuten rechtzeitig erneuern */
     if (mi % 5 === 2) ctx.waitUntil(omPrewarm(env).catch((e) => console.error("omPrewarm", e && e.message)));
+    /* Kartenbilder des Radars vorladen */
+    if (mi % 5 === 1) ctx.waitUntil(tpPrewarm(env).catch((e) => console.error("tpPrewarm", e && e.message)));
     if (mi % 10 === 0) ctx.waitUntil(gmRun(env).catch((e) => console.error("gmRun", e && e.message)));
   },
 };
