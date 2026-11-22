@@ -99,11 +99,32 @@ async function gmRun(env) {
     const ix = JSON.parse((await kv.get("gm:idx")) || "null") || { ref: 0, t: [] };
     const nx = ref > ix.ref ? JSON.parse((await kv.get("gm:nx")) || "null") || { ref, t: [] } : ix;
     if (nx.ref !== ref) { nx.ref = ref; nx.t = []; }
+    /* Selbstheilung: jedes gespeicherte Bild prüfen (muss als NetCDF/HDF5 beginnen und ganz im Paket liegen). Ein
+       kaputtes oder fehlendes fliegt aus dem Verzeichnis und wird in diesem Durchgang gleich neu geholt. */
+    const bk = {};
+    const chk = async (o) => {
+      let c = 0;
+      for (const [t, e] of Object.entries(o.p || {})) {
+        if (!(e[0] in bk)) { try { bk[e[0]] = await kv.get(e[0], { type: "arrayBuffer" }); } catch (x) { bk[e[0]] = undefined; } }
+        const all = bk[e[0]];
+        if (all === undefined) continue;
+        let ok = !!all && all.byteLength >= e[1] + e[2];
+        if (ok) { const h = new Uint8Array(all, e[1], 4); ok = h[0] === 0x89 && h[1] === 0x48 && h[2] === 0x44 && h[3] === 0x46; }
+        if (!ok) { delete o.p[t]; o.t = o.t.filter((x) => x !== +t); c++; }
+      }
+      return c;
+    };
+    const fixed = await chk(nx);
+    /* läuft gerade ein neuer Modelllauf an, wird der alte noch gezeigt: auch den prüfen (kaputte Bilder nur entfernen) */
+    if (nx !== ix && (await chk(ix))) await kv.put("gm:idx", JSON.stringify(ix));
+    {
+      if (fixed) console.warn("gm: " + fixed + " kaputte Bilder entfernt, werden neu geholt");
+    }
     const want = gmWanted(ref, now), have = new Set(nx.t), got = [];
     let n = 0;
     for (const t of want) {
       if (have.has(t)) continue;
-      if (Date.now() - t0 > 7 * 60000 || n >= 6) break;
+      if (Date.now() - t0 > 7 * 60000 || n >= (fixed ? 12 : 6)) break;
       try {
         const r = await tfetch(GM_URL + GM_Q + "&start=" + isoM(t) + "&end=" + isoM(t), 110000);
         if (!r.ok) { if (r.status === 429) break; continue; }
@@ -113,7 +134,7 @@ async function gmRun(env) {
         have.add(t); n++;
       } catch (e) { break; }
     }
-    if (!n) return;
+    if (!n) { if (fixed) await kv.put(nx === ix ? "gm:idx" : "gm:nx", JSON.stringify(nx)); return; }
     /* alle neuen Bilder dieses Durchgangs in EINEM Eintrag (spart Schreibvorgänge): gm:b:<ref>:<erste Zeit>,
        wo welches Bild liegt, steht in nx.p[t] = [Schlüssel, Anfang, Länge] */
     {
