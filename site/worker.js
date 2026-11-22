@@ -243,6 +243,73 @@ async function gmServe(env, url) {
   if (!b) return new Response("Nicht gefunden", { status: 404 });
   return new Response(b, { headers: NC_HDR });
 }
+/* ============ Alle Daten der App in einem Paket (/pre) ============
+   Beim Start schickt die App die Liste der Abfragen, die sie für den Ort beim letzten Mal gebraucht hat (Open-Meteo,
+   GeoSphere, Warnungen, DWD …), und bekommt alle Antworten in einer einzigen Antwort zurück:
+   - Open-Meteo aus dem Zwischenspeicher om: (vorgerechnet, siehe omServe),
+   - die anderen Dienste aus dem Zwischenspeicher pc: im KV, den der Server alle 5 Minuten für alles erneuert, was in den
+     letzten 6 Stunden gebraucht wurde (pc:hot). Antwortet ein Dienst nicht, der letzte Stand (bis 2 Stunden).
+   Was nicht im Paket ist (z. B. Abfragen mit Anmeldung), holt die App wie bisher selbst. */
+const PC_HOSTS = /^(dataset\.api\.hub\.geosphere\.at|warnungen\.zamg\.at|api\.brightsky\.dev|aviationweather\.gov)$/;
+const PC_NO = /[?&](date|last_date|start|end)=|\/metadata|grid\/forecast|historical\//;
+const pcTtl = (u) => (/nowcast|station\/current|warn|alerts|current_weather/.test(u) ? 300 : /timeseries\/forecast/.test(u) ? 900 : 600);
+async function pcFetch(env, u, h) {
+  const r = await tfetch(u, 12000);
+  if (!r.ok) return { s: r.status };
+  const b = await r.text(), ct = r.headers.get("Content-Type") || "application/json";
+  if (env.GM && b.length < 5e6) { try { await env.GM.put("pc:" + h, b, { expirationTtl: 2 * 3600, metadata: { at: Math.round(Date.now() / 1000), ct } }); } catch (e) {} }
+  return { s: 200, b, ct };
+}
+async function pcGet(env, u) {
+  const h = await sha(u), now = Date.now() / 1000, ttl = pcTtl(u);
+  let old = null;
+  try { old = await env.GM.getWithMetadata("pc:" + h, { type: "text" }); } catch (e) {}
+  const age = old && old.value != null && old.metadata ? now - old.metadata.at : Infinity;
+  try {
+    const hot = JSON.parse((await env.GM.get("pc:hot")) || "{}"), e = hot[h];
+    if (!e || now - e.used > 3 * 3600) { hot[h] = { u, used: Math.round(now) }; for (const k of Object.keys(hot)) if (now - hot[k].used > 86400) delete hot[k]; await env.GM.put("pc:hot", JSON.stringify(hot)); }
+  } catch (e) {}
+  if (age < ttl) return { s: 200, b: old.value, ct: old.metadata.ct };
+  try { const x = await pcFetch(env, u, h); if (x.s === 200) return x; } catch (e) {}
+  if (age < 7200) return { s: 200, b: old.value, ct: old.metadata.ct };
+  return null;
+}
+async function pcPrewarm(env) {
+  if (!env.GM) return;
+  const hot = JSON.parse((await env.GM.get("pc:hot")) || "{}"), now = Date.now() / 1000;
+  let n = 0;
+  for (const [h, e] of Object.entries(hot)) {
+    if (now - e.used > 6 * 3600 || n >= 30) continue;
+    const m = await env.GM.getWithMetadata("pc:" + h, { type: "stream" });
+    try { if (m.value) await m.value.cancel(); } catch (x) {}
+    if (m.metadata && now - m.metadata.at < pcTtl(e.u) - 90) continue;
+    n++;
+    try { await pcFetch(env, e.u, h); } catch (x) {}
+  }
+}
+async function preServe(req, env) {
+  if (req.method !== "POST") return new Response("Nur POST", { status: 405 });
+  if (!(await valid(env, getCookie(req, COOKIE)))) return bfJson({ error: "Nicht angemeldet" }, 401);
+  let L = [];
+  try { const j = await req.json(); L = (Array.isArray(j.u) ? j.u : []).filter((u) => typeof u === "string" && u.length < 3000).slice(0, 30); } catch (e) {}
+  const out = {};
+  await Promise.all(L.map(async (u) => {
+    try {
+      const U = new URL(u);
+      if (U.protocol !== "https:") return;
+      const om = /^((?:api|air-quality-api|previous-runs-api|ensemble-api)\.open-meteo\.com)(\/.*)$/.exec(U.host + U.pathname);
+      if (om) {
+        const r = await omServe(new Request(new URL(req.url).origin + "/om/" + om[1] + om[2] + U.search, { headers: req.headers }), env, new URL(new URL(req.url).origin + "/om/" + om[1] + om[2] + U.search));
+        if (r.ok) out[u] = { s: 200, b: await r.text(), ct: r.headers.get("Content-Type") || "application/json" };
+        return;
+      }
+      if (!PC_HOSTS.test(U.hostname) || PC_NO.test(u) || !env.GM) return;
+      const x = await pcGet(env, u);
+      if (x) out[u] = x;
+    } catch (e) {}
+  }));
+  return new Response(JSON.stringify({ r: out }), { headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" } });
+}
 /* ============ Kartenbilder des Radars: Zwischenspeicher und Vorladen (/tp) ============
    Alle Kacheln, die das Radar von anderen Diensten lädt (Satelliten-Wolken und Blitze von EUMETSAT, Europa-Radar von
    LibreWXR bzw. RainViewer, Radar und Modell vom DWD), gehen über /tp?u=<Adresse>.
@@ -349,6 +416,81 @@ async function tpBundle(env, tpl, zs, ttl, fresh, budget) {
   }
   return writes;
 }
+/* ============ Zugrichtung der Wolken (für Wolken ohne Verspätung) ============
+   Aus den zwei neuesten vorgeladenen Satellitenbildern (Wolkenmaske, Zoomstufe 7, Österreich und Umgebung) wird die
+   Verschiebung gesucht, bei der beide am besten übereinander passen. Ergebnis in Metern je Sekunde (Karten-Meter),
+   gespeichert als tp:mv. Die App schiebt damit das neueste Satellitenbild bis „jetzt“ weiter. */
+async function pngRGBA(buf) {
+  const u = new Uint8Array(buf), dv = new DataView(buf);
+  if (u[0] !== 0x89 || u[1] !== 0x50) throw new Error("kein PNG");
+  let o = 8, W = 0, H = 0, bd = 8, ct = 0, pal = null, trns = null;
+  const idat = [];
+  while (o < u.length) {
+    const len = dv.getUint32(o), type = String.fromCharCode(u[o + 4], u[o + 5], u[o + 6], u[o + 7]), d = u.subarray(o + 8, o + 8 + len);
+    if (type === "IHDR") { W = dv.getUint32(o + 8); H = dv.getUint32(o + 12); bd = u[o + 16]; ct = u[o + 17]; if (u[o + 20]) throw new Error("interlaced"); }
+    else if (type === "PLTE") pal = d.slice(); else if (type === "tRNS") trns = d.slice(); else if (type === "IDAT") idat.push(d.slice()); else if (type === "IEND") break;
+    o += 12 + len;
+  }
+  const raw = new Uint8Array(await new Response(new Blob(idat).stream().pipeThrough(new DecompressionStream("deflate"))).arrayBuffer());
+  const ch = { 0: 1, 2: 3, 3: 1, 4: 2, 6: 4 }[ct], bpp = Math.max(1, (ch * bd) >> 3), stride = (W * ch * bd + 7) >> 3;
+  const out = new Uint8Array(W * H * 4), cur = new Uint8Array(stride), prev = new Uint8Array(stride);
+  for (let y = 0, p = 0; y < H; y++) {
+    const f = raw[p++];
+    for (let i = 0; i < stride; i++) {
+      const x = raw[p++], a = i >= bpp ? cur[i - bpp] : 0, b = prev[i], c = i >= bpp ? prev[i - bpp] : 0;
+      let v = x;
+      if (f === 1) v = x + a; else if (f === 2) v = x + b; else if (f === 3) v = x + ((a + b) >> 1);
+      else if (f === 4) { const q = a + b - c, pa = Math.abs(q - a), pb = Math.abs(q - b), pc = Math.abs(q - c); v = x + (pa <= pb && pa <= pc ? a : pb <= pc ? b : c); }
+      cur[i] = v & 255;
+    }
+    for (let xq = 0; xq < W; xq++) {
+      const j = (y * W + xq) * 4;
+      if (ct === 6 && bd === 8) { out[j] = cur[xq * 4]; out[j + 1] = cur[xq * 4 + 1]; out[j + 2] = cur[xq * 4 + 2]; out[j + 3] = cur[xq * 4 + 3]; }
+      else if (ct === 2 && bd === 8) { out[j] = cur[xq * 3]; out[j + 1] = cur[xq * 3 + 1]; out[j + 2] = cur[xq * 3 + 2]; out[j + 3] = 255; }
+      else if (ct === 3) { const idx = bd === 8 ? cur[xq] : (cur[(xq * bd) >> 3] >> (8 - bd - ((xq * bd) & 7))) & ((1 << bd) - 1); out[j] = pal[idx * 3]; out[j + 1] = pal[idx * 3 + 1]; out[j + 2] = pal[idx * 3 + 2]; out[j + 3] = trns && idx < trns.length ? trns[idx] : 255; }
+      else if (ct === 0 && bd === 8) { out[j] = out[j + 1] = out[j + 2] = cur[xq]; out[j + 3] = 255; }
+      else if (ct === 4 && bd === 8) { out[j] = out[j + 1] = out[j + 2] = cur[xq * 2]; out[j + 3] = cur[xq * 2 + 1]; }
+    }
+    prev.set(cur);
+  }
+  return { W, H, d: out };
+}
+/* Wolkenmaske eines Bildpakets (Zoom 7) als grobes Raster (4 x 4 Bildpunkte je Zelle, Anteil Wolke 0 bis 1) */
+async function clmGrid(env, base, sl) {
+  const z = 7, R = tpRange(z), k = tileKey(wmsTile(base + "&time=" + new Date(sl * 1000).toISOString().slice(0, 19) + "Z", z, R.x0, R.y0));
+  const b = await env.GM.get("tb:" + (await sha(k.id)) + ":" + z, { type: "arrayBuffer" });
+  if (!b) return null;
+  const n = new DataView(b).getUint32(0), ix = JSON.parse(new TextDecoder().decode(new Uint8Array(b, 4, n)));
+  const nx = R.x1 - R.x0 + 1, ny = R.y1 - R.y0 + 1, C = 4, GW = (nx * 256) / C, GH = (ny * 256) / C, G = new Float32Array(GW * GH);
+  for (let tx = 0; tx < nx; tx++) for (let ty = 0; ty < ny; ty++) {
+    const e = ix[R.x0 + tx + "_" + (R.y0 + ty)];
+    if (!e) return null;
+    const px = await pngRGBA(b.slice(4 + n + e[0], 4 + n + e[0] + e[1]));
+    for (let y = 0; y < 256; y++) for (let x = 0; x < 256; x++) {
+      const j = (y * 256 + x) * 4, cl = px.d[j + 3] > 100 && px.d[j] > 200 && px.d[j + 1] > 200 && px.d[j + 2] > 200;
+      if (cl) G[(((ty * 256 + y) / C) | 0) * GW + (((tx * 256 + x) / C) | 0)] += 1 / (C * C);
+    }
+  }
+  return { G, GW, GH };
+}
+async function clmMotion(env, base, s0) {
+  const A = await clmGrid(env, base, s0 - 900), B = await clmGrid(env, base, s0);
+  if (!A || !B) return null;
+  const { GW, GH } = A, M = 8;
+  let best = null;
+  for (let dy = -M; dy <= M; dy++) for (let dx = -M; dx <= M; dx++) {
+    let e = 0, n = 0;
+    for (let y = M; y < GH - M; y += 2) for (let x = M; x < GW - M; x += 2) { e += Math.abs(B.G[y * GW + x] - A.G[(y - dy) * GW + (x - dx)]); n++; }
+    e /= n;
+    if (!best || e < best.e) best = { e, dx, dy };
+  }
+  let e0 = 0, n0 = 0;
+  for (let y = M; y < GH - M; y += 2) for (let x = M; x < GW - M; x += 2) { e0 += Math.abs(B.G[y * GW + x] - A.G[y * GW + x]); n0++; }
+  e0 /= n0;
+  /* Meter je Zelle bei Zoom 7: 4 Bildpunkte zu je 2·π·6378137/(256·2^7) m */
+  const mc = (4 * 2 * TP_E) / (256 * 128);
+  return { slot: s0, vx: (best.dx * mc) / 900, vy: (-best.dy * mc) / 900, q: e0 > 0 ? Math.round((1 - best.e / e0) * 100) / 100 : 0, at: Math.round(Date.now() / 1000) };
+}
 async function tpPrewarm(env) {
   if (!env.GM) return;
   const budget = { t: Date.now() + 4 * 60000 }, now = Date.now() / 1000, iso = (t) => new Date(t * 1000).toISOString().slice(0, 19) + "Z";
@@ -361,6 +503,10 @@ async function tpPrewarm(env) {
      Satelliten, fehlen Kacheln, dann wird es beim nächsten Durchgang wieder versucht */
   const s0 = Math.floor((now - 45 * 60) / 900) * 900;
   for (const sl of [s0, s0 - 900, s0 - 1800]) w += await tpBundle(env, (z, x, y) => wmsTile(CLM + "&time=" + iso(sl), z, x, y), [5, 6, 7, 8], 7200, false, budget);
+  try {
+    const old = JSON.parse((await env.GM.get("tp:mv")) || "null");
+    if (!old || old.slot !== s0) { const mv = await clmMotion(env, CLM, s0); if (mv) await env.GM.put("tp:mv", JSON.stringify(mv), { expirationTtl: 3 * 3600 }); }
+  } catch (e) { console.error("Wolkenzug", e && e.message); }
   /* Europa-Radar (LibreWXR): die letzten 3 Messbilder und die Radar-Vorhersage */
   try {
     const j = await (await tfetch("https://api.librewxr.net/public/weather-maps.json", 10000)).json();
@@ -714,6 +860,8 @@ export default {
     const url = new URL(req.url);
     try {
       if (url.pathname === "/api" || url.pathname.startsWith("/api/")) return secure(await api(req, env, url), { "Cache-Control": "no-store" });
+      if (url.pathname === "/pre") return secure(await preServe(req, env));
+      if (url.pathname === "/tp/mv") { if (!(await valid(env, getCookie(req, COOKIE)))) return new Response("{}", { status: 401 }); return new Response((env.GM && (await env.GM.get("tp:mv"))) || "{}", { headers: { "Content-Type": "application/json", "Cache-Control": "no-store" } }); }
       if (url.pathname === "/tp") return await tpServe(req, env, url);
       if (url.pathname.startsWith("/om/")) return secure(await omServe(req, env, url));
       if (url.pathname.startsWith("/bf/")) return secure(await bfServe(req, env, url));
@@ -736,6 +884,8 @@ export default {
     const mi = new Date(event.scheduledTime || Date.now()).getUTCMinutes();
     /* Vorrechnen: Open-Meteo-Abfragen, die gebraucht werden, alle 5 Minuten rechtzeitig erneuern */
     if (mi % 5 === 2) ctx.waitUntil(omPrewarm(env).catch((e) => console.error("omPrewarm", e && e.message)));
+    /* Daten der App (GeoSphere, Warnungen, DWD …) für die gebrauchten Orte erneuern */
+    if (mi % 5 === 3) ctx.waitUntil(pcPrewarm(env).catch((e) => console.error("pcPrewarm", e && e.message)));
     /* Kartenbilder des Radars vorladen */
     if (mi % 5 === 1) ctx.waitUntil(tpPrewarm(env).catch((e) => console.error("tpPrewarm", e && e.message)));
     if (mi % 10 === 0) ctx.waitUntil(gmRun(env).catch((e) => console.error("gmRun", e && e.message)));

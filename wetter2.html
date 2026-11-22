@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-285fPEGby2/4TzKj3HOSc+oCkSuBOCI84QI8y2jN46U=' 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-TccR0BgCco5MD/t1RF/FQtkgVajH7Z95LiMwvg88QBo=' 'sha256-lxCZwcLPOXE2YviGQ2HXcLczs+yveQXJDAoG4sJ7kAw=' 'sha256-RuxfNxmpjp4A0o44t73N+6O4m9ajjPnJ8Ah9hbvLASk=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src 'self'; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://s3.amazonaws.com https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-285fPEGby2/4TzKj3HOSc+oCkSuBOCI84QI8y2jN46U=' 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-DEbu+QN8ttCHI/Iv/FUX4SuHncor97utTYKpWg4TKIo=' 'sha256-5QFhByEwr3YWJSjqSLdTO84wa4UeXjHRwTHkO9bVbsY=' 'sha256-RuxfNxmpjp4A0o44t73N+6O4m9ajjPnJ8Ah9hbvLASk=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src 'self'; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://s3.amazonaws.com https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -14,7 +14,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/favicon-64.png">
-<meta name="app-build" content="98">
+<meta name="app-build" content="99">
 <meta name="app-version" content="1.0">
 <meta name="app-notes" content="Neue Adresse: Die App liegt jetzt bei Cloudflare (wetter.elias-ziegler.workers.dev). Version 1.0 (Build 1): Alles durchgesehen, Fehler behoben und schneller gemacht. Die App startet viel schneller: Das Wetter steht beim Öffnen fast sofort da, weil der letzte Stand gleich gezeigt wird und alle Daten gleichzeitig geholt werden. Das Regenradar Österreich lädt jetzt immer ganz Österreich auf einmal (etwa 1 MB, 1 bis 2 Sekunden statt viele Stücke zu je 6 MB), egal wohin du zoomst, ohne Lücken, und holt neue Daten gleich, wenn du die App aus dem Hintergrund zurückholst. Die Regen-Vorschau für die nächsten 2 Stunden war eine Viertelstunde zu spät und stimmt jetzt. Benachrichtigungen kommen zuverlässiger, die Schrift lädt ohne Google, dazu viele Kleinigkeiten.">
 <script>/* Umzug von GitHub (eliaspp9.github.io/Wetter) hierher: die alte Seite gibt Einstellungen und Lieblingsorte in der Adresse
@@ -40,21 +40,28 @@ if(window.__redir)location.replace(location.pathname.replace(/wetter2\.html$/i,"
   if(tok&&P&&P.u&&o&&P.k===(+o.lat).toFixed(3)+","+(+o.lon).toFixed(3)){
    var now=Date.now(),pre=window.__pre={},ac=typeof AbortController!=="undefined"?new AbortController():null;
    if(ac)setTimeout(function(){ac.abort()},30000);
+   /* alle Abfragen ohne Anmeldung in einem einzigen Paket vom eigenen Server (/pre, dort vorgeladen); was fehlt,
+      wird einzeln geholt */
+   var own=location.hostname==="wetter.elias-ziegler.workers.dev",BU=own?P.u.filter(function(e){return!e[1]&&!e[2]}).map(function(e){return e[0]}):[];
+   var B=BU.length?fetch(location.origin+"/pre",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({u:BU}),signal:ac?ac.signal:undefined}).then(function(r){return r.ok?r.json():null}).then(function(j){return j&&j.r||null},function(){return null}):null;
    P.u.forEach(function(e){
     try{
      /* Antwort liegt noch frisch im eigenen Zwischenspeicher der App (Kachelmann): nicht abfragen */
      if(e[2]){var c=S.getItem(e[2]),m=c&&/^\{"t":(\d+),"s":(\d+)/.exec(c);if(m&&now-m[1]<(m[2]==="200"?e[3]:180000))return}
-     var it=pre[e[0]]={t:now,p:null},go=function(){
-      if(pre[e[0]]!==it||it.p)return;          /* die App hat inzwischen selbst gefragt */
+     var it=pre[e[0]]={t:now,p:null},one=function(){
       var q={};if(ac)q.signal=ac.signal;if(e[1])q.headers={Authorization:"Bearer "+tok};
-      it.t=Date.now();
       /* Open-Meteo über die eigene Seite (siehe fetchR), sonst direkt */
-      var om=location.hostname==="wetter.elias-ziegler.workers.dev"&&/^https:\/\/((?:api|air-quality-api|previous-runs-api|ensemble-api|geocoding-api)\.open-meteo\.com)(\/.*)$/.exec(e[0]);
-      it.p=om?fetch(location.origin+"/om/"+om[1]+om[2],q).then(function(r){return r.ok?r:fetch(e[0],q)},function(){return fetch(e[0],q)}):fetch(e[0],q);
+      var om=own&&/^https:\/\/((?:api|air-quality-api|previous-runs-api|ensemble-api|geocoding-api)\.open-meteo\.com)(\/.*)$/.exec(e[0]);
+      return om?fetch(location.origin+"/om/"+om[1]+om[2],q).then(function(r){return r.ok?r:fetch(e[0],q)},function(){return fetch(e[0],q)}):fetch(e[0],q);
+     },go=function(){
+      if(pre[e[0]]!==it||it.p)return;          /* die App hat inzwischen selbst gefragt */
+      it.t=Date.now();
+      if(B&&!e[1]&&!e[2])it.p=B.then(function(mp){var x=mp&&mp[e[0]];if(x&&x.s===200&&typeof x.b==="string")return new Response(x.b,{status:200,headers:{"Content-Type":x.ct||"application/json"}});return one()});
+      else it.p=one();
       it.p.catch(function(){});
      };
-     /* das Wichtigste sofort, der Rest eine Viertelsekunde später */
-     if(e[4])setTimeout(go,250);else go();
+     /* das Wichtigste sofort, der Rest eine Viertelsekunde später (aus dem Paket: alles sofort) */
+     if(e[4]&&!(B&&!e[1]&&!e[2]))setTimeout(go,250);else go();
     }catch(x){}
    });
   }
@@ -3381,7 +3388,22 @@ function atCompose(){
  const hk=[...atHist.keys()].filter(k=>k<r.t[0]-60).sort((a,b)=>a-b),tEnd=r.t[r.t.length-1];
  const mk=[...atMod.f.keys()].filter(k=>k>tEnd+60).sort((a,b)=>a-b);
  return Object.assign({},r,{t:[...hk,...r.t,...mk],V:[...hk.map(k=>atHist.get(k)),...r.V.map((v,i)=>atBlendNc(r,i,tEnd)),...mk.map(k=>atMod.f.get(k).V)],
-  SM:[...hk.map(()=>null),...r.V.map(()=>null),...mk.map(k=>atMod.f.get(k).S)],h0:hk.length,m0:hk.length+r.V.length,S:atT2?atT2.S:null,ver:++atVer});
+  SM:[...hk.map(k=>atSnowMix(k)),...r.t.map(t=>atSnowMix(t)),...mk.map(k=>atMod.f.get(k).S)],h0:hk.length,m0:hk.length+r.V.length,S:atT2?atT2.S:null,ver:++atVer});
+}
+/* Schnee oder Regen bei Messung und Radar-Vorhersage: wo das 1-km-Modell von GeoSphere in der nächsten vollen Stunde
+   Niederschlag rechnet, entscheidet dessen Schneeanteil (Schnee, wenn mindestens die Hälfte als Schnee fällt; das
+   berücksichtigt Schneefallgrenze und Gelände), sonst wie bisher die Temperatur (bis 1 °C Schnee). Ohne Modellstunde: null. */
+const atSmC=new Map();
+function atSnowMix(t){
+ const h=Math.round(t/3600)*3600,A=atMod.f.get(h),T2=atT2&&atT2.S;
+ if(!A||!A.S||!A.V||(T2&&T2.length!==A.V.length))return null;
+ const key=h+"|"+(atT2?atT2.at:0);let c=atSmC.get(key);
+ if(c&&c.A===A)return c.M;
+ const M=new Uint8Array(A.V.length);
+ for(let o=0;o<M.length;o++)M[o]=A.V[o]>1?(A.S[o]?1:0):(T2&&T2[o]?1:0);
+ atSmC.set(key,{A,M});
+ while(atSmC.size>12)atSmC.delete(atSmC.keys().next().value);
+ return M;
 }
 /* Weicher Übergang Radar-Vorhersage → Wettermodell: in der letzten Stunde der Radar-Vorhersage wird das Modell (zwischen
    den vollen Stunden linear) nach und nach dazugemischt, am Ende ist es ganz das Modell. So springt das Bild nicht, wenn
@@ -3865,8 +3887,20 @@ function cldImg(k,g){
 }
 /* Ebene der grauen Wolken: als Ganzes weichgezeichnet (keine Linien an den Kachelrändern, keine Kästchen); stärker, je
    weiter hineingezoomt (das Satellitenbild hat nur 3 bis 4 km) */
-function cldPane(){let p=map.getPane("atcp");if(!p){p=map.createPane("atcp");p.style.zIndex=335;p.style.pointerEvents="none";map.on("zoomend",cldBlur)}cldBlur()}
-function cldBlur(){const p=map&&map.getPane("atcp");if(!p)return;const z=map.getZoom();p.style.filter="blur("+(z<=6?1.5:z===7?2.5:z===8?4:z===9?7:10)+"px)"}
+function cldPane(){let p=map.getPane("atcp");if(!p){p=map.createPane("atcp");p.style.zIndex=335;p.style.pointerEvents="none";map.on("zoomend",()=>{cldBlur();cldSyncK=-1;const f=frames[idx];if(f)cldSync(f.time)})}
+ if(!map.getPane("clmp")){const q=map.createPane("clmp");q.style.zIndex=334;q.style.pointerEvents="none"}cldBlur()}
+function cldBlur(){const z=map.getZoom(),f="blur("+(z<=6?1.5:z===7?2.5:z===8?4:z===9?7:10)+"px)";for(const n of ["atcp","clmp"]){const p=map&&map.getPane(n);if(p)p.style.filter=f}}
+/* Zugrichtung der Wolken vom Server (/tp/mv, alle 15 Minuten neu): damit wird das neueste Satellitenbild bis zur Zeit des
+   Radarbildes weitergeschoben (höchstens 120 km), so fällt die Verspätung des Satelliten weg */
+let cldMv=null,cldMvT=0;
+async function cldMvLoad(){if(Date.now()-cldMvT<5*60000)return;cldMvT=Date.now();if(!AT_SRV)return;try{const j=await getJ(location.origin+"/tp/mv?t="+Math.floor(Date.now()/300000));cldMv=j&&j.slot&&j.q>=.15?j:null}catch(e){}}
+function cldShift(slot,t){
+ const p=map&&map.getPane("clmp");if(!p)return;
+ let dx=0,dy=0;
+ if(cldMv&&slot===cldMv.slot&&t>slot+900){const dt=Math.min(t,Date.now()/1000+3600)-slot;dx=cldMv.vx*dt;dy=cldMv.vy*dt;const d=Math.hypot(dx,dy);if(d>120000){dx*=120000/d;dy*=120000/d}}
+ const res=2*20037508.342789244/(256*Math.pow(2,map.getZoom()));
+ p.style.transform=dx||dy?"translate("+(dx/res).toFixed(1)+"px,"+(-dy/res).toFixed(1)+"px)":"";
+}
 function atCldHide(){for(const o of [cldA,cldB])if(o){try{map.removeLayer(o)}catch(e){}}cldA=cldB=null}
 /* Modell-Wolken zur Zeit t mit Gewicht w (0 bis 1): zwischen den vollen Stunden zwei Bilder übergeblendet */
 function atCldShow(t,w){
@@ -3887,7 +3921,7 @@ function atCldShow(t,w){
    Verspätung): weiß = Wolke wird grau, alles andere durchsichtig, leicht weichgezeichnet. Für Bilder bis jetzt die
    passende Viertelstunde, nach jetzt blendet der Satellit in einer Stunde aus (in „Österreich“ übernimmt das Modell).
    Alle 5 Minuten wird nachgesehen, ob es eine neue Viertelstunde gibt (auch ohne Bedienung, z. B. im Wandmodus). */
-setInterval(()=>{try{if(document.hidden||!map)return;cldSyncK=-1;const f=frames[idx];cldSync(f?f.time:Date.now()/1000)}catch(e){}},5*60000);
+setInterval(()=>{try{if(document.hidden||!map)return;cldMvLoad().then(()=>{cldSyncK=-1;const f=frames[idx];cldSync(f?f.time:Date.now()/1000)})}catch(e){}},5*60000);
 let ClmTile=null;const clmL=new Map();
 function clmLayer(slot){
  if(!ClmTile)ClmTile=L.TileLayer.WMS.extend({createTile(co,done){
@@ -3899,7 +3933,7 @@ function clmLayer(slot){
   const load=n=>{const im=new Image();im.crossOrigin="anonymous";im.onload=()=>{paint(im);finish()};im.onerror=()=>{finish();if(n<2)setTimeout(()=>load(n+1),15000*(n+1))};tpImg(im,this.getTileUrl(co))};
   load(0);return c}});
  let l=clmL.get(slot);if(l)return l;
- const o={layers:"msg_fes:clm",format:"image/png",transparent:true,opacity:0,zIndex:3,pane:"atcp",maxNativeZoom:8,maxZoom:19,attribution:"Wolken: EUMETSAT (Meteosat)"};
+ const o={layers:"msg_fes:clm",format:"image/png",transparent:true,opacity:0,zIndex:3,pane:"clmp",maxNativeZoom:8,maxZoom:19,attribution:"Wolken: EUMETSAT (Meteosat)"};
  if(slot)o.time=new Date(slot*1000).toISOString().slice(0,19)+"Z";
  l=new ClmTile("https://view.eumetsat.int/geoserver/wms",o);clmL.set(slot,l);
  while(clmL.size>10){const k0=clmL.keys().next().value,l0=clmL.get(k0);if(l0!==l){try{map.removeLayer(l0)}catch(e){}clmL.delete(k0)}else break}
@@ -3908,6 +3942,7 @@ function clmLayer(slot){
 function clmHide(){for(const l of clmL.values())try{l.setOpacity(0)}catch(e){}}
 function cldSync(t){
  if(!map)return;
+ if(!cldMvT)cldMvLoad().then(()=>{if(!cldMv)return;cldSyncK=-1;const f=frames[idx];if(f)cldSync(f.time)});
  if(!cldOn||lay!=="rain"){clmHide();atCldHide();return}
  const now=Date.now()/1000,ws=t<=now?1:Math.max(0,1-(t-now)/3600);
  cldPane();
@@ -3917,7 +3952,7 @@ function cldSync(t){
   const slot=Math.floor(Math.min(t,now-45*60)/900)*900,l=clmLayer(slot);
   if(!map.hasLayer(l))l.addTo(map);
   for(const o of clmL.values())if(o!==l)o.setOpacity(0);
-  l.setOpacity(ws);
+  l.setOpacity(ws);cldShift(slot,t);
  }else clmHide();
  if(mode==="at")atCldShow(t,1-ws);else atCldHide();
 }
@@ -7554,7 +7589,7 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("shr").hidden)cl
 const meta=n=>{const m=document.querySelector('meta[name="'+n+'"]');return m?m.content:""};
 /* app-build zählt seit jeher einfach hoch; daran erkennen auch ältere Geräte ein Update (sie vergleichen diese Zahl).
    Angezeigt wird der Build seit Version 1.0: Build 1 ist app-build 57. */
-const BUILD=+meta("app-build")||0,BUILD0=97,verText=b=>meta("app-version")+" (Build "+(b-BUILD0)+")";
+const BUILD=+meta("app-build")||0,BUILD0=98,verText=b=>meta("app-version")+" (Build "+(b-BUILD0)+")";
 let remote=null,lastChk=0;
 $("ver").textContent=verText(BUILD);
 /* Anmeldung: bis wann sie gilt und ob sie sich von selbst verlängert */
