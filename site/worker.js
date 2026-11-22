@@ -296,11 +296,12 @@ const BF_MOD = /^[a-z0-9_]{2,40}$/;
    Ergebnis wie bei den anderen Modellen (Gewicht, Fehler) und dazu der mittlere Fehler b (Vorhersage minus Messung),
    mit dem die App das Modell ausbessert. */
 const GS1 = "geosphere_1km", GS1_URL = "https://dataset.api.hub.geosphere.at/v1/timeseries/forecast/nwp-v2-1h-1km";
-async function gs1Past(S) {
-  const now = Math.floor(Date.now() / 3600000) * 3600, ll = S.map((o) => "&lat_lon=" + o.la.toFixed(4) + "," + o.lo.toFixed(4)).join("");
+/* P: zusätzliche Punkte nach den Stationen (der Ort selbst, für den Regen gegen INCA) */
+async function gs1Past(S, P) {
+  const now = Math.floor(Date.now() / 3600000) * 3600, ll = S.concat(P || []).map((o) => "&lat_lon=" + o.la.toFixed(4) + "," + o.lo.toFixed(4)).join("");
   const one = async (o) => {
     try {
-      const r = await tfetch(GS1_URL + "?parameters=2t,10u,10v&output_format=geojson&forecast_offset=" + o + "&start=" + isoM(now - o * 3 * 3600) + ll, 22000);
+      const r = await tfetch(GS1_URL + "?parameters=2t,10u,10v,tcc,tp&output_format=geojson&forecast_offset=" + o + "&start=" + isoM(now - o * 3 * 3600) + ll, 22000);
       return r.ok ? await r.json() : null;
     } catch (e) { return null; }
   };
@@ -387,8 +388,17 @@ async function bfSK(la, lo, models, g, env) {
   }
   const all = models.slice();
   if (g) {
-    const P = await gs1Past(S), q = (acc[GS1] = { tE: 0, tN: 0, wE: 0, wN: 0, rE: 0, rN: 0, tB: 0 });
+    const P = await gs1Past(S, PL), q = (acc[GS1] = { tE: 0, tN: 0, wE: 0, wN: 0, rE: 0, rN: 0, tB: 0, cE: 0, cN: 0 });
+    /* Regen am Ort gegen INCA (wie bei den anderen Modellen), Stunden aus den älteren Läufen */
+    const incTs = inca && (inca.timestamps || []).map((x) => Date.parse(x) / 1000), incRR = inca && inca.features && inca.features[0] && inca.features[0].properties.parameters.RR && inca.features[0].properties.parameters.RR.data;
+    let pn = 0, pE = 0, pae = 0;
+    const seenP = new Set();
     for (const j of P) {
+      const fp = j.features[S.length], pp = fp && fp.properties && fp.properties.parameters, TP = pp && pp.tp && pp.tp.data;
+      if (TP && incTs && incRR) {
+        const ix2 = new Map(j.timestamps.map((t, i) => [Date.parse(t) / 1000, i]));
+        incTs.forEach((t, k) => { const i = ix2.get(t), o = incRR[k]; if (i == null || o == null || TP[i] == null || t > now || seenP.has(t)) return; seenP.add(t); pn++; if ((TP[i] >= 0.1) !== (o >= 0.1)) pE++; pae += Math.abs(TP[i] - o); });
+      }
       j.features.forEach((f, si) => {
         const o = S[si], pa = f && f.properties && f.properties.parameters;
         if (!o || !pa || !pa["2t"]) return;
@@ -401,9 +411,12 @@ async function bfSK(la, lo, models, g, env) {
           if (i == null) continue;
           if (T[i] != null && ob.T != null) { q.tE += Math.abs(T[i] - ob.T); q.tB += T[i] - ob.T; q.tN++; }
           if (U[i] != null && V[i] != null && ob.W != null) { q.wE += Math.abs(Math.hypot(U[i], V[i]) * 3.6 - ob.W); q.wN++; }
+          const TC = (pa.tcc || {}).data || [];
+          if (TC[i] != null && ob.C != null) { const c = TC[i] <= 1.01 ? TC[i] * 100 : TC[i]; q.cE += Math.abs(c - ob.C); q.cN++; }
         }
       });
     }
+    if (pn >= 12) { pr[GS1] = Math.round((1 - pE / pn) * 1000) / 1000; pe[GS1] = Math.round((pae / pn) * 100) / 100; }
     all.push(GS1);
   }
   const out = { t: {}, w: {}, r: {}, c: {}, e: {}, b: {}, n: 0, st: S.map((o) => o.id), ri: Object.keys(pr).length ? 1 : 0, pe };
