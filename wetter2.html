@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-285fPEGby2/4TzKj3HOSc+oCkSuBOCI84QI8y2jN46U=' 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-DEbu+QN8ttCHI/Iv/FUX4SuHncor97utTYKpWg4TKIo=' 'sha256-5QFhByEwr3YWJSjqSLdTO84wa4UeXjHRwTHkO9bVbsY=' 'sha256-RuxfNxmpjp4A0o44t73N+6O4m9ajjPnJ8Ah9hbvLASk=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src 'self'; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://s3.amazonaws.com https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-285fPEGby2/4TzKj3HOSc+oCkSuBOCI84QI8y2jN46U=' 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-DEbu+QN8ttCHI/Iv/FUX4SuHncor97utTYKpWg4TKIo=' 'sha256-Vxi8dKiUrcKoinHy55K5JvJw3tsLtjCPdsMZEDgbdpg=' 'sha256-RuxfNxmpjp4A0o44t73N+6O4m9ajjPnJ8Ah9hbvLASk=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src 'self'; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://s3.amazonaws.com https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -14,7 +14,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/favicon-64.png">
-<meta name="app-build" content="99">
+<meta name="app-build" content="100">
 <meta name="app-version" content="1.0">
 <meta name="app-notes" content="Neue Adresse: Die App liegt jetzt bei Cloudflare (wetter.elias-ziegler.workers.dev). Version 1.0 (Build 1): Alles durchgesehen, Fehler behoben und schneller gemacht. Die App startet viel schneller: Das Wetter steht beim Öffnen fast sofort da, weil der letzte Stand gleich gezeigt wird und alle Daten gleichzeitig geholt werden. Das Regenradar Österreich lädt jetzt immer ganz Österreich auf einmal (etwa 1 MB, 1 bis 2 Sekunden statt viele Stücke zu je 6 MB), egal wohin du zoomst, ohne Lücken, und holt neue Daten gleich, wenn du die App aus dem Hintergrund zurückholst. Die Regen-Vorschau für die nächsten 2 Stunden war eine Viertelstunde zu spät und stimmt jetzt. Benachrichtigungen kommen zuverlässiger, die Schrift lädt ohne Google, dazu viele Kleinigkeiten.">
 <script>/* Umzug von GitHub (eliaspp9.github.io/Wetter) hierher: die alte Seite gibt Einstellungen und Lieblingsorte in der Adresse
@@ -3889,7 +3889,9 @@ function cldImg(k,g){
    weiter hineingezoomt (das Satellitenbild hat nur 3 bis 4 km) */
 function cldPane(){let p=map.getPane("atcp");if(!p){p=map.createPane("atcp");p.style.zIndex=335;p.style.pointerEvents="none";map.on("zoomend",()=>{cldBlur();cldSyncK=-1;const f=frames[idx];if(f)cldSync(f.time)})}
  if(!map.getPane("clmp")){const q=map.createPane("clmp");q.style.zIndex=334;q.style.pointerEvents="none"}cldBlur()}
-function cldBlur(){const z=map.getZoom(),f="blur("+(z<=6?1.5:z===7?2.5:z===8?4:z===9?7:10)+"px)";for(const n of ["atcp","clmp"]){const p=map&&map.getPane(n);if(p)p.style.filter=f}}
+/* kein Grafik-Weichzeichner mehr auf der ganzen Ebene: der braucht am iPhone beim Verschieben und Zoomen so viel
+   Grafikspeicher, dass der Browser abstürzt. Weich gerechnet wird beim Einfärben (clmPaint, cldImg). */
+function cldBlur(){for(const n of ["atcp","clmp"]){const p=map&&map.getPane(n);if(p&&p.style.filter)p.style.filter=""}}
 /* Zugrichtung der Wolken vom Server (/tp/mv, alle 15 Minuten neu): damit wird das neueste Satellitenbild bis zur Zeit des
    Radarbildes weitergeschoben (höchstens 120 km), so fällt die Verspätung des Satelliten weg */
 let cldMv=null,cldMvT=0;
@@ -3926,8 +3928,13 @@ let ClmTile=null;const clmL=new Map();
 function clmLayer(slot){
  if(!ClmTile)ClmTile=L.TileLayer.WMS.extend({createTile(co,done){
   const c=document.createElement("canvas");c.width=c.height=256;let fin=false;const finish=()=>{if(!fin){fin=true;done(null,c)}};
-  const paint=im=>{try{const x=c.getContext("2d",{willReadFrequently:true});x.clearRect(0,0,256,256);x.drawImage(im,0,0);const d=x.getImageData(0,0,256,256),p=d.data;
-    for(let j=0;j<p.length;j+=4){const cl=p[j+3]>100&&p[j]>200&&p[j+1]>200&&p[j+2]>200;if(cl){p[j]=172;p[j+1]=177;p[j+2]=184;p[j+3]=150}else p[j+3]=0}
+  /* Wolke (weiß) wird grau; weiche Ränder: Anteil Wolke im Umkreis von 2 Bildpunkten (nur innerhalb der Kachel, so gibt
+     es keine hellen Linien an den Kachelrändern) */
+  const paint=im=>{try{const x=c.getContext("2d",{willReadFrequently:true});x.clearRect(0,0,256,256);x.drawImage(im,0,0);const d=x.getImageData(0,0,256,256),p=d.data,M=new Uint8Array(65536);
+    for(let i=0,j=0;i<65536;i++,j+=4)M[i]=p[j+3]>100&&p[j]>200&&p[j+1]>200&&p[j+2]>200?1:0;
+    const S=new Uint16Array(257*257);for(let y=0;y<256;y++){let r=0;for(let xx=0;xx<256;xx++){r+=M[y*256+xx];S[(y+1)*257+xx+1]=S[y*257+xx+1]+r}}
+    for(let y=0;y<256;y++){const y0=Math.max(0,y-2),y1=Math.min(255,y+2);for(let xx=0;xx<256;xx++){const x0=Math.max(0,xx-2),x1=Math.min(255,xx+2),n=(y1-y0+1)*(x1-x0+1),v=S[(y1+1)*257+x1+1]-S[y0*257+x1+1]-S[(y1+1)*257+x0]+S[y0*257+x0],j=(y*256+xx)*4;
+     p[j]=172;p[j+1]=177;p[j+2]=184;p[j+3]=Math.round(150*v/n)}}
     x.putImageData(d,0,0)}catch(e){}};
   /* nicht geladen: nach 15 und 30 Sekunden noch einmal versuchen, sonst fehlt eine ganze Reihe */
   const load=n=>{const im=new Image();im.crossOrigin="anonymous";im.onload=()=>{paint(im);finish()};im.onerror=()=>{finish();if(n<2)setTimeout(()=>load(n+1),15000*(n+1))};tpImg(im,this.getTileUrl(co))};
@@ -3939,7 +3946,7 @@ function clmLayer(slot){
  while(clmL.size>10){const k0=clmL.keys().next().value,l0=clmL.get(k0);if(l0!==l){try{map.removeLayer(l0)}catch(e){}clmL.delete(k0)}else break}
  return l;
 }
-function clmHide(){for(const l of clmL.values())try{l.setOpacity(0)}catch(e){}}
+function clmHide(){for(const l of clmL.values())try{map.removeLayer(l)}catch(e){}clmL.clear()}
 function cldSync(t){
  if(!map)return;
  if(!cldMvT)cldMvLoad().then(()=>{if(!cldMv)return;cldSyncK=-1;const f=frames[idx];if(f)cldSync(f.time)});
@@ -3951,7 +3958,8 @@ function cldSync(t){
   /* immer mit genauer Viertelstunde (der Satellit ist etwa 30 bis 45 Minuten verspätet): kommt eine neue, ist es ein neues Bild */
   const slot=Math.floor(Math.min(t,now-45*60)/900)*900,l=clmLayer(slot);
   if(!map.hasLayer(l))l.addTo(map);
-  for(const o of clmL.values())if(o!==l)o.setOpacity(0);
+  /* nur das aktuelle Satellitenbild auf der Karte, die anderen aus dem Speicher (sonst sammeln sich beim Abspielen viele) */
+  for(const [k,o] of [...clmL])if(o!==l){try{map.removeLayer(o)}catch(e){}clmL.delete(k)}
   l.setOpacity(ws);cldShift(slot,t);
  }else clmHide();
  if(mode==="at")atCldShow(t,1-ws);else atCldHide();
@@ -7589,7 +7597,7 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("shr").hidden)cl
 const meta=n=>{const m=document.querySelector('meta[name="'+n+'"]');return m?m.content:""};
 /* app-build zählt seit jeher einfach hoch; daran erkennen auch ältere Geräte ein Update (sie vergleichen diese Zahl).
    Angezeigt wird der Build seit Version 1.0: Build 1 ist app-build 57. */
-const BUILD=+meta("app-build")||0,BUILD0=98,verText=b=>meta("app-version")+" (Build "+(b-BUILD0)+")";
+const BUILD=+meta("app-build")||0,BUILD0=99,verText=b=>meta("app-version")+" (Build "+(b-BUILD0)+")";
 let remote=null,lastChk=0;
 $("ver").textContent=verText(BUILD);
 /* Anmeldung: bis wann sie gilt und ob sie sich von selbst verlängert */
