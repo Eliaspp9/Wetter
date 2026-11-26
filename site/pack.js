@@ -102,3 +102,14 @@ export async function packed(buf, kind, fc0) {
   const cs = new Blob([out]).stream().pipeThrough(new CompressionStream("gzip"));
   return new Response(cs).arrayBuffer();
 }
+
+/* für die eigene Kurzvorhersage (site/nowcast.js): gleiches Raster */
+export { G, AT_BOX, AT_CS, RC_MIN, RC_L, AT_FAINT, merc };
+
+/* ein gepacktes Paket wieder auspacken (am Server, für die Bewertung und die Werte am Ort) */
+export async function unpackSrv(buf) {
+  const raw = new Uint8Array(await new Response(new Blob([buf]).stream().pipeThrough(new DecompressionStream("gzip"))).arrayBuffer());
+  const hl = new DataView(raw.buffer).getUint32(0), h = JSON.parse(new TextDecoder().decode(raw.subarray(4, 4 + hl))), WH = h.W * h.H, o0 = 4 + hl;
+  if (h.W !== G.W || h.H !== G.H || raw.length < o0 + WH * (1 + h.nV)) return null;
+  return { h, t: h.t, has: raw.subarray(o0, o0 + WH), V: Array.from({ length: h.nV }, (_, k) => raw.subarray(o0 + WH * (1 + k), o0 + WH * (2 + k))) };
+}

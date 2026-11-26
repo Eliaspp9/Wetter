@@ -5,6 +5,7 @@
    - Die App selbst (index.html) bekommt nur, wer angemeldet ist: Dafür setzt er bei Anmeldung und Verlängerung ein Cookie
      (HttpOnly, nur für diese Seite). Ohne gültiges Cookie kommt login.html. Geprüft wird das Token beim wetter-proxy (/auth). */
 import { packed, convert } from "./pack.js";
+import { snRun, skRun, ptServe } from "./nowcast.js";
 const COOKIE = "wt";
 const PAGE = new Set(["/", "/index.html"]);
 const SEC = {
@@ -196,9 +197,12 @@ async function grRun(env) {
   if (ref - (ix.t2 || 0) >= 3300) { try { t2 = await grGet(GR_URL + "?parameters=t2m" + GR_BB + q + "&end=" + isoM(ref), 90000); await kv.put("gr:t:" + ref, t2, opt); await pk("t", t2, null, 3 * 3600); } catch (e) {} }
   const now = Date.now() / 1000;
   /* Europa-Radar an GeoSphere angleichen (siehe grBias); geglättet über die letzten Läufe */
-  let bf = ix.bf || null;
-  try { const b = await grBias(a || rr, ref); if (b) { const f0 = bf && bf.f ? bf.f : 1, f = Math.exp(0.5 * Math.log(f0) + 0.5 * Math.log(b.f)); bf = { f: Math.round(Math.min(2.5, Math.max(0.4, f)) * 1000) / 1000, raw: b.f, n: b.n, t: ref }; } } catch (e) { console.error("bias", e && e.message); }
-  await kv.put("gr:idx", JSON.stringify({ ref, at: Math.round(now), a: [...(ix.a || []), ...(a ? [ref] : [])].filter((t) => t > now - 24.6 * 3600).slice(-100), t2: t2 ? ref : ix.t2 || 0, bf }));
+  let bf = ix.bf || null, dA = null, sk = ix.sk || null;
+  try { dA = convert(a || rr, "rr", ref + 60); } catch (e) { console.error("convert", e && e.message); }
+  try { const b = dA && (await grBias(dA, ref)); if (b) { const f0 = bf && bf.f ? bf.f : 1, f = Math.exp(0.5 * Math.log(f0) + 0.5 * Math.log(b.f)); bf = { f: Math.round(Math.min(2.5, Math.max(0.4, f)) * 1000) / 1000, raw: b.f, n: b.n, t: ref }; } } catch (e) { console.error("bias", e && e.message); }
+  /* Bewertung der Vorhersagen gegen dieses Messbild (selbstlernend, siehe site/nowcast.js) */
+  try { if (dA) sk = await skRun(env, ref, dA, ncBytes); } catch (e) { console.error("Bewertung", e && e.message); }
+  await kv.put("gr:idx", JSON.stringify({ ref, at: Math.round(now), a: [...(ix.a || []), ...(a ? [ref] : [])].filter((t) => t > now - 24.6 * 3600).slice(-100), t2: t2 ? ref : ix.t2 || 0, bf, sk }));
 }
 /* ============ Europa-Radar an GeoSphere angleichen ============
    Das Europa-Radar (LibreWXR, OPERA) schätzt die Regenmenge nur aus dem Radarecho; GeoSphere (INCA) rechnet die
@@ -208,13 +212,13 @@ async function grRun(env) {
 const AT_BOX_W = [45.5, 8.1, 49.48, 17.74], AT_CS_W = 1.08 / (111.32 * Math.cos((47.5 * Math.PI) / 180)), RC_MIN_W = 0.03, RC_L_W = Math.log(200 / RC_MIN_W);
 const mercW = (la) => (Math.log(Math.tan(Math.PI / 4 + (la * Math.PI) / 360)) * 180) / Math.PI;
 const zRainW = (z) => Math.pow(Math.pow(10, z / 10) / 200, 0.625);
-async function grBias(buf, ref) {
+async function grBias(d, ref) {
   const mp = await (await tfetch("https://api.librewxr.net/public/weather-maps.json", 10000)).json();
   const past = (mp.radar && mp.radar.past) || [];
   let fr = null, bd = 1e9;
   for (const f of past) { const d = Math.abs(f.time - ref); if (d < bd) { bd = d; fr = f; } }
   if (!fr || bd > 300) return null;
-  const d = convert(buf, "rr", ref + 60), V = d.V[0];
+  const V = d.V[0];
   const z = 7, n = 128, tile = {};
   const yT = mercW(AT_BOX_W[2]);
   const get = async (tx, ty) => {
@@ -259,11 +263,25 @@ const NC_HDR = { "Content-Type": "application/x-netcdf", "Cache-Control": "priva
 async function gmServe(env, url) {
   const kv = env.GM;
   if (!kv) return new Response("{}", { status: 503, headers: { "Content-Type": "application/json" } });
-  if (url.pathname === "/gm" || url.pathname === "/gr") {
+  /* Regenwahrscheinlichkeit am Ort (eigene Kurzvorhersage und GeoSphere, siehe site/nowcast.js) */
+  if (url.pathname === "/gr/pt") {
+    const la = +url.searchParams.get("la"), lo = +url.searchParams.get("lo");
+    let o = { ok: 0 };
+    if (isFinite(la) && isFinite(lo)) try { o = await ptServe(env, la, lo); } catch (e) { o = { ok: 0, err: String((e && e.message) || e).slice(0, 80) }; }
+    return new Response(JSON.stringify(o), { headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" } });
+  }
+  if (url.pathname === "/gr") {
+    /* dazu der Stand unserer Kurzvorhersage */
+    const [ix, sx] = await Promise.all([kv.get("gr:idx"), kv.get("sn:idx")]);
+    const j = JSON.parse(ix || "{}"), s = JSON.parse(sx || "null");
+    if (s && s.t0) j.sn = { t0: s.t0, st: s.st };
+    return new Response(JSON.stringify(j), { headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" } });
+  }
+  if (url.pathname === "/gm") {
     const ix = (await kv.get(url.pathname.slice(1) + ":idx")) || "{}";
     return new Response(ix, { headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" } });
   }
-  const P = url.pathname, m = P.match(/^\/gm\/(?:p\/)?(\d{9,11})\/(\d{9,11})$/), g = P.match(/^\/gr\/(?:p\/)?(rr|a|t)\/(\d{9,11})$/);
+  const P = url.pathname, m = P.match(/^\/gm\/(?:p\/)?(\d{9,11})\/(\d{9,11})$/), g = P.match(/^\/gr\/(?:p\/)?(rr|a|t|sn)\/(\d{9,11})$/);
   if (!m && !g) return new Response("Nicht gefunden", { status: 404 });
   const key = m ? ["gm", m[1], m[2]] : [g[1], g[2]];
   /* fertig aufbereitet für die App (siehe site/pack.js): Radar schon beim Holen vorbereitet, sonst jetzt und dann im
@@ -966,6 +984,8 @@ export default {
     if (mi % 5 === 3) ctx.waitUntil(pcPrewarm(env).catch((e) => console.error("pcPrewarm", e && e.message)));
     /* Kartenbilder des Radars vorladen */
     if (mi % 5 === 1) ctx.waitUntil(tpPrewarm(env).catch((e) => console.error("tpPrewarm", e && e.message)));
+    /* eigene Kurzvorhersage (Europa-Radar, Regenmesser, Blitze), sobald ein neues Messbild da ist */
+    if (mi % 5 === 4) ctx.waitUntil(snRun(env, { tfetch, pngRGBA }).catch((e) => console.error("snRun", e && e.message)));
     if (mi % 10 === 0) ctx.waitUntil(gmRun(env).catch((e) => console.error("gmRun", e && e.message)));
   },
 };

@@ -800,6 +800,26 @@ async function alertPlace(env, rec, P, once, msgs, multi) {
         const e = await once("e:" + pos, () => lxPoint(P.lat, P.lon));
         if (e && e.min <= 60 && (r.i < 0 || e.min < r.min - 10)) r = Object.assign({}, r, { i: Math.max(0, r.i), min: e.min, dur: Math.max(r.dur || 0, e.dur), mx: Math.max(r.mx || 0, e.mx / 4) });
       } catch (x) {}
+      /* Österreich: Regenwahrscheinlichkeit aus unserer eigenen Kurzvorhersage (Europa-Radar mit Regenmessern, alle 5 Minuten)
+         und GeoSphere, gemischt nach der Trefferquote (Seite „wetter“, /gr/pt, über die Dienstbindung SITE). Ab 60 % zählt sie
+         als Regenbeginn; sagt sie für den gemeldeten Beginn unter 30 %, kommt (außer gleich) kein Hinweis: weniger Fehlalarme. */
+      let pr = null;
+      const pAt = (m) => { if (!pr) return null; const n = Date.now() / 1000; let mx = 0; pr.t.forEach((t, i) => { if (Math.abs((t - n) / 60 - m) <= 10) mx = Math.max(mx, pr.p[i]); }); return mx; };
+      try {
+        if (env.SITE) {
+          const q = await once("p:" + pos, () => env.SITE.fetch("https://wetter/gr/pt?la=" + (+P.lat).toFixed(3) + "&lo=" + (+P.lon).toFixed(3)).then((x) => x.json()));
+          if (q && q.ok && q.t && q.t.length) pr = q;
+        }
+      } catch (x) {}
+      if (pr) {
+        const n = Date.now() / 1000, k = pr.t.findIndex((t, i) => t - n <= 3600 && pr.p[i] >= 0.6);
+        if (k >= 0) {
+          const pm = Math.max(0, Math.round((pr.t[k] - n) / 60));
+          let j = k; while (j < pr.t.length && pr.p[j] >= 0.5) j++;
+          if (r.i < 0 || pm < r.min - 10) r = Object.assign({}, r, { i: Math.max(0, r.i), min: pm, dur: Math.max(r.i < 0 ? 0 : r.dur || 0, (j - k) * 5), mx: Math.max(r.i < 0 ? 0 : r.mx || 0, pr.r[k] / 4) });
+        }
+      }
+      if (r.i >= 0 && !st.rain && pr && r.min > 10 && pAt(r.min) < 0.3) r = Object.assign({}, r, { i: -1, unsure: true });
       if (r.i >= 0 && !st.rain) {
         const what = r.snow ? "Schnee" : "Regen";
         // nach einem Hinweis 90 Minuten Pause: springt die Vorhersage um die Schwelle herum, kommt nicht jedes Mal ein neuer
@@ -808,13 +828,14 @@ async function alertPlace(env, rec, P, once, msgs, multi) {
           const soon = r.min <= 5, mins = Math.round(r.min / 5) * 5;
           const title = soon ? (r.snow ? "Es beginnt zu schneien" : "Es beginnt zu regnen") : what + " in etwa " + mins + " Minuten";
           const sk = r.snow ? (r.mx < 0.5 ? "leicht" : r.mx < 2 ? "mäßig" : "stark") : (r.mx < 0.6 ? "leicht" : r.mx < 2.5 ? "mäßig" : "stark");
-          const facts = "Ort: " + (ort || "dein Ort") + ". " + (soon ? "Der " + what + " beginnt jetzt." : "Der " + what + " beginnt in etwa " + mins + " Minuten.") + " Stärke: " + sk + "." + (r.dur >= 30 ? " Dauer: mindestens " + r.dur + " Minuten." : " Dauer: kurz.");
+          const pp = pAt(r.min);
+          const facts = "Ort: " + (ort || "dein Ort") + ". " + (soon ? "Der " + what + " beginnt jetzt." : "Der " + what + " beginnt in etwa " + mins + " Minuten.") + " Stärke: " + sk + "." + (r.dur >= 30 ? " Dauer: mindestens " + r.dur + " Minuten." : " Dauer: kurz.") + (pp != null && !soon ? " Wahrscheinlichkeit: etwa " + Math.round(Math.max(0.1, pp) * 10) * 10 + " %." : "");
           const ai = await once("a:" + facts, () => aiText(env, facts, ort, 140));
           msgs.push({ title: (multi && ort ? ort + ": " : "") + title, body: ai || (ort ? ort + ". " : "") + "Tippe für das Regenradar.", tag: "rain" + tagx, url: SITE + "#sec-radar" });
           st.rt = now;
         }
         st.rain = true; st.re = false; changed = true;
-      } else if (r.i < 0 && st.rain) { st.rain = false; st.re = false; changed = true; }
+      } else if (r.i < 0 && st.rain && !r.unsure) { st.rain = false; st.re = false; changed = true; }
       /* Regen hört auf: es regnet gerade (seit mindestens 15 Minuten) und hört laut Vorhersage in höchstens 20 Minuten auf */
       if (rec.rend !== false && st.rain && !st.re && r.i >= 0 && r.min === 0 && r.end != null && r.end <= 20 && r.dur >= 15 && now - (st.rt || 0) > 15 * 60000) {
         if (!quietNow) {
