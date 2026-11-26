@@ -329,6 +329,9 @@ export function fss(F, T, has) {
 }
 export async function skRun(env, ref, d, ncBytes) {
   const kv = env.GM, T = d.V[0], has = d.has, sk = JSON.parse((await kv.get("sk:v")) || "null") || { sn: {}, gs: {}, gm: {} }, done = [];
+  /* derselbe Lauf schon bewertet (zwei Durchgänge gleichzeitig): nicht doppelt zählen */
+  const pubOf = () => { const pub = {}; for (const s of ["sn", "gs", "gm"]) { pub[s] = {}; for (const [L, e] of Object.entries(sk[s] || {})) if (e[1] >= 4) pub[s][L] = e[0]; } return pub; };
+  if (sk.at >= ref) return pubOf();
   const upd = (src, L, x) => { if (x == null) return; const e = sk[src][L] || [0.5, 0]; const a = Math.max(0.03, 1 / (e[1] + 1)); e[0] = Math.round((e[0] + a * (x - e[0])) * 10000) / 10000; e[1] = Math.min(9999, e[1] + 1); sk[src][L] = e; done.push(src + L + ":" + x.toFixed(2)); };
   const sx = JSON.parse((await kv.get("sn:idx")) || "null");
   if (sx && sx.l) for (const L of [0, 15, 30, 45, 60]) {
@@ -357,11 +360,9 @@ export async function skRun(env, ref, d, ncBytes) {
   }
   sk.at = ref;
   await kv.put("sk:v", JSON.stringify(sk));
-  /* für die App: nur Werte mit genug Vergleichen */
-  const pub = {};
-  for (const s of ["sn", "gs", "gm"]) { pub[s] = {}; for (const [L, e] of Object.entries(sk[s])) if (e[1] >= 4) pub[s][L] = e[0]; }
   console.log("Bewertung", ref, done.join(" "));
-  return pub;
+  /* für die App: nur Werte mit genug Vergleichen */
+  return pubOf();
 }
 
 /* Gewicht unserer Kurzvorhersage gegen GeoSphere (0 bis 1) aus der Bewertung; ohne Bewertung Startwerte */
