@@ -12,7 +12,7 @@
 // Für die KI (Übersetzen der Warnungen anderer Länder, Push-Texte in ganzen Sätzen), ab Version 1.6:
 //   Bindung AI      (Workers AI, Variablenname AI). Ohne sie läuft alles wie vorher, nur ohne KI.
 const enc = new TextEncoder();
-const VERSION = "1.0", BUILD = 9;
+const VERSION = "1.0", BUILD = 10;
 /* Abrufe mit Zeitlimit: ein hängender Dienst soll weder eine Anfrage noch den Zeitplan aufhalten.
    tf: Limit bis die Antwort beginnt (für durchgereichte Antworten); jf: Limit bis das JSON ganz gelesen ist. */
 async function tf(u, o, ms) {

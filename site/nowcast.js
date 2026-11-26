@@ -1,4 +1,5 @@
-/* ============ Eigene Kurzvorhersage für Österreich (alle 5 Minuten, 60 Minuten voraus, 1 km) ============
+/* ============ Eigene Kurzvorhersage für Österreich (neu, sobald das Europa-Radar ein neues Bild hat, meist alle 10 Minuten;
+   Bilder im 5-Minuten-Abstand bis 60 Minuten voraus, 1 km) ============
    Aus dem Europa-Radar (LibreWXR, OPERA, Zoom 7, Grauwert = dBZ + 32) auf das Raster der App (site/pack.js):
    1. Messbilder: das neueste und eines etwa 15 Minuten davor.
    2. Angleichung an GeoSphere (Faktor bf aus grBias), bei Gewittern andere Umrechnung (Blitze von EUMETSAT MTG),

@@ -97,11 +97,12 @@ async function kiLearn(h, kv, la, lo) {
 }
 
 export async function bfKI(la, lo, h, kv) {
-  const key = "ki:" + la.toFixed(2) + ":" + lo.toFixed(2), lk = "kil:" + la.toFixed(2) + ":" + lo.toFixed(2);
+  /* Vorhersage je Ort (1 km), Gelerntes je Gegend (etwa 5 km, hängt nur an der Messstation) */
+  const g5 = (v) => (Math.round(v * 20) / 20).toFixed(2), key = "ki:" + la.toFixed(2) + ":" + lo.toFixed(2), lk = "kil:" + g5(la) + ":" + g5(lo);
   if (kv) { const c = await kv.get(key); if (c) return c; }
   let L = kv ? JSON.parse((await kv.get(lk)) || "null") : null;
   if (!L) {
-    try { L = await kiLearn(h, kv, la, lo); } catch (e) { console.error("KI lernen", e && e.message); L = null; }
+    try { L = await kiLearn(h, kv, +g5(la), +g5(lo)); } catch (e) { console.error("KI lernen", e && e.message); L = null; }
     if (kv) await kv.put(lk, JSON.stringify(L || { none: 1 }), { expirationTtl: L ? 12 * 3600 : 3 * 3600 });
   }
   if (L && L.none) L = null;

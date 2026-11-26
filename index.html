@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-285fPEGby2/4TzKj3HOSc+oCkSuBOCI84QI8y2jN46U=' 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-DEbu+QN8ttCHI/Iv/FUX4SuHncor97utTYKpWg4TKIo=' 'sha256-dshnqdUsu2GGLrdOmDmBAxEZ5oYR6IoHiH+pggE+maU=' 'sha256-RuxfNxmpjp4A0o44t73N+6O4m9ajjPnJ8Ah9hbvLASk=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src 'self'; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://s3.amazonaws.com https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-285fPEGby2/4TzKj3HOSc+oCkSuBOCI84QI8y2jN46U=' 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-DEbu+QN8ttCHI/Iv/FUX4SuHncor97utTYKpWg4TKIo=' 'sha256-bA5xSG9BWtUooNij/e5A97mTnPvKvXA/ujsjgMrcMtE=' 'sha256-RuxfNxmpjp4A0o44t73N+6O4m9ajjPnJ8Ah9hbvLASk=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src 'self'; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://s3.amazonaws.com https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -14,7 +14,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/favicon-64.png">
-<meta name="app-build" content="104">
+<meta name="app-build" content="105">
 <meta name="app-version" content="1.0">
 <meta name="app-notes" content="Neue Adresse: Die App liegt jetzt bei Cloudflare (wetter.elias-ziegler.workers.dev). Version 1.0 (Build 1): Alles durchgesehen, Fehler behoben und schneller gemacht. Die App startet viel schneller: Das Wetter steht beim Öffnen fast sofort da, weil der letzte Stand gleich gezeigt wird und alle Daten gleichzeitig geholt werden. Das Regenradar Österreich lädt jetzt immer ganz Österreich auf einmal (etwa 1 MB, 1 bis 2 Sekunden statt viele Stücke zu je 6 MB), egal wohin du zoomst, ohne Lücken, und holt neue Daten gleich, wenn du die App aus dem Hintergrund zurückholst. Die Regen-Vorschau für die nächsten 2 Stunden war eine Viertelstunde zu spät und stimmt jetzt. Benachrichtigungen kommen zuverlässiger, die Schrift lädt ohne Google, dazu viele Kleinigkeiten.">
 <script>/* Umzug von GitHub (eliaspp9.github.io/Wetter) hierher: die alte Seite gibt Einstellungen und Lieblingsorte in der Adresse
@@ -649,7 +649,7 @@ html.srcopen .srcbtn::after{transform:rotate(180deg)}
 .dhi{font-weight:650;font-variant-numeric:tabular-nums}
 .dbar{position:relative;height:6px;border-radius:3px;background:var(--line)}
 .dbar i{position:absolute;top:0;bottom:0;border-radius:3px}
-.ksp{font-size:11px;color:var(--muted);white-space:nowrap}
+.ksp{display:block;font-size:11px;font-weight:500;color:var(--muted);white-space:nowrap;line-height:1.1}
 
 /* Details */
 .facts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -1732,7 +1732,7 @@ async function loadWeather(auto){
   /* KI-Vorhersage (Server, alle Modelle selbstlernend zusammengesetzt); kommt sie später, wird nachgebessert */
   {let late=false;const ki=await Promise.race([kiP,new Promise(r=>setTimeout(()=>{late=true;r(null)},2500))]);
    if(ki)try{kiApply(j,ki)}catch(e){console.error(e)}
-   else if(late){const jj=j,pk=PK();kiP.then(k=>{if(k&&lastJ===jj&&PK()===pk){try{kiApply(jj,k);renderDays(jj);loadTrend()}catch(e){console.error(e)}}})}}
+   else if(late){const jj=j,pk=PK();kiP.then(k=>{if(k&&lastJ===jj&&PK()===pk){try{kiApply(jj,k);renderAll(jj,Date.now());loadTrend();localStorage.setItem("wetter-last",JSON.stringify({k:(+place.lat).toFixed(2)+","+(+place.lon).toFixed(2),t:Date.now(),j:jj}))}catch(e){console.error(e)}}})}}
   j.cc=usedCC;
   if(!pp)pp=await bfW(bfPP);
   if(pp)try{bfProb(j,pp)}catch(e){console.error(e)}
@@ -2001,6 +2001,14 @@ function kiApply(j,ki){
     const T2=hi0-lo0>.5?q.lo+(T-lo0)*f:T+((q.hi+q.lo)-(hi0+lo0))/2,dT=T2-T;H.temperature_2m[k]=Math.round(T2*10)/10;
     if(H.apparent_temperature&&H.apparent_temperature[k]!=null)H.apparent_temperature[k]=Math.round((H.apparent_temperature[k]+dT)*10)/10;
     if(q.p!=null&&p0!=null&&p0>=.05&&H.precipitation&&H.precipitation[k]!=null){const g=Math.min(4,q.p/p0);H.precipitation[k]=Math.round(H.precipitation[k]*g*100)/100;if(H.snowfall&&H.snowfall[k]!=null)H.snowfall[k]=Math.round(H.snowfall[k]*g*100)/100}});
+   /* die Stunden sind trocken, die KI-Vorhersage sagt aber Niederschlag: auf die wolkigsten Stunden verteilen (dort ist er
+      am wahrscheinlichsten), damit Tag und Stunden zusammenpassen; Schnee, wenn es dort höchstens 1 °C hat */
+   if(q.p!=null&&q.p>=.1&&(p0==null||p0<.05)&&H.precipitation){
+    const ix=[];H.time.forEach((t,k)=>{if(t.slice(0,10)===d)ix.push(k)});
+    const cc=k=>H.cloud_cover&&H.cloud_cover[k]!=null?+H.cloud_cover[k]:50,top=ix.slice().sort((a,b)=>cc(b)-cc(a)).slice(0,Math.max(3,Math.min(12,Math.round(q.p*2))));
+    const ws=top.reduce((a,k)=>a+Math.max(1,cc(k)),0);
+    for(const k of top){const v=Math.round(q.p*Math.max(1,cc(k))/ws*100)/100;H.precipitation[k]=v;if(H.snowfall){const T=H.temperature_2m[k];H.snowfall[k]=T!=null&&T<=1?Math.round(v*.7*100)/100:0}}
+   }
   }
   D.temperature_2m_max[i]=q.hi;D.temperature_2m_min[i]=q.lo;
   if(q.p!=null&&D.precipitation_sum)D.precipitation_sum[i]=q.p;
@@ -3502,6 +3510,8 @@ function atMixSn(r,sn,t,tEnd){
 }
 /* neue Kurzvorhersage laden (im Hintergrund), danach neu zusammensetzen */
 async function atSnLoad(){
+ /* nur, wenn das Radar „Österreich“ gerade zu sehen ist (spart Daten und Akku) */
+ if(mode!=="at"||lay!=="rain"||!fVis||document.hidden)return;
  const w=atSnWant;
  if(!w||!w.t0||atSnBusy||(atSn&&atSn.t0===w.t0)||Date.now()<atSnNext||Date.now()/1000-w.t0>40*60)return;
  atSnBusy=true;
@@ -3891,7 +3901,7 @@ function atUse(d){
  show(pastCount-1);
  if(wasPlaying||(wallOn&&wallPlay()))toggle();
  atFresh(d);
- if(!atStaleNote())$("fnote").textContent=(d.sn?"Bis "+hmT(d.sn.t0+3600)+" Uhr eigene Kurzvorhersage (Europa-Radar mit Regenmessern, alle 5 Minuten), gemischt mit GeoSphere je nachdem, wer zuletzt besser getroffen hat. ":"")+(d.m0!=null&&d.m0<d.t.length?"Radar-Vorhersage von GeoSphere bis "+hmT(d.t[d.m0-1])+" Uhr, danach Wettermodell von GeoSphere (1 km) bis "+new Date(d.t[d.t.length-1]*1000).toLocaleString("de-AT",{weekday:"short",hour:"2-digit",minute:"2-digit"})+" Uhr.":"Vorhersage von GeoSphere Austria bis "+hmT(d.t[d.t.length-1])+" Uhr.");
+ if(!atStaleNote())$("fnote").textContent=(d.sn?"Bis "+hmT(d.sn.t0+3600)+" Uhr eigene Kurzvorhersage (Europa-Radar mit Regenmessern, alle 10 Minuten neu, Bilder im 5-Minuten-Abstand), gemischt mit GeoSphere je nachdem, wer zuletzt besser getroffen hat. ":"")+(d.m0!=null&&d.m0<d.t.length?"Radar-Vorhersage von GeoSphere bis "+hmT(d.t[d.m0-1])+" Uhr, danach Wettermodell von GeoSphere (1 km) bis "+new Date(d.t[d.t.length-1]*1000).toLocaleString("de-AT",{weekday:"short",hour:"2-digit",minute:"2-digit"})+" Uhr.":"Vorhersage von GeoSphere Austria bis "+hmT(d.t[d.t.length-1])+" Uhr.");
  atTrack(d,"at");
  atBgLoad();
 }
@@ -5009,7 +5019,7 @@ function fPanes(){
  map.on("zoomstart",()=>{if(lay==="rain")return;fFlowStop();[fCv,fPc,fLc].forEach(c=>{c.style.visibility="hidden"})});
  map.on("moveend resize",()=>{if(lay==="rain")return;fReset();clearTimeout(fMoveT);fMoveT=setTimeout(loadField,700)});
  map.on("click",fClick);
- try{new IntersectionObserver(es=>es.forEach(e=>{fVis=e.isIntersecting;if(fVis)fFlowStart();else fFlowStop()})).observe($("map"))}catch(e){}
+ try{new IntersectionObserver(es=>es.forEach(e=>{fVis=e.isIntersecting;if(fVis){fFlowStart();atSnLoad().catch(()=>{})}else fFlowStop()})).observe($("map"))}catch(e){}
 }
 function fReset(){
  if(!fCv||!map)return;
@@ -6804,7 +6814,7 @@ async function loadTrend(){
  const kiBar=r=>kiBarH(ki&&ki[r.date],mn,span);
  el.innerHTML=R.map(r=>{const dt=new Date(r.date+"T12:00"),l=(r.lo-mn)/span*100,wd=Math.max(8,(r.hi-r.lo)/span*100);
   const k=r.code!=null?kind(r.code,true):r.p!=null&&r.p>=1?(r.hi<=1?"snow":"rain"):null;
-  return'<div class="dw"><div class="day" style="cursor:default"><div class="dn"><b>'+dt.toLocaleDateString("de-AT",{weekday:"short"}).replace(".","")+"</b><span>"+dt.getDate()+"."+(dt.getMonth()+1)+".</span></div><div>"+(k?ic(k,30):"")+'</div><div class="dp">'+(r.pr!=null&&r.pr>=10?"<span>"+Math.round(r.pr)+" %</span>":"")+(r.p!=null&&r.p>=0.1?"<small"+(r.cm>=.1?' class="snow"':"")+">"+pAmt(r.p,r.cm)+"</small>":"")+(sunH(r.sun)!=null?'<small class="dsun">☀ '+sunH(r.sun)+" Std.</small>":"")+'</div><div class="dlo">'+deg(r.lo)+'</div><div class="dbar"><i style="left:'+l.toFixed(1)+"%;width:"+Math.min(wd,100-l).toFixed(1)+"%;background:linear-gradient(90deg,"+tcol(r.lo)+","+tcol(r.hi)+')"></i>'+kiBar(r)+'</div><div class="dhi">'+deg(r.hi)+"</div><div>"+(r.s!=null&&r.s>=2?'<small class="ksp" title="So weit liegen die Modelle auseinander">±'+Math.round(r.s)+"°</small>":"")+"</div></div></div>"}).join("")+
+  return'<div class="dw"><div class="day" style="cursor:default"><div class="dn"><b>'+dt.toLocaleDateString("de-AT",{weekday:"short"}).replace(".","")+"</b><span>"+dt.getDate()+"."+(dt.getMonth()+1)+".</span></div><div>"+(k?ic(k,30):"")+'</div><div class="dp">'+(r.pr!=null&&r.pr>=10?"<span>"+Math.round(r.pr)+" %</span>":"")+(r.p!=null&&r.p>=0.1?"<small"+(r.cm>=.1?' class="snow"':"")+">"+pAmt(r.p,r.cm)+"</small>":"")+(sunH(r.sun)!=null?'<small class="dsun">☀ '+sunH(r.sun)+" Std.</small>":"")+'</div><div class="dlo">'+deg(r.lo)+'</div><div class="dbar"><i style="left:'+l.toFixed(1)+"%;width:"+Math.min(wd,100-l).toFixed(1)+"%;background:linear-gradient(90deg,"+tcol(r.lo)+","+tcol(r.hi)+')"></i>'+kiBar(r)+'</div><div class="dhi">'+deg(r.hi)+(r.s!=null&&r.s>=2?'<small class="ksp" title="So weit liegen die Modelle auseinander">±'+Math.round(r.s)+"°</small>":"")+"</div><div></div></div></div>"}).join("")+
   '<button type="button" class="srcbtn" aria-label="Quellen der Daten zeigen oder verbergen">Quelle</button><p class="small srcf">Tag 8 bis 14. Quelle: '+esc(src)+". Je weiter weg, desto unsicherer."+(KIV?" ± zeigt, wie weit die Modelle auseinanderliegen.":"")+(kv.length?'<br><span class="ki-key"></span>Strich darunter: KI-Modell AIFS des Europäischen Wetterzentrums (EZMW) zum Vergleich.':"")+"</p>";
 }
 
@@ -7747,7 +7757,7 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("shr").hidden)cl
 const meta=n=>{const m=document.querySelector('meta[name="'+n+'"]');return m?m.content:""};
 /* app-build zählt seit jeher einfach hoch; daran erkennen auch ältere Geräte ein Update (sie vergleichen diese Zahl).
    Angezeigt wird der Build seit Version 1.0: Build 1 ist app-build 57. */
-const BUILD=+meta("app-build")||0,BUILD0=103,verText=b=>meta("app-version")+" (Build "+(b-BUILD0)+")";
+const BUILD=+meta("app-build")||0,BUILD0=104,verText=b=>meta("app-version")+" (Build "+(b-BUILD0)+")";
 let remote=null,lastChk=0;
 $("ver").textContent=verText(BUILD);
 /* Anmeldung: bis wann sie gilt und ob sie sich von selbst verlängert */

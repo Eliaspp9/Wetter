@@ -187,8 +187,14 @@ async function grRun(env) {
   try { const r = await tfetch(GR_URL + "/metadata?t=" + Math.floor(Date.now() / 60000), 50000), j = await r.json(); ref = Date.parse(j.last_forecast_reftime) / 1000; } catch (e) { return; }
   if (!ref) return;
   if (ref <= ix.ref) return;
+  /* läuft schon ein Durchgang für diesen Lauf (GeoSphere ist langsam, der nächste Aufruf eine Minute später), nicht noch
+     einmal holen: Sperre für diesen Lauf, 10 Minuten */
+  if (String(await kv.get("gr:lock")) === String(ref)) return;
+  await kv.put("gr:lock", String(ref), { expirationTtl: 600 });
   const opt = { expirationTtl: 3 * 3600 }, q = "&start=" + isoM(ref);
-  const rr = await grGet(GR_URL + "?parameters=rr" + GR_BB + q, 150000);
+  let rr;
+  /* klappt das Holen nicht, Sperre gleich wieder aufheben (nächste Minute neu versuchen) */
+  try { rr = await grGet(GR_URL + "?parameters=rr" + GR_BB + q, 150000); } catch (e) { try { await kv.delete("gr:lock"); } catch (x) {} throw e; }
   await kv.put("gr:rr:" + ref, rr, opt);
   /* gleich fertig für die App aufbereiten (siehe site/pack.js) */
   const pk = async (k, b, f, ttl) => { try { await kv.put("gr:p:" + k + ":" + ref, await packed(b, k === "t" ? "t2m" : "rr", f), { expirationTtl: ttl }); } catch (e) { console.error("pack", k, e && e.message); } };
@@ -944,7 +950,8 @@ async function bfServe(req, env, url) {
   try {
     if (url.pathname === "/bf/pp") return await bfPP(la, lo);
     if (url.pathname === "/bf/rq") return await bfRQ(la, lo, env);
-    if (url.pathname === "/bf/ki") return new Response(await bfKI(la, lo, { tfetch }, env.GM), { headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "private, max-age=1800" } });
+    /* KI-Vorhersage genau für den Ort (auf etwa 1 km gerundet, wegen der Höhe in den Bergen); gelernt wird je Gegend */
+    if (url.pathname === "/bf/ki") return new Response(await bfKI(Math.round(+url.searchParams.get("la") * 100) / 100, Math.round(+url.searchParams.get("lo") * 100) / 100, { tfetch }, env.GM), { headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "private, max-age=1800" } });
     if (url.pathname === "/bf/sk") {
       const models = String(url.searchParams.get("m") || "").split(",").filter((m) => BF_MOD.test(m)).slice(0, 10);
       if (!models.length) return bfJson({ error: "Ungültig" }, 400);
