@@ -12,7 +12,7 @@
 // Für die KI (Übersetzen der Warnungen anderer Länder, Push-Texte in ganzen Sätzen), ab Version 1.6:
 //   Bindung AI      (Workers AI, Variablenname AI). Ohne sie läuft alles wie vorher, nur ohne KI.
 const enc = new TextEncoder();
-const VERSION = "1.0", BUILD = 10;
+const VERSION = "1.0", BUILD = 11;
 /* Abrufe mit Zeitlimit: ein hängender Dienst soll weder eine Anfrage noch den Zeitplan aufhalten.
    tf: Limit bis die Antwort beginnt (für durchgereichte Antworten); jf: Limit bis das JSON ganz gelesen ist. */
 async function tf(u, o, ms) {
@@ -513,7 +513,8 @@ const klId = (la, lo) => (Math.round(la * 100) + "_" + Math.round(lo * 100)).rep
    Übersetzen: Meta M2M100 (reines Übersetzungsmodell). Push-Texte: ein kleines Sprachmodell formuliert die Nachricht aus den
    festen Fakten; danach wird geprüft, dass keine Zahl dazukommt, der Ort drinsteht und die Länge passt. Sonst bleibt der feste Text.
    Fehlt die Bindung oder klappt etwas nicht, läuft alles wie vorher. */
-const AI_CHAT = ["@cf/meta/llama-3.1-8b-instruct-fast", "@cf/meta/llama-3.1-8b-instruct", "@cf/google/gemma-3-12b-it"];
+/* zuerst das große Sprachmodell (schreibt deutlich besser, kostet ein paar Cent im Monat mehr), sonst die kleinen als Ersatz */
+const AI_CHAT = ["@cf/meta/llama-3.3-70b-instruct-fp8-fast", "@cf/meta/llama-3.1-8b-instruct-fast", "@cf/google/gemma-3-12b-it"];
 const nums = (t) => String(t).match(/\d+(?:[.,]\d+)?/g) || [];
 async function aiText(env, facts, place, max) {
   if (!env.AI) return null;
@@ -534,10 +535,23 @@ async function aiText(env, facts, place, max) {
   return null;
 }
 async function aiTr(env, text, from) {
-  const key = "tr:" + b64u(await sha(from + "|" + text)).slice(0, 24);
+  const key = "tr2:" + b64u(await sha(from + "|" + text)).slice(0, 24);
   const c = await env.SUBS.get(key); if (c) return c;
-  const r = await env.AI.run("@cf/meta/m2m100-1.2b", { text, source_lang: from, target_lang: "de" });
-  const t = String((r && (r.translated_text || (r.result && r.result.translated_text))) || "").trim();
+  /* zuerst das große Sprachmodell (natürlicheres Deutsch); geprüft: alle Zahlen wie im Original, sinnvolle Länge.
+     Sonst das Übersetzungsmodell wie bisher. */
+  let t = "";
+  try {
+    const r = await env.AI.run(AI_CHAT[0], { messages: [
+      { role: "system", content: "Übersetze die Wetterwarnung ins Deutsche. Gib nur die Übersetzung aus, ohne Einleitung und ohne Anmerkungen. Behalte alle Zahlen, Uhrzeiten und Einheiten genau bei. Erfinde nichts dazu." },
+      { role: "user", content: text }], max_tokens: 600, temperature: 0.1 });
+    const x = String((r && (r.response || (r.result && r.result.response))) || "").trim().replace(/^["„»“]+|["“«”]+$/g, "");
+    const need = nums(text), have = new Set(nums(x));
+    if (x.length >= Math.min(8, text.length / 3) && x.length <= text.length * 2.5 + 40 && need.every((n) => have.has(n)) && !/[<>{}]/.test(x)) t = x;
+  } catch (e) {}
+  if (!t) {
+    const r = await env.AI.run("@cf/meta/m2m100-1.2b", { text, source_lang: from, target_lang: "de" });
+    t = String((r && (r.translated_text || (r.result && r.result.translated_text))) || "").trim();
+  }
   if (!t) throw new Error("leer");
   await env.SUBS.put(key, t, { expirationTtl: 30 * 86400 });
   return t;
@@ -786,17 +800,19 @@ const viennaDay = () => new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Vie
 
 /* Ein Ort eines Abos prüfen. P = { lat, lon, name, st }, st ist der Zustand dieses Ortes. Hängt Nachrichten an msgs an.
    Gibt true zurück, wenn sich der Zustand geändert hat. */
-async function alertPlace(env, rec, P, once, msgs, multi) {
+/* fast: Zwischenprüfung (jede Minute außer zur vollen 5. Minute): nur der Regenbeginn aus unserer eigenen Kurzvorhersage
+   (schnell und ohne fremde Dienste); alles andere wie bisher alle 5 Minuten */
+async function alertPlace(env, rec, P, once, msgs, multi, fast) {
   const st = P.st, pos = P.lat + "," + P.lon, now = Date.now(), ort = P.name || "", tagx = multi ? "-" + pos : "";
   const pre = ort ? ort + ": " : "";
   // Ruhezeiten (von der App aus deinem Alltag gelernt): nachts keine Regen-, Blitz-, Frost- und Sturm-Hinweise; amtliche Warnungen kommen trotzdem
   const quietNow = Array.isArray(rec.qh) && rec.qh.includes(new Date().getUTCHours());
   let changed = false;
-  if (rec.rain) {
+  if (rec.rain && !(fast && st.rain)) {
     try {
-      let r = await once("r:" + pos, () => rainSoon(P.lat, P.lon));
+      let r = fast ? { i: -1 } : await once("r:" + pos, () => rainSoon(P.lat, P.lon));
       /* Europa-Radar ist aktueller: sieht es den Regen früher (oder GeoSphere gar nicht), gilt sein Beginn */
-      try {
+      if (!fast) try {
         const e = await once("e:" + pos, () => lxPoint(P.lat, P.lon));
         if (e && e.min <= 60 && (r.i < 0 || e.min < r.min - 10)) r = Object.assign({}, r, { i: Math.max(0, r.i), min: e.min, dur: Math.max(r.dur || 0, e.dur), mx: Math.max(r.mx || 0, e.mx / 4) });
       } catch (x) {}
@@ -816,7 +832,7 @@ async function alertPlace(env, rec, P, once, msgs, multi) {
         if (k >= 0) {
           const pm = Math.max(0, Math.round((pr.t[k] - n) / 60));
           let j = k; while (j < pr.t.length && pr.p[j] >= 0.5) j++;
-          if (r.i < 0 || pm < r.min - 10) r = Object.assign({}, r, { i: Math.max(0, r.i), min: pm, dur: Math.max(r.i < 0 ? 0 : r.dur || 0, (j - k) * 5), mx: Math.max(r.i < 0 ? 0 : r.mx || 0, pr.r[k] / 4) });
+          if (r.i < 0 || pm < r.min - 10) r = Object.assign({}, r, { i: Math.max(0, r.i), min: pm, dur: Math.max(r.i < 0 ? 0 : r.dur || 0, (j - k) * 5), mx: Math.max(r.i < 0 ? 0 : r.mx || 0, pr.r[k] / 4), snow: r.i < 0 ? !!pr.s : r.snow });
         }
       }
       if (r.i >= 0 && !st.rain && pr && r.min > 10 && pAt(r.min) < 0.3) r = Object.assign({}, r, { i: -1, unsure: true });
@@ -835,9 +851,9 @@ async function alertPlace(env, rec, P, once, msgs, multi) {
           st.rt = now;
         }
         st.rain = true; st.re = false; changed = true;
-      } else if (r.i < 0 && st.rain && !r.unsure) { st.rain = false; st.re = false; changed = true; }
+      } else if (r.i < 0 && st.rain && !r.unsure && !fast) { st.rain = false; st.re = false; changed = true; }
       /* Regen hört auf: es regnet gerade (seit mindestens 15 Minuten) und hört laut Vorhersage in höchstens 20 Minuten auf */
-      if (rec.rend !== false && st.rain && !st.re && r.i >= 0 && r.min === 0 && r.end != null && r.end <= 20 && r.dur >= 15 && now - (st.rt || 0) > 15 * 60000) {
+      if (!fast && rec.rend !== false && st.rain && !st.re && r.i >= 0 && r.min === 0 && r.end != null && r.end <= 20 && r.dur >= 15 && now - (st.rt || 0) > 15 * 60000) {
         if (!quietNow) {
           const what = r.snow ? "Schnee" : "Regen", m = Math.max(5, Math.round(r.end / 5) * 5);
           msgs.push({ title: (multi && ort ? ort + ": " : "") + (r.end <= 5 ? "Der " + what + " hört gleich auf" : "Der " + what + " hört in etwa " + m + " Minuten auf"), body: pre + "Danach bleibt es laut Radar-Vorhersage mindestens eine Viertelstunde trocken. Tippe für das Radar.", tag: "rain" + tagx, url: SITE + "#sec-radar" });
@@ -846,6 +862,7 @@ async function alertPlace(env, rec, P, once, msgs, multi) {
       }
     } catch (e) {}
   }
+  if (fast) return changed;
   let warnW = [];
   if (rec.warn) {
     const res = await once("w:" + pos, () => warnings(P.lat, P.lon)), ws = res.list;
@@ -939,13 +956,13 @@ async function alertPlace(env, rec, P, once, msgs, multi) {
 }
 /* Ein Abo prüfen: der Hauptort und bis zu 2 weitere Orte (z. B. Arbeit, Schule). once(k, f) merkt sich Abrufe innerhalb
    eines Durchlaufs: mehrere Geräte am selben Ort fragen nur einmal an. */
-async function alertOne(env, name, once) {
+async function alertOne(env, name, once, fast) {
   const rec = await env.SUBS.get(name, "json");
   if (!rec || !rec.sub) return;
   rec.st = rec.st || { rain: false, w: [] };
   const msgs = [], places = [{ lat: rec.lat, lon: rec.lon, name: rec.name, st: rec.st }].concat((Array.isArray(rec.more) ? rec.more : []).slice(0, 2).map((p) => { p.st = p.st || { rain: false, w: [] }; return p; }));
   let changed = false;
-  for (const P of places) { try { if (await alertPlace(env, rec, P, once, msgs, places.length > 1)) changed = true; } catch (e) { console.error("alert place", e && e.message); } }
+  for (const P of places) { try { if (await alertPlace(env, rec, P, once, msgs, places.length > 1, fast)) changed = true; } catch (e) { console.error("alert place", e && e.message); } }
   /* Erst den Zustand speichern, dann senden. Lässt er sich nicht speichern, wird nichts gesendet: sonst käme dieselbe
      Nachricht alle 5 Minuten wieder. */
   if (changed) await env.SUBS.put(name, JSON.stringify(rec));
@@ -959,12 +976,12 @@ async function alertOne(env, name, once) {
     if (res && (res.status === 404 || res.status === 410)) { await env.SUBS.delete(name); return; }
   }
 }
-async function runAlerts(env) {
+async function runAlerts(env, fast) {
   if (!env.SUBS) return;
   const names = (await env.SUBS.list({ prefix: "sub:" })).keys.map((k) => k.name), memo = new Map();
   const once = (k, f) => { if (!memo.has(k)) memo.set(k, f()); return memo.get(k); };
   // bis zu drei Abos gleichzeitig; ein Fehler bei einem hält die anderen nicht auf
-  const work = async () => { while (names.length) { const n = names.shift(); try { await alertOne(env, n, once); } catch (e) { console.error("alert", n, e && e.message); } } };
+  const work = async () => { while (names.length) { const n = names.shift(); try { await alertOne(env, n, once, fast); } catch (e) { console.error("alert", n, e && e.message); } } };
   await Promise.all([work(), work(), work()]);
 }
 
@@ -1174,8 +1191,10 @@ export default {
     catch (e) { console.error("fetch", new URL(req.url).pathname, e && e.message); return json({ error: "Interner Fehler" }, 500); }
   },
   async scheduled(event, env, ctx) {
-    ctx.waitUntil(runAlerts(env).catch((e) => console.error("runAlerts", e && e.message)));
-    // einmal pro Stunde (in den ersten 5 Minuten) lernen; die Regen-Hinweise werden alle 5 Minuten geprüft
-    if (new Date(event.scheduledTime || Date.now()).getUTCMinutes() < 5) ctx.waitUntil(klRun(env).catch((e) => console.error("klRun", e && e.message)));
+    /* jede Minute: der Regenbeginn (schnell, aus der eigenen Kurzvorhersage); alle 5 Minuten die volle Prüfung */
+    const mi = new Date(event.scheduledTime || Date.now()).getUTCMinutes();
+    ctx.waitUntil(runAlerts(env, mi % 5 !== 0).catch((e) => console.error("runAlerts", e && e.message)));
+    // einmal pro Stunde lernen
+    if (mi === 0) ctx.waitUntil(klRun(env).catch((e) => console.error("klRun", e && e.message)));
   },
 };

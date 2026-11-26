@@ -203,9 +203,13 @@ export function snGauges(R, Rcmp, obs, sh, ec, ea) {
 }
 
 /* weiterschieben: τ = 0, 5 … 60 Minuten → Codes je Bild (0 = keine Daten, 1 = trocken) */
-export function snExtrapolate(R, has, f) {
+function fineFields(f) {
   const U = new Float32Array(WH), V = new Float32Array(WH), Gr = new Float32Array(WH);
   for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) { const k = y * W + x, cx = x / C, cy = y / C; U[k] = bil(f.U, cx, cy) * C; V[k] = bil(f.V, cx, cy) * C; Gr[k] = bil(f.Gr, cx, cy); }
+  return { U, V, Gr };
+}
+export function snExtrapolate(R, has, f) {
+  const { U, V, Gr } = fineFields(f);
   const samp = (A, x, y) => {
     if (x < 0 || y < 0 || x > W - 1 || y > H - 1) return -1;
     const x0 = Math.min(W - 2, x | 0), y0 = Math.min(H - 2, y | 0), fx = x - x0, fy = y - y0, o = y0 * W + x0;
@@ -229,6 +233,43 @@ export function snExtrapolate(R, has, f) {
   return out;
 }
 
+/* 20 Varianten: Zugrichtung (±11°), Geschwindigkeit (±15 %), Stärker-/Schwächerwerden (±35 % je Stunde) und ein großräumiges
+   Zufallsfeld der Zugbahn (je etwa 150 km eine Abweichung, ±20 % der Zuggeschwindigkeit) werden je Variante leicht
+   verändert. Ergebnis je Bild: in wie vielen Varianten es dort regnet (ab 0,2 mm/h), 0 bis 100 %. Zufall fest je Lauf
+   (gleiche Eingabe, gleiches Ergebnis). */
+export function snEnsemble(R, has, f, t0, N = 20) {
+  const { U, V, Gr } = fineFields(f);
+  let seed = (t0 | 0) % 2147483647 || 1;
+  const rnd = () => { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
+  const gauss = () => { let u = 0, v = 0; while (u === 0) u = rnd(); while (v === 0) v = rnd(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); };
+  let ms = 0, mn = 0;
+  for (let i = 0; i < WH; i += 37) { ms += Math.hypot(U[i], V[i]); mn++; }
+  ms = mn ? ms / mn : 0;
+  const NX = 6, NY = 4, cnt = Array.from({ length: SN_N }, () => new Uint8Array(WH));
+  const samp = (x, y) => {
+    if (x < 0 || y < 0 || x > W - 1 || y > H - 1) return -1;
+    const x0 = Math.min(W - 2, x | 0), y0 = Math.min(H - 2, y | 0), fx = x - x0, fy = y - y0, o = y0 * W + x0;
+    return (R[o] * (1 - fx) + R[o + 1] * fx) * (1 - fy) + (R[o + W] * (1 - fx) + R[o + W + 1] * fx) * fy;
+  };
+  for (let m = 0; m < N; m++) {
+    const th = Math.max(-0.4, Math.min(0.4, gauss() * 0.2)), sp = Math.max(0.6, Math.min(1.4, 1 + gauss() * 0.15)), gb = gauss() * (Math.log(1.35) / 3600);
+    const cs = Math.cos(th) * sp, sn = Math.sin(th) * sp, NU = new Float32Array(NX * NY), NV = new Float32Array(NX * NY);
+    for (let i = 0; i < NX * NY; i++) { NU[i] = gauss() * 0.2 * ms; NV[i] = gauss() * 0.2 * ms; }
+    const nb = (A, x, y) => { const fx = (x / (W - 1)) * (NX - 1), fy = (y / (H - 1)) * (NY - 1), x0 = Math.min(NX - 2, fx | 0), y0 = Math.min(NY - 2, fy | 0), a = fx - x0, b = fy - y0, o = y0 * NX + x0;
+      return (A[o] * (1 - a) + A[o + 1] * a) * (1 - b) + (A[o + NX] * (1 - a) + A[o + NX + 1] * a) * b; };
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+      const i = y * W + x, u = U[i] * cs - V[i] * sn + nb(NU, x, y), v = U[i] * sn + V[i] * cs + nb(NV, x, y), g = Gr[i] + gb;
+      for (let k = 1; k < SN_N; k++) {
+        const tau = k * SN_STEP, val = samp(x - u * tau, y - v * tau);
+        if (val <= 0) continue;
+        if (val * Math.exp(g * 1200 * (1 - Math.exp(-tau / 1200))) >= 0.2) cnt[k][i]++;
+      }
+    }
+  }
+  /* Bild 0 ist die Messung: dort 0 oder 100 % */
+  const out = cnt.map((c, k) => { const o = new Uint8Array(WH); if (!k) { for (let i = 0; i < WH; i++) o[i] = R[i] >= 0.2 ? 100 : 0; } else for (let i = 0; i < WH; i++) o[i] = Math.round((c[i] * 100) / N); return o; });
+  return out;
+}
 async function gz(parts, head) {
   const hb = new TextEncoder().encode(JSON.stringify(head)), out = new Uint8Array(4 + hb.length + parts.length * WH);
   new DataView(out.buffer).setUint32(0, hb.length);
@@ -304,6 +345,12 @@ export async function snRun(env, h) {
   for (let i = 0; i < WH; i++) if (b.has[i]) n++;
   const buf = await gz([b.has, ...fr], { v: 1, t, base: t0, n, W, H, nV: fr.length, S: false, SM: 0, CC: 0, src: "sn" });
   await kv.put("gr:p:sn:" + t0, buf, { expirationTtl: 3 * 3600 });
+  /* Wahrscheinlichkeit aus 20 Varianten (für „Nächste 2 Stunden“ und die Regen-Hinweise) */
+  try {
+    const t1 = Date.now(), P = snEnsemble(b.R, b.has, fld, t0);
+    await kv.put("gr:p:snp:" + t0, await gz([b.has, ...P], { v: 1, t, base: t0, n, W, H, nV: P.length, S: false, SM: 0, CC: 0, src: "snp" }), { expirationTtl: 3 * 3600 });
+    st.ens = 20; st.ems = Date.now() - t1;
+  } catch (e) { st.eerr = String((e && e.message) || e).slice(0, 60); }
   const own = blocks.filter((q) => !q.w).map((q) => [q.x, q.y, +q.u.toFixed(6), +q.v.toFixed(6), +q.g.toExponential(3)]);
   await kv.put("sn:mv", JSON.stringify({ t: t0, b: own }), { expirationTtl: 3600 });
   const l = [...(ix.l || []), t0].filter((x) => x > t0 - 3 * 3600).slice(-40);
@@ -385,7 +432,7 @@ export function snWeight(tab, leadSn, leadGs, t, t0) {
    Anteil der Zellen mit Regen (ab 0,2 mm/h) in einem Kreis um den Ort, der mit dem Vorlauf wächst (1,5 km + 0,12 km je
    Minute): so wird aus „genau hier ja oder nein“ eine ehrliche Wahrscheinlichkeit, weil der Ort einer Regenzelle mit
    der Zeit unsicherer wird. Unsere Kurzvorhersage und GeoSphere gemischt wie in der App. */
-const cache = { sn: null, gs: null };
+const cache = { sn: null, gs: null, t: null, sp: null };
 async function getPk(kv, key, slot) {
   if (cache[slot] && cache[slot].key === key) return cache[slot].u;
   const b = await kv.get(key, { type: "arrayBuffer" });
@@ -413,11 +460,17 @@ export async function ptServe(env, la, lo) {
   const [sx, gx, sk] = await Promise.all([kv.get("sn:idx"), kv.get("gr:idx"), kv.get("sk:v")]).then((a) => a.map((v) => JSON.parse(v || "null")));
   const now = Date.now() / 1000;
   const sn = sx && now - sx.t0 < 40 * 60 ? await getPk(kv, "gr:p:sn:" + sx.t0, "sn") : null;
+  /* Wahrscheinlichkeit aus den 20 Varianten (wenn vorhanden): Mittel in einem kleinen Kreis um den Ort */
+  let sp = null;
+  try { sp = sn ? await getPk(kv, "gr:p:snp:" + sx.t0, "sp") : null; } catch (e) {}
+  const pAround = (Pk, km) => { const r = Math.max(1, km / 1.08), ri = Math.ceil(r); let s2 = 0, n = 0; for (let j = -ri; j <= ri; j++) for (let i = -ri; i <= ri; i++) { if (i * i + j * j > r * r) continue; const xx = x + i, yy = y + j; if (xx < 0 || yy < 0 || xx >= W || yy >= H) continue; const k = yy * W + xx; if (!sp.has[k]) continue; s2 += Pk[k]; n++; } return n ? s2 / n / 100 : null; };
   const gs = gx && gx.ref ? await getPk(kv, "gr:p:rr:" + gx.ref, "gs") : null;
   if (!sn && !gs) return { ok: 0 };
   const tab = {};
   if (sk) for (const s of ["sn", "gs"]) { tab[s] = {}; for (const [L, e] of Object.entries(sk[s] || {})) if (e[1] >= 4) tab[s][L] = e[0]; }
-  const out = { ok: 1, t: [], p: [], r: [], t0: sn ? sx.t0 : null, ref: gs ? gx.ref : null };
+  const out = { ok: 1, t: [], p: [], r: [], t0: sn ? sx.t0 : null, ref: gs ? gx.ref : null, ens: sp ? 20 : 0 };
+  /* Schnee oder Regen am Ort: Temperatur von GeoSphere (INCA, höchstens 1 °C = Schnee) */
+  try { const tt = gx && gx.t2 ? await getPk(kv, "gr:p:t:" + gx.t2, "t") : null; if (tt && tt.S) out.s = tt.S[y * W + x] ? 1 : 0; } catch (e) {}
   const rad = (lead) => 1.5 + 0.12 * Math.max(0, lead) / 60;
   const gsAt = (t) => {
     if (!gs) return null;
@@ -430,7 +483,12 @@ export async function ptServe(env, la, lo) {
   };
   for (let t = Math.ceil(now / 300) * 300; t <= now + 7200; t += 300) {
     let s = null;
-    if (sn && t >= sx.t0 && t <= sx.t0 + 3600) { const k = Math.round((t - sx.t0) / SN_STEP); s = around(sn.V[k], sn.has, x, y, rad(t - sx.t0)); }
+    if (sn && t >= sx.t0 && t <= sx.t0 + 3600) {
+      const k = Math.round((t - sx.t0) / SN_STEP);
+      s = around(sn.V[k], sn.has, x, y, rad(t - sx.t0));
+      const pe = sp && sp.V[k] ? pAround(sp.V[k], 1.5 + 0.04 * (t - sx.t0) / 60) : null;
+      if (s && pe != null) s = { p: pe, r: s.r };
+    }
     const g = gsAt(t);
     let v = null;
     if (s && g) { const w = snWeight(tab, t - sx.t0, t - gx.ref, t, sx.t0); v = { p: w * s.p + (1 - w) * g.p, r: w * s.r + (1 - w) * g.r }; }

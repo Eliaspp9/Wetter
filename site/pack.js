@@ -90,8 +90,10 @@ export function convert(buf, kind, fc0) {
 }
 
 /* in ein gepacktes Paket schreiben */
-export async function packed(buf, kind, fc0) {
+/* xS: Schnee-Maske (aus der Temperatur zur selben Zeit), wird bei Messbildern mitgepackt (Rückblick über 7 Tage) */
+export async function packed(buf, kind, fc0, xS) {
   const d = convert(buf, kind, fc0), WH = d.W * d.H;
+  if (xS && !d.S && xS.length === WH) d.S = xS;
   const head = new TextEncoder().encode(JSON.stringify({ v: 1, t: d.t, base: d.base, n: d.n, W: d.W, H: d.H, nV: d.V.length, S: !!d.S, SM: d.SM ? d.SM.length : 0, CC: d.CC ? d.CC.length : 0 }));
   const parts = [d.has, ...d.V, ...(d.S ? [d.S] : []), ...(d.SM || []), ...(d.CC || [])];
   const out = new Uint8Array(4 + head.length + parts.length * WH);
@@ -111,5 +113,6 @@ export async function unpackSrv(buf) {
   const raw = new Uint8Array(await new Response(new Blob([buf]).stream().pipeThrough(new DecompressionStream("gzip"))).arrayBuffer());
   const hl = new DataView(raw.buffer).getUint32(0), h = JSON.parse(new TextDecoder().decode(raw.subarray(4, 4 + hl))), WH = h.W * h.H, o0 = 4 + hl;
   if (h.W !== G.W || h.H !== G.H || raw.length < o0 + WH * (1 + h.nV)) return null;
-  return { h, t: h.t, has: raw.subarray(o0, o0 + WH), V: Array.from({ length: h.nV }, (_, k) => raw.subarray(o0 + WH * (1 + k), o0 + WH * (2 + k))) };
+  return { h, t: h.t, has: raw.subarray(o0, o0 + WH), V: Array.from({ length: h.nV }, (_, k) => raw.subarray(o0 + WH * (1 + k), o0 + WH * (2 + k))),
+    S: h.S && raw.length >= o0 + WH * (2 + h.nV) ? raw.subarray(o0 + WH * (1 + h.nV), o0 + WH * (2 + h.nV)) : null };
 }

@@ -199,9 +199,16 @@ async function grRun(env) {
   /* gleich fertig für die App aufbereiten (siehe site/pack.js) */
   const pk = async (k, b, f, ttl) => { try { await kv.put("gr:p:" + k + ":" + ref, await packed(b, k === "t" ? "t2m" : "rr", f), { expirationTtl: ttl }); } catch (e) { console.error("pack", k, e && e.message); } };
   await pk("rr", rr, ref + 60, 3 * 3600);
-  let a = null, t2 = null;
-  try { a = await grGet(GR_URL + "?parameters=rr" + GR_BB + q + "&end=" + isoM(ref), 90000); await kv.put("gr:a:" + ref, a, { expirationTtl: 25 * 3600 }); await pk("a", a, ref + 60, 25 * 3600); } catch (e) {}
-  if (ref - (ix.t2 || 0) >= 3300) { try { t2 = await grGet(GR_URL + "?parameters=t2m" + GR_BB + q + "&end=" + isoM(ref), 90000); await kv.put("gr:t:" + ref, t2, opt); await pk("t", t2, null, 3 * 3600); } catch (e) {} }
+  let a = null, t2 = null, tS = null;
+  /* Temperatur einmal pro Stunde (immer zur vollen Stunde): Schnee oder Regen; zur vollen Stunde kommt die Schnee-Maske
+     auch in das Messbild, das 7 Tage aufgehoben wird (Rückblick) */
+  const full = ref % 3600 === 0;
+  if (full || ref - (ix.t2 || 0) >= 3300) { try { t2 = await grGet(GR_URL + "?parameters=t2m" + GR_BB + q + "&end=" + isoM(ref), 90000); await kv.put("gr:t:" + ref, t2, opt); await pk("t", t2, null, 3 * 3600); try { tS = convert(t2, "t2m", null).S; } catch (e) {} } catch (e) {} }
+  try {
+    a = await grGet(GR_URL + "?parameters=rr" + GR_BB + q + "&end=" + isoM(ref), 90000);
+    await kv.put("gr:a:" + ref, a, { expirationTtl: 25 * 3600 });
+    try { await kv.put("gr:p:a:" + ref, await packed(a, "rr", ref + 60, tS), { expirationTtl: full ? Math.round(7.3 * 86400) : 25 * 3600 }); } catch (e) { console.error("pack", "a", e && e.message); }
+  } catch (e) {}
   const now = Date.now() / 1000;
   /* Europa-Radar an GeoSphere angleichen (siehe grBias); geglättet über die letzten Läufe */
   let bf = ix.bf || null, dA = null, sk = ix.sk || null;
@@ -209,7 +216,9 @@ async function grRun(env) {
   try { const b = dA && (await grBias(dA, ref)); if (b) { const f0 = bf && bf.f ? bf.f : 1, f = Math.exp(0.5 * Math.log(f0) + 0.5 * Math.log(b.f)); bf = { f: Math.round(Math.min(2.5, Math.max(0.4, f)) * 1000) / 1000, raw: b.f, n: b.n, t: ref }; } } catch (e) { console.error("bias", e && e.message); }
   /* Bewertung der Vorhersagen gegen dieses Messbild (selbstlernend, siehe site/nowcast.js) */
   try { if (dA) sk = await skRun(env, ref, dA, ncBytes); } catch (e) { console.error("Bewertung", e && e.message); }
-  await kv.put("gr:idx", JSON.stringify({ ref, at: Math.round(now), a: [...(ix.a || []), ...(a ? [ref] : [])].filter((t) => t > now - 24.6 * 3600).slice(-100), t2: t2 ? ref : ix.t2 || 0, bf, sk }));
+  /* aw: volle Stunden der letzten 7 Tage (Rückblick „−7 Tage“) */
+  await kv.put("gr:idx", JSON.stringify({ ref, at: Math.round(now), a: [...(ix.a || []), ...(a ? [ref] : [])].filter((t) => t > now - 24.6 * 3600).slice(-100),
+    aw: [...(ix.aw || []), ...(a && full ? [ref] : [])].filter((t) => t > now - 7.2 * 86400).slice(-180), t2: t2 ? ref : ix.t2 || 0, bf, sk }));
 }
 /* ============ Europa-Radar an GeoSphere angleichen ============
    Das Europa-Radar (LibreWXR, OPERA) schätzt die Regenmenge nur aus dem Radarecho; GeoSphere (INCA) rechnet die
