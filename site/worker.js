@@ -4,7 +4,7 @@
      Handy nicht vor jeder Anfrage erst nachfragen, ob es darf (keine CORS-Vorabanfragen).
    - Die App selbst (index.html) bekommt nur, wer angemeldet ist: Dafür setzt er bei Anmeldung und Verlängerung ein Cookie
      (HttpOnly, nur für diese Seite). Ohne gültiges Cookie kommt login.html. Geprüft wird das Token beim wetter-proxy (/auth). */
-import { packed } from "./pack.js";
+import { packed, convert } from "./pack.js";
 const COOKIE = "wt";
 const PAGE = new Set(["/", "/index.html"]);
 const SEC = {
@@ -195,7 +195,49 @@ async function grRun(env) {
   try { a = await grGet(GR_URL + "?parameters=rr" + GR_BB + q + "&end=" + isoM(ref), 90000); await kv.put("gr:a:" + ref, a, { expirationTtl: 25 * 3600 }); await pk("a", a, ref + 60, 25 * 3600); } catch (e) {}
   if (ref - (ix.t2 || 0) >= 3300) { try { t2 = await grGet(GR_URL + "?parameters=t2m" + GR_BB + q + "&end=" + isoM(ref), 90000); await kv.put("gr:t:" + ref, t2, opt); await pk("t", t2, null, 3 * 3600); } catch (e) {} }
   const now = Date.now() / 1000;
-  await kv.put("gr:idx", JSON.stringify({ ref, at: Math.round(now), a: [...(ix.a || []), ...(a ? [ref] : [])].filter((t) => t > now - 24.6 * 3600).slice(-100), t2: t2 ? ref : ix.t2 || 0 }));
+  /* Europa-Radar an GeoSphere angleichen (siehe grBias); geglättet über die letzten Läufe */
+  let bf = ix.bf || null;
+  try { const b = await grBias(a || rr, ref); if (b) { const f0 = bf && bf.f ? bf.f : 1, f = Math.exp(0.5 * Math.log(f0) + 0.5 * Math.log(b.f)); bf = { f: Math.round(Math.min(2.5, Math.max(0.4, f)) * 1000) / 1000, raw: b.f, n: b.n, t: ref }; } } catch (e) { console.error("bias", e && e.message); }
+  await kv.put("gr:idx", JSON.stringify({ ref, at: Math.round(now), a: [...(ix.a || []), ...(a ? [ref] : [])].filter((t) => t > now - 24.6 * 3600).slice(-100), t2: t2 ? ref : ix.t2 || 0, bf }));
+}
+/* ============ Europa-Radar an GeoSphere angleichen ============
+   Das Europa-Radar (LibreWXR, OPERA) schätzt die Regenmenge nur aus dem Radarecho; GeoSphere (INCA) rechnet die
+   Regenmesser mit ein. Zum Zeitpunkt der GeoSphere-Messung wird das Europa-Bild (Zoom 7, 512er-Kacheln, Grauwert = dBZ + 32)
+   an jeder 1-km-Zelle abgelesen und verglichen, wo beide Regen sehen (ab 0,2 mm/h): f = Summe GeoSphere / Summe Europa.
+   Mindestens 300 solche Zellen, sonst kein Ergebnis. Die App multipliziert das Europa-Radar in „Österreich“ mit f. */
+const AT_BOX_W = [45.5, 8.1, 49.48, 17.74], AT_CS_W = 1.08 / (111.32 * Math.cos((47.5 * Math.PI) / 180)), RC_MIN_W = 0.03, RC_L_W = Math.log(200 / RC_MIN_W);
+const mercW = (la) => (Math.log(Math.tan(Math.PI / 4 + (la * Math.PI) / 360)) * 180) / Math.PI;
+const zRainW = (z) => Math.pow(Math.pow(10, z / 10) / 200, 0.625);
+async function grBias(buf, ref) {
+  const mp = await (await tfetch("https://api.librewxr.net/public/weather-maps.json", 10000)).json();
+  const past = (mp.radar && mp.radar.past) || [];
+  let fr = null, bd = 1e9;
+  for (const f of past) { const d = Math.abs(f.time - ref); if (d < bd) { bd = d; fr = f; } }
+  if (!fr || bd > 300) return null;
+  const d = convert(buf, "rr", ref + 60), V = d.V[0];
+  const z = 7, n = 128, tile = {};
+  const yT = mercW(AT_BOX_W[2]);
+  const get = async (tx, ty) => {
+    const k = tx + "_" + ty;
+    if (!(k in tile)) { try { const r = await tfetch(mp.host + fr.path + "/512/" + z + "/" + tx + "/" + ty + "/0/1_0.png", 12000); tile[k] = r.ok ? await pngRGBA(await r.arrayBuffer()) : null; } catch (e) { tile[k] = null; } }
+    return tile[k];
+  };
+  let sg = 0, se = 0, cnt = 0;
+  for (let y = 0; y < d.H; y += 2) for (let x = 0; x < d.W; x += 2) {
+    const o = y * d.W + x;
+    if (!d.has[o]) continue;
+    const c = V[o], g = c >= 2 ? RC_MIN_W * Math.exp(((c - 2) / 253) * RC_L_W) : 0;
+    const lo = AT_BOX_W[1] + (x + 0.5) * AT_CS_W, my = yT - (y + 0.5) * AT_CS_W;
+    const fx = ((lo + 180) / 360) * n, fy = ((180 - my) / 360) * n, tx = Math.floor(fx), ty = Math.floor(fy);
+    const t = await get(tx, ty);
+    if (!t) continue;
+    const px = Math.min(t.W - 1, Math.floor((fx - tx) * t.W)), py = Math.min(t.H - 1, Math.floor((fy - ty) * t.H)), j = (py * t.W + px) * 4;
+    const R = t.d[j], G = t.d[j + 1], B = t.d[j + 2], A = t.d[j + 3];
+    const e = A > 90 && R === G && G === B && R - 32 >= 5 ? zRainW(R - 32) : 0;
+    if (g >= 0.2 && e >= 0.2) { sg += g; se += e; cnt++; }
+  }
+  if (cnt < 300 || se <= 0) return null;
+  return { f: sg / se, n: cnt };
 }
 /* die NetCDF-Datei eines Bildes aus dem KV-Speicher: m = ["gm", ref, t] oder ["rr"|"a"|"t", ref] */
 async function ncBytes(kv, m) {
@@ -839,6 +881,41 @@ async function omServe(req, env, url) {
     return bfJson({ error: "Open-Meteo nicht erreichbar" }, 502);
   }
 }
+/* ============ Trefferquote des Radars am Ort (Österreich) ============
+   Nächste Wetterstation von GeoSphere (TAWES, bis 20 km) gegen das Radar (INCA, 1 km) genau an der Station, Stunde für
+   Stunde über die letzten 7 Tage: wie oft „Regen ja/nein“ stimmt (ab 0,1 mm) und Verhältnis der Mengen. 6 Stunden gemerkt. */
+async function bfRQ(la, lo, env) {
+  const key = "rq:" + la.toFixed(2) + ":" + lo.toFixed(2);
+  if (env.GM) { const c = await env.GM.get(key); if (c) return new Response(c, { headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "private, max-age=3600" } }); }
+  const GSB = "https://dataset.api.hub.geosphere.at/v1/station/historical/tawes-v1-10min";
+  let meta = env.GM ? JSON.parse((await env.GM.get("rq:meta")) || "null") : null;
+  if (!meta) {
+    const m = await (await tfetch(GSB + "/metadata", 20000)).json();
+    meta = (m.stations || []).filter((x) => x.is_active !== false).map((x) => [x.id, x.name, +x.lat, +x.lon]);
+    if (env.GM) await env.GM.put("rq:meta", JSON.stringify(meta), { expirationTtl: 7 * 86400 });
+  }
+  const km = (a, b, c, d) => { const r = Math.PI / 180, x = (d - b) * r * Math.cos(((a + c) / 2) * r), y = (c - a) * r; return 6371 * Math.hypot(x, y); };
+  let best = null;
+  for (const x of meta) { const d = km(la, lo, x[2], x[3]); if (d <= 20 && (!best || d < best.d)) best = { id: x[0], name: x[1], la: x[2], lo: x[3], d }; }
+  const out = { ok: 0 };
+  if (best) {
+    const end = new Date(Math.floor(Date.now() / 3600000) * 3600000), start = new Date(end.getTime() - 7 * 86400000), iso = (d) => d.toISOString().slice(0, 16);
+    const [st, inc] = await Promise.all([
+      tfetch(GSB + "?parameters=RR&station_ids=" + best.id + "&start=" + iso(start) + "&end=" + iso(end), 25000).then((r) => r.json()),
+      tfetch("https://dataset.api.hub.geosphere.at/v1/timeseries/historical/inca-v1-1h-1km?parameters=RR&lat_lon=" + best.la.toFixed(4) + "," + best.lo.toFixed(4) + "&start=" + iso(start) + "&end=" + iso(end), 25000).then((r) => r.json()),
+    ]);
+    /* Station: 10-Minuten-Summen zu Stunden (die Stunde bis zur vollen Stunde) */
+    const S = new Map(), SR = (st.features && st.features[0] && st.features[0].properties.parameters.RR && st.features[0].properties.parameters.RR.data) || [];
+    (st.timestamps || []).forEach((t, i) => { const v = SR[i]; if (v == null) return; const h = Math.ceil(Date.parse(t) / 3600000) * 3600; const e = S.get(h) || [0, 0]; e[0] += +v; e[1]++; S.set(h, e); });
+    const IR = (inc.features && inc.features[0] && inc.features[0].properties.parameters.RR && inc.features[0].properties.parameters.RR.data) || [];
+    let n = 0, hit = 0, ss = 0, si = 0;
+    (inc.timestamps || []).forEach((t, i) => { const h = Date.parse(t) / 1000, e = S.get(h), r = IR[i]; if (!e || e[1] < 5 || r == null) return; n++; if ((e[0] >= 0.1) === (r >= 0.1)) hit++; if (e[0] >= 0.1 || r >= 0.1) { ss += e[0]; si += r; } });
+    Object.assign(out, { ok: 1, st: best.name, d: Math.round(best.d * 10) / 10, n, hit: n ? Math.round((hit / n) * 1000) / 1000 : null, sst: Math.round(ss * 10) / 10, sin: Math.round(si * 10) / 10 });
+  }
+  const txt = JSON.stringify(out);
+  if (env.GM) await env.GM.put(key, txt, { expirationTtl: 6 * 3600 });
+  return new Response(txt, { headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "private, max-age=3600" } });
+}
 async function bfServe(req, env, url) {
   if (!(await valid(env, getCookie(req, COOKIE)))) return bfJson({ error: "Nicht angemeldet" }, 401);
   if (url.pathname === "/bf/log" && req.method === "POST") { try { const b = await req.json(); console.log("APPFEHLER", JSON.stringify(b).slice(0, 1600)); } catch (e) {} return bfJson({ ok: 1 }); }
@@ -847,6 +924,7 @@ async function bfServe(req, env, url) {
   if (!isFinite(la) || !isFinite(lo) || Math.abs(la) > 85 || Math.abs(lo) > 180) return bfJson({ error: "Ungültig" }, 400);
   try {
     if (url.pathname === "/bf/pp") return await bfPP(la, lo);
+    if (url.pathname === "/bf/rq") return await bfRQ(la, lo, env);
     if (url.pathname === "/bf/sk") {
       const models = String(url.searchParams.get("m") || "").split(",").filter((m) => BF_MOD.test(m)).slice(0, 10);
       if (!models.length) return bfJson({ error: "Ungültig" }, 400);

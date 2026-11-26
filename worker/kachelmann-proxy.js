@@ -12,7 +12,7 @@
 // Für die KI (Übersetzen der Warnungen anderer Länder, Push-Texte in ganzen Sätzen), ab Version 1.6:
 //   Bindung AI      (Workers AI, Variablenname AI). Ohne sie läuft alles wie vorher, nur ohne KI.
 const enc = new TextEncoder();
-const VERSION = "1.0", BUILD = 8;
+const VERSION = "1.0", BUILD = 9;
 /* Abrufe mit Zeitlimit: ein hängender Dienst soll weder eine Anfrage noch den Zeitplan aufhalten.
    tf: Limit bis die Antwort beginnt (für durchgereichte Antworten); jf: Limit bis das JSON ganz gelesen ist. */
 async function tf(u, o, ms) {
@@ -640,6 +640,76 @@ async function pngPixels(buf) {
   }
   return { W, H, a: out };
 }
+async function pngRGBA(buf) {
+  const u = new Uint8Array(buf), dv = new DataView(buf);
+  if (u[0] !== 0x89 || u[1] !== 0x50) throw new Error("kein PNG");
+  let o = 8, W = 0, H = 0, bd = 8, ct = 0, pal = null, trns = null;
+  const idat = [];
+  while (o < u.length) {
+    const len = dv.getUint32(o), type = String.fromCharCode(u[o + 4], u[o + 5], u[o + 6], u[o + 7]), d = u.subarray(o + 8, o + 8 + len);
+    if (type === "IHDR") { W = dv.getUint32(o + 8); H = dv.getUint32(o + 12); bd = u[o + 16]; ct = u[o + 17]; if (u[o + 20]) throw new Error("interlaced"); }
+    else if (type === "PLTE") pal = d.slice(); else if (type === "tRNS") trns = d.slice(); else if (type === "IDAT") idat.push(d.slice()); else if (type === "IEND") break;
+    o += 12 + len;
+  }
+  const raw = new Uint8Array(await new Response(new Blob(idat).stream().pipeThrough(new DecompressionStream("deflate"))).arrayBuffer());
+  const ch = { 0: 1, 2: 3, 3: 1, 4: 2, 6: 4 }[ct], bpp = Math.max(1, (ch * bd) >> 3), stride = (W * ch * bd + 7) >> 3;
+  const out = new Uint8Array(W * H * 4), cur = new Uint8Array(stride), prev = new Uint8Array(stride);
+  for (let y = 0, p = 0; y < H; y++) {
+    const f = raw[p++];
+    for (let i = 0; i < stride; i++) {
+      const x = raw[p++], a = i >= bpp ? cur[i - bpp] : 0, b = prev[i], c = i >= bpp ? prev[i - bpp] : 0;
+      let v = x;
+      if (f === 1) v = x + a; else if (f === 2) v = x + b; else if (f === 3) v = x + ((a + b) >> 1);
+      else if (f === 4) { const q = a + b - c, pa = Math.abs(q - a), pb = Math.abs(q - b), pc = Math.abs(q - c); v = x + (pa <= pb && pa <= pc ? a : pb <= pc ? b : c); }
+      cur[i] = v & 255;
+    }
+    for (let xq = 0; xq < W; xq++) {
+      const j = (y * W + xq) * 4;
+      if (ct === 6 && bd === 8) { out[j] = cur[xq * 4]; out[j + 1] = cur[xq * 4 + 1]; out[j + 2] = cur[xq * 4 + 2]; out[j + 3] = cur[xq * 4 + 3]; }
+      else if (ct === 2 && bd === 8) { out[j] = cur[xq * 3]; out[j + 1] = cur[xq * 3 + 1]; out[j + 2] = cur[xq * 3 + 2]; out[j + 3] = 255; }
+      else if (ct === 3) { const idx = bd === 8 ? cur[xq] : (cur[(xq * bd) >> 3] >> (8 - bd - ((xq * bd) & 7))) & ((1 << bd) - 1); out[j] = pal[idx * 3]; out[j + 1] = pal[idx * 3 + 1]; out[j + 2] = pal[idx * 3 + 2]; out[j + 3] = trns && idx < trns.length ? trns[idx] : 255; }
+      else if (ct === 0 && bd === 8) { out[j] = out[j + 1] = out[j + 2] = cur[xq]; out[j + 3] = 255; }
+      else if (ct === 4 && bd === 8) { out[j] = out[j + 1] = out[j + 2] = cur[xq * 2]; out[j + 3] = cur[xq * 2 + 1]; }
+    }
+    prev.set(cur);
+  }
+  return { W, H, d: out };
+}
+/* ============ Europa-Radar am Ort (LibreWXR, Messung und Radar-Vorhersage) ============
+   Für den Regen-Hinweis: Die Radar-Vorhersage von GeoSphere beginnt bei einer 20 bis 30 Minuten alten Messung. Das
+   Europa-Radar ist aktueller (5 bis 10 Minuten) und rechnet seine eigene Vorhersage (bis etwa 1 Stunde) von dort weiter.
+   Abgelesen wird je Bild die Kachel mit dem Ort (Zoom 8, 512 Punkte), der stärkste Wert im Umkreis von etwa 1 km.
+   Ergebnis: Beginn des Regens in Minuten (zwei Bilder hintereinander ab 0,3 mm/h), Dauer und Stärke, oder null. */
+async function lxPoint(lat, lon) {
+  const mp = await (await tf("https://api.librewxr.net/public/weather-maps.json", {}, 10000)).json();
+  const fr = [...((mp.radar && mp.radar.past) || []).slice(-1), ...((mp.radar && mp.radar.nowcast) || [])], z = 8, n = 256;
+  const fx = ((lon + 180) / 360) * n, my = (Math.log(Math.tan(Math.PI / 4 + (lat * Math.PI) / 360)) * 180) / Math.PI, fy = ((180 - my) / 360) * n, tx = Math.floor(fx), ty = Math.floor(fy);
+  const now = Date.now() / 1000, vals = [];
+  await Promise.all(fr.map(async (f, k) => {
+    try {
+      const r = await tf(mp.host + f.path + "/512/" + z + "/" + tx + "/" + ty + "/0/1_0.png", {}, 12000);
+      if (!r.ok) return;
+      const t = await pngRGBA(await r.arrayBuffer()), px = Math.floor((fx - tx) * t.W), py = Math.floor((fy - ty) * t.H);
+      let mx = 0;
+      for (let dy = -2; dy <= 2; dy++) for (let dx = -2; dx <= 2; dx++) {
+        const x = px + dx, y = py + dy;
+        if (x < 0 || y < 0 || x >= t.W || y >= t.H) continue;
+        const j = (y * t.W + x) * 4, R = t.d[j];
+        if (t.d[j + 3] > 90 && R === t.d[j + 1] && R === t.d[j + 2] && R - 32 >= 5) mx = Math.max(mx, Math.pow(Math.pow(10, (R - 32) / 10) / 200, 0.625));
+      }
+      vals[k] = { t: f.time, r: mx };
+    } catch (e) {}
+  }));
+  const L = vals.filter(Boolean).sort((a, b) => a.t - b.t);
+  for (let i = 0; i < L.length - 1; i++) {
+    if (L[i].r >= 0.3 && L[i + 1].r >= 0.3) {
+      let j = i, mx = 0;
+      while (j < L.length && L[j].r >= 0.3) { mx = Math.max(mx, L[j].r); j++; }
+      return { min: Math.max(0, Math.round((L[i].t - now) / 60)), dur: Math.round((L[Math.min(j, L.length - 1)].t - L[i].t) / 60), mx };
+    }
+  }
+  return null;
+}
 /* Blitze im Umkreis von 45 km: d = Entfernung des nächsten Blitzes in km (oder null), b = Richtung, aus der die nächsten
    Blitze kommen (Grad, 0 = Norden, 90 = Osten), n = Zahl der Blitzflächen. Bild 31 x 31 Punkte, etwa 3 km je Punkt. */
 const LTG_R = 45;
@@ -724,7 +794,12 @@ async function alertPlace(env, rec, P, once, msgs, multi) {
   let changed = false;
   if (rec.rain) {
     try {
-      const r = await once("r:" + pos, () => rainSoon(P.lat, P.lon));
+      let r = await once("r:" + pos, () => rainSoon(P.lat, P.lon));
+      /* Europa-Radar ist aktueller: sieht es den Regen früher (oder GeoSphere gar nicht), gilt sein Beginn */
+      try {
+        const e = await once("e:" + pos, () => lxPoint(P.lat, P.lon));
+        if (e && e.min <= 60 && (r.i < 0 || e.min < r.min - 10)) r = Object.assign({}, r, { i: Math.max(0, r.i), min: e.min, dur: Math.max(r.dur || 0, e.dur), mx: Math.max(r.mx || 0, e.mx / 4) });
+      } catch (x) {}
       if (r.i >= 0 && !st.rain) {
         const what = r.snow ? "Schnee" : "Regen";
         // nach einem Hinweis 90 Minuten Pause: springt die Vorhersage um die Schwelle herum, kommt nicht jedes Mal ein neuer
