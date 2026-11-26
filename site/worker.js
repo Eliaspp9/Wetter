@@ -6,6 +6,7 @@
      (HttpOnly, nur für diese Seite). Ohne gültiges Cookie kommt login.html. Geprüft wird das Token beim wetter-proxy (/auth). */
 import { packed, convert } from "./pack.js";
 import { snRun, skRun, ptServe } from "./nowcast.js";
+import { bfKI } from "./ki.js";
 const COOKIE = "wt";
 const PAGE = new Set(["/", "/index.html"]);
 const SEC = {
@@ -943,6 +944,7 @@ async function bfServe(req, env, url) {
   try {
     if (url.pathname === "/bf/pp") return await bfPP(la, lo);
     if (url.pathname === "/bf/rq") return await bfRQ(la, lo, env);
+    if (url.pathname === "/bf/ki") return new Response(await bfKI(la, lo, { tfetch }, env.GM), { headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "private, max-age=1800" } });
     if (url.pathname === "/bf/sk") {
       const models = String(url.searchParams.get("m") || "").split(",").filter((m) => BF_MOD.test(m)).slice(0, 10);
       if (!models.length) return bfJson({ error: "Ungültig" }, 400);
