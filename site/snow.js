@@ -67,7 +67,8 @@ export async function bfSnow(la, lo, h, kv, el) {
   const raw = snowModel(S.F[0].RR, S.F[0].T, S.F[0].W), rs = [];
   cal.forEach((c, i) => { const f = S.F[i + 1]; if (!f) return; const m = snowModel(f.RR, f.T, f.W); c.model = Math.round(m * 10) / 10; if (m >= 2 && c.cm / m >= 0.3 && c.cm / m <= 3) rs.push(c.cm / m); });
   rs.sort((a, b) => a - b);
-  const fac = rs.length ? Math.max(0.6, Math.min(1.8, rs[rs.length >> 1])) : 1;
+  /* nur halb übernehmen: die Pegel stehen bis 80 km weg, dort fällt oft anders viel */
+  const fac = rs.length ? 1 + (Math.max(0.6, Math.min(1.8, rs[rs.length >> 1])) - 1) * 0.5 : 1;
   const out = { ok: 1, slot, cm: Math.round(raw * fac * 10) / 10, raw: Math.round(raw * 10) / 10, f: Math.round(fac * 100) / 100, n: rs.length, st: cal.filter((c) => c.model >= 2).map((c) => c.name), t: S.ts[S.ts.length - 1] };
   if (kv) await kv.put(key, JSON.stringify(out), { expirationTtl: 3600 });
   return JSON.stringify(out);
