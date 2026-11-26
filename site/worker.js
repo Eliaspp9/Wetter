@@ -7,6 +7,7 @@
 import { packed, convert } from "./pack.js";
 import { snRun, skRun, ptServe } from "./nowcast.js";
 import { bfKI } from "./ki.js";
+import { bfSnow } from "./snow.js";
 const COOKIE = "wt";
 const PAGE = new Set(["/", "/index.html"]);
 const SEC = {
@@ -965,6 +966,8 @@ async function bfServe(req, env, url) {
     if (url.pathname === "/bf/pp") return await bfPP(la, lo);
     if (url.pathname === "/bf/rq") return await bfRQ(la, lo, env);
     /* KI-Vorhersage genau für den Ort (auf etwa 1 km gerundet, wegen der Höhe in den Bergen); gelernt wird je Gegend */
+    /* Schneehöhe am Ort, selbst berechnet (siehe site/snow.js) */
+    if (url.pathname === "/bf/snow") return new Response(await bfSnow(Math.round(+url.searchParams.get("la") * 100) / 100, Math.round(+url.searchParams.get("lo") * 100) / 100, { tfetch }, env.GM, +url.searchParams.get("el")), { headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "private, max-age=600" } });
     if (url.pathname === "/bf/ki") return new Response(await bfKI(Math.round(+url.searchParams.get("la") * 100) / 100, Math.round(+url.searchParams.get("lo") * 100) / 100, { tfetch }, env.GM), { headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "private, max-age=1800" } });
     if (url.pathname === "/bf/sk") {
       const models = String(url.searchParams.get("m") || "").split(",").filter((m) => BF_MOD.test(m)).slice(0, 10);

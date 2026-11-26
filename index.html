@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-285fPEGby2/4TzKj3HOSc+oCkSuBOCI84QI8y2jN46U=' 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-DEbu+QN8ttCHI/Iv/FUX4SuHncor97utTYKpWg4TKIo=' 'sha256-h9XxCpPRFJZlprZuNWKY2L3y1G9U2dpXVRsVQr1GvIc=' 'sha256-RuxfNxmpjp4A0o44t73N+6O4m9ajjPnJ8Ah9hbvLASk=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src 'self'; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://s3.amazonaws.com https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-285fPEGby2/4TzKj3HOSc+oCkSuBOCI84QI8y2jN46U=' 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-DEbu+QN8ttCHI/Iv/FUX4SuHncor97utTYKpWg4TKIo=' 'sha256-fbhjCO/6kWDmpCdr/8WM/gs8L+X3apmiVY8HX7rOocI=' 'sha256-RuxfNxmpjp4A0o44t73N+6O4m9ajjPnJ8Ah9hbvLASk=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src 'self'; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://s3.amazonaws.com https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -14,7 +14,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/favicon-64.png">
-<meta name="app-build" content="112">
+<meta name="app-build" content="113">
 <meta name="app-version" content="1.0">
 <meta name="app-notes" content="Neue Adresse: Die App liegt jetzt bei Cloudflare (wetter.elias-ziegler.workers.dev). Version 1.0 (Build 1): Alles durchgesehen, Fehler behoben und schneller gemacht. Die App startet viel schneller: Das Wetter steht beim Öffnen fast sofort da, weil der letzte Stand gleich gezeigt wird und alle Daten gleichzeitig geholt werden. Das Regenradar Österreich lädt jetzt immer ganz Österreich auf einmal (etwa 1 MB, 1 bis 2 Sekunden statt viele Stücke zu je 6 MB), egal wohin du zoomst, ohne Lücken, und holt neue Daten gleich, wenn du die App aus dem Hintergrund zurückholst. Die Regen-Vorschau für die nächsten 2 Stunden war eine Viertelstunde zu spät und stimmt jetzt. Benachrichtigungen kommen zuverlässiger, die Schrift lädt ohne Google, dazu viele Kleinigkeiten.">
 <script>/* Umzug von GitHub (eliaspp9.github.io/Wetter) hierher: die alte Seite gibt Einstellungen und Lieblingsorte in der Adresse
@@ -6452,7 +6452,8 @@ async function loadObs(){
    Wenn es schneit oder Schnee liegt (ab 1 cm), steht oben, wie viel Schnee gerade liegt:
    - Österreich: gemessen an der nächsten Station von GeoSphere mit Schneepegel (TAWES, alle 10 Minuten neu), bis 25 km
      entfernt und höchstens 300 m höher oder tiefer als der Ort (sonst wäre der Wert dort ein anderer);
-   - sonst und wenn keine passende Station misst: Schneehöhe laut Wettermodell am Ort (Open-Meteo, weltweit, aktuell).
+   - Österreich ohne passende Station: selbst berechnet aus gemessenem Niederschlag und Temperatur (Server, site/snow.js);
+   - sonst: Mitte aus mehreren Wettermodellen am Ort (Open-Meteo, weltweit, stündlich).
    Geprüft alle 2 Minuten (zusammen mit den Messwerten). */
 async function loadSnowNow(){
  const el=$("hsn"),j=lastJ,q=seq("snow");if(!el||!j)return;
@@ -6471,8 +6472,21 @@ async function loadSnowNow(){
    }
   }
  }catch(e){}
+ /* Österreich ohne Station in der Nähe: selbst berechnet aus dem gemessenen Niederschlag und der Temperatur (Server, siehe
+    site/snow.js; an Stationen mit Schneepegel geprüft) */
+ if(cm==null&&BF_ON&&inBox2([46.3,49.1,9.5,17.2])){
+  try{const g=await getJ(location.origin+"/bf/snow?la="+la.toFixed(3)+"&lo="+lo.toFixed(3)+"&el="+Math.round(+j.elevation||0),25000);
+   if(g&&g.ok&&g.cm!=null){cm=g.cm;src="berechnet aus gemessenem Niederschlag"+(g.n?", an "+g.n+" Station"+(g.n>1?"en":"")+" mit Schneepegel geprüft":"")}}catch(e){}
+ }
+ /* sonst: Mitte (Median) aus mehreren Wettermodellen, nicht nur einem */
  if(cm==null){
-  try{const g=await getJ("https://api.open-meteo.com/v1/forecast?latitude="+la.toFixed(3)+"&longitude="+lo.toFixed(3)+"&current=snow_depth&timezone=auto",12000),v=g.current&&g.current.snow_depth;if(v!=null&&v>=0){cm=v*100;src="laut Wettermodell"}}catch(e){}
+  try{
+   const M=["icon_d2","icon_eu","icon_global","ecmwf_ifs025","gfs_seamless","metno_seamless","knmi_seamless","dmi_seamless","meteoswiss_icon_ch1","gem_seamless","jma_seamless"];
+   const g=await getJ("https://api.open-meteo.com/v1/forecast?latitude="+la.toFixed(3)+"&longitude="+lo.toFixed(3)+"&hourly=snow_depth&past_days=1&forecast_days=1&timezone=auto&models="+M.join(","),15000);
+   const T=g.hourly&&g.hourly.time||[],off=(+g.utc_offset_seconds||0)*1000,now=new Date(Date.now()+off).toISOString().slice(0,13),i=T.findIndex(t=>t.slice(0,13)===now);
+   if(i>=0){const v=M.map(m=>g.hourly["snow_depth_"+m]&&g.hourly["snow_depth_"+m][i]).filter(x=>x!=null&&x>=0).sort((a,b)=>a-b);
+    if(v.length){const md=v.length%2?v[v.length>>1]:(v[v.length/2-1]+v[v.length/2])/2;cm=md*100;src="Mitte aus "+v.length+" Wettermodellen"}}
+  }catch(e){}
  }
  if(!q.ok())return;
  if(cm==null||(!snowing&&cm<1)){el.hidden=true;q.done();return}
@@ -7872,7 +7886,7 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("shr").hidden)cl
 const meta=n=>{const m=document.querySelector('meta[name="'+n+'"]');return m?m.content:""};
 /* app-build zählt seit jeher einfach hoch; daran erkennen auch ältere Geräte ein Update (sie vergleichen diese Zahl).
    Angezeigt wird der Build seit Version 1.0: Build 1 ist app-build 57. */
-const BUILD=+meta("app-build")||0,BUILD0=111,verText=b=>meta("app-version")+" (Build "+(b-BUILD0)+")";
+const BUILD=+meta("app-build")||0,BUILD0=112,verText=b=>meta("app-version")+" (Build "+(b-BUILD0)+")";
 let remote=null,lastChk=0;
 $("ver").textContent=verText(BUILD);
 /* Anmeldung: bis wann sie gilt und ob sie sich von selbst verlängert */
