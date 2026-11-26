@@ -2,7 +2,7 @@
 <html lang="de" class="locked">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-285fPEGby2/4TzKj3HOSc+oCkSuBOCI84QI8y2jN46U=' 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-DEbu+QN8ttCHI/Iv/FUX4SuHncor97utTYKpWg4TKIo=' 'sha256-bA5xSG9BWtUooNij/e5A97mTnPvKvXA/ujsjgMrcMtE=' 'sha256-RuxfNxmpjp4A0o44t73N+6O4m9ajjPnJ8Ah9hbvLASk=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src 'self'; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://s3.amazonaws.com https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-285fPEGby2/4TzKj3HOSc+oCkSuBOCI84QI8y2jN46U=' 'sha256-Fv141vLFc+sFLsBPdy1GI3whUd8iOSyblIWXNmTVlHA=' 'sha256-DEbu+QN8ttCHI/Iv/FUX4SuHncor97utTYKpWg4TKIo=' 'sha256-5s8Oteln7IcYhPYNbA3Q6ikgoqdNn+Vho1Zeyy47Is4=' 'sha256-RuxfNxmpjp4A0o44t73N+6O4m9ajjPnJ8Ah9hbvLASk=' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js; style-src 'unsafe-inline' https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css; font-src 'self'; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org https://tiles.maps.eox.at https://maps.dwd.de https://*.rainviewer.com https://librewxr.net https://*.librewxr.net https://view.eumetsat.int https://mesonet.agron.iastate.edu https://s3.amazonaws.com https://openwms.fmi.fi https://geoservices.knmi.nl https://opendata.chmi.cz https://geo.weather.gc.ca https://www.jma.go.jp; connect-src 'self' https://api.open-meteo.com https://previous-runs-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://api.librewxr.net https://api.brightsky.dev https://warnungen.zamg.at https://api.bigdatacloud.net https://wetter-proxy.elias-ziegler.workers.dev https://air-quality-api.open-meteo.com https://dataset.api.hub.geosphere.at https://photon.komoot.io https://api.mymemory.translated.net https://api.weather.gov https://geo.weather.gc.ca https://www.jma.go.jp; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#1767F0" id="themec">
@@ -14,7 +14,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/favicon-64.png">
-<meta name="app-build" content="105">
+<meta name="app-build" content="106">
 <meta name="app-version" content="1.0">
 <meta name="app-notes" content="Neue Adresse: Die App liegt jetzt bei Cloudflare (wetter.elias-ziegler.workers.dev). Version 1.0 (Build 1): Alles durchgesehen, Fehler behoben und schneller gemacht. Die App startet viel schneller: Das Wetter steht beim Öffnen fast sofort da, weil der letzte Stand gleich gezeigt wird und alle Daten gleichzeitig geholt werden. Das Regenradar Österreich lädt jetzt immer ganz Österreich auf einmal (etwa 1 MB, 1 bis 2 Sekunden statt viele Stücke zu je 6 MB), egal wohin du zoomst, ohne Lücken, und holt neue Daten gleich, wenn du die App aus dem Hintergrund zurückholst. Die Regen-Vorschau für die nächsten 2 Stunden war eine Viertelstunde zu spät und stimmt jetzt. Benachrichtigungen kommen zuverlässiger, die Schrift lädt ohne Google, dazu viele Kleinigkeiten.">
 <script>/* Umzug von GitHub (eliaspp9.github.io/Wetter) hierher: die alte Seite gibt Einstellungen und Lieblingsorte in der Adresse
@@ -4634,17 +4634,17 @@ function exNote(){
 /* ============ Prognose aus dem Wettermodell (Ausweichlösung, ca. 2 Stunden) ============ */
 let fcData=null,fcOv=null,fcMk=null,fcTimer=0,fcLast=0,fcBusy=false;
 const STORM_ICO='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 4 14h6l-1 8 9-12h-6z" fill="#1B1B1B"/></svg>';
-/* ab 12 mm/h harter Wechsel auf Gelb, Orange, Rot (Starkregen soll sofort auffallen); Schnee ab 10 mm Wasser (7 cm/h) auf Rosa */
-/* Kräftige Farben, schon schwacher Niederschlag gut sichtbar: Regen Hellblau bis Dunkelblau; Schnee Pink bis Magenta, sehr starker
-   Schnee Violett. Flächig und gut deckend (ab 0,1 mm/h). */
-const RAINC=[[.1,[110,205,255]],[.5,[60,165,250]],[1.5,[35,120,235]],[3,[22,85,210]],[6,[14,55,175]],[12,[10,30,125]],[12.001,[255,210,40]],[25,[250,130,20]],[50,[215,30,45]]];
-/* Schnee kräftig (schon leichter Schnee gut sichtbar): Pink, Magenta, ab 7 cm/h Violett; fast ganz deckend (pA mit s) */
-const SNOWC=[[.1,[248,140,228]],[.5,[240,95,212]],[1.5,[228,52,192]],[4,[200,25,165]],[10,[155,12,135]],[10.001,[125,40,210]],[15,[92,22,178]],[22,[58,8,125]]];
+/* Klare Farbstufen (je Stärke ein eigener Farbton, sichtbare Grenzen): Wert ab der Schwelle bis zur nächsten. Der letzte
+   Eintrag ist nur das Ende der Skala (für die Legende). Schnee in mm Wasser (cm/h = mm × 0,7 → Schwellen 0,1 / 0,5 / 1 / 3 / 7 cm). */
+const RAINC=[[.1,[110,200,255]],[.5,[60,150,245]],[1.5,[25,85,215]],[3,[85,45,190]],[6,[255,210,30]],[12,[250,130,20]],[25,[215,30,45]],[50,[215,30,45]]];
+const SNOWC=[[.1,[255,160,232]],[.714,[245,105,212]],[1.43,[220,40,180]],[4.29,[150,45,205]],[10,[80,15,140]],[21.4,[80,15,140]]];
+RAINC.step=SNOWC.step=true;
 /* Deckkraft je Stärke: fast gleichmäßig deckend, nur ganz schwacher Niederschlag etwas durchsichtiger */
 /* Deckkraft der Radar-Ebenen (vorher 0,78; jetzt kräftiger wie bei WetterOnline) */
 const RLO=.95;
 const pA=(v,s)=>v<.1?.7:.95;
 function ramp(st,v){
+ if(st.step){let c=st[0][1];for(const x of st)if(v>=x[0])c=x[1];return c}
  if(v<=st[0][0])return st[0][1];
  for(let i=1;i<st.length;i++)if(v<=st[i][0]){const a=st[i-1],b=st[i],f=(v-a[0])/(b[0]-a[0]);return a[1].map((c,k)=>c+(b[1][k]-c)*f)}
  return st[st.length-1][1];
@@ -5223,7 +5223,9 @@ function lgRow(lab,grad,ticks,unit){
 /* Platz jeder Farbstufe auf dem Balken: gleiche Abstände; zwei fast gleiche Werte (harter Farbwechsel) teilen sich den Platz */
 function lgSlots(st){const p=[0];for(let i=1;i<st.length;i++)p.push(p[i-1]+(st[i][0]-st[i-1][0]<.01?0:1));const n=p[p.length-1]||1;return p.map(x=>x/n*100)}
 function lgPos(st,v){const P=lgSlots(st);if(v<=st[0][0])return 0;for(let i=1;i<st.length;i++)if(v<=st[i][0])return P[i-1]+(P[i]-P[i-1])*(v-st[i-1][0])/(st[i][0]-st[i-1][0]);return 100}
-function lgGrad(st){const P=lgSlots(st);return"linear-gradient(90deg,"+st.map((x,i)=>"rgba("+x[1].map(Math.round).join(",")+","+pA(x[0],st===SNOWC).toFixed(2)+") "+P[i].toFixed(1)+"%").join(",")+")"}
+function lgGrad(st){const P=lgSlots(st);
+ /* Stufen: jede Stufe als Fläche mit harten Grenzen */
+ if(st.step){const c=i=>"rgba("+st[i][1].map(Math.round).join(",")+","+pA(st[i][0],st===SNOWC).toFixed(2)+")",L=[];for(let i=0;i<st.length-1;i++){if(P[i+1]-P[i]<.01)continue;L.push(c(i)+" "+P[i].toFixed(1)+"%",c(i)+" "+P[i+1].toFixed(1)+"%")}return"linear-gradient(90deg,"+L.join(",")+")"}return"linear-gradient(90deg,"+st.map((x,i)=>"rgba("+x[1].map(Math.round).join(",")+","+pA(x[0],st===SNOWC).toFixed(2)+") "+P[i].toFixed(1)+"%").join(",")+")"}
 function legOwn(){
  return lgRow("Regen",lgGrad(RAINC),[[.1,"0,1"],[.5,"0,5"],[1.5,"1,5"],[3,"3"],[6,"6"],[12,"12"],[25,"25"],[50,"50"]].map(t=>[lgPos(RAINC,t[0]),t[1]]),"mm/h")+
   lgRow("Schnee",lgGrad(SNOWC),[[.1,"0,1"],[.5,"0,5"],[1,"1"],[3,"3"],[7,"7"],[10,"10"],[15,"15"]].map(t=>[lgPos(SNOWC,t[0]/.7),t[1]]),"cm/h");
@@ -7757,7 +7759,7 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("shr").hidden)cl
 const meta=n=>{const m=document.querySelector('meta[name="'+n+'"]');return m?m.content:""};
 /* app-build zählt seit jeher einfach hoch; daran erkennen auch ältere Geräte ein Update (sie vergleichen diese Zahl).
    Angezeigt wird der Build seit Version 1.0: Build 1 ist app-build 57. */
-const BUILD=+meta("app-build")||0,BUILD0=104,verText=b=>meta("app-version")+" (Build "+(b-BUILD0)+")";
+const BUILD=+meta("app-build")||0,BUILD0=105,verText=b=>meta("app-version")+" (Build "+(b-BUILD0)+")";
 let remote=null,lastChk=0;
 $("ver").textContent=verText(BUILD);
 /* Anmeldung: bis wann sie gilt und ob sie sich von selbst verlängert */
