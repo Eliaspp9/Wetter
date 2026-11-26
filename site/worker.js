@@ -453,9 +453,14 @@ async function tpServe(req, env, url) {
    Zoomstufe als ein Paket speichern. tpl(z, x, y) liefert die Adresse einer Kachel. Schon vorhandene Pakete werden
    nicht neu geholt (Bilder mit fester Zeit ändern sich nicht), außer fresh (das jeweils neueste Bild ohne Zeitangabe). */
 const TP_BOX = [46.0, 8.8, 49.6, 17.8];
+/* Mitteleuropa (Nachbarländer: Deutschland bis zur Mitte, Schweiz, Italien bis zur Po-Ebene, Slowenien, Kroatien, Ungarn,
+   Slowakei, Tschechien): dort bis Zoom 7 vorgeladen, Zoom 8 nur für Österreich (sonst zu viele Kacheln) */
+const TP_EU = [44.0, 5.5, 52.5, 20.5];
+const tpBox = (z) => (z <= 7 ? TP_EU : TP_BOX);
 function tpRange(z) {
+  const B = tpBox(z);
   const n = Math.pow(2, z), tx = (lo) => Math.floor(((lo + 180) / 360) * n), ty = (la) => Math.floor(((1 - Math.log(Math.tan((la * Math.PI) / 180) + 1 / Math.cos((la * Math.PI) / 180)) / Math.PI) / 2) * n);
-  return { x0: tx(TP_BOX[1]), x1: tx(TP_BOX[3]), y0: ty(TP_BOX[2]), y1: ty(TP_BOX[0]) };
+  return { x0: tx(B[1]), x1: tx(B[3]), y0: ty(B[2]), y1: ty(B[0]) };
 }
 function wmsTile(base, z, x, y, px) {
   const sz = (2 * TP_E) / Math.pow(2, z), x0 = -TP_E + x * sz, y1 = TP_E - y * sz;
