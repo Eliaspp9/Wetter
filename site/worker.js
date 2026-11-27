@@ -973,7 +973,7 @@ async function bfServe(req, env, url) {
     if (url.pathname === "/bf/snow") return new Response(await bfSnow(Math.round(+url.searchParams.get("la") * 100) / 100, Math.round(+url.searchParams.get("lo") * 100) / 100, { tfetch }, env.GM, +url.searchParams.get("el")), { headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "private, max-age=600" } });
     if (url.pathname === "/bf/ki") return new Response(await bfKI(Math.round(+url.searchParams.get("la") * 100) / 100, Math.round(+url.searchParams.get("lo") * 100) / 100, { tfetch }, env.GM), { headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "private, max-age=1800" } });
     if (url.pathname === "/bf/sk") {
-      const models = String(url.searchParams.get("m") || "").split(",").filter((m) => BF_MOD.test(m)).slice(0, 10);
+      const models = String(url.searchParams.get("m") || "").split(",").filter((m) => BF_MOD.test(m)).slice(0, 20);
       if (!models.length) return bfJson({ error: "Ungültig" }, 400);
       return await bfSK(la, lo, models, url.searchParams.get("g") === "1", env);
     }
