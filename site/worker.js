@@ -8,6 +8,7 @@ import { packed, convert } from "./pack.js";
 import { snRun, skRun, ptServe } from "./nowcast.js";
 import { bfKI } from "./ki.js";
 import { bfSnow } from "./snow.js";
+import { plServe, plEnsure } from "./places.js";
 const COOKIE = "wt";
 const PAGE = new Set(["/", "/index.html"]);
 const SEC = {
@@ -960,6 +961,8 @@ async function bfServe(req, env, url) {
   if (!(await valid(env, getCookie(req, COOKIE)))) return bfJson({ error: "Nicht angemeldet" }, 401);
   if (url.pathname === "/bf/log" && req.method === "POST") { try { const b = await req.json(); console.log("APPFEHLER", JSON.stringify(b).slice(0, 1600)); } catch (e) {} return bfJson({ ok: 1 }); }
   if (url.pathname === "/bf/tip" && req.method === "POST") { try { return await bfTip(req, env); } catch (e) { return bfJson({ t: [] }); } }
+  /* Ortsnamen für die Karte (siehe site/places.js) */
+  if (url.pathname === "/bf/pl") { try { return await plServe(env, url); } catch (e) { return bfJson({ error: String((e && e.message) || e).slice(0, 80) }, 502); } }
   const la = Math.round(+url.searchParams.get("la") * 20) / 20, lo = Math.round(+url.searchParams.get("lo") * 20) / 20;
   if (!isFinite(la) || !isFinite(lo) || Math.abs(la) > 85 || Math.abs(lo) > 180) return bfJson({ error: "Ungültig" }, 400);
   try {
@@ -1010,6 +1013,8 @@ export default {
     if (mi % 5 === 3) ctx.waitUntil(pcPrewarm(env).catch((e) => console.error("pcPrewarm", e && e.message)));
     /* Kartenbilder des Radars vorladen */
     if (mi % 5 === 1) ctx.waitUntil(tpPrewarm(env).catch((e) => console.error("tpPrewarm", e && e.message)));
+    /* Ortsnamen für die Karte einmalig aufbereiten (siehe site/places.js) */
+    if (mi % 5 === 0) ctx.waitUntil(plEnsure(env).catch((e) => console.error("plEnsure", e && e.message)));
     /* eigene Kurzvorhersage (Europa-Radar, Regenmesser, Blitze), sobald ein neues Messbild da ist */
     if (mi % 5 === 4) ctx.waitUntil(snRun(env, { tfetch, pngRGBA }).catch((e) => console.error("snRun", e && e.message)));
     if (mi % 10 === 0) ctx.waitUntil(gmRun(env).catch((e) => console.error("gmRun", e && e.message)));
